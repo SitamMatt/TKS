@@ -3,11 +3,9 @@ package edu.p.lodz.pl.pas.mvc.model;
 public class Book extends Resource {
     private String author;
 
-    public Book(String t, int pages, String au, String pH){
-        title = t;
-        pagesCount = pages;
+    public Book(int id, String t, int pages, String au, String pH){
+        super(id, t, pages, pH);
         author = au;
-        publishingHouse = pH;
     }
 
     public String getAuthor() {

@@ -3,11 +3,9 @@ package edu.p.lodz.pl.pas.mvc.model;
 public class Magazine extends Resource {
     private int number;
 
-    public Magazine(String t, int pages, String pH, int nr){
-        title = t;
-        pagesCount = pages;
+    public Magazine(int id, String t, int pages, String pH, int nr){
+        super(id, t, pages, pH);
         number = nr;
-        publishingHouse = pH;
     }
 
     public int getNumber() {

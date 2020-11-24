@@ -6,6 +6,13 @@ public abstract class Resource{
     protected int pagesCount;
     protected String publishingHouse;
 
+    public Resource(int id, String title, int pagesCount, String publishingHouse) {
+        this.id = id;
+        this.title = title;
+        this.pagesCount = pagesCount;
+        this.publishingHouse = publishingHouse;
+    }
+
     public int getId() {
         return id;
     }
@@ -26,11 +33,11 @@ public abstract class Resource{
         this.pagesCount = pagesCount;
     }
 
-    public String getpHouse() {
+    public String getPublishingHouse() {
         return publishingHouse;
     }
 
-    public void setpHouse(String pHouse) {
+    public void setPublishingHouse(String pHouse) {
         this.publishingHouse = pHouse;
     }
 }
