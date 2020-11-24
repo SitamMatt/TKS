@@ -1,16 +1,20 @@
 package edu.p.lodz.pl.pas.mvc.controllers;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import java.io.Serializable;
 
+@Named(value = "hello")
 @SessionScoped
-@ManagedBean
 public class HelloController implements Serializable {
 
     private String message = "Hello World";
 
     public String getMessage(){
         return message;
+    }
+
+    public void setMessage(String msg){
+        message = msg;
     }
 }

@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="pas-mvc" options="-endorseddirs F:\shared\pas-mvc\pas-mvc\target/endorsed" />
+      <module name="pas-mvc" options="-endorseddirs F:\shared\pas\pas-mvc\target/endorsed" />
     </option>
   </component>
 </project>
