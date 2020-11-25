@@ -3,6 +3,7 @@ package edu.p.lodz.pl.pas.mvc.repositories;
 import edu.p.lodz.pl.pas.mvc.model.Event;
 
 import java.util.List;
+import java.util.UUID;
 
 public class EventsRepository {
     private List<Event> items;

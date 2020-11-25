@@ -1,6 +1,7 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 public abstract class Event {
     private UUID id;
@@ -19,7 +20,7 @@ public abstract class Event {
         return date;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
