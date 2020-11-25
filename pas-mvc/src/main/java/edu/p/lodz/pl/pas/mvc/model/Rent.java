@@ -1,16 +1,17 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Rent {
-    private int id;
+    private UUID id;
     private Date rentDate;
     private Date returnDate;
     private User renter;
     private Resource resource;
 
 
-    public Rent (int id, User renter, Resource resource){
+    public Rent (UUID id, User renter, Resource resource){
         this.id = id;
         this.rentDate = new Date();
         this.returnDate = null;
@@ -19,7 +20,7 @@ public class Rent {
         System.out.println(rentDate);
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 

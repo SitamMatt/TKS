@@ -1,19 +1,21 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
-public abstract class Resource{
-    protected int id;
+import java.util.UUID;
+
+public abstract class Resource {
+    protected UUID id;
     protected String title;
     protected int pagesCount;
     protected String publishingHouse;
 
-    public Resource(int id, String title, int pagesCount, String publishingHouse) {
+    public Resource(UUID id, String title, int pagesCount, String publishingHouse) {
         this.id = id;
         this.title = title;
         this.pagesCount = pagesCount;
         this.publishingHouse = publishingHouse;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
