@@ -1,9 +1,11 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
+import java.util.UUID;
+
 public class Magazine extends Resource {
     private int number;
 
-    public Magazine(int id, String t, int pages, String pH, int nr){
+    public Magazine(UUID id, String t, int pages, String pH, int nr){
         super(id, t, pages, pH);
         number = nr;
     }
