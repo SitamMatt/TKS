@@ -1,9 +1,11 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
+import java.util.UUID;
+
 public class Book extends Resource {
     private String author;
 
-    public Book(int id, String t, int pages, String au, String pH){
+    public Book(UUID id, String t, int pages, String au, String pH){
         super(id, t, pages, pH);
         author = au;
     }

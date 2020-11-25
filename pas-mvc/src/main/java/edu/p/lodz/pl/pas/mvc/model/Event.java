@@ -3,12 +3,12 @@ package edu.p.lodz.pl.pas.mvc.model;
 import java.util.Date;
 
 public abstract class Event {
-    private int id;
+    private UUID id;
     private Date date;
     private User renter;
     private Resource resource;
 
-    public Event(int id, Date date, User renter, Resource resource) {
+    public Event(UUID id, Date date, User renter, Resource resource) {
         this.id = id;
         this.date = date;
         this.renter = renter;

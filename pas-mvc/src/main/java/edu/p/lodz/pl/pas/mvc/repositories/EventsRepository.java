@@ -11,7 +11,7 @@ public class EventsRepository {
         items.add(event);
     }
 
-    public Event get(int id){
+    public Event get(UUID id){
         return items.stream()
             .filter(event -> event.getId() == id)
             .findAny()

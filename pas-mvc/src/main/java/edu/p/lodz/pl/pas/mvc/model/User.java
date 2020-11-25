@@ -1,7 +1,9 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
-public class User{
-    private int id;
+import java.util.UUID;
+
+public class User {
+    private UUID id;
     private Type typ;
     private String firstName;
     private String lastName;
@@ -9,7 +11,7 @@ public class User{
     private String password;
     boolean isActive;
 
-    public User(int id, String firstName, String lastName, Type typ, String login, String password) {
+    public User(UUID id, String firstName, String lastName, Type typ, String login, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -19,7 +21,7 @@ public class User{
         this.isActive = false;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
