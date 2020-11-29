@@ -1,22 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
-    <context-param>
-        <param-name>javax.faces.PROJECT_STAGE</param-name>
-        <param-value>Development</param-value>
-    </context-param>
-    <context-param>
-        <param-name>javax.faces.CONFIG_FILES</param-name>
-        <param-value>/WEB-INF/faces-config.xml</param-value>
-    </context-param>
-    <servlet>
-        <servlet-name>Faces Servlet</servlet-name>
-        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Faces Servlet</servlet-name>
-        <url-pattern>*.xhtml</url-pattern>
-    </servlet-mapping>
+<!--    <context-param>-->
+<!--        <param-name>javax.faces.PROJECT_STAGE</param-name>-->
+<!--        <param-value>Development</param-value>-->
+<!--    </context-param>-->
+
 <!--    <session-config>-->
 <!--        <session-timeout>-->
 <!--            30-->
@@ -24,7 +12,7 @@
 <!--    </session-config>-->
 
     <welcome-file-list>
-        <welcome-file>hello.xhtml</welcome-file>
+        <welcome-file>auth/login.xhtml</welcome-file>
     </welcome-file-list>
 
 <!--    Application role declaration-->
@@ -51,7 +39,26 @@
         </auth-constraint>
     </security-constraint>
 
-<!--    Authentication-->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Common pages</web-resource-name>
+            <url-pattern>/common_pages/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>
+                Admin
+            </role-name>
+            <role-name>
+                Employee
+            </role-name>
+            <role-name>
+                User
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+
+    <!--    Authentication-->
     <login-config>
         <auth-method>
             FORM

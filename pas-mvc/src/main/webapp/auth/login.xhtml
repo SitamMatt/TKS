@@ -12,11 +12,11 @@
     <h:body>
         <div>
             <h3>Login</h3>
-            <h:form id="login_form">
-                <h:inputText value="#{userBean.login}" styleClass="inputField" id="username"/>
-                <h:inputSecret value="#{userBean.password}" styleClass="inputField" id="password"/>
-                <h:commandButton value="login" action="#{userBean.validate}" id="submit"/>
-            </h:form>
+            <form id="login_form" action="j_security_check" method="post">
+                <h:inputText name="j_username" type="text"/>
+                <h:inputSecret name="j_password" type="password"/>
+                <h:commandButton type="submit" value="Submit" action="welcome"/>
+            </form>
         </div>
     </h:body>
 </f:view>
