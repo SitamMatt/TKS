@@ -1,4 +1,6 @@
-package edu.p.lodz.pl.pas.mvc.model;
+package edu.p.lodz.pl.pas.mvc.repositories;
+
+import edu.p.lodz.pl.pas.mvc.model.User;
 
 import javax.enterprise.context.Dependent;
 import java.util.ArrayList;
