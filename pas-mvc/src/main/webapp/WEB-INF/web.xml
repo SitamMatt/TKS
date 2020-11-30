@@ -12,7 +12,7 @@
 <!--    </session-config>-->
 
     <welcome-file-list>
-        <welcome-file>auth/login.xhtml</welcome-file>
+        <welcome-file>common_pages/welcome.xhtml</welcome-file>
     </welcome-file-list>
 
 <!--    Application role declaration-->
