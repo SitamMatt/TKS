@@ -6,8 +6,10 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:view>
-    <h:outputLabel>--welcome.xhtml--</h:outputLabel>
-    <h:outputLabel value="Hello, you are in role User."
-                   rendered="#{facesContext.externalContext.isUserInRole('User')}"/>
+    <p><h:outputLabel>Hello #{facesContext.externalContext.getUserPrincipal().name}</h:outputLabel></p>
+    <p><h:link value="Manage users"/></p>
+    <p><h:link value="Manage resources"/></p>
+    <p><h:link value="Dashbaord"/></p>
+    <p><h:commandButton value="Log out"/></p>
 </f:view>
 </html>
