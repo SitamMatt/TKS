@@ -5,7 +5,7 @@ import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 
 import java.util.List;
 
-public interface UsersRepository {
+public interface IUsersRepository {
     void addUser(User user) throws ObjectAlreadyStoredException;
 
     List<User> getAllUsers();

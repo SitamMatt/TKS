@@ -1,5 +1,6 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 public class User {
@@ -21,8 +22,16 @@ public class User {
         this.isActive = false;
     }
 
+    public User(){
+        this.id = UUID.randomUUID();
+    }
+
     public UUID getId() {
         return id;
+    }
+
+    public Type[] getPossibleType(){
+        return Type.values();
     }
 
     public Type getTyp(){
@@ -73,5 +82,15 @@ public class User {
         isActive = active;
     }
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", typ=" + typ +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", login='" + login + '\'' +
+                ", isActive=" + isActive +
+                '}';
+    }
 }

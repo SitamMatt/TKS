@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <title>Users table</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:dataTable value="#{usersController.usersRepository.allUsers}" var="currentUser">
+                <h:column>
+                    <f:facet name="header">UID</f:facet>
+                    #{currentUser.id}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Login</f:facet>
+                    #{currentUser.login}
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">First name</f:facet>
+                    #{currentUser.firstName}
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Last name</f:facet>
+                    #{currentUser.lastName}
+                </h:column>
+                
+                <h:column>
+                    <f:facet name="header">Typ</f:facet>
+                    #{currentUser.typ}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Active</f:facet>
+                    #{currentUser.active}
+                </h:column>
+
+                <h:column>
+                    <h:commandButton value="Change status" action="#{currentUser.setActive(!currentUser.active)}"/>
+                </h:column>
+
+                <h:column>
+                    <h:commandButton value="Edit" action="#{usersController.editUserProcess(currentUser.login)}">
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+            <h:commandButton value="AddUser" action="addUser"/><br/>
+        </h:form>
+    </h:body>
+</f:view>
+</html>

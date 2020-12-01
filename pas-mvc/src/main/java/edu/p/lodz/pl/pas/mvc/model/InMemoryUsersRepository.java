@@ -7,13 +7,14 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Collections.copy;
 
 @ApplicationScoped
-public class InMemoryUsersRepository implements UsersRepository {
-    private List<User> users;
+public class InMemoryUsersRepository implements IUsersRepository {
+    private ArrayList<User> users;
     @Inject
     private UsersFiller usersFiller;
 
@@ -31,10 +32,8 @@ public class InMemoryUsersRepository implements UsersRepository {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        List<User> list = new ArrayList<>();
-        copy(list, users);
-        return list;
+    public ArrayList<User> getAllUsers() {
+        return users;
     }
 
     @Override
@@ -52,5 +51,10 @@ public class InMemoryUsersRepository implements UsersRepository {
         }
         users.removeIf(x -> x.getLogin().equals(user.getLogin()));
         users.add(user);
+    }
+
+    public String toString() {
+        //return getAllUsers().toString();
+        return Arrays.toString(users.toArray());
     }
 }
