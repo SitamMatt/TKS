@@ -25,7 +25,7 @@ public class InMemoryUsersRepository implements UsersRepository {
     }
 
     @Override
-    public void addUser(User user) throws ObjectAlreadyStoredException, LoginAlreadyTakenException {
+    public synchronized void addUser(User user) throws ObjectAlreadyStoredException, LoginAlreadyTakenException {
         if(findUserByLogin(user.getLogin()) != null) {
             throw new ObjectAlreadyStoredException();
         }
@@ -37,14 +37,14 @@ public class InMemoryUsersRepository implements UsersRepository {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public synchronized List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         copy(list, users);
         return list;
     }
 
     @Override
-    public User findUserByLogin(String login) {
+    public synchronized User findUserByLogin(String login) {
         return users.stream()
                 .filter(x -> x.getLogin().equals(login))
                 .findFirst()
@@ -52,7 +52,7 @@ public class InMemoryUsersRepository implements UsersRepository {
     }
 
     @Override
-    public void updateUser(User user) throws ObjectNotFoundException {
+    public synchronized void updateUser(User user) throws ObjectNotFoundException {
         if(findUserByLogin(user.getLogin()) == null) {
             throw new ObjectNotFoundException();
         }

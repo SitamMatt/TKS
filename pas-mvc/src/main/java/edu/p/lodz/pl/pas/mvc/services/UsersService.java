@@ -1,6 +1,7 @@
 package edu.p.lodz.pl.pas.mvc.services;
 
 import edu.p.lodz.pl.pas.mvc.model.User;
+import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 import edu.p.lodz.pl.pas.mvc.repositories.UsersRepository;
@@ -21,7 +22,7 @@ public class UsersService {
     public void addUser(User user) {
         try {
             usersRepository.addUser(user);
-        } catch (ObjectAlreadyStoredException ignored) { }
+        } catch (ObjectAlreadyStoredException | LoginAlreadyTakenException ignored) { }
     }
 
     public User findUser(String login) {
