@@ -10,6 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.copy;
 
@@ -38,9 +39,7 @@ public class InMemoryUsersRepository implements UsersRepository {
 
     @Override
     public synchronized List<User> getAllUsers() {
-        List<User> list = new ArrayList<>();
-        copy(list, users);
-        return list;
+        return new ArrayList<>(users);
     }
 
     @Override

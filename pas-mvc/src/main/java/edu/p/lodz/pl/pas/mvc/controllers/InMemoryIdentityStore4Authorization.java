@@ -1,31 +1,30 @@
 package edu.p.lodz.pl.pas.mvc.controllers;
 
+import edu.p.lodz.pl.pas.mvc.model.User;
+import edu.p.lodz.pl.pas.mvc.repositories.UsersRepository;
+
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 class InMemoryIdentityStore4Authorization implements IdentityStore {
 
-    private Map<String, List<String>> userRoles = new HashMap<>();
+    private Map<String, List<String>> userRoles;
+    @Inject
+    private UsersRepository usersRepository;
 
-    public InMemoryIdentityStore4Authorization() {
-        //Init users
-        // from a file or hardcoded
-        init();
-    }
-
+    @PostConstruct
     private void init() {
-        //user1
-        List<String> roles = new ArrayList<>();
-        roles.add("USER_ROLE");
-        userRoles.put("user", roles);
-        //user2
-        roles = new ArrayList<>();
-        roles.add("USER_ROLE");
-        roles.add("ADMIN_ROLE");
-        userRoles.put("admin", roles);
+        userRoles = usersRepository.getAllUsers().stream()
+                .collect(Collectors.toMap(
+                        User::getLogin,
+                        (u) -> Collections.singletonList(u.getTyp().name()))
+                );
     }
 
     @Override

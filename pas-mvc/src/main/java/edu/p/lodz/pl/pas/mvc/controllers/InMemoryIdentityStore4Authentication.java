@@ -1,6 +1,11 @@
 package edu.p.lodz.pl.pas.mvc.controllers;
 
+import edu.p.lodz.pl.pas.mvc.model.User;
+import edu.p.lodz.pl.pas.mvc.repositories.UsersRepository;
+
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
@@ -8,25 +13,21 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
 
 @ApplicationScoped
 public class InMemoryIdentityStore4Authentication implements IdentityStore {
 
-    private Map<String, String> users = new HashMap<>();
+    private Map<String, String> users;
+    @Inject
+    private UsersRepository usersRepository;
 
-    public InMemoryIdentityStore4Authentication() {
-        //Init users
-        // from a file or hardcoded
-        init();
-    }
-
+    @PostConstruct
     private void init() {
-        //user1
-        users.put("user", "pass0");
-        //user2
-        users.put("admin", "pass1");
+        users = usersRepository.getAllUsers().stream()
+                .collect(Collectors.toMap(User::getLogin, User::getPassword));
     }
 
     @Override
