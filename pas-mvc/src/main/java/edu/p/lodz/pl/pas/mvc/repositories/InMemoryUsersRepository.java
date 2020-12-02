@@ -1,6 +1,7 @@
 package edu.p.lodz.pl.pas.mvc.repositories;
 
 import edu.p.lodz.pl.pas.mvc.model.User;
+import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 
@@ -24,9 +25,13 @@ public class InMemoryUsersRepository implements UsersRepository {
     }
 
     @Override
-    public void addUser(User user) throws ObjectAlreadyStoredException {
+    public void addUser(User user) throws ObjectAlreadyStoredException, LoginAlreadyTakenException {
         if(findUserByLogin(user.getLogin()) != null) {
             throw new ObjectAlreadyStoredException();
+        }
+
+        if(users.stream().anyMatch((u) -> u.getLogin().equals(user.getLogin()))) {
+            throw new LoginAlreadyTakenException();
         }
         users.add(user);
     }
