@@ -38,7 +38,7 @@ public class UsersService {
         } catch (ObjectNotFoundException ignored) { }
     }
 
-    public void Save(User newUser) throws ObjectNotFoundException, ObjectAlreadyStoredException {
+    public void Save(User newUser) throws ObjectNotFoundException, ObjectAlreadyStoredException, LoginAlreadyTakenException {
         if(usersRepository.getAllUsers().stream().anyMatch(x -> x.getId() == newUser.getId())){
             usersRepository.updateUser(newUser);
         }else{
