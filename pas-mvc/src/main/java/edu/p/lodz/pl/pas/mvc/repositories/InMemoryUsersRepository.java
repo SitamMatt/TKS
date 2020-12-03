@@ -1,6 +1,7 @@
 package edu.p.lodz.pl.pas.mvc.repositories;
 
 import edu.p.lodz.pl.pas.mvc.model.User;
+import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 
@@ -9,6 +10,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.copy;
 
@@ -24,22 +26,24 @@ public class InMemoryUsersRepository implements UsersRepository {
     }
 
     @Override
-    public void addUser(User user) throws ObjectAlreadyStoredException {
+    public synchronized void addUser(User user) throws ObjectAlreadyStoredException, LoginAlreadyTakenException {
         if(findUserByLogin(user.getLogin()) != null) {
             throw new ObjectAlreadyStoredException();
+        }
+
+        if(users.stream().anyMatch((u) -> u.getLogin().equals(user.getLogin()))) {
+            throw new LoginAlreadyTakenException();
         }
         users.add(user);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        List<User> list = new ArrayList<>();
-        copy(list, users);
-        return list;
+    public synchronized List<User> getAllUsers() {
+        return new ArrayList<>(users);
     }
 
     @Override
-    public User findUserByLogin(String login) {
+    public synchronized User findUserByLogin(String login) {
         return users.stream()
                 .filter(x -> x.getLogin().equals(login))
                 .findFirst()
@@ -47,7 +51,7 @@ public class InMemoryUsersRepository implements UsersRepository {
     }
 
     @Override
-    public void updateUser(User user) throws ObjectNotFoundException {
+    public synchronized void updateUser(User user) throws ObjectNotFoundException {
         if(findUserByLogin(user.getLogin()) == null) {
             throw new ObjectNotFoundException();
         }
