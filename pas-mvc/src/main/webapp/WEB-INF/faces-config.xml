@@ -23,4 +23,29 @@
               xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd">
+    <navigation-rule>
+        <from-view-id>/usersList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>UserEdit</from-outcome>
+            <to-view-id>/userForm.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <redirect-param>
+                    <name>login</name>
+                    <value>#{userEditController.login}</value>
+                </redirect-param>
+            </redirect>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>UserCreate</from-outcome>
+            <to-view-id>/userForm.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/common_pages/welcome.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>Users</from-outcome>
+            <to-view-id>/usersList.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

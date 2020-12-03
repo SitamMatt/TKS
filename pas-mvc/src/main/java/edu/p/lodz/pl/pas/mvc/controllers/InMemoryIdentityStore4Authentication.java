@@ -20,15 +20,15 @@ import static javax.security.enterprise.identitystore.CredentialValidationResult
 @ApplicationScoped
 public class InMemoryIdentityStore4Authentication implements IdentityStore {
 
-    private Map<String, String> users;
+//    private Map<String, String> users;
     @Inject
     private UsersRepository usersRepository;
 
-    @PostConstruct
-    private void init() {
-        users = usersRepository.getAllUsers().stream()
-                .collect(Collectors.toMap(User::getLogin, User::getPassword));
-    }
+//    @PostConstruct
+//    private void init() {
+//        users = usersRepository.getAllUsers().stream()
+//                .collect(Collectors.toMap(User::getLogin, User::getPassword));
+//    }
 
     @Override
     public int priority() {
@@ -41,7 +41,10 @@ public class InMemoryIdentityStore4Authentication implements IdentityStore {
     }
 
     public CredentialValidationResult validate(UsernamePasswordCredential credential) {
-        String password = users.get(credential.getCaller());
+        User user = usersRepository.findUserByLogin(credential.getCaller());
+        if(user == null)
+            return INVALID_RESULT;
+        String password = user.getPassword();
         if (password != null && password.equals(credential.getPasswordAsString())) {
             return new CredentialValidationResult(credential.getCaller());
         }

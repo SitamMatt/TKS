@@ -4,6 +4,7 @@ import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
+import edu.p.lodz.pl.pas.mvc.repositories.InMemoryUsersRepository;
 import edu.p.lodz.pl.pas.mvc.repositories.UsersRepository;
 
 import javax.enterprise.context.RequestScoped;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequestScoped
 public class UsersService {
     @Inject
-    private UsersRepository usersRepository;
+    private InMemoryUsersRepository usersRepository;
 
     public List<User> getAllUsers() {
         return usersRepository.getAllUsers();
@@ -35,5 +36,13 @@ public class UsersService {
         try {
             usersRepository.updateUser(user);
         } catch (ObjectNotFoundException ignored) { }
+    }
+
+    public void Save(User newUser) throws ObjectNotFoundException, ObjectAlreadyStoredException, LoginAlreadyTakenException {
+        if(usersRepository.getAllUsers().stream().anyMatch(x -> x.getId() == newUser.getId())){
+            usersRepository.updateUser(newUser);
+        }else{
+            usersRepository.addUser(newUser);
+        }
     }
 }

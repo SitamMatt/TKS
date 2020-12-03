@@ -1,31 +1,30 @@
 package edu.p.lodz.pl.pas.mvc.controllers;
 
+import edu.p.lodz.pl.pas.mvc.RolesConverter;
 import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.repositories.UsersRepository;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.EnumSet;
+import java.util.Set;
 
 @ApplicationScoped
 class InMemoryIdentityStore4Authorization implements IdentityStore {
 
-    private Map<String, List<String>> userRoles;
     @Inject
     private UsersRepository usersRepository;
 
-    @PostConstruct
-    private void init() {
-        userRoles = usersRepository.getAllUsers().stream()
-                .collect(Collectors.toMap(
-                        User::getLogin,
-                        (u) -> Collections.singletonList(u.getTyp().name()))
-                );
-    }
+//    @PostConstruct
+//    private void init() {
+//        userRoles = usersRepository.getAllUsers().stream()
+//                .collect(Collectors.toMap(
+//                        User::getLogin,
+//                        (u) -> Collections.singletonList(u.getTyp().name()))
+//                );
+//    }
 
     @Override
     public int priority() {
@@ -39,7 +38,10 @@ class InMemoryIdentityStore4Authorization implements IdentityStore {
 
     @Override
     public Set<String> getCallerGroups(CredentialValidationResult validationResult) {
-        List<String> roles = userRoles.get(validationResult.getCallerPrincipal().getName());
-        return new HashSet<>(roles);
+        User user = usersRepository.findUserByLogin(validationResult.getCallerPrincipal().getName());
+        if (user == null)
+            return null;
+        Set<String> roles = RolesConverter.getRolesFromEnum(user.getTyp());
+        return roles;
     }
 }
