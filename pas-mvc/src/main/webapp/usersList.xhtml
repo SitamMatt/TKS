@@ -47,11 +47,12 @@
                 </h:column>
 
                 <h:column>
-                    <h:commandButton value="Edit" action="#{usersController.editUserProcess(currentUser.login)}">
+                    <h:commandButton value="Edit" action="#{usersController.editUser}">
+                        <f:setPropertyActionListener target="#{userEditController.login}" value="#{currentUser.login}"/>
                     </h:commandButton>
                 </h:column>
             </h:dataTable>
-            <h:commandButton value="AddUser" action="addUser"/><br/>
+            <h:commandButton value="AddUser" action="#{usersController.createUser}"/><br/>
         </h:form>
     </h:body>
 </f:view>

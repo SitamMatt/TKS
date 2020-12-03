@@ -1,5 +1,6 @@
 package edu.p.lodz.pl.pas.mvc.repositories;
 
+import edu.p.lodz.pl.pas.mvc.model.IUsersRepository;
 import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
