@@ -20,12 +20,33 @@
     <h:body>
         <h:form>
             <h:outputLabel>User summary</h:outputLabel><br/>
-            Login: <h:outputText value="#{userSummaryController.user.login}" /><br/>
-            First name: <h:outputText value="#{userSummaryController.user.firstName}" /><br/>
-            Last name: <h:outputText value="#{userSummaryController.user.lastName}" /><br/>
-            First name: <h:outputText value="#{userSummaryController.user.firstName}" /><br/>
-            Type: <h:outputText value="#{userSummaryController.user.typ}" /><br/>
-            Active: <h:outputText value="#{userSummaryController.user.active}" /><br/>
+            Login: <h:outputText value="#{userSummaryController.user.login}" style="font-weight: bold"/><br/>
+            First name: <h:outputText value="#{userSummaryController.user.firstName}" style="font-weight: bold"/><br/>
+            Last name: <h:outputText value="#{userSummaryController.user.lastName}" style="font-weight: bold"/><br/>
+            Type: <h:outputText value="#{userSummaryController.user.typ}" style="font-weight: bold"/><br/>
+            Active: <h:outputText value="#{userSummaryController.user.active}" style="font-weight: bold"/><br/>
+            <h:dataTable>
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Rental date</f:facet>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Return date</f:facet>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Title</f:facet>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Resource ID</f:facet>
+                </h:column>
+
+            </h:dataTable>
         </h:form>
     </h:body>
 </f:view>
