@@ -1,7 +1,7 @@
 package edu.p.lodz.pl.pas.mvc.repositories;
 
-import edu.p.lodz.pl.pas.mvc.model.IUsersRepository;
 import edu.p.lodz.pl.pas.mvc.model.User;
+import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 
@@ -9,14 +9,14 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.copy;
 
 @ApplicationScoped
-public class InMemoryUsersRepository implements IUsersRepository {
-    private ArrayList<User> users;
+public class InMemoryUsersRepository implements UsersRepository {
+    private List<User> users;
     @Inject
     private UsersFiller usersFiller;
 
@@ -26,20 +26,24 @@ public class InMemoryUsersRepository implements IUsersRepository {
     }
 
     @Override
-    public void addUser(User user) throws ObjectAlreadyStoredException {
+    public synchronized void addUser(User user) throws ObjectAlreadyStoredException, LoginAlreadyTakenException {
         if(findUserByLogin(user.getLogin()) != null) {
             throw new ObjectAlreadyStoredException();
+        }
+
+        if(users.stream().anyMatch((u) -> u.getLogin().equals(user.getLogin()))) {
+            throw new LoginAlreadyTakenException();
         }
         users.add(user);
     }
 
     @Override
-    public ArrayList<User> getAllUsers() {
-        return users;
+    public synchronized List<User> getAllUsers() {
+        return new ArrayList<>(users);
     }
 
     @Override
-    public User findUserByLogin(String login) {
+    public synchronized User findUserByLogin(String login) {
         return users.stream()
                 .filter(x -> x.getLogin().equals(login))
                 .findFirst()
@@ -47,16 +51,11 @@ public class InMemoryUsersRepository implements IUsersRepository {
     }
 
     @Override
-    public void updateUser(User user) throws ObjectNotFoundException {
+    public synchronized void updateUser(User user) throws ObjectNotFoundException {
         if(findUserByLogin(user.getLogin()) == null) {
             throw new ObjectNotFoundException();
         }
         users.removeIf(x -> x.getLogin().equals(user.getLogin()));
         users.add(user);
-    }
-
-    public String toString() {
-        //return getAllUsers().toString();
-        return Arrays.toString(users.toArray());
     }
 }
