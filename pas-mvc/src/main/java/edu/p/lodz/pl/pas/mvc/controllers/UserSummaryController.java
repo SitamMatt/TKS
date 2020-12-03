@@ -8,14 +8,13 @@ import javax.annotation.security.RolesAllowed;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.NotFoundException;
 import java.io.Serializable;
 
 @Named
 @ViewScoped
 @RolesAllowed({"ADMIN", "WORKER"})
 public class UserSummaryController implements Serializable {
-    @Inject
-    private InMemoryUsersRepository usersRepository;
     @Inject
     private UsersService usersService;
     private String login;
@@ -35,6 +34,8 @@ public class UserSummaryController implements Serializable {
 
     public void init(){
         if (login != null)
-            user = usersRepository.findUserByLogin(login);
+            user = usersService.findUser(login);
+        else
+            throw new NotFoundException("There is no such user!");
     }
 }

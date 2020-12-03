@@ -24,7 +24,7 @@ public class EventsRepository {
     public List<Event> getUserRents(User user){
         List<Event> userRents = new ArrayList<>();
         for (Event i : items){
-            if (i.getRenter() == user)
+            if (i.getRenter().equals(user))
                 userRents.add(i);
         }
         return userRents;
