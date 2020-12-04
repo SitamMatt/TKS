@@ -5,9 +5,13 @@ import java.util.UUID;
 public class Book extends Resource {
     private String author;
 
-    public Book(UUID id, String t, int pages, String au, String pH){
+    public Book(UUID id, String t, int pages, String au, String pH) {
         super(id, t, pages, pH);
         author = au;
+    }
+
+    public Book() {
+        this(UUID.randomUUID(), "", 0, "", "");
     }
 
     public String getAuthor() {
