@@ -4,13 +4,14 @@ import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
-import edu.p.lodz.pl.pas.mvc.repositories.InMemoryUsersRepository;
 import edu.p.lodz.pl.pas.mvc.services.UsersService;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -20,11 +21,19 @@ import java.io.Serializable;
 @Named
 @RolesAllowed("ADMIN")
 @Stateful
-public class UserEditController implements Serializable {
+public class UserFormController implements Serializable {
     private String login;
 
-    @Inject
-    private InMemoryUsersRepository usersRepository;
+    public UIComponent getBtn() {
+        return btn;
+    }
+
+    public void setBtn(UIComponent btn) {
+        this.btn = btn;
+    }
+
+    private UIComponent btn;
+
     @Inject
     private UsersService usersService;
     private User newUser;
@@ -34,7 +43,7 @@ public class UserEditController implements Serializable {
         if (login == null) {
             newUser = new User();
         } else {
-            newUser = usersRepository.findUserByLogin(login);
+            newUser = usersService.find(login);
             login = null;
         }
     }
@@ -42,8 +51,14 @@ public class UserEditController implements Serializable {
     public void saveUser() {
         try {
             usersService.Save(newUser);
-        } catch (ObjectNotFoundException | ObjectAlreadyStoredException | LoginAlreadyTakenException e) {
+        } catch (ObjectNotFoundException e) {
             e.printStackTrace();
+        } catch (ObjectAlreadyStoredException e) {
+            e.printStackTrace();
+        } catch (LoginAlreadyTakenException e) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid password length", "");
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(btn.getClientId(context), message);
         } finally {
             newUser = new User();
             login = null;

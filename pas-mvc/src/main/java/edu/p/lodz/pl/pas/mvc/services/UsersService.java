@@ -4,8 +4,7 @@ import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
-import edu.p.lodz.pl.pas.mvc.repositories.InMemoryUsersRepository;
-import edu.p.lodz.pl.pas.mvc.repositories.UsersRepository;
+import edu.p.lodz.pl.pas.mvc.repositories.IUsersRepository;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -16,33 +15,21 @@ import java.util.List;
 @RequestScoped
 public class UsersService {
     @Inject
-    private InMemoryUsersRepository usersRepository;
+    private IUsersRepository usersRepository;
 
-    public List<User> getAllUsers() {
-        return usersRepository.getAllUsers();
+    public List<User> getAllUsers() throws CloneNotSupportedException {
+        return usersRepository.getAll();
     }
 
-    public void addUser(User user) {
-        try {
-            usersRepository.addUser(user);
-        } catch (ObjectAlreadyStoredException | LoginAlreadyTakenException ignored) { }
-    }
-
-    public User findUser(String login) {
+    public User find(String login) {
         return usersRepository.findUserByLogin(login);
     }
 
-    public void updateUser(User user) {
-        try {
-            usersRepository.updateUser(user);
-        } catch (ObjectNotFoundException ignored) { }
-    }
-
-    public void Save(User newUser) throws ObjectNotFoundException, ObjectAlreadyStoredException, LoginAlreadyTakenException {
-        if(usersRepository.getAllUsers().stream().anyMatch(x -> x.getId() == newUser.getId())){
-            usersRepository.updateUser(newUser);
-        }else{
-            usersRepository.addUser(newUser);
+    public void Save(User user) throws ObjectNotFoundException, ObjectAlreadyStoredException, LoginAlreadyTakenException {
+        if (usersRepository.has(user)) {
+            usersRepository.update(user);
+        } else {
+            usersRepository.add(user);
         }
     }
 }

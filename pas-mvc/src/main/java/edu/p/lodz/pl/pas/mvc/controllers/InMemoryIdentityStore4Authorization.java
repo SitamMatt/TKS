@@ -2,7 +2,7 @@ package edu.p.lodz.pl.pas.mvc.controllers;
 
 import edu.p.lodz.pl.pas.mvc.RolesConverter;
 import edu.p.lodz.pl.pas.mvc.model.User;
-import edu.p.lodz.pl.pas.mvc.repositories.UsersRepository;
+import edu.p.lodz.pl.pas.mvc.repositories.IUsersRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -15,7 +15,7 @@ import java.util.Set;
 class InMemoryIdentityStore4Authorization implements IdentityStore {
 
     @Inject
-    private UsersRepository usersRepository;
+    private IUsersRepository usersRepository;
 
 //    @PostConstruct
 //    private void init() {
@@ -41,7 +41,7 @@ class InMemoryIdentityStore4Authorization implements IdentityStore {
         User user = usersRepository.findUserByLogin(validationResult.getCallerPrincipal().getName());
         if (user == null)
             return null;
-        Set<String> roles = RolesConverter.getRolesFromEnum(user.getTyp());
+        Set<String> roles = RolesConverter.getRolesFromEnum(user.getRole());
         return roles;
     }
 }

@@ -1,5 +1,5 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
-public enum Type {
+public enum UserRole {
     ADMIN, WORKER, CLIENT
 }
