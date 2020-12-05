@@ -8,7 +8,6 @@ import edu.p.lodz.pl.pas.mvc.repositories.InMemoryUsersRepository;
 import edu.p.lodz.pl.pas.mvc.services.UsersService;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.faces.view.ViewScoped;
@@ -41,7 +40,7 @@ public class UserEditController implements Serializable {
 
     public void saveUser() {
         try {
-            usersService.Save(newUser);
+            usersService.save(newUser);
         } catch (ObjectNotFoundException | ObjectAlreadyStoredException | LoginAlreadyTakenException e) {
             e.printStackTrace();
         } finally {

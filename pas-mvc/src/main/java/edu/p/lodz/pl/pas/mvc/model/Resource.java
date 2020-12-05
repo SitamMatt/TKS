@@ -42,4 +42,5 @@ public abstract class Resource {
     public void setPublishingHouse(String pHouse) {
         this.publishingHouse = pHouse;
     }
+
 }
