@@ -52,6 +52,34 @@
             <from-outcome>UserCreate</from-outcome>
             <to-view-id>/userForm.xhtml</to-view-id>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>UserSummary</from-outcome>
+            <to-view-id>/userSummary.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <redirect-param>
+                    <name>login</name>
+                    <value>#{userSummaryController.login}</value>
+                </redirect-param>
+            </redirect>
+        </navigation-case>
+    </navigation-rule>
+
+    <navigation-rule>
+        <from-view-id>/resourcesList.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ResourceEdit</from-outcome>
+            <to-view-id>/resourcesEditForm.xhtml</to-view-id>
+            <redirect include-view-params="true">
+                <redirect-param>
+                    <name>resUUID</name>
+                    <value>#{resourceEditController.resUUID}</value>
+                </redirect-param>
+            </redirect>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>ResourceCreate</from-outcome>
+            <to-view-id>/resourcesEditForm.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
 
     <navigation-rule>

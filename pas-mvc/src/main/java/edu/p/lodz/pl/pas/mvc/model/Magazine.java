@@ -10,6 +10,10 @@ public class Magazine extends Resource {
         number = nr;
     }
 
+    public Magazine() {
+        this(UUID.randomUUID(), "", 0, "", 0);
+    }
+
     public int getNumber() {
         return number;
     }
