@@ -4,11 +4,9 @@ import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
-import edu.p.lodz.pl.pas.mvc.repositories.InMemoryUsersRepository;
 import edu.p.lodz.pl.pas.mvc.services.UsersService;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.faces.application.FacesMessage;
@@ -25,6 +23,10 @@ import java.io.Serializable;
 @Stateful
 public class UserFormController implements Serializable {
     private String login;
+    private UIComponent btn;
+    @Inject
+    private UsersService usersService;
+    private User newUser;
 
     public UIComponent getBtn() {
         return btn;
@@ -33,12 +35,6 @@ public class UserFormController implements Serializable {
     public void setBtn(UIComponent btn) {
         this.btn = btn;
     }
-
-    private UIComponent btn;
-
-    @Inject
-    private UsersService usersService;
-    private User newUser;
 
     @PostConstruct
     public void init() {
