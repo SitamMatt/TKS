@@ -31,6 +31,10 @@ public class UsersController {
         return "UserCreate";
     }
 
+    public String summarizeUser(){
+        return "UserSummary";
+    }
+
     public InMemoryUsersRepository getUsersRepository() {
         return usersRepository;
     }

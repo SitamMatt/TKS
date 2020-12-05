@@ -51,6 +51,12 @@
                         <f:setPropertyActionListener target="#{userEditController.login}" value="#{currentUser.login}"/>
                     </h:commandButton>
                 </h:column>
+
+                <h:column>
+                    <h:commandButton value="Details" action="#{usersController.summarizeUser}">
+                        <f:setPropertyActionListener target="#{userSummaryController.login}" value="#{currentUser.login}"/>
+                    </h:commandButton>
+                </h:column>
             </h:dataTable>
             <h:commandButton value="AddUser" action="#{usersController.createUser}"/><br/>
         </h:form>
