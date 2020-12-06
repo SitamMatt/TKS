@@ -1,81 +1,96 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
-import java.io.Serializable;
+import edu.p.lodz.pl.pas.mvc.Copyable;
+
 import java.util.UUID;
 
-public class User {
-    private UUID id;
-    private Type typ;
+public class User implements Copyable {
+    boolean isActive;
+    private final UUID id;
+    private UserRole role;
     private String firstName;
     private String lastName;
     private String login;
     private String password;
-    boolean isActive;
 
-    public User(UUID id, String firstName, String lastName, Type typ, String login, String password) {
+    public User(UUID id, String firstName, String lastName, UserRole typ, String login, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.typ = typ;
+        this.role = typ;
         this.login = login;
         this.password = password;
         this.isActive = false;
     }
 
-    public User(){
+    public User() {
         this.id = UUID.randomUUID();
+    }
+
+    public void map(User user) {
+        this.firstName = user.firstName;
+        this.lastName = user.lastName;
+        this.role = user.role;
+        this.login = user.login;
+        this.password = user.password;
+        this.isActive = user.isActive;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public UUID getId() {
         return id;
     }
 
-    public Type[] getPossibleType(){
-        return Type.values();
+    public UserRole[] getPossibleRoles() {
+        return UserRole.values();
     }
 
-    public Type getTyp(){
-        return typ;
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setTyp(Type typ){
-        this.typ = typ;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
     public void setLogin(String login) {
         this.login = login;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 
     public void setActive(boolean active) {
@@ -86,7 +101,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", typ=" + typ +
+                ", typ=" + role +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", login='" + login + '\'' +

@@ -1,14 +1,14 @@
 package edu.p.lodz.pl.pas.mvc.controllers;
 
-import edu.p.lodz.pl.pas.mvc.repositories.InMemoryUsersRepository;
+import edu.p.lodz.pl.pas.mvc.model.User;
+import edu.p.lodz.pl.pas.mvc.services.UsersService;
 
-import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.List;
 
 @RequestScoped
 @Named
@@ -16,12 +16,8 @@ import javax.inject.Named;
 @Stateful
 public class UsersController {
 
-    public UsersController(){
-        boolean is = FacesContext.getCurrentInstance().getExternalContext().isUserInRole("ADMIN");
-    }
-
     @Inject
-    private InMemoryUsersRepository usersRepository;
+    private UsersService usersService;
 
     public String editUser() {
         return "UserEdit";
@@ -31,11 +27,7 @@ public class UsersController {
         return "UserCreate";
     }
 
-    public String summarizeUser(){
-        return "UserSummary";
-    }
-
-    public InMemoryUsersRepository getUsersRepository() {
-        return usersRepository;
+    public List<User> listUsers() throws CloneNotSupportedException {
+        return usersService.getAllUsers();
     }
 }

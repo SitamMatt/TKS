@@ -1,19 +1,15 @@
 package edu.p.lodz.pl.pas.mvc.controllers;
 
 import edu.p.lodz.pl.pas.mvc.model.User;
-import edu.p.lodz.pl.pas.mvc.repositories.UsersRepository;
+import edu.p.lodz.pl.pas.mvc.repositories.IUsersRepository;
 
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import javax.security.enterprise.identitystore.IdentityStore;
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
 
@@ -22,7 +18,7 @@ public class InMemoryIdentityStore4Authentication implements IdentityStore {
 
 //    private Map<String, String> users;
     @Inject
-    private UsersRepository usersRepository;
+    private IUsersRepository usersRepository;
 
 //    @PostConstruct
 //    private void init() {
