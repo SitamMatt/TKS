@@ -6,8 +6,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:metadata>
-    <f:viewParam name="login" value="#{userEditController.login}"/>
-    <f:event listener="#{userEditController.init}" type="preRenderView"/>
+    <f:viewParam name="login" value="#{userFormController.login}"/>
+    <f:event listener="#{userFormController.init}" type="preRenderView"/>
 </f:metadata>
 <f:view>
     <h:head>
@@ -15,20 +15,20 @@
     </h:head>
     <body>
     <h:outputLabel value="Editing user"/>
-    <h:form rendered="#{not empty userEditController.newUser}">
-        <h:inputHidden value="#{userEditController.login}"/>
-        First name: <h:inputText value="#{userEditController.newUser.firstName}"/><br/>
-        Last name: <h:inputText value="#{userEditController.newUser.lastName}"/><br/>
-        <h:outputText value="Login:" rendered="#{userEditController.newUser.login == null}"/>
-        <h:inputText value="#{userEditController.newUser.login}" rendered="#{userEditController.newUser.login == null}"/><br/>
-        Password: <h:inputSecret value="#{userEditController.newUser.password}" redisplay="true"/><br/>
+    <h:form rendered="#{not empty userFormController.newUser}">
+        <h:inputHidden value="#{userFormController.login}"/>
+        First name: <h:inputText value="#{userFormController.newUser.firstName}"/><br/>
+        Last name: <h:inputText value="#{userFormController.newUser.lastName}"/><br/>
+        <h:outputText value="Login:" rendered="#{userFormController.newUser.login == null}"/>
+        <h:inputText value="#{userFormController.newUser.login}" rendered="#{userFormController.newUser.login == null}"/><br/>
+        Password: <h:inputSecret value="#{userFormController.newUser.password}" redisplay="true"/><br/>
         Type:
-        <h:selectOneMenu value="#{userEditController.newUser.typ}">
-            <f:selectItems value="#{userEditController.newUser.possibleType}" />
+        <h:selectOneMenu value="#{userFormController.newUser.role}">
+            <f:selectItems value="#{userFormController.newUser.possibleRoles}" />
         </h:selectOneMenu><br/>
-        Active: <h:selectBooleanCheckbox  value="#{userEditController.newUser.active}"/><br/>
-        <h:commandButton value="submit" action="#{userEditController.saveUser}" >
-            <f:setPropertyActionListener target="#{userEditController.login}" value="#{userEditController.newUser.login}"/>
+        Active: <h:selectBooleanCheckbox  value="#{userFormController.newUser.active}"/><br/>
+        <h:commandButton value="submit" action="#{userFormController.saveUser}" binding="#{userFormController.btn}" >
+            <f:setPropertyActionListener target="#{userFormController.login}" value="#{userFormController.newUser.login}"/>
         </h:commandButton>
         <br/>
         <h:commandButton value="back" action="usersList"/><br/>

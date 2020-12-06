@@ -1,6 +1,6 @@
 package edu.p.lodz.pl.pas.mvc.repositories;
 
-import edu.p.lodz.pl.pas.mvc.model.Type;
+import edu.p.lodz.pl.pas.mvc.model.UserRole;
 import edu.p.lodz.pl.pas.mvc.model.User;
 
 import javax.enterprise.context.Dependent;
@@ -16,7 +16,7 @@ public class UsersFiller {
                 UUID.randomUUID(),
                 "Łukasz",
                 "Stanisławowski",
-                Type.CLIENT,
+                UserRole.CLIENT,
                 "testo",
                 "test0"
                 ));
@@ -24,7 +24,7 @@ public class UsersFiller {
                 UUID.randomUUID(),
                 "Jayne",
                 "Najera",
-                Type.CLIENT,
+                UserRole.CLIENT,
                 "user",
                 "user0"
         ));
@@ -32,7 +32,7 @@ public class UsersFiller {
                 UUID.randomUUID(),
                 "John",
                 "Cena",
-                Type.WORKER,
+                UserRole.WORKER,
                 "worker",
                 "worker0"
         ));
@@ -40,7 +40,7 @@ public class UsersFiller {
                 UUID.randomUUID(),
                 "Janusz",
                 "Pawlacz",
-                Type.ADMIN,
+                UserRole.ADMIN,
                 "admin",
                 "admin0"
         ));

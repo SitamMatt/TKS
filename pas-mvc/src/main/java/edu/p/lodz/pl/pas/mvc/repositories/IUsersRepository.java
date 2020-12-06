@@ -6,13 +6,16 @@ import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface UsersRepository {
-    void addUser(User user) throws ObjectAlreadyStoredException, LoginAlreadyTakenException;
+public interface IUsersRepository {
+    boolean has(User user);
 
-    List<User> getAllUsers();
+    void add(User user) throws ObjectAlreadyStoredException, LoginAlreadyTakenException, ObjectNotFoundException;
+
+    List<User> getAll() throws CloneNotSupportedException;
 
     User findUserByLogin(String login);
 
-    void updateUser(User user) throws ObjectNotFoundException;
+    void update(User user) throws ObjectNotFoundException, LoginAlreadyTakenException;
 }
