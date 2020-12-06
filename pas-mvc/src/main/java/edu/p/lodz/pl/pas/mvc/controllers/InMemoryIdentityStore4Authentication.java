@@ -1,7 +1,7 @@
 package edu.p.lodz.pl.pas.mvc.controllers;
 
 import edu.p.lodz.pl.pas.mvc.model.User;
-import edu.p.lodz.pl.pas.mvc.repositories.IUsersRepository;
+import edu.p.lodz.pl.pas.mvc.services.UsersService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -16,15 +16,8 @@ import static javax.security.enterprise.identitystore.CredentialValidationResult
 @ApplicationScoped
 public class InMemoryIdentityStore4Authentication implements IdentityStore {
 
-//    private Map<String, String> users;
     @Inject
-    private IUsersRepository usersRepository;
-
-//    @PostConstruct
-//    private void init() {
-//        users = usersRepository.getAllUsers().stream()
-//                .collect(Collectors.toMap(User::getLogin, User::getPassword));
-//    }
+    private UsersService usersService;
 
     @Override
     public int priority() {
@@ -37,8 +30,8 @@ public class InMemoryIdentityStore4Authentication implements IdentityStore {
     }
 
     public CredentialValidationResult validate(UsernamePasswordCredential credential) {
-        User user = usersRepository.findUserByLogin(credential.getCaller());
-        if(user == null)
+        User user = usersService.find(credential.getCaller());
+        if (user == null)
             return INVALID_RESULT;
         String password = user.getPassword();
         if (password != null && password.equals(credential.getPasswordAsString())) {
