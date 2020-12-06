@@ -19,4 +19,8 @@ public class LogoutBean implements Serializable {
             e.printStackTrace();
         }
     }
+
+    public String getUsername(){
+        return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
+    }
 }
