@@ -14,36 +14,36 @@
 <f:view>
     <h:head>
         <title>
-            User summary
+            #{msg['user_summary']}
         </title>
     </h:head>
     <h:body>
         <h:form>
-            <h:outputLabel>User summary</h:outputLabel><br/>
-            Login: <h:outputText value="#{userSummaryController.user.login}" style="font-weight: bold"/><br/>
-            First name: <h:outputText value="#{userSummaryController.user.firstName}" style="font-weight: bold"/><br/>
-            Last name: <h:outputText value="#{userSummaryController.user.lastName}" style="font-weight: bold"/><br/>
-            Type: <h:outputText value="#{userSummaryController.user.typ}" style="font-weight: bold"/><br/>
-            Active: <h:outputText value="#{userSummaryController.user.active}" style="font-weight: bold"/><br/>
+            <h:outputLabel>#{msg['user_summary']}</h:outputLabel><br/>
+            #{msg['login']}: <h:outputText value="#{userSummaryController.user.login}" style="font-weight: bold"/><br/>
+            #{msg['firstname']}: <h:outputText value="#{userSummaryController.user.firstName}" style="font-weight: bold"/><br/>
+            #{msg['lastname']}: <h:outputText value="#{userSummaryController.user.lastName}" style="font-weight: bold"/><br/>
+            #{msg['type']}: <h:outputText value="#{userSummaryController.user.typ}" style="font-weight: bold"/><br/>
+            #{msg['active']}: <h:outputText value="#{userSummaryController.user.active}" style="font-weight: bold"/><br/>
             <h:dataTable>
                 <h:column>
                     <f:facet name="header">ID</f:facet>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Rental date</f:facet>
+                    <f:facet name="header">#{msg['rental_date']}</f:facet>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Return date</f:facet>
+                    <f:facet name="header">#{msg['return_date']}</f:facet>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Title</f:facet>
+                    <f:facet name="header">#{msg['title']}</f:facet>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Resource ID</f:facet>
+                    <f:facet name="header">#{msg['resource_id']}</f:facet>
                 </h:column>
 
             </h:dataTable>

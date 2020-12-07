@@ -6,9 +6,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:view>
-    <h:outputLabel value="Hello, #{logoutBean.username}"/>
+    <h:outputLabel value="#{msg['hello']}, #{logoutBean.username}"/>
     <p><h:form>
-        <h:commandButton value="logout" action="#{logoutBean.logout}"/>
+        <h:commandButton value="#{msg['logout']}" action="#{logoutBean.logout}"/>
     </h:form></p>
 </f:view>
 </html>
