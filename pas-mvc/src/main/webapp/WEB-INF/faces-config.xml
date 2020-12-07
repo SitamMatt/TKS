@@ -30,7 +30,7 @@
         </locale-config>
         
         <resource-bundle>
-            <base-name>edu.p.lodz.pl.pas.mvc.messages</base-name>
+            <base-name>edu.p.lodz.pl.pas.mvc.config.ResourceConfig</base-name>
             <var>msg</var>
         </resource-bundle>
     </application>

@@ -1,4 +1,4 @@
-package edu.p.lodz.pl.pas.mvc;
+package edu.p.lodz.pl.pas.mvc.config;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.security.enterprise.authentication.mechanism.http.FormAuthenticationMechanismDefinition;

@@ -1,4 +1,4 @@
-package edu.p.lodz.pl.pas.mvc;
+package edu.p.lodz.pl.pas.mvc.config;
 
 import static javax.faces.annotation.FacesConfig.Version.JSF_2_3;
 
