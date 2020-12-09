@@ -14,6 +14,8 @@
         <title>#{msg['edit_user']}</title>
     </h:head>
     <body>
+    <ui:composition template="/common/templateLayout.xhtml">
+    <ui:define name="content">
     <h:outputLabel value="#{msg['edit_user']}"/>
     <h:form rendered="#{not empty userFormController.newUser}">
         <h:inputHidden value="#{userFormController.login}"/>
@@ -33,6 +35,8 @@
         <br/>
         <h:commandButton value="#{msg['back']}" action="usersList"/><br/>
     </h:form>
+    </ui:define>
+    </ui:composition>
     </body>
 </f:view>
 </html>

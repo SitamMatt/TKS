@@ -3,12 +3,15 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <f:view>
     <h:head>
         <title>Users table</title>
     </h:head>
     <h:body>
+        <ui:composition template="/common/templateLayout.xhtml">
+        <ui:define name="content">
         <h:form>
             <h:dataTable value="#{usersController.listUsers()}" var="currentUser">
                 <h:column>
@@ -59,6 +62,8 @@
             </h:dataTable>
             <h:commandButton value="#{msg['adduser']}" action="#{usersController.createUser}"/><br/>
         </h:form>
+        </ui:define>
+        </ui:composition>
     </h:body>
 </f:view>
 </html>
