@@ -14,7 +14,7 @@
     <ui:include src="/common/header.xhtml"/>
     <p><h:outputLabel>#{msg['your_role_is']} '#{usersService.find(facesContext.externalContext.getUserPrincipal().name).role.name()}'</h:outputLabel></p>
     <p><h:link value="#{msg['manage_users']}" outcome="Users"/></p>
-    <p><h:link value="#{msg['manage_resources']}" outcome="/resourcesList"/></p>
+    <p><h:link value="#{msg['manage_resources']}" outcome="Resources"/></p>
     <p><h:link value="#{msg['dashboard']}"/></p>
 </f:view>
 </html>

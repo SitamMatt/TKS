@@ -88,5 +88,10 @@
             <from-outcome>Users</from-outcome>
             <to-view-id>/usersList.xhtml</to-view-id>
         </navigation-case>
+
+        <navigation-case>
+            <from-outcome>Resources</from-outcome>
+            <to-view-id>/resourcesList.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
 </faces-config>
