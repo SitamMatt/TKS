@@ -27,6 +27,10 @@ public class UsersController {
         return "UserCreate";
     }
 
+    public String summarizeUser() {
+        return "UserSummary";
+    }
+
     public List<User> listUsers() throws CloneNotSupportedException {
         return usersService.getAllUsers();
     }

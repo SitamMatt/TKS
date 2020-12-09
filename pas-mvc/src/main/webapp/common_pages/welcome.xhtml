@@ -16,6 +16,7 @@
     <p><h:outputLabel>Your role is '#{usersService.find(facesContext.externalContext.getUserPrincipal().name).role.name()}'</h:outputLabel></p>
     <p><h:link value="Manage users" outcome="Users"/></p>
     <p><h:link value="Manage resources" outcome="/resourcesList"/></p>
+    <p><h:link value="Manage rents" outcome="/rentsList" /></p>
     <p><h:link value="Dashbaord"/></p>
     <p><h:form>
         <h:commandButton value="logout" action="#{logoutBean.logout}"/>
