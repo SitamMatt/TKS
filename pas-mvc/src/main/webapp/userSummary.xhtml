@@ -19,12 +19,12 @@
     </h:head>
     <h:body>
         <h:form>
-            <h:outputLabel>User summary</h:outputLabel><br/>
-            Login: <h:outputText value="#{userSummaryController.user.login}" style="font-weight: bold"/><br/>
-            First name: <h:outputText value="#{userSummaryController.user.firstName}" style="font-weight: bold"/><br/>
-            Last name: <h:outputText value="#{userSummaryController.user.lastName}" style="font-weight: bold"/><br/>
-            Type: <h:outputText value="#{userSummaryController.user.role}" style="font-weight: bold"/><br/>
-            Active: <h:outputText value="#{userSummaryController.user.active}" style="font-weight: bold"/><br/>
+            <h:outputLabel>#{msg['user_summary']}</h:outputLabel><br/>
+            #{msg['login']}: <h:outputText value="#{userSummaryController.user.login}" style="font-weight: bold"/><br/>
+            #{msg['firstname']}: <h:outputText value="#{userSummaryController.user.firstName}" style="font-weight: bold"/><br/>
+            #{msg['lastname']}: <h:outputText value="#{userSummaryController.user.lastName}" style="font-weight: bold"/><br/>
+            #{msg['type']}: <h:outputText value="#{userSummaryController.user.role}" style="font-weight: bold"/><br/>
+            #{msg['active']}: <h:outputText value="#{userSummaryController.user.active}" style="font-weight: bold"/><br/>
             <h:dataTable>
                 <h:column>
                     <f:facet name="header">ID</f:facet>

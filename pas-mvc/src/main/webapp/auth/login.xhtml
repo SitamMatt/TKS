@@ -9,7 +9,7 @@
 
 <body>
 <p>
-    Custom Form-based Authentication
+    #{msg['login_message']}
 </p>
 
 <form method="post" action="j_security_check" name="loginForm">
@@ -20,8 +20,8 @@
         <h:inputSecret id="j_password" autocomplete="off"/>
         <div/>
         <h:panelGroup>
-            <h:commandButton type="submit" value="Login"/>
-            <h:commandButton type="reset" value="Clear"/>
+            <h:commandButton type="submit" value="#{msg['login']}"/>
+            <h:commandButton type="reset" value="#{msg['clear']}"/>
         </h:panelGroup>
     </h:panelGrid>
 </form>

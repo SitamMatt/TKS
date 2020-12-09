@@ -17,7 +17,7 @@
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">#{msg['login']}</f:facet>
+                    <f:facet name="header">#{msg['user_login']}</f:facet>
                     #{currentUser.login}
                 </h:column>
                 
@@ -27,17 +27,17 @@
                 </h:column>
                 
                 <h:column>
-                    <f:facet name="header">Last name</f:facet>
+                    <f:facet name="header">#{msg['lastname']}</f:facet>
                     #{currentUser.lastName}
                 </h:column>
                 
                 <h:column>
-                    <f:facet name="header">Typ</f:facet>
+                    <f:facet name="header">#{msg['type']}</f:facet>
                     #{currentUser.role}
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">Active</f:facet>
+                    <f:facet name="header">#{msg['active']}</f:facet>
                     #{currentUser.active}
                 </h:column>
 
@@ -46,18 +46,18 @@
 <!--                </h:column>-->
 
                 <h:column>
-                    <h:commandButton value="Edit" action="#{usersController.editUser}">
+                    <h:commandButton value="#{msg['edit']}" action="#{usersController.editUser}">
                         <f:setPropertyActionListener target="#{userFormController.login}" value="#{currentUser.login}"/>
                     </h:commandButton>
                 </h:column>
 
                 <h:column>
-                    <h:commandButton value="Details" action="#{usersController.summarizeUser}">
+                    <h:commandButton value="#{msg['details']}" action="#{usersController.summarizeUser}">
                         <f:setPropertyActionListener target="#{userSummaryController.login}" value="#{currentUser.login}"/>
                     </h:commandButton>
                 </h:column>
             </h:dataTable>
-            <h:commandButton value="AddUser" action="#{usersController.createUser}"/><br/>
+            <h:commandButton value="#{msg['adduser']}" action="#{usersController.createUser}"/><br/>
         </h:form>
     </h:body>
 </f:view>

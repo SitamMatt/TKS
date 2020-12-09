@@ -1,4 +1,4 @@
-package edu.p.lodz.pl.pas.mvc;
+package edu.p.lodz.pl.pas.mvc.config;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

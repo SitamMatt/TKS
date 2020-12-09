@@ -1,21 +1,21 @@
 package edu.p.lodz.pl.pas.mvc.controllers;
 
 import edu.p.lodz.pl.pas.mvc.controllers.dto.ResourceDTO;
-import edu.p.lodz.pl.pas.mvc.model.Book;
-import edu.p.lodz.pl.pas.mvc.model.Magazine;
-import edu.p.lodz.pl.pas.mvc.model.Resource;
-import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.repositories.ResourcesRepository;
 import edu.p.lodz.pl.pas.mvc.services.ResourcesService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.Stateful;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.UUID;
 
 @RequestScoped
 @Named
@@ -40,8 +40,9 @@ public class ResourcesController {
         return "ResourceCreate";
     }
 
-//    public String getResourceType(Resource resource) {
-//        return resourcesService.getResourceType(resource);
-//    }
-
+    public void removeResource(String id) throws IOException {
+        resourcesService.delete(UUID.fromString(id));
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+    }
 }
