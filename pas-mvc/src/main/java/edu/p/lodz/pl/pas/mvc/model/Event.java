@@ -3,21 +3,26 @@ package edu.p.lodz.pl.pas.mvc.model;
 import java.util.Date;
 import java.util.UUID;
 
-public abstract class Event {
+public class Event {
     private UUID id;
-    private Date date;
+    private Date rentDate;
+    private Date returnDate;
     private User renter;
     private Resource resource;
 
-    public Event(UUID id, Date date, User renter, Resource resource) {
+    public Event(UUID id, Date rentDate, User renter, Resource resource) {
         this.id = id;
-        this.date = date;
+        this.rentDate = rentDate;
         this.renter = renter;
         this.resource = resource;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getRentDate() {
+        return rentDate;
+    }
+
+    public Date getReturnDate() {
+        return returnDate;
     }
 
     public UUID getId() {
@@ -30,5 +35,9 @@ public abstract class Event {
 
     public Resource getResource() {
         return resource;
+    }
+
+    public void setReturnDate(Date date){
+        this.returnDate = date;
     }
 }

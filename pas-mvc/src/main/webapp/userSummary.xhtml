@@ -14,7 +14,7 @@
 <f:view>
     <h:head>
         <title>
-            #{msg['user_summary']}
+            User summary
         </title>
     </h:head>
     <h:body>
@@ -23,7 +23,7 @@
             #{msg['login']}: <h:outputText value="#{userSummaryController.user.login}" style="font-weight: bold"/><br/>
             #{msg['firstname']}: <h:outputText value="#{userSummaryController.user.firstName}" style="font-weight: bold"/><br/>
             #{msg['lastname']}: <h:outputText value="#{userSummaryController.user.lastName}" style="font-weight: bold"/><br/>
-            #{msg['type']}: <h:outputText value="#{userSummaryController.user.typ}" style="font-weight: bold"/><br/>
+            #{msg['type']}: <h:outputText value="#{userSummaryController.user.role}" style="font-weight: bold"/><br/>
             #{msg['active']}: <h:outputText value="#{userSummaryController.user.active}" style="font-weight: bold"/><br/>
             <h:dataTable>
                 <h:column>
@@ -31,19 +31,19 @@
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">#{msg['rental_date']}</f:facet>
+                    <f:facet name="header">Rental date</f:facet>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">#{msg['return_date']}</f:facet>
+                    <f:facet name="header">Return date</f:facet>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">#{msg['title']}</f:facet>
+                    <f:facet name="header">Title</f:facet>
                 </h:column>
 
                 <h:column>
-                    <f:facet name="header">#{msg['resource_id']}</f:facet>
+                    <f:facet name="header">Resource ID</f:facet>
                 </h:column>
 
             </h:dataTable>
