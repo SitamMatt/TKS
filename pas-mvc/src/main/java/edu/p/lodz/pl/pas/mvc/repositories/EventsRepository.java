@@ -1,17 +1,18 @@
 package edu.p.lodz.pl.pas.mvc.repositories;
 
+import edu.p.lodz.pl.pas.mvc.RefUtils;
 import edu.p.lodz.pl.pas.mvc.model.Event;
-import edu.p.lodz.pl.pas.mvc.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class EventsRepository {
     private List<Event> items;
 
     public void add(Event event){
+        if(event.getId() == null) {
+            assignId(event);
+        }
         items.add(event);
     }
 
@@ -26,5 +27,12 @@ public class EventsRepository {
         return items;
     }
 
+    private void assignId(Event event) {
+        try {
+            RefUtils.setFieldValue(event, "id", UUID.randomUUID());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

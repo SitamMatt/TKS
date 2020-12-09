@@ -10,8 +10,8 @@ public class Event {
     private User renter;
     private Resource resource;
 
-    public Event(UUID id, Date rentDate, User renter, Resource resource) {
-        this.id = id;
+    public Event(Date rentDate, User renter, Resource resource) {
+        this.id = null;
         this.rentDate = rentDate;
         this.renter = renter;
         this.resource = resource;

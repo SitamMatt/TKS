@@ -1,5 +1,6 @@
 package edu.p.lodz.pl.pas.mvc.repositories;
 
+import edu.p.lodz.pl.pas.mvc.RefUtils;
 import edu.p.lodz.pl.pas.mvc.controllers.dto.ResourceDTO;
 import edu.p.lodz.pl.pas.mvc.model.Book;
 import edu.p.lodz.pl.pas.mvc.model.Magazine;
@@ -17,6 +18,10 @@ public class ResourcesRepository {
     private List<Resource> items = new ArrayList<>();
 
     public synchronized void add(Resource resource) throws ObjectAlreadyStoredException {
+        if(resource.getId() == null) {
+            assignId(resource);
+        }
+
         if (get(resource.getId()) != null) {
             throw new ObjectAlreadyStoredException();
         }
@@ -65,12 +70,30 @@ public class ResourcesRepository {
     }
 
     public static Resource fromDTO(ResourceDTO resDTO) {
+        Resource resource = null;
+
         if(resDTO.getResType().equals("Book")) {
-            return new Book(resDTO.getId(), resDTO.getTitle(), resDTO.getPagesCount(), resDTO.getAuthor(), resDTO.getPublishingHouse());
+            resource = new Book(resDTO.getTitle(), resDTO.getPagesCount(), resDTO.getAuthor(), resDTO.getPublishingHouse());
         } else if(resDTO.getResType().equals("Magazine")) {
-            return new Magazine(resDTO.getId(), resDTO.getTitle(), resDTO.getPagesCount(), resDTO.getPublishingHouse(), resDTO.getMagazineNumber());
+            resource = new Magazine(resDTO.getTitle(), resDTO.getPagesCount(), resDTO.getPublishingHouse(), resDTO.getMagazineNumber());
         }
-        throw new ArrayIndexOutOfBoundsException();
-//        return null;
+
+        if(resource != null) {
+            try {
+                RefUtils.setFieldValue(resource, "id", UUID.randomUUID());
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return resource;
+        }
+        throw new RuntimeException("This shouldn't be executed!");
+    }
+
+    private void assignId(Resource resource) {
+        try {
+            RefUtils.setFieldValue(resource, "id", UUID.randomUUID());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
