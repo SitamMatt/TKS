@@ -18,6 +18,8 @@
         </title>
     </h:head>
     <h:body>
+        <ui:composition template="/common/templateLayout.xhtml">
+        <ui:define name="content">
         <h:form>
             <h:outputLabel>#{msg['user_summary']}</h:outputLabel><br/>
             #{msg['login']}: <h:outputText value="#{userSummaryController.user.login}" style="font-weight: bold"/><br/>
@@ -48,6 +50,8 @@
 
             </h:dataTable>
         </h:form>
+        </ui:define>
+        </ui:composition>
     </h:body>
 </f:view>
 </html>

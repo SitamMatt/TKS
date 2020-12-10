@@ -10,6 +10,8 @@
         <title>#{msg['resources_table']}</title>
     </h:head>
     <h:body>
+        <ui:composition template="/common/templateLayout.xhtml">
+        <ui:define name="content">
         <h:form>
             <h:dataTable value="#{resourcesController.allResources}" var="currentResource">
                 <h:column>
@@ -56,6 +58,8 @@
             </h:dataTable>
             <h:commandButton value="#{msg['add_resource']}" action="#{resourcesController.createResource}"/><br/>
         </h:form>
+        </ui:define>
+        </ui:composition>
     </h:body>
 </f:view>
 </html>
