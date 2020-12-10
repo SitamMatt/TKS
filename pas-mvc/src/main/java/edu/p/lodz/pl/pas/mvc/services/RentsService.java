@@ -1,24 +1,21 @@
 package edu.p.lodz.pl.pas.mvc.services;
 
-import edu.p.lodz.pl.pas.mvc.model.Event;
 import edu.p.lodz.pl.pas.mvc.model.Resource;
-import edu.p.lodz.pl.pas.mvc.repositories.EventsRepository;
-import edu.p.lodz.pl.pas.mvc.repositories.IUsersRepository;
-import edu.p.lodz.pl.pas.mvc.repositories.ResourcesRepository;
+import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IEventsRepository;
+import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IResourcesRepository;
+import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IUsersRepository;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
 public class RentsService {
     @Inject
-    private ResourcesRepository resourcesRepository;
+    private IResourcesRepository resourcesRepository;
     @Inject
-    private EventsRepository eventsRepository;
+    private IEventsRepository eventsRepository;
     @Inject
     private IUsersRepository usersRepository;
 

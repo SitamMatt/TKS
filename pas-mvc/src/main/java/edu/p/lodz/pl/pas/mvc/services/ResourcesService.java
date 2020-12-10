@@ -5,7 +5,7 @@ import edu.p.lodz.pl.pas.mvc.model.Magazine;
 import edu.p.lodz.pl.pas.mvc.model.Resource;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
-import edu.p.lodz.pl.pas.mvc.repositories.ResourcesRepository;
+import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IResourcesRepository;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequestScoped
 public class ResourcesService {
     @Inject
-    private ResourcesRepository resourcesRepository;
+    private IResourcesRepository resourcesRepository;
 
     public void add(Resource resource) {
         try {

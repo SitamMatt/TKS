@@ -1,14 +1,31 @@
 package edu.p.lodz.pl.pas.mvc.repositories;
 
 import edu.p.lodz.pl.pas.mvc.RefUtils;
+import edu.p.lodz.pl.pas.mvc.fillers.EventsFiller;
 import edu.p.lodz.pl.pas.mvc.model.Event;
+import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IEventsRepository;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class EventsRepository {
+@ApplicationScoped
+public class EventsRepository implements IEventsRepository {
     private List<Event> items;
+    @Inject
+    private EventsFiller eventsFiller;
 
+    @PostConstruct
+    public void eventsInit() {
+        List<Event> list = eventsFiller.fillEvents();
+        items = new ArrayList<>(list.size());
+        list.forEach(this::add);
+    }
+
+    @Override
     public void add(Event event){
         if(event.getId() == null) {
             assignId(event);
@@ -16,6 +33,7 @@ public class EventsRepository {
         items.add(event);
     }
 
+    @Override
     public Event get(UUID id){
         return items.stream()
             .filter(event -> event.getId().equals(id))
@@ -23,6 +41,7 @@ public class EventsRepository {
             .orElse(null);
     }
 
+    @Override
     public List<Event> getAll(){
         return items;
     }
@@ -35,6 +54,7 @@ public class EventsRepository {
         }
     }
 
+    @Override
     public boolean isAvailable(UUID id) {
         return items.stream().noneMatch(x -> x.getResource().getId() == id && x.getReturnDate() == null);
     }

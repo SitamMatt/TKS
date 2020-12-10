@@ -4,7 +4,7 @@ import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
-import edu.p.lodz.pl.pas.mvc.repositories.IUsersRepository;
+import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IUsersRepository;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
