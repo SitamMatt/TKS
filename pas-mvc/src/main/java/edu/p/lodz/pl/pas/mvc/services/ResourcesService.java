@@ -5,7 +5,7 @@ import edu.p.lodz.pl.pas.mvc.model.Magazine;
 import edu.p.lodz.pl.pas.mvc.model.Resource;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
-import edu.p.lodz.pl.pas.mvc.repositories.ResourcesRepository;
+import edu.p.lodz.pl.pas.mvc.repositories.IResourcesRepository;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -17,38 +17,38 @@ import java.util.UUID;
 @RequestScoped
 public class ResourcesService {
     @Inject
-    private ResourcesRepository resourcesRepository;
+    private IResourcesRepository IResourcesRepository;
 
     public void add(Resource resource) {
         try {
-            resourcesRepository.add(resource);
+            IResourcesRepository.add(resource);
         } catch (ObjectAlreadyStoredException ignored) { }
     }
 
     public Resource get(UUID id) {
-        return resourcesRepository.get(id);
+        return IResourcesRepository.get(id);
     }
 
     public void update(UUID id, Resource resource) {
         try {
-            resourcesRepository.update(id, resource);
+            IResourcesRepository.update(id, resource);
         } catch (ObjectNotFoundException ignored) { }
     }
 
     public boolean delete(UUID id) {
-        return resourcesRepository.delete(id);
+        return IResourcesRepository.delete(id);
     }
 
     public List<Resource> getAllResources() {
-        return resourcesRepository.getAll();
+        return IResourcesRepository.getAll();
     }
 
     public void save(Resource resource) {
         try {
-            if(resourcesRepository.getAll().stream().anyMatch(x -> x.getId().equals(resource.getId()))){
-                resourcesRepository.update(resource.getId(),resource);
+            if(IResourcesRepository.getAll().stream().anyMatch(x -> x.getId().equals(resource.getId()))){
+                IResourcesRepository.update(resource.getId(),resource);
             }else{
-                resourcesRepository.add(resource);
+                IResourcesRepository.add(resource);
             }
         } catch(Exception ignored) {}
     }

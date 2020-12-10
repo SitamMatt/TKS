@@ -2,21 +2,40 @@ package edu.p.lodz.pl.pas.mvc.repositories;
 
 import edu.p.lodz.pl.pas.mvc.RefUtils;
 import edu.p.lodz.pl.pas.mvc.controllers.dto.ResourceDTO;
+import edu.p.lodz.pl.pas.mvc.fillers.ResourcesFiller;
 import edu.p.lodz.pl.pas.mvc.model.Book;
 import edu.p.lodz.pl.pas.mvc.model.Magazine;
 import edu.p.lodz.pl.pas.mvc.model.Resource;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
-public class ResourcesRepository {
-    private List<Resource> items = new ArrayList<>();
+public class ResourcesRepository implements IResourcesRepository {
+    private List<Resource> items;
+    @Inject
+    private ResourcesFiller resourcesFiller;
 
+    @PostConstruct
+    public void resourcesInit() {
+        List<Resource> list = resourcesFiller.fillResources();
+        items = new ArrayList<>(list.size());
+        list.forEach(res -> {
+            try {
+                add(res);
+            } catch (ObjectAlreadyStoredException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public synchronized void add(Resource resource) throws ObjectAlreadyStoredException {
         if(resource.getId() == null) {
             assignId(resource);
@@ -28,6 +47,7 @@ public class ResourcesRepository {
         items.add(resource);
     }
 
+    @Override
     public synchronized Resource get(UUID id) {
         return items.stream()
             .filter(resource -> resource.getId().equals(id))
@@ -35,10 +55,12 @@ public class ResourcesRepository {
             .orElse(null);
     }
 
+    @Override
     public synchronized List<Resource> getAll() {
         return new ArrayList<>(items);
     }
 
+    @Override
     public synchronized void update(UUID id, Resource resource) throws ObjectNotFoundException {
         Resource original = get(id);
         if(original == null) {
@@ -49,6 +71,7 @@ public class ResourcesRepository {
         original.setTitle(resource.getTitle());
     }
 
+    @Override
     public synchronized boolean delete(UUID id){
         Resource resource = get(id);
         return items.remove(resource);
