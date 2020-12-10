@@ -21,12 +21,20 @@
                     <ui:include src="/common/header.xhtml"/>
                 </ui:insert>
             </div>
-        <div class="content">
-            <ui:insert name="content" >
-                <ui:include src="/common/content.xhtml" />
-            </ui:insert>
-        </div>
-            <div class="push"></div>
+
+            <div class="sidebar">
+                <h:link value="#{msg['manage_users']}" outcome="Users"/>
+                <h:link value="#{msg['manage_resources']}" outcome="Resources"/>
+                <h:link value="#{msg['dashboard']}"/>
+                <h:commandLink value="Back" onclick="history.go(-1)"/>
+            </div>
+
+            <div class="content">
+                <ui:insert name="content" >
+                    <ui:include src="/common/content.xhtml" />
+                </ui:insert>
+            </div>
+                <div class="push"></div>
         </div>
 
         <div class="footer">
