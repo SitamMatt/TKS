@@ -1,4 +1,4 @@
-package edu.p.lodz.pl.pas.mvc.repositories;
+package edu.p.lodz.pl.pas.mvc.repositories.interfaces;
 
 import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;

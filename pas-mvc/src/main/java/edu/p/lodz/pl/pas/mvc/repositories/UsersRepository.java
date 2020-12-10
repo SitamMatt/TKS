@@ -6,6 +6,7 @@ import edu.p.lodz.pl.pas.mvc.fillers.UsersFiller;
 import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
+import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IUsersRepository;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -13,7 +14,7 @@ import javax.inject.Inject;
 import java.util.*;
 
 @ApplicationScoped
-public class InMemoryIUsersRepository implements IUsersRepository {
+public class UsersRepository implements IUsersRepository {
     private List<User> users;
     @Inject
     private UsersFiller usersFiller;

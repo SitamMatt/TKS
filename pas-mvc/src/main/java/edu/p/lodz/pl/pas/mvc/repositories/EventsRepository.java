@@ -3,6 +3,7 @@ package edu.p.lodz.pl.pas.mvc.repositories;
 import edu.p.lodz.pl.pas.mvc.RefUtils;
 import edu.p.lodz.pl.pas.mvc.fillers.EventsFiller;
 import edu.p.lodz.pl.pas.mvc.model.Event;
+import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IEventsRepository;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
