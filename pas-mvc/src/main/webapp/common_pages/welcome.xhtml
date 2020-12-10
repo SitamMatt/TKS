@@ -5,16 +5,25 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-  
+
 <h:head>
     <h:outputStylesheet library="css" name="style.css"/>
 </h:head>
 
 <f:view>
-    <ui:include src="/common/header.xhtml"/>
-    <p><h:outputLabel>#{msg['your_role_is']} '#{usersService.find(facesContext.externalContext.getUserPrincipal().name).role.name()}'</h:outputLabel></p>
-    <p><h:link value="#{msg['manage_users']}" outcome="Users"/></p>
-    <p><h:link value="#{msg['manage_resources']}" outcome="Resources"/></p>
-    <p><h:link value="#{msg['dashboard']}"/></p>
+    <h:panelGrid>
+        <ui:include src="/common/header.xhtml"/>
+        <h:outputLabel>#{msg['your_role_is']} '#{usersService.find(facesContext.externalContext.getUserPrincipal().name).role.name()}'</h:outputLabel>
+        <h:link value="#{msg['manage_users']}" outcome="Users"
+                rendered="#{facesContext.externalContext.isUserInRole('ADMIN')}"/>
+        <h:link value="#{msg['manage_resources']}" outcome="Resources"
+                rendered="#{facesContext.externalContext.isUserInRole('WORKER')}"/>
+        <h:link value="#{msg['dashboard']}" outcome="Details"
+                rendered="#{facesContext.externalContext.isUserInRole('CLIENT')}">
+            <f:param name="login" value="user"/>
+        </h:link>
+        <h:link value="#{msg['make_rent']}" outcome="Rent"
+                rendered="#{facesContext.externalContext.isUserInRole('CLIENT')}"/>
+    </h:panelGrid>
 </f:view>
 </html>

@@ -3,7 +3,6 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <f:metadata>
@@ -26,18 +25,21 @@
         <h:selectOneMenu value="#{resourceEditController.newResource.resType}">
             <f:selectItem itemValue="Book" itemLabel="Book"/>
             <f:selectItem itemValue="Magazine" itemLabel="Magazine"/>
-            <f:ajax render="input"/>
+            <f:ajax event="change" render="panel" immediate="true" listener="#{resourceEditController.switchType}"/>
         </h:selectOneMenu><br/>
-        <h:panelGroup id="input">
-            <h:outputText value="#{msg['author']}: " rendered="#{resourceEditController.newResource.resType == 'Book'}"/>
+        <h:panelGroup id="panel">
+            <h:outputText value="#{msg['author']}: "
+                          rendered="#{resourceEditController.newResource.resType == 'Book'}"/>
             <h:inputText value="#{resourceEditController.newResource.author}"
-                                 rendered="#{resourceEditController.newResource.resType == 'Book'}"/>
-            <h:outputText value="#{msg['magazine_number']}: " rendered="#{resourceEditController.newResource.resType == 'Magazine'}"/>
+                         rendered="#{resourceEditController.newResource.resType == 'Book'}"/>
+            <h:outputText value="#{msg['magazine_number']}: "
+                          rendered="#{resourceEditController.newResource.resType == 'Magazine'}"/>
             <h:inputText value="#{resourceEditController.newResource.magazineNumber}"
-                                          rendered="#{resourceEditController.newResource.resType == 'Magazine'}"/>
+                         rendered="#{resourceEditController.newResource.resType == 'Magazine'}"/>
         </h:panelGroup><br/><br/>
         <h:commandButton value="#{msg['submit']}" action="#{resourceEditController.saveResource}">
-            <f:setPropertyActionListener target="#{resourceEditController.resUUID}" value="#{resourceEditController.newResource.id.toString()}"/>
+            <f:setPropertyActionListener target="#{resourceEditController.resUUID}"
+                                         value="#{resourceEditController.newResource.id.toString()}"/>
         </h:commandButton>
         <h:commandButton value="#{msg['back']}" action="resourcesList"/><br/>
         <br/>

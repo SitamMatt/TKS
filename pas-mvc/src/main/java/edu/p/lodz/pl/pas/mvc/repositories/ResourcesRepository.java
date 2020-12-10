@@ -30,7 +30,7 @@ public class ResourcesRepository {
             .orElse(null);
     }
 
-    public synchronized List<Resource> getAllResources() {
+    public synchronized List<Resource> getAll() {
         return new ArrayList<>(items);
     }
 
