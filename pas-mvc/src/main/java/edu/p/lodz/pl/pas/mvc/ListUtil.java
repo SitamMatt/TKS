@@ -5,10 +5,12 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ListUtil {
-    public static <T extends Copyable> List<T> deepCopy(List<T> list) throws CloneNotSupportedException {
+    public static <T extends Copyable> List<T> deepCopy(List<T> list) {
         ArrayList<T> clone = new ArrayList<>();
         for (T t : list) {
-            clone.add((T) t.clone());
+            try {
+                clone.add((T) t.clone());
+            } catch (CloneNotSupportedException ignored) { }
         }
         return clone;
     }

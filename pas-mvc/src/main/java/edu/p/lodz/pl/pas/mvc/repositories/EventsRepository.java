@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public class EventsRepository implements IEventsRepository {
     }
 
     @Override
-    public void add(Event event){
+    public synchronized void add(Event event){
         if(event.getId() == null) {
             assignId(event);
         }
@@ -34,7 +35,7 @@ public class EventsRepository implements IEventsRepository {
     }
 
     @Override
-    public Event get(UUID id){
+    public synchronized Event get(UUID id){
         return items.stream()
             .filter(event -> event.getId().equals(id))
             .findAny()
@@ -42,11 +43,11 @@ public class EventsRepository implements IEventsRepository {
     }
 
     @Override
-    public List<Event> getAll(){
+    public synchronized List<Event> getAll(){
         return items;
     }
 
-    private void assignId(Event event) {
+    private synchronized void assignId(Event event) {
         try {
             RefUtils.setFieldValue(event, "id", UUID.randomUUID());
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -55,7 +56,10 @@ public class EventsRepository implements IEventsRepository {
     }
 
     @Override
-    public boolean isAvailable(UUID id) {
-        return items.stream().noneMatch(x -> x.getResource().getId() == id && x.getReturnDate() == null);
+    public synchronized boolean isAvailable(UUID id) {
+        return items.stream()
+                .noneMatch(x -> x.getResource().getId().equals(id)
+                        && x.getReturnDate() == null
+                        && x.getReturnDate().after(new Date()));
     }
 }

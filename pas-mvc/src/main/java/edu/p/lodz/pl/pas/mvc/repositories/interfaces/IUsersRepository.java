@@ -12,7 +12,7 @@ public interface IUsersRepository {
 
     void add(User user) throws ObjectAlreadyStoredException, LoginAlreadyTakenException, ObjectNotFoundException;
 
-    List<User> getAll() throws CloneNotSupportedException;
+    List<User> getAll();
 
     User findUserByLogin(String login);
 

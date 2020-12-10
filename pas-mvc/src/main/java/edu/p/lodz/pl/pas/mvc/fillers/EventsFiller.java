@@ -3,6 +3,8 @@ package edu.p.lodz.pl.pas.mvc.fillers;
 import edu.p.lodz.pl.pas.mvc.model.Event;
 import edu.p.lodz.pl.pas.mvc.model.Resource;
 import edu.p.lodz.pl.pas.mvc.model.User;
+import edu.p.lodz.pl.pas.mvc.repositories.ResourcesRepository;
+import edu.p.lodz.pl.pas.mvc.repositories.UsersRepository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -13,17 +15,17 @@ import java.util.List;
 
 public class EventsFiller {
     @Inject
-    private UsersFiller usersFiller;
+    private UsersRepository usersRepository;
     @Inject
-    private ResourcesFiller resourcesFiller;
+    private ResourcesRepository resourcesRepository;
 
     private List<User> users;
     private List<Resource> ress;
 
     @PostConstruct
     private void init() {
-        users = usersFiller.fillUsers();
-        ress = resourcesFiller.fillResources();
+        users = usersRepository.getAll();
+        ress = resourcesRepository.getAll();
     }
 
     public List<Event> fillEvents() {
