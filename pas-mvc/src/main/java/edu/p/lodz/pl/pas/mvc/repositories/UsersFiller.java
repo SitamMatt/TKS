@@ -13,7 +13,6 @@ public class UsersFiller {
     public List<User> fillUsers() {
         List<User> users = new ArrayList<>();
         users.add(new User(
-                UUID.randomUUID(),
                 "Łukasz",
                 "Stanisławowski",
                 UserRole.CLIENT,
@@ -21,7 +20,6 @@ public class UsersFiller {
                 "test0"
                 ));
         users.add(new User(
-                UUID.randomUUID(),
                 "Jayne",
                 "Najera",
                 UserRole.CLIENT,
@@ -29,7 +27,6 @@ public class UsersFiller {
                 "user0"
         ));
         users.add(new User(
-                UUID.randomUUID(),
                 "John",
                 "Cena",
                 UserRole.WORKER,
@@ -37,7 +34,6 @@ public class UsersFiller {
                 "worker0"
         ));
         users.add(new User(
-                UUID.randomUUID(),
                 "Janusz",
                 "Pawlacz",
                 UserRole.ADMIN,

@@ -8,8 +8,8 @@ public abstract class Resource {
     protected int pagesCount;
     protected String publishingHouse;
 
-    public Resource(UUID id, String title, int pagesCount, String publishingHouse) {
-        this.id = id;
+    public Resource(String title, int pagesCount, String publishingHouse) {
+        this.id = null;
         this.title = title;
         this.pagesCount = pagesCount;
         this.publishingHouse = publishingHouse;
