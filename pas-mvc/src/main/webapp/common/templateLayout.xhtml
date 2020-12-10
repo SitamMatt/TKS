@@ -14,24 +14,42 @@
 
     <div id="page">
 
-        <div id="header">
-            <ui:insert name="header" >
-                <ui:include src="/common/header.xhtml"/>
-            </ui:insert>
+        <div class="sidebar">
+            <h:link value="#{msg['manage_users']}" outcome="Users"
+                    rendered="#{facesContext.externalContext.isUserInRole('ADMIN')}"/>
+            <h:link value="#{msg['manage_resources']}" outcome="Resources"
+                    rendered="#{facesContext.externalContext.isUserInRole('WORKER')}"/>
+            <h:link value="#{msg['dashboard']}" outcome="Details"
+                    rendered="#{facesContext.externalContext.isUserInRole('CLIENT')}">
+                <f:param name="login" value="user"/>
+            </h:link>
+            <h:link value="#{msg['make_rent']}" outcome="Rent"
+                    rendered="#{facesContext.externalContext.isUserInRole('CLIENT')}"/>
+            <h:commandLink value="Back" onclick="history.go(-1)"/>
         </div>
 
-        <div id="content">
-            <ui:insert name="content" >
-                <ui:include src="/common/content.xhtml" />
-            </ui:insert>
+        <div class="wrapper">
+            <div class="header">
+                <ui:insert name="header">
+                    <ui:include src="/common/header.xhtml"/>
+                </ui:insert>
+            </div>
+
+            <div class="content">
+                <ui:insert name="content">
+                    <ui:include src="/common/content.xhtml"/>
+                </ui:insert>
+            </div>
+            <div class="push"></div>
+
+
         </div>
 
-        <div id="footer">
+        <div class="footer">
             <ui:insert name="footer">
                 <ui:include src="/common/footer.xhtml"/>
             </ui:insert>
         </div>
     </div>
-
 </h:body>
 </html>

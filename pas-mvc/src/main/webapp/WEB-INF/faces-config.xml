@@ -83,7 +83,7 @@
     </navigation-rule>
 
     <navigation-rule>
-        <from-view-id>/common_pages/welcome.xhtml</from-view-id>
+        <from-view-id/>
         <navigation-case>
             <from-outcome>Users</from-outcome>
             <to-view-id>/users/usersList.xhtml</to-view-id>
