@@ -15,7 +15,6 @@
     <ui:define name="content">
         <f:view>
             <h:panelGrid>
-                <ui:include src="/common/header.xhtml"/>
                 <h:outputLabel>#{msg['your_role_is']} '#{usersService.find(facesContext.externalContext.getUserPrincipal().name).role.name()}'</h:outputLabel>
                 <h:link value="#{msg['manage_users']}" outcome="Users"
                         rendered="#{facesContext.externalContext.isUserInRole('ADMIN')}"/>
