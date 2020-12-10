@@ -8,6 +8,8 @@ import edu.p.lodz.pl.pas.mvc.repositories.UsersRepository;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,27 +31,33 @@ public class EventsFiller {
     }
 
     public List<Event> fillEvents() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
         List<Event> events = new ArrayList<>();
-        Event event =  new Event(
-                new Date(2012, Calendar.JANUARY, 1),
-                users.get(0),
-                ress.get(0));
-        event.setReturnDate(new Date(2012, Calendar.MAY, 12));
-        events.add(event);
+        try {
+            Event event =  new Event(
+                    sdf.parse("2012-01-01"),
+                    users.get(0),
+                    ress.get(0));
+            event.setReturnDate(sdf.parse("2012-04-12"));
+            events.add(event);
 
-        event = new Event(
-                new Date(2012, Calendar.MAY, 8),
-                users.get(0),
-                ress.get(1));
-        event.setReturnDate(new Date(2016, Calendar.OCTOBER, 20));
-        events.add(event);
+            event = new Event(
+                    sdf.parse("2012-04-08"),
+                    users.get(0),
+                    ress.get(1));
+            event.setReturnDate(sdf.parse("2016-09-20"));
+            events.add(event);
 
-        event = new Event(
-                new Date(2015, Calendar.MAY, 22),
-                users.get(1),
-                ress.get(5));
-        event.setReturnDate(new Date(2017, Calendar.MAY, 13));
-        events.add(event);
+            event = new Event(
+                    sdf.parse("2015-04-22"),
+                    users.get(1),
+                    ress.get(5));
+            event.setReturnDate(sdf.parse("2017-04-13"));
+            events.add(event);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return events;
     }

@@ -3,6 +3,7 @@ package edu.p.lodz.pl.pas.mvc.repositories;
 import edu.p.lodz.pl.pas.mvc.RefUtils;
 import edu.p.lodz.pl.pas.mvc.fillers.EventsFiller;
 import edu.p.lodz.pl.pas.mvc.model.Event;
+import edu.p.lodz.pl.pas.mvc.model.Resource;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IEventsRepository;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class EventsRepository implements IEventsRepository {
@@ -57,9 +59,16 @@ public class EventsRepository implements IEventsRepository {
 
     @Override
     public synchronized boolean isAvailable(UUID id) {
-        return items.stream()
-                .noneMatch(x -> x.getResource().getId().equals(id)
-                        && x.getReturnDate() == null
-                        && x.getReturnDate().after(new Date()));
+        List<Event> events = items.stream()
+                .filter(e -> e.getResource().getId().equals(id))
+                .collect(Collectors.toList());
+        for (Event e : events) {
+            if(e.getReturnDate() == null) {
+                return false;
+            } else if(e.getReturnDate().after(new Date())) {
+                return false;
+            }
+        }
+        return true;
     }
 }
