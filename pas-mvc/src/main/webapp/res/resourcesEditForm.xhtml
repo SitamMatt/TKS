@@ -15,6 +15,8 @@
         <title>#{msg['edit_resource']}</title>
     </h:head>
     <body>
+    <ui:composition template="/common/templateLayout.xhtml">
+    <ui:define name="content">
     <h:outputLabel value="#{msg['edit_resource']}"/>
     <h:form rendered="#{not empty resourceEditController.newResource}">
         <h:inputHidden value="#{resourceEditController.resUUID}"/>
@@ -44,6 +46,8 @@
         <h:commandButton value="#{msg['back']}" action="resourcesList"/><br/>
         <br/>
     </h:form>
+    </ui:define>
+    </ui:composition>
     </body>
 </f:view>
 </html>

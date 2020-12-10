@@ -10,35 +10,39 @@
         <title>Events table</title>
     </h:head>
     <h:body>
-        <h:form>
-            <h:dataTable value="#{eventsController.allEvents}" var="currentEvent">
-                <h:column>
-                    <f:facet name="header">ID</f:facet>
-                    #{currentEvent.id}
-                </h:column>
+        <ui:composition template="/common/templateLayout.xhtml">
+        <ui:define name="content">
+            <h:form>
+                <h:dataTable value="#{eventsController.allEvents}" var="currentEvent">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        #{currentEvent.id}
+                    </h:column>
 
-                <h:column>
-                    <f:facet name="header">Resource title</f:facet>
-                    #{currentEvent.resource.title}
-                </h:column>
+                    <h:column>
+                        <f:facet name="header">Resource title</f:facet>
+                        #{currentEvent.resource.title}
+                    </h:column>
 
-                <h:column>
-                    <f:facet name="header">Renter</f:facet>
-                    #{currentEvent.renter.login}
-                </h:column>
+                    <h:column>
+                        <f:facet name="header">Renter</f:facet>
+                        #{currentEvent.renter.login}
+                    </h:column>
 
-                <h:column>
-                    <f:facet name="header">Rent date</f:facet>
-                    #{currentEvent.rentDate}
-                </h:column>
+                    <h:column>
+                        <f:facet name="header">Rent date</f:facet>
+                        #{currentEvent.rentDate}
+                    </h:column>
 
-                <h:column>
-                    <f:facet name="header">Return date</f:facet>
-                    #{currentEvent.returnDate}
-                </h:column>
+                    <h:column>
+                        <f:facet name="header">Return date</f:facet>
+                        #{currentEvent.returnDate}
+                    </h:column>
 
-    </h:dataTable>
-    </h:form>
+        </h:dataTable>
+        </h:form>
+        </ui:define>
+        </ui:composition>
     </h:body>
 </f:view>
 </html>
