@@ -14,19 +14,22 @@
 
     <div id="page">
 
-        <div id="header">
-            <ui:insert name="header" >
-                <ui:include src="/common/header.xhtml"/>
-            </ui:insert>
-        </div>
 
-        <div id="content">
+        <div class="wrapper">
+            <div class="header">
+                <ui:insert name="header" >
+                    <ui:include src="/common/header.xhtml"/>
+                </ui:insert>
+            </div>
+        <div class="content">
             <ui:insert name="content" >
                 <ui:include src="/common/content.xhtml" />
             </ui:insert>
         </div>
+            <div class="push"></div>
+        </div>
 
-        <div id="footer">
+        <div class="footer">
             <ui:insert name="footer">
                 <ui:include src="/common/footer.xhtml"/>
             </ui:insert>
