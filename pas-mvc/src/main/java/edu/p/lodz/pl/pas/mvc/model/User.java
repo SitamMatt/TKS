@@ -6,15 +6,15 @@ import java.util.UUID;
 
 public class User implements Copyable {
     boolean isActive;
-    private final UUID id;
+    private UUID id;
     private UserRole role;
     private String firstName;
     private String lastName;
     private String login;
     private String password;
 
-    public User(UUID id, String firstName, String lastName, UserRole typ, String login, String password) {
-        this.id = id;
+    public User(String firstName, String lastName, UserRole typ, String login, String password) {
+        this.id = null;
         this.firstName = firstName;
         this.lastName = lastName;
         this.role = typ;
@@ -24,7 +24,7 @@ public class User implements Copyable {
     }
 
     public User() {
-        this.id = UUID.randomUUID();
+        this.id = null;
     }
 
     public void map(User user) {

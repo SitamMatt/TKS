@@ -1,4 +1,4 @@
-package edu.p.lodz.pl.pas.mvc.repositories;
+package edu.p.lodz.pl.pas.mvc.repositories.interfaces;
 
 import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
@@ -6,7 +6,6 @@ import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface IUsersRepository {
     boolean has(User user);

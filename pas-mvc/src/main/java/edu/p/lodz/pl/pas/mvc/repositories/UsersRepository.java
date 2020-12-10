@@ -1,19 +1,20 @@
 package edu.p.lodz.pl.pas.mvc.repositories;
 
 import edu.p.lodz.pl.pas.mvc.ListUtil;
+import edu.p.lodz.pl.pas.mvc.RefUtils;
+import edu.p.lodz.pl.pas.mvc.fillers.UsersFiller;
 import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
-import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
+import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IUsersRepository;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.util.*;
 
 @ApplicationScoped
-public class InMemoryIUsersRepository implements IUsersRepository {
+public class UsersRepository implements IUsersRepository {
     private List<User> users;
     @Inject
     private UsersFiller usersFiller;
@@ -30,7 +31,16 @@ public class InMemoryIUsersRepository implements IUsersRepository {
 
     @PostConstruct
     public void usersInit() {
-        users = usersFiller.fillUsers();
+        List<User> list = usersFiller.fillUsers();
+        users = new ArrayList<>(list.size());
+        list.forEach(user -> {
+            try {
+                add(user);
+            } catch (LoginAlreadyTakenException | ObjectNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        });
     }
 
 
@@ -47,6 +57,7 @@ public class InMemoryIUsersRepository implements IUsersRepository {
     public synchronized void add(User user) throws LoginAlreadyTakenException, ObjectNotFoundException {
         validateLogin(user);
         if(has(user)) throw new ObjectNotFoundException();
+        assignId(user);
         users.add(user);
     }
 
@@ -73,5 +84,13 @@ public class InMemoryIUsersRepository implements IUsersRepository {
         User original = getById(user.getId());
         if(original == null) throw new ObjectNotFoundException();
         original.map(user);
+    }
+
+    private void assignId(User user) {
+        try {
+            RefUtils.setFieldValue(user, "id", UUID.randomUUID());
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }

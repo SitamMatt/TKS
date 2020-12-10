@@ -13,47 +13,47 @@
         <ui:composition template="/common/templateLayout.xhtml">
         <ui:define name="content">
         <h:form>
-            <h:dataTable value="#{resourcesController.allResources}" var="currentResource">
+            <h:dataTable value="#{resourcesController.allResources}" var="item">
                 <h:column>
                     <f:facet name="header">UID</f:facet>
-                    #{currentResource.id}
+                    #{item.id}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">#{msg['title']}</f:facet>
-                    #{currentResource.title}
+                    #{item.title}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">#{msg['pages']}</f:facet>
-                    #{currentResource.pagesCount}
+                    #{item.pagesCount}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">#{msg['publishing_house']}</f:facet>
-                    #{currentResource.publishingHouse}
+                    #{item.publishingHouse}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">#{msg['type']}</f:facet>
-                    #{currentResource.resType}
+                    #{item.resType}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">#{msg['author']}</f:facet>
-                    #{currentResource.author}
+                    #{item.author}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">#{msg['magazine_number']}</f:facet>
-                    #{currentResource.magazineNumber}
+                    #{item.magazineNumber}
                 </h:column>
 
                 <h:column>
                     <h:commandButton value="#{msg['edit']}" action="#{resourcesController.editResource}">
-                        <f:setPropertyActionListener target="#{resourceEditController.resUUID}" value="#{currentResource.id.toString()}"/>
+                        <f:setPropertyActionListener target="#{resourceEditController.resUUID}" value="#{item.id.toString()}"/>
                     </h:commandButton>
-                    <h:commandButton value="#{msg['remove']}" action="#{resourcesController.removeResource(currentResource.id)}"/>
+                    <h:commandButton value="#{msg['remove']}" action="#{resourcesController.removeResource(item.id)}"/>
                 </h:column>
             </h:dataTable>
             <h:commandButton value="#{msg['add_resource']}" action="#{resourcesController.createResource}"/><br/>

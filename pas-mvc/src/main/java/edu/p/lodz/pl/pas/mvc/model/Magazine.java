@@ -1,17 +1,15 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
-import java.util.UUID;
-
 public class Magazine extends Resource {
     private int number;
 
-    public Magazine(UUID id, String t, int pages, String pH, int nr){
-        super(id, t, pages, pH);
+    public Magazine(String t, int pages, String pH, int nr){
+        super(t, pages, pH);
         number = nr;
     }
 
     public Magazine() {
-        this(UUID.randomUUID(), "", 0, "", 0);
+        this("", 0, "", 0);
     }
 
     public int getNumber() {
