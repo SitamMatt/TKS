@@ -40,12 +40,12 @@ public class ResourcesService {
     }
 
     public List<Resource> getAllResources() {
-        return resourcesRepository.getAllResources();
+        return resourcesRepository.getAll();
     }
 
     public void save(Resource resource) {
         try {
-            if(resourcesRepository.getAllResources().stream().anyMatch(x -> x.getId().equals(resource.getId()))){
+            if(resourcesRepository.getAll().stream().anyMatch(x -> x.getId().equals(resource.getId()))){
                 resourcesRepository.update(resource.getId(),resource);
             }else{
                 resourcesRepository.add(resource);

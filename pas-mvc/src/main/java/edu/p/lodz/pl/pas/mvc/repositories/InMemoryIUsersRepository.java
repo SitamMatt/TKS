@@ -2,13 +2,16 @@ package edu.p.lodz.pl.pas.mvc.repositories;
 
 import edu.p.lodz.pl.pas.mvc.ListUtil;
 import edu.p.lodz.pl.pas.mvc.RefUtils;
+import edu.p.lodz.pl.pas.mvc.fillers.UsersFiller;
 import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
+import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.*;
 
 @ApplicationScoped
@@ -55,9 +58,7 @@ public class InMemoryIUsersRepository implements IUsersRepository {
     public synchronized void add(User user) throws LoginAlreadyTakenException, ObjectNotFoundException {
         validateLogin(user);
         if(has(user)) throw new ObjectNotFoundException();
-        if(user.getId() == null) {
-            assignId(user);
-        }
+        assignId(user);
         users.add(user);
     }
 

@@ -48,6 +48,10 @@
                     <f:facet name="header">Resource ID</f:facet>
                 </h:column>
 
+                <h:column rendered="#{userSummaryController.login == facesContext.externalContext.userPrincipal.name}">
+                    <f:facet name="header">Action</f:facet>
+                </h:column>
+
             </h:dataTable>
         </h:form>
         </ui:define>

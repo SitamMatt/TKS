@@ -35,4 +35,7 @@ public class EventsRepository {
         }
     }
 
+    public boolean isAvailable(UUID id) {
+        return items.stream().noneMatch(x -> x.getResource().getId() == id && x.getReturnDate() == null);
+    }
 }

@@ -1,4 +1,4 @@
-package edu.p.lodz.pl.pas.mvc.repositories;
+package edu.p.lodz.pl.pas.mvc.fillers;
 
 import edu.p.lodz.pl.pas.mvc.model.UserRole;
 import edu.p.lodz.pl.pas.mvc.model.User;

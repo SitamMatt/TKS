@@ -9,6 +9,7 @@ import javax.ejb.Stateful;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.io.Serializable;
 import java.util.UUID;
 
 import static edu.p.lodz.pl.pas.mvc.repositories.ResourcesRepository.fromDTO;
@@ -17,8 +18,7 @@ import static edu.p.lodz.pl.pas.mvc.repositories.ResourcesRepository.toDTO;
 @ViewScoped
 @Named
 @RolesAllowed({"ADMIN", "WORKER"})
-@Stateful
-public class ResourceEditController {
+public class ResourceEditController implements Serializable {
     @Inject
     private ResourcesService resourcesService;
 
@@ -27,11 +27,13 @@ public class ResourceEditController {
 
     @PostConstruct
     public void init() {
-        if (resUUID == null) {
-            newResource = new ResourceDTO();
-        } else {
-            newResource = toDTO(resourcesService.get(UUID.fromString(resUUID)));
-            resUUID = null;
+        if(newResource == null){
+            if (resUUID == null) {
+                newResource = new ResourceDTO();
+            } else {
+                newResource = toDTO(resourcesService.get(UUID.fromString(resUUID)));
+                resUUID = null;
+            }
         }
     }
 
@@ -39,6 +41,15 @@ public class ResourceEditController {
         resourcesService.save(fromDTO(newResource));
         newResource = new ResourceDTO();
         resUUID = null;
+    }
+
+    public void switchType(){
+        String t = newResource.getResType();
+        if(t.equals("Book")){
+            newResource.setResType("Magazine");
+        }else{
+            newResource.setResType("Book");
+        }
     }
 
     public String getResUUID() {

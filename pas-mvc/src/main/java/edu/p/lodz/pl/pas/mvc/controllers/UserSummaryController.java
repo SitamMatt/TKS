@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Named
 @ViewScoped
-@RolesAllowed({"ADMIN", "WORKER"})
+@RolesAllowed({"ADMIN", "WORKER", "CLIENT"})
 public class UserSummaryController implements Serializable {
     @Inject
     private UsersService usersService;
