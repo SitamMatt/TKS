@@ -27,29 +27,35 @@
             #{msg['lastname']}: <h:outputText value="#{userSummaryController.user.lastName}" style="font-weight: bold"/><br/>
             #{msg['type']}: <h:outputText value="#{userSummaryController.user.role}" style="font-weight: bold"/><br/>
             #{msg['active']}: <h:outputText value="#{userSummaryController.user.active}" style="font-weight: bold"/><br/>
-            <h:dataTable>
+            <h:dataTable value="#{eventsController.getUserEvents(userSummaryController.user)}" var="currentEvent">
                 <h:column>
                     <f:facet name="header">ID</f:facet>
+                    #{currentEvent.id}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Rental date</f:facet>
+                    #{currentEvent.rentDate}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Return date</f:facet>
+                    #{currentEvent.returnDate}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Title</f:facet>
+                    #{currentEvent.resource.title}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">Resource ID</f:facet>
+                    #{currentEvent.resource.id}
                 </h:column>
 
                 <h:column rendered="#{userSummaryController.login == facesContext.externalContext.userPrincipal.name}">
                     <f:facet name="header">Action</f:facet>
+                    <h:commandButton value="Return" action="#{eventsController.returnResource(currentEvent.id)}"/>
                 </h:column>
 
             </h:dataTable>
