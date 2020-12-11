@@ -1,16 +1,21 @@
 package edu.p.lodz.pl.pas.mvc.services;
 
+import edu.p.lodz.pl.pas.mvc.model.Event;
 import edu.p.lodz.pl.pas.mvc.model.Resource;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IEventsRepository;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IResourcesRepository;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IUsersRepository;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-@ApplicationScoped
+@RequestScoped
 public class RentsService {
     @Inject
     private IResourcesRepository resourcesRepository;
@@ -20,16 +25,17 @@ public class RentsService {
     private IUsersRepository usersRepository;
 
     public List<Resource> getAvailableResources() {
-//        List<Resource> blocked =  eventsRepository.getAll().stream()
-//                .filter(x -> x.getReturnDate() == null)
-//                .map(Event::getResource)
-//                .collect(Collectors.toList());
-        return resourcesRepository.getAll();
+        return resourcesRepository.getAll().stream()
+                .filter(res -> eventsRepository.isAvailable(res.getId()))
+                .collect(Collectors.toList());
     }
 
-    public synchronized void rent(UUID id) {
-        if(eventsRepository.isAvailable(id)){
-//            Event ev = new Event(UUID.randomUUID(), new Date(), usersRepository.findUserByLogin(FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName()), resourcesRepository.get(id));
+    public void rent(UUID id) {
+        if(eventsRepository.isAvailable(id)) {
+            Event ev = new Event(new Date(),
+                    usersRepository.findUserByLogin(FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName()),
+                    resourcesRepository.get(id));
+            eventsRepository.add(ev);
         }
     }
 }

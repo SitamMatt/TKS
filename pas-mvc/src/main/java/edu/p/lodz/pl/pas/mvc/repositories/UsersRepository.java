@@ -19,7 +19,7 @@ public class UsersRepository implements IUsersRepository {
     @Inject
     private UsersFiller usersFiller;
 
-    protected void validateLogin(User user) throws LoginAlreadyTakenException {
+    protected synchronized void validateLogin(User user) throws LoginAlreadyTakenException {
         Optional<User> result = users.stream()
                 .filter(x -> x.getLogin().equals(user.getLogin()))
                 .findFirst();
@@ -44,12 +44,12 @@ public class UsersRepository implements IUsersRepository {
     }
 
 
-    protected User getById(UUID id) {
+    protected synchronized User getById(UUID id) {
         return users.stream().filter(x -> x.getId() == id).findFirst().orElse(null);
     }
 
     @Override
-    public boolean has(User user) {
+    public synchronized boolean has(User user) {
         return users.stream().anyMatch(x -> x.getId() == user.getId());
     }
 
@@ -62,7 +62,7 @@ public class UsersRepository implements IUsersRepository {
     }
 
     @Override
-    public synchronized List<User> getAll() throws CloneNotSupportedException {
+    public synchronized List<User> getAll() {
         return ListUtil.deepCopy(users);
     }
 
