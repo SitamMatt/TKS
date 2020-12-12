@@ -20,22 +20,22 @@
                     </h:column>
 
                     <h:column>
-                        <f:facet name="header">Resource title</f:facet>
+                        <f:facet name="header">#{msg.title}</f:facet>
                         #{currentEvent.resource.title}
                     </h:column>
 
                     <h:column>
-                        <f:facet name="header">Renter</f:facet>
+                        <f:facet name="header">#{msg.renter}</f:facet>
                         #{currentEvent.renter.login}
                     </h:column>
 
                     <h:column>
-                        <f:facet name="header">Rent date</f:facet>
+                        <f:facet name="header">#{msg.rental_date}</f:facet>
                         #{currentEvent.rentDate}
                     </h:column>
 
                     <h:column>
-                        <f:facet name="header">Return date</f:facet>
+                        <f:facet name="header">#{msg.return_date}</f:facet>
                         #{currentEvent.returnDate}
                     </h:column>
 

@@ -109,5 +109,15 @@
             <from-outcome>Rent</from-outcome>
             <to-view-id>/rent/rentsPanel.xhtml</to-view-id>
         </navigation-case>
+
+        <navigation-case>
+            <from-outcome>Start page</from-outcome>
+            <to-view-id>/common_pages/welcome.xhtml</to-view-id>
+        </navigation-case>
+
+        <navigation-case>
+            <from-outcome>Rents</from-outcome>
+            <to-view-id>/rent/rentsList.xhtml</to-view-id>
+        </navigation-case>
     </navigation-rule>
 </faces-config>
