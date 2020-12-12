@@ -29,7 +29,14 @@ public class EventsService {
 
     public List<Event> getUserRents(User user) {
         return eventsRepository.getAll().stream()
-                .filter(event -> event.getRenter().equals(user))
+                .filter(event -> event.getRenter().getId().equals(user.getId())
+                && event.getReturnDate() == null)
+                .collect(Collectors.toList());
+    }
+
+    public List<Event> getCurrentUserRents(User user) {
+        return getCurrentRents().stream()
+                .filter(event -> event.getRenter().getId().equals(user.getId()))
                 .collect(Collectors.toList());
     }
 

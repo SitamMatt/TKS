@@ -20,7 +20,7 @@ public class User implements Copyable {
         this.role = typ;
         this.login = login;
         this.password = password;
-        this.isActive = false;
+        this.isActive = true;
     }
 
     public User() {
