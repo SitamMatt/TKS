@@ -29,6 +29,10 @@ public class EventsController {
         return eventsService.getUserRents(user);
     }
 
+    public List<Event> getCurrentUserEvents(User user){
+        return eventsService.getCurrentUserRents(user);
+    }
+
     public void returnResource(UUID id){
         eventsService.finishRent(id);
     }

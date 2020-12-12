@@ -34,6 +34,12 @@ public class EventsService {
                 .collect(Collectors.toList());
     }
 
+    public List<Event> getCurrentUserRents(User user) {
+        return getCurrentRents().stream()
+                .filter(event -> event.getRenter().getId().equals(user.getId()))
+                .collect(Collectors.toList());
+    }
+
     public List<Event> getCurrentRents() {
         return eventsRepository.getAll().stream()
                 .filter(event -> event.getReturnDate() == null)
