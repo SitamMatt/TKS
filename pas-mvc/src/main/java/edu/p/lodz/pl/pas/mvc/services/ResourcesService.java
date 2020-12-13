@@ -5,6 +5,7 @@ import edu.p.lodz.pl.pas.mvc.model.Magazine;
 import edu.p.lodz.pl.pas.mvc.model.Resource;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
+import edu.p.lodz.pl.pas.mvc.repositories.EventsRepository;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IResourcesRepository;
 
 import javax.enterprise.context.RequestScoped;
@@ -18,6 +19,8 @@ import java.util.UUID;
 public class ResourcesService {
     @Inject
     private IResourcesRepository resourcesRepository;
+    @Inject
+    private EventsService eventsService;
 
     public void add(Resource resource) {
         try {
@@ -36,7 +39,9 @@ public class ResourcesService {
     }
 
     public boolean delete(UUID id) {
-        return resourcesRepository.delete(id);
+        if (isRented(id))
+            return resourcesRepository.delete(id);
+        else return false;
     }
 
     public List<Resource> getAllResources() {
@@ -60,5 +65,12 @@ public class ResourcesService {
             return "Magazine";
         }
         return "";
+    }
+
+    public boolean isRented(UUID id){
+        return eventsService.getCurrentRents().stream()
+                .filter(res -> res.getResource().getId().equals(id))
+                .findAny()
+                .orElse(null) == null;
     }
 }
