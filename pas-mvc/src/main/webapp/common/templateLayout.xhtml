@@ -24,7 +24,7 @@
                     rendered="#{facesContext.externalContext.isUserInRole('WORKER')}"/>
             <h:link value="#{msg['dashboard']}" outcome="Details"
                     rendered="#{facesContext.externalContext.isUserInRole('CLIENT')}">
-                <f:param name="login" value="user"/>
+                <f:param name="login" value="#{request.remoteUser}"/>
             </h:link>
             <h:link value="#{msg['make_rent']}" outcome="Rent"
                     rendered="#{facesContext.externalContext.isUserInRole('CLIENT')}"/>
