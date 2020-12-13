@@ -43,17 +43,17 @@
     </security-role>
 
 <!--    Restrictions on access to resources-->
-<!--    <security-constraint>-->
-<!--        <web-resource-collection>-->
-<!--            <web-resource-name>AdminPages</web-resource-name>-->
-<!--            <url-pattern>/admin/*</url-pattern>-->
-<!--        </web-resource-collection>-->
-<!--        <auth-constraint>-->
-<!--            <role-name>-->
-<!--                ADMIN-->
-<!--            </role-name>-->
-<!--        </auth-constraint>-->
-<!--    </security-constraint>-->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>AdminPages</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>
+                ADMIN
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
 
     <security-constraint>
         <web-resource-collection>
@@ -69,6 +69,72 @@
             </role-name>
             <role-name>
                 CLIENT
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Rents Panel</web-resource-name>
+            <url-pattern>/rent/rentsPanel.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>
+                CLIENT
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Rents List</web-resource-name>
+            <url-pattern>/rent/rentsList.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>
+                WORKER
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>User Data</web-resource-name>
+            <url-pattern>/users/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>
+                ADMIN
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>User Summary</web-resource-name>
+            <url-pattern>/users/userSummary.xhtml</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>
+                ADMIN
+            </role-name>
+            <role-name>
+                WORKER
+            </role-name>
+            <role-name>
+                CLIENT
+            </role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Resources</web-resource-name>
+            <url-pattern>/res/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>
+                WORKER
             </role-name>
         </auth-constraint>
     </security-constraint>
