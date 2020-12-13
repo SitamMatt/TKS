@@ -25,6 +25,10 @@ public class EventsController {
         return eventsService.getCurrentRents();
     }
 
+    public List<Event> getAllArchiveEvents() {
+        return eventsService.getArchiveRents();
+    }
+
     public List<Event> getUserEvents(User user){
         return eventsService.getUserRents(user);
     }

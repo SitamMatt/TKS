@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view>
+    <h:head>
+        <title>Archive events table</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/common/templateLayout.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <h:dataTable value="#{eventsController.allArchiveEvents}" var="currentEvent">
+                        <h:column>
+                            <f:facet name="header">ID</f:facet>
+                            #{currentEvent.id}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">#{msg.title}</f:facet>
+                            #{currentEvent.resource.title}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">#{msg.renter}</f:facet>
+                            #{currentEvent.renter.login}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">#{msg.rental_date}</f:facet>
+                            #{currentEvent.rentDate}
+                        </h:column>
+
+                        <h:column>
+                            <f:facet name="header">#{msg.return_date}</f:facet>
+                            #{currentEvent.returnDate}
+                        </h:column>
+
+                    </h:dataTable>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</f:view>
+</html>

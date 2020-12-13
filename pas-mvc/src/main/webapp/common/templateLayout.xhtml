@@ -20,8 +20,10 @@
                     rendered="#{facesContext.externalContext.isUserInRole('ADMIN')}"/>
             <h:link value="#{msg['manage_resources']}" outcome="Resources"
                     rendered="#{facesContext.externalContext.isUserInRole('WORKER')}"/>
-            <h:link value="#{msg['list_rents']}" outcome="Rents"
+            <h:link value="#{msg['list_current_rents']}" outcome="Current rents"
                     rendered="#{facesContext.externalContext.isUserInRole('WORKER')}"/>
+            <h:link value="#{msg['list_archive_rents']}" outcome="Archive rents"
+                    rendered="#{facesContext.externalContext.isUserInRole('WORKER')}" />
             <h:link value="#{msg['dashboard']}" outcome="Details"
                     rendered="#{facesContext.externalContext.isUserInRole('CLIENT')}">
                 <f:param name="login" value="#{request.remoteUser}"/>
