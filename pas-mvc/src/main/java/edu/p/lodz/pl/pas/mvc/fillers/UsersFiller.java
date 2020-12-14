@@ -11,36 +11,44 @@ import java.util.UUID;
 @Dependent
 public class UsersFiller {
     public List<User> fillUsers() {
-        List<User> users = new ArrayList<>();
-        users.add(new User(
+        List<User> result = new ArrayList<>();
+        result.add(new User(
+                UUID.fromString("f9b3a442-b637-4e23-ad71-910ee816453e"),
+                true,
+                UserRole.CLIENT,
                 "Łukasz",
                 "Stanisławowski",
-                UserRole.CLIENT,
                 "testo",
                 "test0"
                 ));
-        users.add(new User(
+        result.add(new User(
+                UUID.fromString("48bb061d-0a01-4f60-bdfc-f6bac839b107"),
+                true,
+                UserRole.CLIENT,
                 "Jayne",
                 "Najera",
-                UserRole.CLIENT,
                 "user",
                 "user0"
         ));
-        users.add(new User(
+        result.add(new User(
+                UUID.fromString("411fc900-f762-4081-90b6-e17fb32d127f"),
+                true,
+                UserRole.WORKER,
                 "John",
                 "Cena",
-                UserRole.WORKER,
                 "worker",
                 "worker0"
         ));
-        users.add(new User(
+        result.add(new User(
+                UUID.fromString("3fbabdb6-7a44-4b9e-be8d-dd120a271b5b"),
+                true,
+                UserRole.ADMIN,
                 "Janusz",
                 "Pawlacz",
-                UserRole.ADMIN,
                 "admin",
                 "admin0"
         ));
 
-        return users;
+        return result;
     }
 }

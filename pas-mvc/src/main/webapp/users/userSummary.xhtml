@@ -8,7 +8,7 @@
 
 <f:metadata>
     <f:viewParam name="login" value="#{userSummaryController.login}"/>
-    <f:event listener="#{userSummaryController.init}" type="preRenderView"/>
+    <f:viewAction action="#{userSummaryController.loadUser}"/>
 </f:metadata>
 
 <f:view>
@@ -20,42 +20,43 @@
     <h:body>
         <ui:composition template="/common/templateLayout.xhtml">
         <ui:define name="content">
-        <h:form>
             <h:outputLabel>#{msg['user_summary']}</h:outputLabel><br/>
+
+            <h:form>
             #{msg['login']}: <h:outputText value="#{userSummaryController.user.login}" style="font-weight: bold"/><br/>
             #{msg['firstname']}: <h:outputText value="#{userSummaryController.user.firstName}" style="font-weight: bold"/><br/>
             #{msg['lastname']}: <h:outputText value="#{userSummaryController.user.lastName}" style="font-weight: bold"/><br/>
             #{msg['type']}: <h:outputText value="#{userSummaryController.user.role}" style="font-weight: bold"/><br/>
             #{msg['active']}: <h:outputText value="#{userSummaryController.user.active}" style="font-weight: bold"/><br/>
-            <h:dataTable value="#{eventsController.getCurrentUserEvents(userSummaryController.user)}" var="currentEvent">
+            <h:dataTable value="#{userSummaryController.userRents}" var="rent">
                 <h:column>
                     <f:facet name="header">ID</f:facet>
-                    #{currentEvent.id}
+                    #{rent.id}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">#{msg.rental_date}</f:facet>
-                    #{currentEvent.rentDate}
+                    #{rent.rentDate}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">#{msg.return_date}</f:facet>
-                    #{currentEvent.returnDate}
+                    #{rent.returnDate}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">#{msg.title}</f:facet>
-                    #{currentEvent.resource.title}
+                    #{rent.resource.title}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">#{msg.resource_id}</f:facet>
-                    #{currentEvent.resource.id}
+                    #{rent.resource.id}
                 </h:column>
 
                 <h:column rendered="#{userSummaryController.login == facesContext.externalContext.userPrincipal.name}">
                     <f:facet name="header"/>
-                    <h:commandButton value="Return" action="#{eventsController.returnResource(currentEvent.id)}"/>
+                    <h:commandButton value="Return" action="#{userSummaryController.returnResource(rent.resource.id)}"/>
                 </h:column>
 
             </h:dataTable>

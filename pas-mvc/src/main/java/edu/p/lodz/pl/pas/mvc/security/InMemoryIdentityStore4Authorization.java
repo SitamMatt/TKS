@@ -1,8 +1,9 @@
-package edu.p.lodz.pl.pas.mvc.controllers;
+package edu.p.lodz.pl.pas.mvc.security;
 
 import edu.p.lodz.pl.pas.mvc.RolesConverter;
 import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.services.UsersService;
+import edu.p.lodz.pl.pas.mvc.services.dto.UserDto;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -29,10 +30,9 @@ class InMemoryIdentityStore4Authorization implements IdentityStore {
 
     @Override
     public Set<String> getCallerGroups(CredentialValidationResult validationResult) {
-        User user = usersService.find(validationResult.getCallerPrincipal().getName());
+        UserDto user = usersService.find(validationResult.getCallerPrincipal().getName());
         if (user == null)
             return null;
-        Set<String> roles = RolesConverter.getRolesFromEnum(user.getRole());
-        return roles;
+        return RolesConverter.getRolesFromEnum(user.getRole());
     }
 }

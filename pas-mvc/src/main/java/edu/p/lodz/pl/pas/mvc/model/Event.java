@@ -3,41 +3,52 @@ package edu.p.lodz.pl.pas.mvc.model;
 import java.util.Date;
 import java.util.UUID;
 
-public class Event {
-    private UUID id;
+public class Event extends Entity {
     private Date rentDate;
     private Date returnDate;
-    private User renter;
-    private Resource resource;
+    private UUID userId;
+    private UUID resourceId;
 
-    public Event(Date rentDate, User renter, Resource resource) {
-        this.id = null;
+    public Event(UUID id, Date rentDate, Date returnDate, UUID userId, UUID resourceId) {
+        super(id);
         this.rentDate = rentDate;
-        this.renter = renter;
-        this.resource = resource;
+        this.returnDate = returnDate;
+        this.userId = userId;
+        this.resourceId = resourceId;
     }
 
     public Date getRentDate() {
         return rentDate;
     }
 
+    public void setRentDate(Date rentDate) {
+        this.rentDate = rentDate;
+    }
+
     public Date getReturnDate() {
         return returnDate;
     }
 
-    public UUID getId() {
-        return id;
+    public void setReturnDate(Date returnDate) {
+        this.returnDate = returnDate;
     }
 
-    public User getRenter() {
-        return renter;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public Resource getResource() {
-        return resource;
+    public UUID getResourceId() {
+        return resourceId;
     }
 
-    public void setReturnDate(Date date){
-        this.returnDate = date;
+    public void setResourceId(UUID resourceId) {
+        this.resourceId = resourceId;
+    }
+
+    public void map(Event source) {
+        this.rentDate = source.rentDate;
+        this.returnDate = source.returnDate;
+        this.resourceId = source.resourceId;
+        this.userId = source.userId;
     }
 }

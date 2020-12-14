@@ -1,15 +1,15 @@
 package edu.p.lodz.pl.pas.mvc.services;
 
 import edu.p.lodz.pl.pas.mvc.model.User;
-import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
-import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
-import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
+import edu.p.lodz.pl.pas.mvc.model.exceptions.*;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IUsersRepository;
+import edu.p.lodz.pl.pas.mvc.services.dto.UserDto;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Named
 @RequestScoped
@@ -17,19 +17,46 @@ public class UsersService {
     @Inject
     private IUsersRepository usersRepository;
 
-    public List<User> getAllUsers() throws CloneNotSupportedException {
-        return usersRepository.getAll();
+    public List<UserDto> getAllUsers() {
+        return usersRepository.getAll().stream()
+                .map(this::map)
+                .collect(Collectors.toList());
     }
 
-    public User find(String login) {
-        return usersRepository.findUserByLogin(login);
+    public UserDto find(String login) {
+        User user = usersRepository.findUserByLogin(login);
+        return map(user);
     }
 
-    public void Save(User user) throws ObjectNotFoundException, ObjectAlreadyStoredException, LoginAlreadyTakenException {
-        if (usersRepository.has(user)) {
-            usersRepository.update(user);
+    public void save(UserDto user) throws ObjectNotFoundException, ObjectAlreadyStoredException, RepositoryException {
+        if (usersRepository.has(user.getId())) {
+            usersRepository.update(mapBack(user));
         } else {
-            usersRepository.add(user);
+            usersRepository.add(mapBack(user));
         }
+    }
+
+    protected UserDto map(User user) {
+        return new UserDto(
+                user.getId(),
+                user.isActive(),
+                user.getRole(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getLogin(),
+                user.getPassword()
+        );
+    }
+
+    protected User mapBack(UserDto dto) {
+        return new User(
+                dto.getId(),
+                dto.isActive(),
+                dto.getRole(),
+                dto.getFirstName(),
+                dto.getLastName(),
+                dto.getLogin(),
+                dto.getPassword()
+        );
     }
 }

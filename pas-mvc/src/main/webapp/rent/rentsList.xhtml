@@ -11,37 +11,35 @@
     </h:head>
     <h:body>
         <ui:composition template="/common/templateLayout.xhtml">
-        <ui:define name="content">
-            <h:form>
-                <h:dataTable value="#{eventsController.allEvents}" var="currentEvent">
+            <ui:define name="content">
+                <h:dataTable value="#{rentsController.activeRents}" var="rent">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
-                        #{currentEvent.id}
+                        #{rent.id}
                     </h:column>
 
                     <h:column>
                         <f:facet name="header">#{msg.title}</f:facet>
-                        #{currentEvent.resource.title}
+                        #{rent.resource.title}
                     </h:column>
 
                     <h:column>
                         <f:facet name="header">#{msg.renter}</f:facet>
-                        #{currentEvent.renter.login}
+                        #{rent.renter.login}
                     </h:column>
 
                     <h:column>
                         <f:facet name="header">#{msg.rental_date}</f:facet>
-                        #{currentEvent.rentDate}
+                        #{rent.rentDate}
                     </h:column>
 
                     <h:column>
                         <f:facet name="header">#{msg.return_date}</f:facet>
-                        #{currentEvent.returnDate}
+                        #{rent.returnDate}
                     </h:column>
 
-        </h:dataTable>
-        </h:form>
-        </ui:define>
+                </h:dataTable>
+            </ui:define>
         </ui:composition>
     </h:body>
 </f:view>

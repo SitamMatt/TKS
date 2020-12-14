@@ -25,17 +25,18 @@ public class RentsService {
     private IUsersRepository usersRepository;
 
     public List<Resource> getAvailableResources() {
-        return resourcesRepository.getAll().stream()
-                .filter(res -> eventsRepository.isAvailable(res.getId()))
-                .collect(Collectors.toList());
+        return null;
+//        return resourcesRepository.getAll().stream()
+//                .filter(res -> eventsRepository.isAvailable(res.getId()))
+//                .collect(Collectors.toList());
     }
 
     public void rent(UUID id) {
-        if(eventsRepository.isAvailable(id)) {
-            Event ev = new Event(new Date(),
-                    usersRepository.findUserByLogin(FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName()),
-                    resourcesRepository.get(id));
-            eventsRepository.add(ev);
-        }
+//        if(eventsRepository.isAvailable(id)) {
+//            Event ev = new Event(new Date(),
+//                    usersRepository.findUserByLogin(FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName()),
+//                    resourcesRepository.get(id));
+//            eventsRepository.add(ev);
+//        }
     }
 }

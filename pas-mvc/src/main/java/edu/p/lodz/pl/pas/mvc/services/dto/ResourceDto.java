@@ -1,34 +1,47 @@
-package edu.p.lodz.pl.pas.mvc.controllers.dto;
+package edu.p.lodz.pl.pas.mvc.services.dto;
 
 import java.util.UUID;
 
-public class ResourceDTO {
+public class ResourceDto {
     private UUID id;
     private String title;
     private int pagesCount;
     private String publishingHouse;
-    private int magazineNumber;
+    private String issueDate;
     private String author;
-    private String resType;
+    private String type;
 
-    public ResourceDTO(UUID id, String title, int pagesCount, String publishingHouse) {
+    public ResourceDto(UUID id, String title, int pagesCount, String publishingHouse, String issueDate, String author, String type) {
         this.id = id;
         this.title = title;
         this.pagesCount = pagesCount;
         this.publishingHouse = publishingHouse;
-        this.resType = "Book";
+        this.issueDate = issueDate;
+        this.author = author;
+        this.type = type;
     }
 
-    public ResourceDTO() {
-        this(UUID.randomUUID(), "", 0, "");
+    public ResourceDto() {
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
     }
 
     public UUID getId() {
         return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -55,27 +68,11 @@ public class ResourceDTO {
         this.publishingHouse = publishingHouse;
     }
 
-    public int getMagazineNumber() {
-        return magazineNumber;
-    }
-
-    public void setMagazineNumber(int magazineNumber) {
-        this.magazineNumber = magazineNumber;
-    }
-
     public String getAuthor() {
         return author;
     }
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public String getResType() {
-        return resType;
-    }
-
-    public void setResType(String resType) {
-        this.resType = resType;
     }
 }

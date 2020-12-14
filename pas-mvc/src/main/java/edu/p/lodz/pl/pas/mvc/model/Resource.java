@@ -1,34 +1,38 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
+import edu.p.lodz.pl.pas.mvc.model.exceptions.IncompatibleTypeExeption;
+
 import java.util.UUID;
 
-public abstract class Resource {
-    protected UUID id;
+public abstract class Resource extends Entity {
     protected String title;
     protected int pagesCount;
     protected String publishingHouse;
 
-    public Resource(String title, int pagesCount, String publishingHouse) {
-        this.id = null;
+    public Resource(UUID id, String title, int pagesCount, String publishingHouse) {
+        super(id);
         this.title = title;
         this.pagesCount = pagesCount;
         this.publishingHouse = publishingHouse;
     }
 
-    public UUID getId() {
-        return id;
+    public void map(Resource source) throws IncompatibleTypeExeption {
+        if(this.getClass() != source.getClass()) throw new IncompatibleTypeExeption();
+        this.pagesCount = source.getPagesCount();
+        this.title = source.getTitle();
+        this.publishingHouse = source.getPublishingHouse();
     }
 
     public String getTitle() {
         return title;
     }
 
-    public int getPagesCount() {
-        return pagesCount;
-    }
-
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public int getPagesCount() {
+        return pagesCount;
     }
 
     public void setPagesCount(int pagesCount) {
@@ -39,8 +43,7 @@ public abstract class Resource {
         return publishingHouse;
     }
 
-    public void setPublishingHouse(String pHouse) {
-        this.publishingHouse = pHouse;
+    public void setPublishingHouse(String publishingHouse) {
+        this.publishingHouse = publishingHouse;
     }
-
 }

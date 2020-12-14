@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<f:metadata>
+    <f:viewParam name="resId" value="#{resourceFormController.resId}"/>
+    <f:viewAction action="#{resourceFormController.loadResource}"/>
+</f:metadata>
+
+<f:view>
+    <h:head>
+        <title>#{msg['edit_resource']}</title>
+    </h:head>
+    <body>
+    <ui:composition template="/common/templateLayout.xhtml">
+        <ui:define name="content">
+            <h:outputLabel value="#{msg['edit_resource']}"/>
+            <h:form rendered="#{not empty resourceFormController.res}">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{msg['title']}" for="title"/>
+                    <h:inputText id="title" value="#{resourceFormController.res.title}"/>
+
+                    <h:outputLabel value="#{msg['num_of_pages']}" for="num_of_pages"/>
+                    <h:inputText value="#{resourceFormController.res.pagesCount}" id="num_of_pages"/>
+
+                    <h:outputLabel value="#{msg['publishing_house']}" for="publishing_house"/>
+                    <h:inputText value="#{resourceFormController.res.publishingHouse}" id="publishing_house"/>
+
+                    <h:outputLabel value="#{msg['type']}" for="type"
+                                   rendered="#{resourceFormController.isCreateState()}"/>
+                    <h:selectOneMenu value="#{resourceFormController.res.type}" id="type"
+                                     rendered="#{resourceFormController.isCreateState()}">
+                        <f:selectItem itemValue="Book" itemLabel="Book"/>
+                        <f:selectItem itemValue="Magazine" itemLabel="Magazine"/>
+                        <f:ajax event="change" render="@form" immediate="true"
+                                listener="#{resourceFormController.switchType}"/>
+                    </h:selectOneMenu>
+
+                    <h:outputLabel value="#{msg['author']}" rendered="#{resourceFormController.res.type == 'Book'}"
+                                   for="author"/>
+                    <h:inputText value="#{resourceFormController.res.author}" id="author"
+                                 rendered="#{resourceFormController.res.type == 'Book'}"/>
+                    <h:outputLabel value="#{msg['magazine_number']}: "
+                                   rendered="#{resourceFormController.res.type == 'Magazine'}" for="issue"/>
+                    <h:inputText value="#{resourceFormController.res.issueDate}"
+                                 rendered="#{resourceFormController.res.type == 'Magazine'}" id="issue"/>
+
+                    <h:commandButton value="#{msg['back']}" action="resourcesList"/>
+                    <h:commandButton value="#{msg['submit']}" action="#{resourceFormController.saveResource}">
+                        <f:setPropertyActionListener target="#{resourceFormController.resId}"
+                                                     value="#{resourceFormController.res.id.toString()}"/>
+                    </h:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+    </body>
+</f:view>
+</html>

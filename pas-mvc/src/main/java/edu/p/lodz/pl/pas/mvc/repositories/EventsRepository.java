@@ -1,74 +1,69 @@
 package edu.p.lodz.pl.pas.mvc.repositories;
 
-import edu.p.lodz.pl.pas.mvc.RefUtils;
 import edu.p.lodz.pl.pas.mvc.fillers.EventsFiller;
 import edu.p.lodz.pl.pas.mvc.model.Event;
-import edu.p.lodz.pl.pas.mvc.model.Resource;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IEventsRepository;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class EventsRepository implements IEventsRepository {
-    private List<Event> items;
+public class EventsRepository extends RepositoryBase<Event> implements IEventsRepository {
     @Inject
     private EventsFiller eventsFiller;
 
     @PostConstruct
     public void eventsInit() {
-        List<Event> list = eventsFiller.fillEvents();
-        items = new ArrayList<>(list.size());
-        list.forEach(this::add);
+        items = eventsFiller.fillEvents();
     }
 
     @Override
-    public synchronized void add(Event event){
-        if(event.getId() == null) {
-            assignId(event);
-        }
-        items.add(event);
-    }
-
-    @Override
-    public synchronized Event get(UUID id){
-        return items.stream()
-            .filter(event -> event.getId().equals(id))
-            .findAny()
-            .orElse(null);
-    }
-
-    @Override
-    public synchronized List<Event> getAll(){
-        return items;
-    }
-
-    private synchronized void assignId(Event event) {
-        try {
-            RefUtils.setFieldValue(event, "id", UUID.randomUUID());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+    protected void map(Event source, Event destination) {
+        destination.map(source);
     }
 
     @Override
     public synchronized boolean isAvailable(UUID id) {
-        List<Event> events = items.stream()
-                .filter(e -> e.getResource().getId().equals(id))
-                .collect(Collectors.toList());
-        for (Event e : events) {
-            if(e.getReturnDate() == null) {
-                return false;
-            } else if(e.getReturnDate().after(new Date())) {
-                return false;
-            }
-        }
-        return true;
+        return items.stream()
+                .noneMatch(x -> x.getReturnDate() == null
+                        && x.getResourceId() == id);
     }
+
+    @Override
+    public synchronized List<Event> getUserActiveRents(UUID id) {
+        return items.stream()
+                .filter(x -> x.getUserId().equals(id)
+                        && x.getReturnDate() == null)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public synchronized Event getActiveForUserAndResource(UUID userId, UUID resId) {
+        return items.stream()
+                .filter(x -> x.getUserId().equals(userId)
+                        && x.getResourceId().equals(resId)
+                        && x.getReturnDate() == null)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public synchronized List<Event> getAllActiveRents() {
+        return items.stream()
+                .filter(x -> x.getReturnDate() == null)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public synchronized List<Event> getAllArchiveRents() {
+        return items.stream()
+                .filter(x -> x.getReturnDate() != null)
+                .collect(Collectors.toList());
+    }
+
+
 }

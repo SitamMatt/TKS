@@ -22,22 +22,26 @@ public class EventsController {
     private EventsService eventsService;
 
     public List<Event> getAllEvents(){
-        return eventsService.getCurrentRents();
+        return null;
+//        return eventsService.getCurrentRents();
     }
 
     public List<Event> getAllArchiveEvents() {
-        return eventsService.getArchiveRents();
+        return null;
+//        return eventsService.getArchiveRents();
     }
 
     public List<Event> getUserEvents(User user){
-        return eventsService.getUserRents(user);
+        return null;
+//        return eventsService.getUserRents(user);
     }
 
     public List<Event> getCurrentUserEvents(User user){
-        return eventsService.getCurrentUserRents(user);
+        return null;
+//        return eventsService.getCurrentUserRents(user);
     }
 
     public void returnResource(UUID id){
-        eventsService.finishRent(id);
+//        eventsService.finishRent(id);
     }
 }

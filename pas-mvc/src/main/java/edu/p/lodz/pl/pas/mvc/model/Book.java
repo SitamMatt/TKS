@@ -1,17 +1,21 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
+import edu.p.lodz.pl.pas.mvc.model.exceptions.IncompatibleTypeExeption;
+
 import java.util.UUID;
 
 public class Book extends Resource {
     private String author;
 
-    public Book(String t, int pages, String au, String pH) {
-        super(t, pages, pH);
-        author = au;
+    public Book(UUID id, String title, int pagesCount, String publishingHouse, String author) {
+        super(id, title, pagesCount, publishingHouse);
+        this.author = author;
     }
 
-    public Book() {
-        this("", 0, "", "");
+    @Override
+    public void map(Resource source) throws IncompatibleTypeExeption {
+        super.map(source);
+        this.author = ((Book) source).getAuthor();
     }
 
     public String getAuthor() {

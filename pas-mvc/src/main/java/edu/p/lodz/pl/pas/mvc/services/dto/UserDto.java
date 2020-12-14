@@ -1,8 +1,11 @@
-package edu.p.lodz.pl.pas.mvc.model;
+package edu.p.lodz.pl.pas.mvc.services.dto;
+
+import edu.p.lodz.pl.pas.mvc.model.UserRole;
 
 import java.util.UUID;
 
-public class User extends Entity {
+public class UserDto {
+    private UUID id;
     boolean isActive;
     private UserRole role;
     private String firstName;
@@ -10,12 +13,8 @@ public class User extends Entity {
     private String login;
     private String password;
 
-    public User(UUID id) {
-        super(id);
-    }
-
-    public User(UUID id, boolean isActive, UserRole role, String firstName, String lastName, String login, String password) {
-        super(id);
+    public UserDto(UUID id, boolean isActive, UserRole role, String firstName, String lastName, String login, String password) {
+        this.id = id;
         this.isActive = isActive;
         this.role = role;
         this.firstName = firstName;
@@ -24,13 +23,26 @@ public class User extends Entity {
         this.password = password;
     }
 
-    public void map(User user) {
-        this.firstName = user.firstName;
-        this.lastName = user.lastName;
-        this.role = user.role;
-        this.login = user.login;
-        this.password = user.password;
-        this.isActive = user.isActive;
+    public UserDto(){}
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public UserRole getRole() {
@@ -63,21 +75,5 @@ public class User extends Entity {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 }

@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <f:metadata>
     <f:viewParam name="login" value="#{userFormController.login}"/>
-    <f:event listener="#{userFormController.init}" type="preRenderView"/>
+    <f:viewAction action="#{userFormController.loadUser}"/>
 </f:metadata>
 <f:view>
     <h:head>
@@ -15,27 +15,42 @@
     </h:head>
     <body>
     <ui:composition template="/common/templateLayout.xhtml">
-    <ui:define name="content">
-    <h:outputLabel value="#{msg['edit_user']}"/>
-    <h:form rendered="#{not empty userFormController.newUser}">
-        <h:inputHidden value="#{userFormController.login}"/>
-        #{msg['firstname']}: <h:inputText value="#{userFormController.newUser.firstName}"/><br/>
-        #{msg['lastname']}: <h:inputText value="#{userFormController.newUser.lastName}"/><br/>
-        <h:outputText value="#{msg['user_login']}:" rendered="#{userFormController.newUser.login == null}"/>
-        <h:inputText value="#{userFormController.newUser.login}" rendered="#{userFormController.newUser.login == null}"/><br/>
-        #{msg['password']}: <h:inputSecret value="#{userFormController.newUser.password}" redisplay="true"/><br/>
-        #{msg['type']}:
-        <h:selectOneMenu value="#{userFormController.newUser.role}">
-            <f:selectItems value="#{userFormController.newUser.possibleRoles}" />
-        </h:selectOneMenu><br/>
-        #{msg['active']}: <h:selectBooleanCheckbox  value="#{userFormController.newUser.active}"/><br/>
-        <h:commandButton value="#{msg['submit']}" action="#{userFormController.saveUser}" binding="#{userFormController.btn}" >
-            <f:setPropertyActionListener target="#{userFormController.login}" value="#{userFormController.newUser.login}"/>
-        </h:commandButton>
-        <br/>
-        <h:commandButton value="#{msg['back']}" action="usersList"/><br/>
-    </h:form>
-    </ui:define>
+        <ui:define name="content">
+            <h:outputLabel value="#{msg['edit_user']}"/>
+            <h:form rendered="#{not empty userFormController.user}">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="firstname" value="#{msg['firstname']}"/>
+                    <h:inputText id="firstname" value="#{userFormController.user.firstName}"/>
+
+                    <h:outputLabel for="lastname" value="#{msg['lastname']}"/>
+                    <h:inputText id="lastname" value="#{userFormController.user.lastName}"/>
+
+                    <h:outputLabel for="login" value="#{msg['user_login']}:"
+                                   rendered="#{userFormController.user.login == null}"/>
+                    <h:inputText id="login" value="#{userFormController.user.login}"
+                                 rendered="#{userFormController.user.login == null}"/>
+
+                    <h:outputLabel for="password" value="#{msg['password']}"/>
+                    <h:inputSecret id="password" value="#{userFormController.user.password}" redisplay="true"/>
+
+                    <h:outputLabel for="type" value="#{msg['type']}"/>
+                    <h:selectOneMenu id="type" value="#{userFormController.user.role}">
+                        <f:selectItems value="#{userFormController.roles}"/>
+                    </h:selectOneMenu>
+
+                    <h:outputLabel for="active" value="#{msg['active']}"/>
+                    <h:selectBooleanCheckbox id="active" value="#{userFormController.user.active}"/>
+
+                    <h:commandButton value="#{msg['back']}" action="usersList"/>
+
+                    <h:commandButton value="#{msg['submit']}" action="#{userFormController.saveUser}"
+                                     binding="#{userFormController.btn}">
+                        <f:setPropertyActionListener target="#{userFormController.login}"
+                                                     value="#{userFormController.user.login}"/>
+                    </h:commandButton>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
     </ui:composition>
     </body>
 </f:view>

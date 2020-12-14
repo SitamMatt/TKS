@@ -1,7 +1,7 @@
-package edu.p.lodz.pl.pas.mvc.controllers;
+package edu.p.lodz.pl.pas.mvc.security;
 
-import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.services.UsersService;
+import edu.p.lodz.pl.pas.mvc.services.dto.UserDto;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -30,7 +30,7 @@ public class InMemoryIdentityStore4Authentication implements IdentityStore {
     }
 
     public CredentialValidationResult validate(UsernamePasswordCredential credential) {
-        User user = usersService.find(credential.getCaller());
+        UserDto user = usersService.find(credential.getCaller());
         if (user == null)
             return INVALID_RESULT;
         String password = user.getPassword();

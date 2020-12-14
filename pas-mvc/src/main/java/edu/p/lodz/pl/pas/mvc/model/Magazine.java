@@ -1,22 +1,28 @@
 package edu.p.lodz.pl.pas.mvc.model;
 
+import edu.p.lodz.pl.pas.mvc.model.exceptions.IncompatibleTypeExeption;
+
+import java.util.UUID;
+
 public class Magazine extends Resource {
-    private int number;
+    private String issueDate;
 
-    public Magazine(String t, int pages, String pH, int nr){
-        super(t, pages, pH);
-        number = nr;
+    public Magazine(UUID id, String title, int pagesCount, String publishingHouse, String issueDate) {
+        super(id, title, pagesCount, publishingHouse);
+        this.issueDate = issueDate;
     }
 
-    public Magazine() {
-        this("", 0, "", 0);
+    @Override
+    public void map(Resource source) throws IncompatibleTypeExeption {
+        super.map(source);
+        this.issueDate = ((Magazine) source).issueDate;
     }
 
-    public int getNumber() {
-        return number;
+    public String getIssueDate() {
+        return issueDate;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setIssueDate(String issueDate) {
+        this.issueDate = issueDate;
     }
 }
