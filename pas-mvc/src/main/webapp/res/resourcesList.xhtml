@@ -68,7 +68,9 @@
                     <h:commandButton value="#{msg['edit']}" action="#{resourcesController.editResource}">
                         <f:setPropertyActionListener target="#{resourceFormController.resId}" value="#{item.id.toString()}"/>
                     </h:commandButton>
-                    <h:commandButton value="#{msg['remove']}" action="#{resourcesController.removeResource(item.id)}"/>
+                    <h:commandButton value="#{msg['remove']}" action="#{resourcesController.removeResource}">
+                        <f:attribute name="selected" value="#{item.id}"/>
+                    </h:commandButton>
                 </h:column>
             </h:dataTable>
             <h:commandButton value="#{msg['add_resource']}" action="#{resourcesController.createResource}"/>
