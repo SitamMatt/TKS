@@ -21,19 +21,19 @@
             <h:outputLabel value="#{msg['edit_resource']}"/>
             <h:form rendered="#{not empty resourceFormController.res}">
                 <h:panelGrid columns="2">
-                    <h:outputLabel value="#{msg['title']}" for="title"/>
+                    <h:outputLabel value="#{msg['title']}*" for="title"/>
                     <h:inputText id="title" value="#{resourceFormController.res.title}" required="true"
                     requiredMessage="#{msg.title_req}"/>
 
-                    <h:outputLabel value="#{msg['num_of_pages']}" for="num_of_pages"/>
+                    <h:outputLabel value="#{msg['num_of_pages']}*" for="num_of_pages"/>
                     <h:inputText value="#{resourceFormController.res.pagesCount}" id="num_of_pages" required="true"
                     requiredMessage="#{msg.pages_req}"/>
 
-                    <h:outputLabel value="#{msg['publishing_house']}" for="publishing_house"/>
+                    <h:outputLabel value="#{msg['publishing_house']}*" for="publishing_house"/>
                     <h:inputText value="#{resourceFormController.res.publishingHouse}" id="publishing_house" required="true"
                     requiredMessage="#{msg.pub_house_req}"/>
 
-                    <h:outputLabel value="#{msg['type']}" for="type"
+                    <h:outputLabel value="#{msg['type']}*" for="type"
                                    rendered="#{resourceFormController.isCreateState()}"/>
                     <h:selectOneMenu value="#{resourceFormController.res.type}" id="type"
                                      rendered="#{resourceFormController.isCreateState()}">
@@ -43,7 +43,7 @@
                                 listener="#{resourceFormController.switchType}"/>
                     </h:selectOneMenu>
 
-                    <h:outputLabel value="#{msg['author']}" rendered="#{resourceFormController.res.type == 'Book'}"
+                    <h:outputLabel value="#{msg['author']}*" rendered="#{resourceFormController.res.type == 'Book'}"
                                    for="author"/>
                     <h:inputText value="#{resourceFormController.res.author}" id="author"
                                  rendered="#{resourceFormController.res.type == 'Book'}"

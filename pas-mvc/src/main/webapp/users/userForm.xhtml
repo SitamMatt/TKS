@@ -25,13 +25,13 @@
                     <h:outputLabel for="lastname" value="#{msg['lastname']}"/>
                     <h:inputText id="lastname" value="#{userFormController.user.lastName}"/>
 
-                    <h:outputLabel for="login" value="#{msg['user_login']}:"
+                    <h:outputLabel for="login" value="#{msg['user_login']}:*"
                                    rendered="#{userFormController.user.login == null}"/>
                     <h:inputText id="login" value="#{userFormController.user.login}"
                                  rendered="#{userFormController.user.login == null}"
                                  required="true" requiredMessage="#{msg.login_req}"/>
 
-                    <h:outputLabel for="password" value="#{msg['password']}"/>
+                    <h:outputLabel for="password" value="#{msg['password']}:*"/>
                     <h:inputSecret id="password" value="#{userFormController.user.password}" redisplay="true"
                                     required="true" requiredMessage="#{msg.pass_req}"/>
 
