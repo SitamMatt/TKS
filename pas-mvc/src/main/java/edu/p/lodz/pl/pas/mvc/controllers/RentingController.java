@@ -94,6 +94,10 @@ public class RentingController implements Serializable {
             context.addMessage(null, message);
         } catch (UserNotActiveException e) {
             e.printStackTrace();
+            FacesContext context = FacesContext.getCurrentInstance();
+            String res = resourceBundle.getString("user_inactive");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
+            context.addMessage(null, message);
         } finally {
             init();
         }
