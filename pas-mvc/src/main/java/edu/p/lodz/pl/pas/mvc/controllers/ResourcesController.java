@@ -5,7 +5,6 @@ import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 import edu.p.lodz.pl.pas.mvc.services.ResourcesService;
 import edu.p.lodz.pl.pas.mvc.services.dto.ResourceDto;
 
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -14,6 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 @ViewScoped
 @Named
-public class ResourcesController {
+public class ResourcesController implements Serializable {
     @Inject
     private ResourcesService resourcesService;
 
