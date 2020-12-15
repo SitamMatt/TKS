@@ -1,5 +1,6 @@
 package edu.p.lodz.pl.pas.mvc.controllers;
 
+import edu.p.lodz.pl.pas.mvc.model.Resource;
 import edu.p.lodz.pl.pas.mvc.model.UserRole;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.LoginAlreadyTakenException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
@@ -9,11 +10,14 @@ import edu.p.lodz.pl.pas.mvc.services.UsersService;
 import edu.p.lodz.pl.pas.mvc.services.dto.UserDto;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ResourceBundle;
 
 @ViewScoped
 @Named
@@ -24,6 +28,7 @@ public class UserFormController implements Serializable {
     @Inject
     private UsersService usersService;
     private UserDto user;
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("edu.p.lodz.pl.pas.mvc.messages");
 
     public UserRole[] getRoles() {
         return roles;
@@ -58,14 +63,27 @@ public class UserFormController implements Serializable {
             return "Users";
         } catch (ObjectNotFoundException e) {
             e.printStackTrace();
+            FacesContext context = FacesContext.getCurrentInstance();
+            String res = resourceBundle.getString("not_found");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
+            context.addMessage(null, message);
         } catch (ObjectAlreadyStoredException e) {
             e.printStackTrace();
+            FacesContext context = FacesContext.getCurrentInstance();
+            String res = resourceBundle.getString("object_stored");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
+            context.addMessage(null, message);
         } catch (LoginAlreadyTakenException e) {
-//            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid password length", "");
-//            FacesContext context = FacesContext.getCurrentInstance();
-//            context.addMessage(btn.getClientId(context), message);
+            FacesContext context = FacesContext.getCurrentInstance();
+            String res = resourceBundle.getString("login_already_taken");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
+            context.addMessage(null, message);
         } catch (RepositoryException e) {
             e.printStackTrace();
+            FacesContext context = FacesContext.getCurrentInstance();
+            String res = resourceBundle.getString("rep_exception");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
+            context.addMessage(null, message);
         }
         return "";
     }
