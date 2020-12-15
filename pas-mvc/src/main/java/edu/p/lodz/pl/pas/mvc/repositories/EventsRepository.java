@@ -30,7 +30,7 @@ public class EventsRepository extends RepositoryBase<Event> implements IEventsRe
     public synchronized boolean isAvailable(UUID id) {
         return items.stream()
                 .noneMatch(x -> x.getReturnDate() == null
-                        && x.getResourceId() == id);
+                        && x.getResourceId().equals(id));
     }
 
     @Override
