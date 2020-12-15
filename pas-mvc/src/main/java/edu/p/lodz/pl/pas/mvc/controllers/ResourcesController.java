@@ -5,6 +5,7 @@ import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 import edu.p.lodz.pl.pas.mvc.services.ResourcesService;
 import edu.p.lodz.pl.pas.mvc.services.dto.ResourceDto;
 
+import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -27,26 +28,37 @@ public class ResourcesController implements Serializable {
 
     private String searchQuery;
 
-    public String getSearchQuery() {
-        return searchQuery;
+    private List<ResourceDto> reses;
+
+    @PostConstruct
+    public void init(){
+        this.reses = resourcesService.getAllResources();
     }
 
-    public void setSearchQuery(String searchQuery) {
-        this.searchQuery = searchQuery;
+    public List<ResourceDto> getReses() {
+        return reses;
     }
 
-    public List<ResourceDto> listResources() {
+    public void loadResources(){
         if(searchQuery != null) {
             ResourceDto resourceDto = resourcesService.getAllResources().stream()
                     .filter(x -> x.getId().toString().equals(searchQuery))
                     .findFirst()
                     .orElse(null);
             if (resourceDto == null) {
-                return new ArrayList<>();
+                reses = new ArrayList<>();
+            }else{
+                reses = Collections.singletonList(resourceDto);
             }
-            return Collections.singletonList(resourceDto);
         }
-        return resourcesService.getAllResources();
+    }
+
+    public String getSearchQuery() {
+        return searchQuery;
+    }
+
+    public void setSearchQuery(String searchQuery) {
+        this.searchQuery = searchQuery;
     }
 
     public String editResource() {

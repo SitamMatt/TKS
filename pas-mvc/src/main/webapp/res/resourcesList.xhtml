@@ -8,6 +8,7 @@
 
 <f:metadata>
     <f:viewParam name="searchQuery" value="#{resourcesController.searchQuery}" required="false"/>
+    <f:viewAction action="#{resourcesController.loadResources()}"/>
 </f:metadata>
 
 <f:view>
@@ -28,7 +29,7 @@
                 />
                 <h:commandButton action="#{resourcesController.searchActive}" value="#{msg['search']}"/>
             </h:panelGroup>
-            <h:dataTable value="#{resourcesController.listResources()}" var="item">
+            <h:dataTable value="#{resourcesController.reses}" var="item">
                 <h:column>
                     <f:facet name="header">UID</f:facet>
                     #{item.id}

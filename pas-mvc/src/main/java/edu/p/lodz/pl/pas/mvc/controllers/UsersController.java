@@ -4,7 +4,6 @@ import edu.p.lodz.pl.pas.mvc.services.UsersService;
 import edu.p.lodz.pl.pas.mvc.services.dto.UserDto;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,32 +16,30 @@ import java.util.List;
 @Named
 public class UsersController implements Serializable {
 
+    private List<UserDto> users;
+    @Inject
+    private UsersService usersService;
+    private String searchQuery;
+
     public List<UserDto> getUsers() {
         return users;
     }
 
-    private List<UserDto> users;
-
     @PostConstruct
-    public void init(){
+    public void init() {
         this.users = usersService.getAllUsers();
     }
 
-    public void loadUsers(){
-        if(searchQuery != null) {
+    public void loadUsers() {
+        if (searchQuery != null) {
             UserDto user = usersService.find(searchQuery);
-            if(user.getId() == null) {
-                users =  new ArrayList<>();
-            }else{
-                users =  Collections.singletonList(user);
+            if (user.getId() == null) {
+                users = new ArrayList<>();
+            } else {
+                users = Collections.singletonList(user);
             }
         }
     }
-
-    @Inject
-    private UsersService usersService;
-
-    private String searchQuery;
 
     public String getSearchQuery() {
         return searchQuery;
