@@ -5,6 +5,11 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<f:metadata>
+    <f:viewParam name="searchQuery" value="#{rentingController.searchQuery}" required="false"/>
+</f:metadata>
+
 <f:view>
     <h:head>
         <title>#{msg['resources_table']}</title>
@@ -13,6 +18,16 @@
         <ui:composition template="/common/templateLayout.xhtml">
         <ui:define name="content">
         <h:form>
+            <h:panelGroup>
+                <h:outputLabel for="search">#{msg['uuid_search']}:</h:outputLabel>
+                <h:inputText
+                        id="search"
+                        maxlength="36"
+                        value="#{rentingController.searchQuery}"
+                        label="#{msg['search']}"
+                />
+                <h:commandButton action="#{rentingController.search}" value="#{msg['search']}"/>
+            </h:panelGroup>
             <h:dataTable value="#{rentingController.availableResources}" var="item">
                 <h:column>
                     <f:facet name="header">UID</f:facet>
