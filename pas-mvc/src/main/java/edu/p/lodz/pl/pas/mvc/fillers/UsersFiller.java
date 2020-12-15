@@ -31,6 +31,15 @@ public class UsersFiller {
                 "user0"
         ));
         result.add(new User(
+                UUID.randomUUID(),
+                true,
+                UserRole.WORKER,
+                "Adam",
+                "Mickiewicz",
+                "worker1",
+                "worker1"
+        ));
+        result.add(new User(
                 UUID.fromString("411fc900-f762-4081-90b6-e17fb32d127f"),
                 true,
                 UserRole.WORKER,

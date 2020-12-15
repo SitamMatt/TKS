@@ -5,7 +5,6 @@ import edu.p.lodz.pl.pas.mvc.model.exceptions.RepositoryException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ResourceNotAvailableException;
 import edu.p.lodz.pl.pas.mvc.services.EventsService;
 import edu.p.lodz.pl.pas.mvc.services.ResourcesService;
-import edu.p.lodz.pl.pas.mvc.services.UsersService;
 import edu.p.lodz.pl.pas.mvc.services.dto.ResourceDto;
 
 import javax.annotation.PostConstruct;
@@ -19,6 +18,8 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.UUID;
@@ -33,10 +34,48 @@ public class RentingController implements Serializable {
     private ResourcesService resourcesService;
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("edu.p.lodz.pl.pas.mvc.messages");
 
+    private String searchQuery;
+
+    public String getSearchQuery() {
+        return searchQuery;
+    }
+
+    public void setSearchQuery(String searchQuery) {
+        this.searchQuery = searchQuery;
+    }
+
     @PostConstruct
     public void init() {
         availableResources = resourcesService.getAvailableResources();
     }
+
+    public void loadResources(){
+        if(searchQuery != null) {
+            ResourceDto resourceDto = availableResources.stream()
+                    .filter(x -> x.getId().toString().equals(searchQuery))
+                    .findFirst()
+                    .orElse(null);
+            if (resourceDto == null) {
+                availableResources = new ArrayList<>();
+            }else{
+                availableResources = Collections.singletonList(resourceDto);
+            }
+        }
+    }
+
+//    public List<ResourceDto> getAvailableResources() {
+//        if(searchQuery != null) {
+//            ResourceDto resourceDto = availableResources.stream()
+//                    .filter(x -> x.getId().toString().equals(searchQuery))
+//                    .findFirst()
+//                    .orElse(null);
+//            if (resourceDto == null) {
+//                return new ArrayList<>();
+//            }
+//            return Collections.singletonList(resourceDto);
+//        }
+//        return availableResources;
+//    }
 
     public List<ResourceDto> getAvailableResources() {
         return availableResources;
@@ -69,5 +108,9 @@ public class RentingController implements Serializable {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
             context.addMessage(null, message);
         }
+    }
+
+    public String search() {
+        return "rentsPanel.xhtml?faces-redirect=true&searchQuery=" + searchQuery;
     }
 }
