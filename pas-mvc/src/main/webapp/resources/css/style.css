@@ -1,12 +1,11 @@
 body{
     height: 100%;
-    margin: 0;
+    margin-left: 200px;
     background: aliceblue;
 }
 .wrapper{
     padding: 20px;
     margin-bottom: 80px;
-    margin-left: 200px;
 }
 .sidebar{
     width: 200px;

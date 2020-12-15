@@ -6,6 +6,7 @@ import edu.p.lodz.pl.pas.mvc.services.ResourcesService;
 import edu.p.lodz.pl.pas.mvc.services.dto.ResourceDto;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -15,10 +16,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @ViewScoped
 @Named
@@ -29,6 +27,7 @@ public class ResourcesController implements Serializable {
     private String searchQuery;
 
     private List<ResourceDto> reses;
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("edu.p.lodz.pl.pas.mvc.messages");
 
     @PostConstruct
     public void init(){
@@ -69,11 +68,25 @@ public class ResourcesController implements Serializable {
         return "ResourceCreate";
     }
 
-    public void removeResource(ActionEvent event) throws IOException, ObjectLockedByRentException, ObjectNotFoundException {
-        UUID value = (UUID) event.getComponent().getAttributes().get("selected");
-        resourcesService.delete(value);
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+    public void removeResource(ActionEvent event) throws IOException {
+        try{
+            UUID value = (UUID) event.getComponent().getAttributes().get("selected");
+            resourcesService.delete(value);
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+        }
+        catch (ObjectLockedByRentException e){
+            FacesContext context = FacesContext.getCurrentInstance();
+            String res = resourceBundle.getString("res_locked");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
+            context.addMessage(null, message);
+        }
+        catch (ObjectNotFoundException e){
+            FacesContext context = FacesContext.getCurrentInstance();
+            String res = resourceBundle.getString("not_found");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
+            context.addMessage(null, message);
+        }
     }
 
     public String searchActive() {

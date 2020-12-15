@@ -7,10 +7,13 @@ import edu.p.lodz.pl.pas.mvc.services.ResourcesService;
 import edu.p.lodz.pl.pas.mvc.services.dto.ResourceDto;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 @ViewScoped
@@ -25,6 +28,7 @@ public class ResourceFormController implements Serializable {
 
     private String resId;
     private State state;
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("edu.p.lodz.pl.pas.mvc.messages");
 
     public State getState() {
         return state;
@@ -60,10 +64,22 @@ public class ResourceFormController implements Serializable {
             return "Resources";
         } catch (RepositoryException e) {
             e.printStackTrace();
+            FacesContext context = FacesContext.getCurrentInstance();
+            String res = resourceBundle.getString("rep_exception");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
+            context.addMessage(null, message);
         } catch (ObjectNotFoundException e) {
             e.printStackTrace();
+            FacesContext context = FacesContext.getCurrentInstance();
+            String res = resourceBundle.getString("not_found");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
+            context.addMessage(null, message);
         } catch (ObjectAlreadyStoredException e) {
             e.printStackTrace();
+            FacesContext context = FacesContext.getCurrentInstance();
+            String res = resourceBundle.getString("object_stored");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
+            context.addMessage(null, message);
         }
         return "";
     }
