@@ -5,6 +5,7 @@ import edu.p.lodz.pl.pas.mvc.model.User;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.RepositoryException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ResourceNotAvailableException;
+import edu.p.lodz.pl.pas.mvc.model.exceptions.UserNotActiveException;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IEventsRepository;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IResourcesRepository;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IUsersRepository;
@@ -71,9 +72,10 @@ public class EventsService {
         eventsRepository.update(event);
     }
 
-    public void rent(String login, UUID resId) throws ResourceNotAvailableException, ObjectAlreadyStoredException, RepositoryException {
+    public void rent(String login, UUID resId) throws ResourceNotAvailableException, ObjectAlreadyStoredException, RepositoryException, UserNotActiveException {
         if(!eventsRepository.isAvailable(resId)) throw new ResourceNotAvailableException();
         User user = usersRepository.findUserByLogin(login);
+        if(!user.isActive()) throw new UserNotActiveException();
         Event event = new Event(
                 null,
                 new Date(),
@@ -97,39 +99,4 @@ public class EventsService {
                 .collect(Collectors.toList());
         return collect;
     }
-
-//    public List<Event> getCurrentUserRents(User user) {
-//        return null;
-//        return getCurrentRents().stream()
-//                .filter(event -> event.getRenter().getId().equals(user.getId()))
-//                .collect(Collectors.toList());
-//    }
-
-//    public List<Event> getCurrentRents() {
-//        return null;
-//        return eventsRepository.getAll().stream()
-//                .filter(event -> event.getReturnDate() == null)
-//                .collect(Collectors.toList());
-//    }
-
-//    public List<Event> getArchiveRents() {
-//        return null;
-//        return eventsRepository.getAll().stream()
-//                .filter(event -> event.getReturnDate() != null)
-//                .collect(Collectors.toList());
-//    }
-
-//    public Event getEventByBook(UUID bookID) {
-//        return null;
-//        return getCurrentRents().stream()
-//                .filter(event -> event.getResource().getId().equals(bookID))
-//                .findAny()
-//                .orElse(null);
-//    }
-//
-//    public void finishRent(UUID rentEventID) {
-//        Event rentEvent = find(rentEventID);
-//        rentEvent.setReturnDate(new Date());
-//    }
-
 }
