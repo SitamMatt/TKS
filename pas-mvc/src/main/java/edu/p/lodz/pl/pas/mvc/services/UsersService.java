@@ -1,7 +1,9 @@
 package edu.p.lodz.pl.pas.mvc.services;
 
 import edu.p.lodz.pl.pas.mvc.model.User;
-import edu.p.lodz.pl.pas.mvc.model.exceptions.*;
+import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
+import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
+import edu.p.lodz.pl.pas.mvc.model.exceptions.RepositoryException;
 import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IUsersRepository;
 import edu.p.lodz.pl.pas.mvc.services.dto.UserDto;
 
@@ -37,6 +39,9 @@ public class UsersService {
     }
 
     protected UserDto map(User user) {
+        if(user == null) {
+            return new UserDto();
+        }
         return new UserDto(
                 user.getId(),
                 user.isActive(),
