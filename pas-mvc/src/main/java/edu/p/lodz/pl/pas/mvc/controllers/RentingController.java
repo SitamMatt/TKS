@@ -9,20 +9,14 @@ import edu.p.lodz.pl.pas.mvc.services.dto.ResourceDto;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.UUID;
+import java.util.*;
 
 @ViewScoped
 @Named
@@ -72,8 +66,6 @@ public class RentingController implements Serializable {
             String login = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
             UUID value = (UUID) event.getComponent().getAttributes().get("selected");
             eventsService.rent(login, value);
-            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         }
         catch (ObjectAlreadyStoredException e){
             e.printStackTrace();
@@ -93,6 +85,8 @@ public class RentingController implements Serializable {
             String res = resourceBundle.getString("rep_exception");
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, res, "");
             context.addMessage(null, message);
+        } finally {
+            init();
         }
     }
 
