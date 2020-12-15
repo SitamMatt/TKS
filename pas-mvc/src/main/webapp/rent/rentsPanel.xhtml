@@ -34,23 +34,25 @@
                     #{item.publishingHouse}
                 </h:column>
 
-                                <h:column>
-                                    <f:facet name="header">#{msg['type']}</f:facet>
-                                    #{item.type}
-                                </h:column>
-
-                                <h:column>
-                                    <f:facet name="header">#{msg['author']}</f:facet>
-                                    #{item.author}
-                                </h:column>
-
-                                <h:column>
-                                    <f:facet name="header">#{msg['magazine_number']}</f:facet>
-                                    #{item.issueDate}
-                                </h:column>
+                <h:column>
+                    <f:facet name="header">#{msg['type']}</f:facet>
+                    #{item.type}
+                </h:column>
 
                 <h:column>
-                    <h:commandButton value="#{msg['rent_panel.rent']}" action="#{rentingController.rent(item.id)}"/>
+                    <f:facet name="header">#{msg['author']}</f:facet>
+                    #{item.author}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">#{msg['magazine_number']}</f:facet>
+                    #{item.issueDate}
+                </h:column>
+
+                <h:column>
+                    <h:commandButton value="#{msg['rent_panel.rent']}" actionListener="#{rentingController.rent}">
+                        <f:attribute name="selected" value="#{item.id}"/>
+                    </h:commandButton>
                 </h:column>
             </h:dataTable>
         </h:form>

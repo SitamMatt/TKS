@@ -48,6 +48,15 @@ public class UsersFiller {
                 "admin",
                 "admin0"
         ));
+        result.add(new User(
+                UUID.fromString("9c47f5f4-cbdc-414d-8f17-3c4b035f8899"),
+                true,
+                UserRole.CLIENT,
+                "Mateusz",
+                "Szewc",
+                "matt",
+                "1234"
+        ));
 
         return result;
     }
