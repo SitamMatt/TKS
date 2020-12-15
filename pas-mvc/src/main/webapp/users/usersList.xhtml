@@ -8,6 +8,7 @@
 
 <f:metadata>
     <f:viewParam name="searchQuery" value="#{usersController.searchQuery}" required="false"/>
+    <f:viewAction action="#{usersController.loadUsers()}"/>
 </f:metadata>
 
 <f:view>
@@ -28,7 +29,7 @@
                 />
                 <h:commandButton action="#{usersController.search}" value="#{msg['search']}"/>
             </h:panelGroup>
-            <h:dataTable value="#{usersController.listUsers()}" var="currentUser">
+            <h:dataTable value="#{usersController.users}" var="currentUser">
                 <h:column>
                     <f:facet name="header">UID</f:facet>
                     #{currentUser.id}
