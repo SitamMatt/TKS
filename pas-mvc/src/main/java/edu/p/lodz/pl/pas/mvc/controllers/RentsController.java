@@ -29,6 +29,16 @@ public class RentsController implements Serializable {
     }
 
     public List<EventDto> getActiveRents() {
+        if(searchQuery != null) {
+            EventDto eventDto = eventsService.getAllActiveRents().stream()
+                    .filter(x -> x.getId().toString().equals(searchQuery))
+                    .findFirst()
+                    .orElse(null);
+            if (eventDto == null) {
+                return new ArrayList<>();
+            }
+            return Collections.singletonList(eventDto);
+        }
         return eventsService.getAllActiveRents();
     }
 
@@ -49,4 +59,9 @@ public class RentsController implements Serializable {
     public String searchArchived() {
         return "archiveRentsList.xhtml?faces-redirect=true&searchQuery=" + searchQuery;
     }
+
+    public String searchActive() {
+        return "rentsList.xhtml?faces-redirect=true&searchQuery=" + searchQuery;
+    }
+
 }
