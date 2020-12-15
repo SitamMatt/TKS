@@ -56,7 +56,7 @@
 
                 <h:column rendered="#{userSummaryController.login == facesContext.externalContext.userPrincipal.name}">
                     <f:facet name="header"/>
-                    <h:commandButton value="Return" actionListener="#{userSummaryController.returnResource}">
+                    <h:commandButton value="#{msg['return']}" actionListener="#{userSummaryController.returnResource}">
                         <f:attribute name="selected" value="#{rent.resource.id}"/>
                     </h:commandButton>
                 </h:column>
