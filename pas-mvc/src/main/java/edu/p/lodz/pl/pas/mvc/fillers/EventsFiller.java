@@ -21,6 +21,15 @@ public class EventsFiller {
                     UUID.fromString("48bb061d-0a01-4f60-bdfc-f6bac839b107"),
                     UUID.fromString("1514f5ae-f54d-4b4f-ac97-97f32fe18cb0")
             ));
+            Event e = new Event(
+                    UUID.randomUUID(),
+                    sdf.parse("2013-03-01"),
+                    null,
+                    UUID.fromString("48bb061d-0a01-4f60-bdfc-f6bac839b107"),
+                    UUID.fromString("c8168b00-b3e9-42da-afb9-1be9c44ceb44")
+            );
+            e.setReturnDate(sdf.parse("2014-03-02"));
+            result.add(e);
         } catch (ParseException e) {
             return null;
         }
