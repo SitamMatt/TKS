@@ -46,17 +46,35 @@ public class RentingController implements Serializable {
         availableResources = resourcesService.getAvailableResources();
     }
 
-    public List<ResourceDto> getAvailableResources() {
+    public void loadResources(){
         if(searchQuery != null) {
             ResourceDto resourceDto = availableResources.stream()
                     .filter(x -> x.getId().toString().equals(searchQuery))
                     .findFirst()
                     .orElse(null);
             if (resourceDto == null) {
-                return new ArrayList<>();
+                availableResources = new ArrayList<>();
+            }else{
+                availableResources = Collections.singletonList(resourceDto);
             }
-            return Collections.singletonList(resourceDto);
         }
+    }
+
+//    public List<ResourceDto> getAvailableResources() {
+//        if(searchQuery != null) {
+//            ResourceDto resourceDto = availableResources.stream()
+//                    .filter(x -> x.getId().toString().equals(searchQuery))
+//                    .findFirst()
+//                    .orElse(null);
+//            if (resourceDto == null) {
+//                return new ArrayList<>();
+//            }
+//            return Collections.singletonList(resourceDto);
+//        }
+//        return availableResources;
+//    }
+
+    public List<ResourceDto> getAvailableResources() {
         return availableResources;
     }
 
