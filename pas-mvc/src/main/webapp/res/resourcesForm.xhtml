@@ -22,13 +22,16 @@
             <h:form rendered="#{not empty resourceFormController.res}">
                 <h:panelGrid columns="2">
                     <h:outputLabel value="#{msg['title']}" for="title"/>
-                    <h:inputText id="title" value="#{resourceFormController.res.title}"/>
+                    <h:inputText id="title" value="#{resourceFormController.res.title}" required="true"
+                    requiredMessage="#{msg.title_req}"/>
 
                     <h:outputLabel value="#{msg['num_of_pages']}" for="num_of_pages"/>
-                    <h:inputText value="#{resourceFormController.res.pagesCount}" id="num_of_pages"/>
+                    <h:inputText value="#{resourceFormController.res.pagesCount}" id="num_of_pages" required="true"
+                    requiredMessage="#{msg.pages_req}"/>
 
                     <h:outputLabel value="#{msg['publishing_house']}" for="publishing_house"/>
-                    <h:inputText value="#{resourceFormController.res.publishingHouse}" id="publishing_house"/>
+                    <h:inputText value="#{resourceFormController.res.publishingHouse}" id="publishing_house" required="true"
+                    requiredMessage="#{msg.pub_house_req}"/>
 
                     <h:outputLabel value="#{msg['type']}" for="type"
                                    rendered="#{resourceFormController.isCreateState()}"/>
@@ -43,11 +46,13 @@
                     <h:outputLabel value="#{msg['author']}" rendered="#{resourceFormController.res.type == 'Book'}"
                                    for="author"/>
                     <h:inputText value="#{resourceFormController.res.author}" id="author"
-                                 rendered="#{resourceFormController.res.type == 'Book'}"/>
+                                 rendered="#{resourceFormController.res.type == 'Book'}"
+                                 required="true" requiredMessage="#{msg.author_req}"/>
                     <h:outputLabel value="#{msg['magazine_number']}: "
                                    rendered="#{resourceFormController.res.type == 'Magazine'}" for="issue"/>
                     <h:inputText value="#{resourceFormController.res.issueDate}"
-                                 rendered="#{resourceFormController.res.type == 'Magazine'}" id="issue"/>
+                                 rendered="#{resourceFormController.res.type == 'Magazine'}" id="issue"
+                                 required="true" requiredMessage="#{msg.mag_number_required}"/>
 
                     <h:commandButton value="#{msg['back']}" action="resourcesList"/>
                     <h:commandButton value="#{msg['submit']}" action="#{resourceFormController.saveResource}">
