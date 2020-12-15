@@ -3,7 +3,6 @@ package edu.p.lodz.pl.pas.mvc.controllers;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.RepositoryException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ResourceNotAvailableException;
-import edu.p.lodz.pl.pas.mvc.model.exceptions.UserNotActiveException;
 import edu.p.lodz.pl.pas.mvc.services.EventsService;
 import edu.p.lodz.pl.pas.mvc.services.ResourcesService;
 import edu.p.lodz.pl.pas.mvc.services.dto.ResourceDto;
@@ -73,8 +72,6 @@ public class RentingController implements Serializable {
             String login = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
             UUID value = (UUID) event.getComponent().getAttributes().get("selected");
             eventsService.rent(login, value);
-            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         }
         catch (ObjectAlreadyStoredException e){
             e.printStackTrace();
@@ -96,6 +93,8 @@ public class RentingController implements Serializable {
             context.addMessage(null, message);
         } catch (UserNotActiveException e) {
             e.printStackTrace();
+        } finally {
+            init();
         }
     }
 
