@@ -19,11 +19,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.UUID;
+import java.util.*;
 
 @ViewScoped
 @Named
@@ -73,6 +69,8 @@ public class RentingController implements Serializable {
             String login = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal().getName();
             UUID value = (UUID) event.getComponent().getAttributes().get("selected");
             eventsService.rent(login, value);
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         }
         catch (ObjectAlreadyStoredException e){
             e.printStackTrace();

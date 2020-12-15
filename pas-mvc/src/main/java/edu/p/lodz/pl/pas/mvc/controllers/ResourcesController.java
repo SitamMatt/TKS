@@ -7,11 +7,13 @@ import edu.p.lodz.pl.pas.mvc.services.dto.ResourceDto;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
@@ -70,6 +72,8 @@ public class ResourcesController implements Serializable {
         try{
             UUID value = (UUID) event.getComponent().getAttributes().get("selected");
             resourcesService.delete(value);
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         }
         catch (ObjectLockedByRentException e){
             FacesContext context = FacesContext.getCurrentInstance();
