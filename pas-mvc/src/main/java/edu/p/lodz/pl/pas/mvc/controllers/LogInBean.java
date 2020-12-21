@@ -1,12 +1,8 @@
 package edu.p.lodz.pl.pas.mvc.controllers;
 
-import edu.p.lodz.pl.pas.mvc.services.UsersService;
-import edu.p.lodz.pl.pas.mvc.services.dto.UserDto;
-
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,14 +19,9 @@ public class LogInBean implements Serializable {
     private String password;
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("edu.p.lodz.pl.pas.mvc.messages");
 
-    @Inject
-    UsersService usersService;
-
     public String login(){
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
-
-        UserDto user = usersService.find(username);
         try {
             request.login(username, password);
             logger.log(Level.INFO, username + " logged successfully");
