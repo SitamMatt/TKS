@@ -16,8 +16,18 @@
     <body>
     <ui:composition template="/common/templateLayout.xhtml">
         <ui:define name="content">
+<!--            <h:outputScript library="js" name="validate.js"/>-->
+            <script type="text/javascript">
+                function validateForm(){
+                    const password = document.getElementById("form:password");
+                    if(password.value.length &lt; 8){
+                        alert("#{msg['password_too_short']}")
+                    }
+                    return password.value.length > 8
+                }
+            </script>
             <h:outputLabel value="#{msg['edit_user']}"/>
-            <h:form rendered="#{not empty userFormController.user}">
+            <h:form rendered="#{not empty userFormController.user}" id="form" onsubmit="return validateForm()">
                 <h:panelGrid columns="2">
                     <h:outputLabel for="firstname" value="#{msg['firstname']}"/>
                     <h:inputText id="firstname" value="#{userFormController.user.firstName}"/>
