@@ -41,6 +41,17 @@
     <security-role>
         <role-name>WORKER</role-name>
     </security-role>
+    
+<!--    https redirection -->
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>Secured URLs</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
 
 <!--    Restrictions on access to resources-->
     <security-constraint>
