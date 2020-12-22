@@ -53,6 +53,6 @@ public class UserSummaryController implements Serializable {
         UUID value = (UUID) event.getComponent().getAttributes().get("selected");
         eventsService.returnResource(user.getId(), value);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+        ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI().concat("?login=" + user.getLogin()));
     }
 }
