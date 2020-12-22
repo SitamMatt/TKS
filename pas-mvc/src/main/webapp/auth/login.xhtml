@@ -16,19 +16,19 @@
     #{msg['login_message']}
 </p>
 
-<form method="post" action="j_security_check" name="loginForm">
+<h:form>
     <h:panelGrid columns="2">
         <h:outputLabel id="userNameLabel" for="j_username"/>
-        <h:inputText id="j_username" autocomplete="off" />
+        <h:inputText id="j_username" autocomplete="off" value="#{logInBean.username}"/>
         <h:outputLabel id="passwordLabel" for="j_password"/>
-        <h:inputSecret id="j_password" autocomplete="off"/>
+        <h:inputSecret id="j_password" autocomplete="off" value="#{logInBean.password}"/>
         <div/>
         <h:panelGroup>
-            <h:commandButton type="submit" value="#{msg['login']}"/>
+            <h:commandButton type="submit" value="#{msg['login']}" action="#{logInBean.login}"/>
             <h:commandButton type="reset" value="#{msg['clear']}"/>
         </h:panelGroup>
     </h:panelGrid>
-</form>
+</h:form>
 
 </body>
 
