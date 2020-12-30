@@ -9,6 +9,7 @@ import repositories.interfaces.IRepositoryBase;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public abstract class RepositoryBase<T extends Entity> implements IRepositoryBase<T> {
     protected List<T> items;
@@ -22,8 +23,20 @@ public abstract class RepositoryBase<T extends Entity> implements IRepositoryBas
     }
 
     @Override
+    public synchronized int count(){
+        return items.size();
+    }
+
+    @Override
     public synchronized List<T> getAll() {
         return items;
+    }
+
+    @Override
+    public synchronized List<T> getPaged(int page, int maxResults){
+        var result =  items.stream().skip((long) page * maxResults);
+        if(maxResults != 0) result = result.limit(maxResults);
+        return result.collect(Collectors.toList());
     }
 
     @Override
