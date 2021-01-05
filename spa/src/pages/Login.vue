@@ -1,7 +1,5 @@
 <template>
-  <q-page
-    class="window-height window-width row justify-center items-center"
-  >
+  <q-page class="window-height window-width row justify-center items-center">
     <div class="column">
       <div class="row">
         <h5 class="text-h5 q-my-md">BookIt</h5>
@@ -29,12 +27,7 @@
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
-            <q-btn
-              unelevated
-              size="lg"
-              class="full-width"
-              label="Login"
-            />
+            <q-btn unelevated size="lg" class="full-width" label="Login" />
           </q-card-actions>
           <q-card-section class="text-center q-pa-none">
             <p class="text-grey-6">Not reigistered? Created an Account</p>
