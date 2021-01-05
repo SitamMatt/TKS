@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue } from 'vue-property-decorator';
 
 export default class WelcomeLayout extends Vue {
 
