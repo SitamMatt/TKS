@@ -4,8 +4,7 @@ import services.EventsService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.util.UUID;
 
 @Path("events")
@@ -16,11 +15,13 @@ public class EventsController {
     @GET
     @Path("{id}")
     @Produces("application/json")
-    public Response get(@PathParam("id") String id){
+    public Response get(@Context final Request request, @PathParam("id") String id){
+        EntityTag eTag = new EntityTag("123456789");
+        Response.ResponseBuilder responseBuilder = request.evaluatePreconditions(eTag);
         var uuid = UUID.fromString(id);
         var event = eventsService.find(uuid);
         if(event == null) Response.status(404).build();
-        return Response.ok(event).build();
+        return Response.ok(event).tag(eTag).build();
     }
 
     @GET
