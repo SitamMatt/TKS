@@ -18,9 +18,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src/main/kotlin" />
-        </sourceRoots>
       </configuration>
     </facet>
     <facet type="kotlin-language" name="Kotlin">
@@ -48,7 +45,6 @@
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/kotlin" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
@@ -68,5 +64,10 @@
     <orderEntry type="library" name="Maven: javax:javaee-api:8.0" level="project" />
     <orderEntry type="library" name="Maven: com.sun.mail:javax.mail:1.6.0" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
+    <orderEntry type="library" name="Maven: com.nimbusds:nimbus-jose-jwt:8.4" level="project" />
+    <orderEntry type="library" name="Maven: com.github.stephenc.jcip:jcip-annotations:1.0-1" level="project" />
+    <orderEntry type="library" name="Maven: net.minidev:json-smart:2.3" level="project" />
+    <orderEntry type="library" name="Maven: net.minidev:accessors-smart:1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm:5.0.4" level="project" />
   </component>
 </module>
