@@ -8,6 +8,7 @@ const routes: RouteConfig[] = [
       { path: '', component: () => import('pages/Index.vue') },
       { path: 'login', component: () => import('pages/Login.vue') },
       { path: 'rents', component: () => import('pages/Rents.vue') },
+      { path: 'form', component: () => import('pages/ExampleForm.vue') },
     ],
   },
   {
