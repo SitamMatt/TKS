@@ -33,7 +33,7 @@ public class InMemoryIdentityStore4Authentication implements IdentityStore {
         if (user == null)
             return INVALID_RESULT;
         String password = user.getPassword();
-        if (password != null && password.equals(credential.getPasswordAsString())) {
+        if (password != null && password.equals(credential.getPasswordAsString()) && user.isActive()) {
             return new CredentialValidationResult(credential.getCaller());
         }
         return INVALID_RESULT;
