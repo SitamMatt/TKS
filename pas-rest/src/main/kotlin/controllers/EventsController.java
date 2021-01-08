@@ -2,6 +2,7 @@ package controllers;
 
 import services.EventsService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -15,6 +16,7 @@ public class EventsController {
 
     @GET
     @Path("{id}")
+    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@PathParam("id") String id){
         var uuid = UUID.fromString(id);
@@ -24,6 +26,7 @@ public class EventsController {
     }
 
     @GET
+    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@QueryParam("type") String type,
                         @QueryParam("page") int page,
