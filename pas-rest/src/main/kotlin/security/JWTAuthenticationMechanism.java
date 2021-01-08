@@ -23,13 +23,9 @@ public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
     public AuthenticationStatus validateRequest(HttpServletRequest request, HttpServletResponse response, HttpMessageContext context) throws AuthenticationException {
         String rawToken = extractToken(context);
 
-        if ("POST".equalsIgnoreCase(request.getMethod())) {
+        if ("POST".equalsIgnoreCase(request.getMethod()) && request.getRequestURI().contains("/auth/login")) {
             // Wyłączenie mechanizmu dla /auth/login
-            if (request.getRequestURI().contains("/auth/login")) {
-                return context.doNothing();
-            } else {
-                return context.responseUnauthorized();
-            }
+            return context.doNothing();
         } else if(rawToken != null) {
             LOG.log(Level.INFO, "Validating jwt token...");
             return validateToken(rawToken, context);
