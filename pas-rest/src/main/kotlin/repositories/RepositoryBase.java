@@ -15,7 +15,7 @@ public abstract class RepositoryBase<T extends Entity> implements IRepositoryBas
     protected List<T> items;
 
     public synchronized boolean has(UUID id) {
-        return items.stream().anyMatch(x -> x.getId() == id);
+        return items.stream().anyMatch(x -> x.getId().equals(id));
     }
 
     public synchronized T getById(UUID id) {
