@@ -34,6 +34,7 @@ public class UsersController {
 
     // todo good, but add error handling
     @GET
+    @RolesAllowed("ADMIN")
     @Produces("application/json")
     public Response get(@QueryParam("type") String type,
                         @QueryParam("page") int page,
@@ -46,6 +47,7 @@ public class UsersController {
     // todo good, but add error handling
     @GET
     @Path("{id}")
+    @RolesAllowed("ADMIN")
     @Produces("application/json")
     public Response get(@PathParam("id") String id){
         var uuid = UUID.fromString(id);
@@ -69,7 +71,7 @@ public class UsersController {
     // todo good, but add error handling
     // todo maybe return createdAt
     @POST
-//    @RolesAllowed("ADMIN")
+    @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response add(final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
         usersService.add(model);
@@ -80,9 +82,9 @@ public class UsersController {
     // todo maybe return createdAt
     @PUT
     @Path("{id}")
-//    @RolesAllowed({"ADMIN", "CLIENT"})
+    @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response updateUser(@PathParam("id") String id, final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public Response update(@PathParam("id") String id, final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
         var guid = UUID.fromString(id);
         usersService.update(guid, model);
         return Response.ok().build();
