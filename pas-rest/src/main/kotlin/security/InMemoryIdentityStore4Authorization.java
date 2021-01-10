@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import model.UserRole;
+import repositories.UsersRepository;
 import services.UsersService;
 import services.dto.UserDto;
 
@@ -17,7 +18,7 @@ import services.dto.UserDto;
 class InMemoryIdentityStore4Authorization implements IdentityStore {
 
     @Inject
-    private UsersService usersService;
+    private UsersRepository usersService;
 
     @Override
     public int priority() {
@@ -31,7 +32,7 @@ class InMemoryIdentityStore4Authorization implements IdentityStore {
 
     @Override
     public Set<String> getCallerGroups(CredentialValidationResult validationResult) {
-        UserDto user = usersService.find(validationResult.getCallerPrincipal().getName());
+        var user = usersService.findUserByLogin(validationResult.getCallerPrincipal().getName());
         if (user == null)
             return null;
         return getRolesFromEnum(user.getRole());

@@ -1,13 +1,12 @@
 package controllers;
 
 
-import jdk.net.SocketFlow;
-import model.LoginData;
-import model.User;
-import model.UserRole;
+import dto.UserBaseDto;
+import dto.UserGetDto;
 import model.exceptions.ObjectAlreadyStoredException;
 import model.exceptions.ObjectNotFoundException;
 import model.exceptions.RepositoryException;
+import org.modelmapper.ModelMapper;
 import services.UsersService;
 import services.dto.UserDto;
 
@@ -33,68 +32,82 @@ public class UsersController {
     @Inject
     private UsersService usersService;
 
+    // todo good, but add error handling
     @GET
-    @RolesAllowed("ADMIN")
-    public Response get() {
-        return Response.ok().entity(usersService.getAllUsers()).build();
+    @Produces("application/json")
+    public Response get(@QueryParam("type") String type,
+                        @QueryParam("page") int page,
+                        @QueryParam("maxResults") int maxResults,
+                        @QueryParam("search") String search){
+        var result = usersService.filter(type, page, maxResults, search);
+        return Response.ok(result).build();
     }
-    
+
+    // todo good, but add error handling
     @GET
-    @Path("mydata")
+    @Path("{id}")
+    @Produces("application/json")
+    public Response get(@PathParam("id") String id){
+        var uuid = UUID.fromString(id);
+        var user = usersService.find(uuid);
+        if(user == null) Response.status(404).build();
+        return Response.ok(user).build();
+    }
+
+    // todo good, but add error handling
+    @GET
+    @Path("me")
     @RolesAllowed({"ADMIN", "WORKER", "CLIENT"})
-    public Response getMyData() {
-        return Response.ok().entity(usersService.find(securityContext.getUserPrincipal().getName())).build();
+    @Produces("application/json")
+    public Response getMe(){
+        var login = securityContext.getUserPrincipal().getName();
+        var user = usersService.find(login);
+        if(user == null) Response.status(404).build();
+        return Response.ok(user).build();
     }
 
+    // todo good, but add error handling
+    // todo maybe return createdAt
     @POST
-    @Path("adduser")
-    @RolesAllowed("ADMIN")
+//    @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response addUser(@NotNull LoginData loginData,
-                            @DefaultValue("CLIENT") @QueryParam("role") String role,
-                            @DefaultValue("true") @QueryParam("isActive") boolean isActive,
-                            @QueryParam("firstName") String firstName,
-                            @QueryParam("lastName") String lastName) {
-        UserDto userDto = new UserDto(UUID.randomUUID(), isActive, UserRole.fromString(role), firstName,
-                lastName, loginData.getLogin(), loginData.getPassword());
-        return saveData(userDto);
-    }
-
-    @PUT
-    @Path("updateuser")
-    @RolesAllowed({"ADMIN", "CLIENT"})
-    @Consumes({MediaType.APPLICATION_JSON})
-    public Response updateUser(@NotNull UserDto userData) {
-        if(securityContext.isUserInRole("CLIENT") && !securityContext.getUserPrincipal().getName().equals(userData.getLogin())) {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
-        }
-
-        if(usersService.getAllUsers().stream().anyMatch(u -> u.getId().equals(userData.getId()))) {
-            return saveData(userData);
-        }
-        return Response.status(Response.Status.NOT_FOUND).build();
-    }
-
-    @GET
-    @Path("userdata")
-    @RolesAllowed("ADMIN")
-    public Response getUserData(@NotNull @QueryParam("login") String login) {
-        UserDto user = usersService.find(login);
-        if(user == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok().entity(user).build();
-    }
-
-    private Response saveData(@NotNull UserDto userData) {
-        try {
-            usersService.save(userData);
-        } catch (ObjectNotFoundException e) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        } catch (ObjectAlreadyStoredException | RepositoryException e) {
-            return Response.status(Response.Status.CONFLICT).build();
-        }
+    public Response add(final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+        usersService.add(model);
         return Response.ok().build();
     }
+
+    // todo good, but add error handling
+    // todo maybe return createdAt
+    @PUT
+    @Path("{id}")
+//    @RolesAllowed({"ADMIN", "CLIENT"})
+    @Consumes({MediaType.APPLICATION_JSON})
+    public Response updateUser(@PathParam("id") String id, final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+        var guid = UUID.fromString(id);
+        usersService.update(guid, model);
+        return Response.ok().build();
+    }
+
+//    @GET
+//    @Path("userdata")
+//    @RolesAllowed("ADMIN")
+//    public Response getUserData(@NotNull @QueryParam("login") String login) {
+//        UserDto user = usersService.find(login);
+//        if(user == null) {
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        }
+//        return Response.ok().entity(user).build();
+//    }
+
+//    private Response saveData(@NotNull UserDto userData) {
+//        try {
+//            usersService.save(userData);
+//        } catch (ObjectNotFoundException e) {
+//            return Response.status(Response.Status.NOT_FOUND).build();
+//        } catch (ObjectAlreadyStoredException | RepositoryException e) {
+//            return Response.status(Response.Status.CONFLICT).build();
+//        }
+//        return Response.ok().build();
+//    }
 
 }

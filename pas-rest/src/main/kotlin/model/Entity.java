@@ -3,17 +3,21 @@ package model;
 import java.util.UUID;
 
 public abstract class Entity {
-    private UUID id;
+    private UUID guid;
 
-    public Entity(UUID id) {
-        this.id = id;
+    public Entity(){
+        this.guid = null;
     }
 
-    public UUID getId() {
-        return id;
+    public Entity(UUID guid) {
+        this.guid = guid;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public UUID getGuid() {
+        return guid;
+    }
+
+    public void setGuid(UUID guid) {
+        this.guid = guid;
     }
 }

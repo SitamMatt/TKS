@@ -41,7 +41,7 @@ public class ResourcesService {
             issueDate = ((Magazine) resource).getIssueDate();
         }
         return new ResourceDto(
-                resource.getId(),
+                resource.getGuid(),
                 resource.getTitle(),
                 resource.getPagesCount(),
                 resource.getPublishingHouse(),
@@ -73,7 +73,7 @@ public class ResourcesService {
     }
 
     public ResourceDto find(UUID id) {
-        Resource resource =  resourcesRepository.getById(id);
+        Resource resource =  resourcesRepository.getByGuid(id);
         return map(resource);
     }
 
@@ -106,7 +106,7 @@ public class ResourcesService {
     public List<ResourceDto> getAvailableResources() {
         List<Event> rents = eventsRepository.getAllActiveRents();
         return resourcesRepository.getAll().stream()
-                .filter(x -> rents.stream().noneMatch(e -> e.getResourceId().equals(x.getId())))
+                .filter(x -> rents.stream().noneMatch(e -> e.getResourceId().equals(x.getGuid())))
                 .map(this::map)
                 .collect(Collectors.toList());
     }

@@ -2,8 +2,8 @@ package repositories;
 
 
 import fillers.UsersFiller;
-import model.User;
 import model.exceptions.LoginAlreadyTakenException;
+import model.kto.User;
 import repositories.interfaces.IUsersRepository;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +32,7 @@ public class UsersRepository extends RepositoryBase<User> implements IUsersRepos
                 .filter(x -> x.getLogin().equals(item.getLogin()))
                 .findFirst();
 
-        if (result.isPresent() && !result.get().getId().equals(item.getId())) {
+        if (result.isPresent() && !result.get().getGuid().equals(item.getGuid())) {
             throw new LoginAlreadyTakenException();
         }
     }

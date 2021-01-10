@@ -38,23 +38,24 @@ public class EventsService {
                 dto.getId(),
                 dto.getRentDate(),
                 dto.getReturnDate(),
-                dto.getResource().getId(),
-                dto.getRenter().getId()
+                dto.getResource().getGuid(),
+                dto.getRenter().getGuid()
         );
     }
 
     protected EventDto map(Event event) {
-        return new EventDto(
-                event.getId(),
-                event.getRentDate(),
-                event.getReturnDate(),
-                usersRepository.getById(event.getUserId()),
-                resourcesRepository.getById(event.getResourceId())
-        );
+//        return new EventDto(
+//                event.getGuid(),
+//                event.getRentDate(),
+//                event.getReturnDate(),
+//                usersRepository.getByGuid(event.getUserId()),
+//                resourcesRepository.getByGuid(event.getResourceId())
+//        );
+        return null;
     }
 
     public Event find(UUID id) {
-        return eventsRepository.getById(id);
+        return eventsRepository.getByGuid(id);
     }
 
     public List<EventDto> getUserActiveRents(UUID id) {
@@ -73,17 +74,17 @@ public class EventsService {
     }
 
     public void rent(String login, UUID resId) throws ResourceNotAvailableException, ObjectAlreadyStoredException, RepositoryException, UserNotActiveException {
-        if (!eventsRepository.isAvailable(resId)) throw new ResourceNotAvailableException();
-        User user = usersRepository.findUserByLogin(login);
-        if (!user.isActive()) throw new UserNotActiveException();
-        Event event = new Event(
-                null,
-                new Date(),
-                null,
-                user.getId(),
-                resId
-        );
-        eventsRepository.add(event);
+//        if (!eventsRepository.isAvailable(resId)) throw new ResourceNotAvailableException();
+//        User user = usersRepository.findUserByLogin(login);
+//        if (!user.isActive()) throw new UserNotActiveException();
+//        Event event = new Event(
+//                null,
+//                new Date(),
+//                null,
+//                user.getGuid(),
+//                resId
+//        );
+//        eventsRepository.add(event);
     }
 
     public List<EventDto> getAllActiveRents(Integer page, Integer maxResults) {
@@ -117,7 +118,7 @@ public class EventsService {
                 break;
         }
         if(search != null){
-            stream = stream.filter(x -> x.getId().toString().contains(search));
+            stream = stream.filter(x -> x.getGuid().toString().contains(search));
         }
         return stream.collect(Collectors.toList());
     }
