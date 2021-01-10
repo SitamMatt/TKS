@@ -3,6 +3,8 @@ package services.dto;
 
 import model.UserRole;
 
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.QueryParam;
 import java.util.UUID;
 
 public class UserDto {
@@ -14,7 +16,7 @@ public class UserDto {
     private String login;
     private String password;
 
-    public UserDto(UUID id, boolean isActive, UserRole role, String firstName, String lastName, String login, String password) {
+    public UserDto(UUID id, boolean isActive, UserRole role,@NotNull String firstName, String lastName, String login, String password) {
         this.id = id;
         this.isActive = isActive;
         this.role = role;

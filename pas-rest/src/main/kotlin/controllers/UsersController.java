@@ -13,6 +13,7 @@ import services.dto.UserDto;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -53,7 +54,7 @@ public class UsersController {
     public Response addUser(@NotNull LoginData loginData,
                             @DefaultValue("CLIENT") @QueryParam("role") String role,
                             @DefaultValue("true") @QueryParam("isActive") boolean isActive,
-                            @QueryParam("firstName") String firstName,
+                            @NotNull(message = "cannot be a null") @Valid @QueryParam("firstName") String firstName,
                             @QueryParam("lastName") String lastName) {
         UserDto userDto = new UserDto(UUID.randomUUID(), isActive, UserRole.fromString(role), firstName,
                 lastName, loginData.getLogin(), loginData.getPassword());
