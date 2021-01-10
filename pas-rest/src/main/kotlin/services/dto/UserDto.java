@@ -46,6 +46,10 @@ public class UserDto {
         return id;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public UserRole getRole() {
         return role;
     }

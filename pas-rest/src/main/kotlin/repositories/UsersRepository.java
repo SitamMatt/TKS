@@ -32,7 +32,7 @@ public class UsersRepository extends RepositoryBase<User> implements IUsersRepos
                 .filter(x -> x.getLogin().equals(item.getLogin()))
                 .findFirst();
 
-        if (result.isPresent() && result.get().getId() != item.getId()) {
+        if (result.isPresent() && !result.get().getId().equals(item.getId())) {
             throw new LoginAlreadyTakenException();
         }
     }
