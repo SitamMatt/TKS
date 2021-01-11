@@ -1,17 +1,20 @@
 package repositories;
 
 
+import mappers.Mapper;
+import exceptions.ObjectAlreadyStoredException;
+import exceptions.ObjectNotFoundException;
+import exceptions.RepositoryException;
 import model.Entity;
-import model.exceptions.ObjectAlreadyStoredException;
-import model.exceptions.ObjectNotFoundException;
-import model.exceptions.RepositoryException;
 import repositories.interfaces.IRepositoryBase;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public abstract class RepositoryBase<T extends Entity> implements IRepositoryBase<T> {
+    @Inject protected Mapper mapper;
     protected List<T> items;
 
     public synchronized boolean has(UUID id) {
@@ -55,7 +58,9 @@ public abstract class RepositoryBase<T extends Entity> implements IRepositoryBas
         map(item, original);
     }
 
-    protected abstract void map(T source, T destination) throws RepositoryException;
+    protected synchronized void map(T source, T destination) throws RepositoryException{
+        mapper.map(source, destination);
+    }
 
     protected void validate(T item) throws RepositoryException {
     }

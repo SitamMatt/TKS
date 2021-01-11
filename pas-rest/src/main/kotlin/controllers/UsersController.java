@@ -2,17 +2,13 @@ package controllers;
 
 
 import dto.UserBaseDto;
-import dto.UserGetDto;
-import model.exceptions.ObjectAlreadyStoredException;
-import model.exceptions.ObjectNotFoundException;
-import model.exceptions.RepositoryException;
-import org.modelmapper.ModelMapper;
+import exceptions.ObjectAlreadyStoredException;
+import exceptions.ObjectNotFoundException;
+import exceptions.RepositoryException;
 import services.UsersService;
-import services.dto.UserDto;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -50,8 +46,8 @@ public class UsersController {
     @RolesAllowed("ADMIN")
     @Produces("application/json")
     public Response get(@PathParam("id") String id){
-        var uuid = UUID.fromString(id);
-        var user = usersService.find(uuid);
+        var guid = UUID.fromString(id);
+        var user = usersService.find(guid);
         if(user == null) Response.status(404).build();
         return Response.ok(user).build();
     }

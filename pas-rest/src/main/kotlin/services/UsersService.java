@@ -4,12 +4,11 @@ import dto.UserBaseDto;
 import dto.UserGetDto;
 import mappers.Mapper;
 import model.UserRole;
-import model.exceptions.ObjectAlreadyStoredException;
-import model.exceptions.ObjectNotFoundException;
-import model.exceptions.RepositoryException;
-import model.kto.User;
+import exceptions.ObjectAlreadyStoredException;
+import exceptions.ObjectNotFoundException;
+import exceptions.RepositoryException;
+import model.User;
 import repositories.interfaces.IUsersRepository;
-import services.dto.UserDto;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -35,32 +34,32 @@ public class UsersService {
         usersRepository.update(user);
     }
 
-    protected UserDto map(User user) {
-        if(user == null) {
-            return new UserDto();
-        }
-        return new UserDto(
-                user.getGuid(),
-                user.isActive(),
-                user.getRole(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getLogin(),
-                user.getPassword()
-        );
-    }
+//    protected UserDto map(User user) {
+//        if(user == null) {
+//            return new UserDto();
+//        }
+//        return new UserDto(
+//                user.getGuid(),
+//                user.isActive(),
+//                user.getRole(),
+//                user.getFirstName(),
+//                user.getLastName(),
+//                user.getLogin(),
+//                user.getPassword()
+//        );
+//    }
 
-    protected User mapBack(UserDto dto) {
-        return new User(
-                dto.getId(),
-                dto.isActive(),
-                dto.getRole(),
-                dto.getFirstName(),
-                dto.getLastName(),
-                dto.getLogin(),
-                dto.getPassword()
-        );
-    }
+//    protected User mapBack(UserDto dto) {
+//        return new User(
+//                dto.getId(),
+//                dto.isActive(),
+//                dto.getRole(),
+//                dto.getFirstName(),
+//                dto.getLastName(),
+//                dto.getLogin(),
+//                dto.getPassword()
+//        );
+//    }
 
     public UserGetDto find(UUID uuid) {
         var user = usersRepository.getByGuid(uuid);
