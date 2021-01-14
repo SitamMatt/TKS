@@ -25,6 +25,7 @@ public class EventsController {
         return Response.ok(event).build();
     }
 
+    // todo w przypadku spa należy pomyśleć o wywyłaniu info o maks liczbie stron
     @GET
 //    @RolesAllowed("WORKER")
     @Produces("application/json")
@@ -35,4 +36,6 @@ public class EventsController {
         var result = eventsService.filter(type, page, maxResults, search);
         return Response.ok(result).build();
     }
+
+    // todo get user archived events + special method for user
 }

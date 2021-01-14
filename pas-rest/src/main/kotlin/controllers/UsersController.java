@@ -28,7 +28,6 @@ public class UsersController {
     @Inject
     private UsersService usersService;
 
-    // todo good, but add error handling
     @GET
     @RolesAllowed("ADMIN")
     @Produces("application/json")
@@ -52,7 +51,6 @@ public class UsersController {
         return Response.ok(user).build();
     }
 
-    // todo good, but add error handling
     @GET
     @Path("me")
     @RolesAllowed({"ADMIN", "WORKER", "CLIENT"})
@@ -64,12 +62,11 @@ public class UsersController {
         return Response.ok(user).build();
     }
 
-    // todo good, but add error handling
     // todo maybe return createdAt
     @POST
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response add(final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public Response add(final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException {
         usersService.add(model);
         return Response.ok().build();
     }
@@ -80,7 +77,7 @@ public class UsersController {
     @Path("{id}")
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") String id, final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public Response update(@PathParam("id") String id, final UserBaseDto model) throws RepositoryException, ObjectNotFoundException {
         var guid = UUID.fromString(id);
         usersService.update(guid, model);
         return Response.ok().build();

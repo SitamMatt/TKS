@@ -28,7 +28,7 @@ public class UsersService {
         usersRepository.add(user);
     }
 
-    public void update(UUID guid, UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public void update(UUID guid, UserBaseDto model) throws RepositoryException, ObjectNotFoundException {
         var user = mapper.getMapper().map(model, User.class);
         user.setGuid(guid);
         usersRepository.update(user);
