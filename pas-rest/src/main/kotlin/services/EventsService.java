@@ -2,6 +2,7 @@ package services;
 
 
 import mappers.Mapper;
+import mappers.MapperHelper;
 import model.Event;
 import repositories.interfaces.IEventsRepository;
 
@@ -15,10 +16,12 @@ import java.util.stream.Collectors;
 public class EventsService {
     @Inject private IEventsRepository eventsRepository;
     @Inject private Mapper mapper;
+    @Inject private MapperHelper helper;
 
     public dto.EventDto find(UUID id) {
         var event = eventsRepository.getByGuid(id);
-        return mapper.map(event, dto.EventDto.class);
+//        return mapper.getMapper().map(event, dto.EventDto.class);
+        return helper.getMapper().mapEventToDto(event);
     }
 
 //    public List<EventDto> getUserActiveRents(UUID id) {

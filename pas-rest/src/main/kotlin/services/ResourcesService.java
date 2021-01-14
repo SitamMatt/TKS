@@ -6,6 +6,8 @@ import dto.ResourceType;
 import mappers.Mapper;
 import exceptions.ObjectLockedByRentException;
 import exceptions.ObjectNotFoundException;
+import mappers.MapperHelper;
+import mappers.Mapperrek;
 import model.Book;
 import model.Event;
 import model.Magazine;
@@ -28,15 +30,17 @@ public class ResourcesService {
     @Inject private IEventsRepository eventsRepository;
     @Inject private IUsersRepository usersRepository;
     @Inject private Mapper mapper;
+    @Inject private MapperHelper helper;
+    @Inject private Mapperrek m;
 
     public void add(ResourceBaseDto model) throws Exception {
-        var resource = (Resource) mapper.map(model,
+        var resource = (Resource) mapper.getMapper().map(model,
                 getType(Objects.requireNonNull(model.getType())));
         resourcesRepository.add(resource);
     }
 
     public void update(UUID guid, ResourceBaseDto model) throws Exception {
-        var resource = (Resource) mapper.map(model,
+        var resource = (Resource) mapper.getMapper().map(model,
                 getType(Objects.requireNonNull(model.getType())));
         resourcesRepository.update(resource);
     }
@@ -54,7 +58,7 @@ public class ResourcesService {
 
     public ResourceGetDto find(UUID id) {
         Resource resource =  resourcesRepository.getByGuid(id);
-        return mapper.map(resource, ResourceGetDto.class);
+        return mapper.getMapper().map(resource, ResourceGetDto.class);
     }
 
     public boolean delete(UUID id) throws ObjectLockedByRentException, ObjectNotFoundException {
@@ -78,7 +82,9 @@ public class ResourcesService {
         return resourcesRepository.getAll().stream()
                 .filter(x -> rents.stream().noneMatch(e -> Objects
                                         .equals(e.getResourceId(), x.getGuid())))
-                .map(r -> mapper.map(r, ResourceGetDto.class))
+                .map(r -> mapper.getMapper().map(r, ResourceGetDto.class))
+//                .map(helper.getMapper()::mapResourceToDto)
+//                .map(x -> m.mapToDto(x))
                 .collect(Collectors.toList());
     }
 
@@ -105,7 +111,7 @@ public class ResourcesService {
                 return result;
             });
         }
-        return stream.map(x -> mapper.map(x, ResourceGetDto.class))
+        return stream.map(x -> mapper.getMapper().map(x, ResourceGetDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -115,7 +121,7 @@ public class ResourcesService {
         var rents = eventsRepository.getUserActiveRents(user.getGuid());
         return rents.stream()
                 .map(r -> resourcesRepository.getByGuid(r.getResourceId()))
-                .map(r -> mapper.map(r, ResourceGetDto.class))
+                .map(r -> mapper.getMapper().map(r, ResourceGetDto.class))
                 .collect(Collectors.toList());
     }
 

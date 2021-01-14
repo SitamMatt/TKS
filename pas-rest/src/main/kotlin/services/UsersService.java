@@ -24,12 +24,12 @@ public class UsersService {
     private Mapper mapper;
 
     public void add(UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException {
-        var user = mapper.map(model, User.class);
+        var user = mapper.getMapper().map(model, User.class);
         usersRepository.add(user);
     }
 
     public void update(UUID guid, UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
-        var user = mapper.map(model, User.class);
+        var user = mapper.getMapper().map(model, User.class);
         user.setGuid(guid);
         usersRepository.update(user);
     }
@@ -63,12 +63,12 @@ public class UsersService {
 
     public UserGetDto find(UUID uuid) {
         var user = usersRepository.getByGuid(uuid);
-        return mapper.map(user, UserGetDto.class);
+        return mapper.getMapper().map(user, UserGetDto.class);
     }
 
     public UserGetDto find(String login) {
         var user = usersRepository.findUserByLogin(login);
-        return mapper.map(user, UserGetDto.class);
+        return mapper.getMapper().map(user, UserGetDto.class);
     }
 
     public List<UserGetDto> filter(String type, int page, int maxResults, String search) {
@@ -95,7 +95,7 @@ public class UsersService {
                 return result;
             });
         }
-        return stream.map(x -> mapper.map(x, UserGetDto.class))
+        return stream.map(x -> mapper.getMapper().map(x, UserGetDto.class))
                 .collect(Collectors.toList());
     }
 }

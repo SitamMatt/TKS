@@ -73,5 +73,9 @@
     <orderEntry type="library" name="Maven: com.nimbusds:nimbus-jose-jwt:9.4" level="project" />
     <orderEntry type="library" name="Maven: com.github.stephenc.jcip:jcip-annotations:1.0-1" level="project" />
     <orderEntry type="library" name="Maven: org.modelmapper:modelmapper:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: org.mapstruct:mapstruct:1.4.1.Final" level="project" />
+    <orderEntry type="library" name="Maven: com.github.ProjectMapK:KMapper:0.33" level="project" />
+    <orderEntry type="library" name="Maven: com.github.ProjectMapK:Shared:0.17" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.4.0" level="project" />
   </component>
 </module>

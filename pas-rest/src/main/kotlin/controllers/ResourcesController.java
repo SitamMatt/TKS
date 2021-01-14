@@ -29,7 +29,7 @@ public class ResourcesController {
 
     @GET
     @Path("available")
-    @RolesAllowed({"USER", "WORKER"})
+//    @RolesAllowed({"USER", "WORKER"})
     @Produces("application/json")
     public Response getAvailable(){
         var resources = resourcesService.getAvailableResources();
@@ -38,7 +38,7 @@ public class ResourcesController {
 
     @POST
     @Path("{id}/rent")
-//    @RolesAllowed("USER")
+    @RolesAllowed("USER")
     public Response rent(@PathParam("id") String id) throws Exception {
         var guid = UUID.fromString(id);
         var login = securityContext.getUserPrincipal().getName();

@@ -59,7 +59,7 @@ public abstract class RepositoryBase<T extends Entity> implements IRepositoryBas
     }
 
     protected synchronized void map(T source, T destination) throws RepositoryException{
-        mapper.map(source, destination);
+        mapper.getMapper().map(source, destination);
     }
 
     protected void validate(T item) throws RepositoryException {
