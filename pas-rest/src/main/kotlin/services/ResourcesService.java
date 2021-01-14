@@ -1,93 +1,71 @@
 package services;
 
+import dto.ResourceBaseDto;
+import dto.ResourceGetDto;
+import dto.ResourceType;
+import mappers.Mapper;
+import exceptions.ObjectLockedByRentException;
+import exceptions.ObjectNotFoundException;
+import mappers.MapperHelper;
+import mappers.Mapperrek;
 import model.Book;
 import model.Event;
 import model.Magazine;
 import model.Resource;
-import model.exceptions.ObjectAlreadyStoredException;
-import model.exceptions.ObjectLockedByRentException;
-import model.exceptions.ObjectNotFoundException;
-import model.exceptions.RepositoryException;
 import repositories.interfaces.IEventsRepository;
 import repositories.interfaces.IResourcesRepository;
-import services.dto.ResourceDto;
+import repositories.interfaces.IUsersRepository;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequestScoped
 public class ResourcesService {
-    @Inject
-    private IResourcesRepository resourcesRepository;
-    @Inject
-    private IEventsRepository eventsRepository;
+    @Inject private IResourcesRepository resourcesRepository;
+    @Inject private IEventsRepository eventsRepository;
+    @Inject private IUsersRepository usersRepository;
+    @Inject private Mapper mapper;
+    @Inject private MapperHelper helper;
+    @Inject private Mapperrek m;
 
-    public void save(ResourceDto resource) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
-        if (resourcesRepository.has(resource.getId())) {
-            resourcesRepository.update(mapBack(resource));
-        } else {
-            resourcesRepository.add(mapBack(resource));
+    public void add(ResourceBaseDto model) throws Exception {
+        var resource = (Resource) mapper.getMapper().map(model,
+                getType(Objects.requireNonNull(model.getType())));
+        resourcesRepository.add(resource);
+    }
+
+    public void update(UUID guid, ResourceBaseDto model) throws Exception {
+        var resource = (Resource) mapper.getMapper().map(model,
+                getType(Objects.requireNonNull(model.getType())));
+        resourcesRepository.update(resource);
+    }
+
+    protected Class<?> getType(ResourceType type) throws Exception {
+        switch (type){
+            case Book:
+                return Book.class;
+            case Magazine:
+                return Magazine.class;
+            default:
+                throw new Exception(); //todo create new type
         }
     }
 
-    protected ResourceDto map(Resource resource) {
-        String author = null, issueDate = null;
-        if (resource instanceof Book) {
-            author = ((Book) resource).getAuthor();
-        } else if (resource instanceof Magazine) {
-            issueDate = ((Magazine) resource).getIssueDate();
-        }
-        return new ResourceDto(
-                resource.getGuid(),
-                resource.getTitle(),
-                resource.getPagesCount(),
-                resource.getPublishingHouse(),
-                issueDate,
-                author,
-                getResourceType(resource)
-        );
-    }
-
-    protected Resource mapBack(ResourceDto dto){
-        if(dto.getType().equals("Book")){
-            return new Book(
-                    dto.getId(),
-                    dto.getTitle(),
-                    dto.getPagesCount(),
-                    dto.getPublishingHouse(),
-                    dto.getAuthor()
-            );
-        }else if(dto.getType().equals("Magazine")){
-            return new Magazine(
-                    dto.getId(),
-                    dto.getTitle(),
-                    dto.getPagesCount(),
-                    dto.getPublishingHouse(),
-                    dto.getIssueDate()
-            );
-        }
-        return null;
-    }
-
-    public ResourceDto find(UUID id) {
+    public ResourceGetDto find(UUID id) {
         Resource resource =  resourcesRepository.getByGuid(id);
-        return map(resource);
+        return mapper.getMapper().map(resource, ResourceGetDto.class);
     }
 
     public boolean delete(UUID id) throws ObjectLockedByRentException, ObjectNotFoundException {
-        if (isRented(id))
+        if (!eventsRepository.isAvailable(id))
             throw new ObjectLockedByRentException();
         resourcesRepository.delete(id);
         return true;
-    }
-
-    public List<ResourceDto> getAllResources() {
-        return resourcesRepository.getAll().stream()
-                .map(this::map)
-                .collect(Collectors.toList());
     }
 
     public String getResourceType(Resource resource) {
@@ -99,15 +77,70 @@ public class ResourcesService {
         return "";
     }
 
-    public boolean isRented(UUID id) {
-        return !eventsRepository.isAvailable(id);
+    public List<ResourceGetDto> getAvailableResources() {
+        var rents = eventsRepository.getActiveRents();
+        return resourcesRepository.getAll().stream()
+                .filter(x -> rents.stream().noneMatch(e -> Objects
+                                        .equals(e.getResourceId(), x.getGuid())))
+                .map(r -> mapper.getMapper().map(r, ResourceGetDto.class))
+//                .map(helper.getMapper()::mapResourceToDto)
+//                .map(x -> m.mapToDto(x))
+                .collect(Collectors.toList());
     }
 
-    public List<ResourceDto> getAvailableResources() {
-        List<Event> rents = eventsRepository.getAllActiveRents();
-        return resourcesRepository.getAll().stream()
-                .filter(x -> rents.stream().noneMatch(e -> e.getResourceId().equals(x.getGuid())))
-                .map(this::map)
+    public List<ResourceGetDto> filter(String type, int page, int maxResults, String search) {
+        if(page != 0 && maxResults == 0) maxResults = resourcesRepository.count() / page;
+        var stream = resourcesRepository.getPaged(page, maxResults).stream();
+        if(type != null) switch(type){
+            case "BOOK":
+                stream = stream.filter(x -> x instanceof Book);
+                break;
+            case "MAGAZINE":
+                stream = stream.filter(x -> x instanceof Magazine);
+                break;
+        }
+        if(search != null){
+            stream = stream.filter(x -> {
+                var result = x.getGuid().toString().contains(search);
+                result |= x.getTitle().contains(search);
+                result |= x.getPublishingHouse().contains(search);
+                if(x instanceof Book)
+                    result |= ((Book)x).getAuthor().contains(search);
+                else if(x instanceof Magazine)
+                    result |= ((Magazine)x).getIssueDate().contains(search);
+                return result;
+            });
+        }
+        return stream.map(x -> mapper.getMapper().map(x, ResourceGetDto.class))
                 .collect(Collectors.toList());
+    }
+
+    //todo checks
+    public List<ResourceGetDto> getUserResources(String login) {
+        var user = usersRepository.findUserByLogin(login);
+        var rents = eventsRepository.getUserActiveRents(user.getGuid());
+        return rents.stream()
+                .map(r -> resourcesRepository.getByGuid(r.getResourceId()))
+                .map(r -> mapper.getMapper().map(r, ResourceGetDto.class))
+                .collect(Collectors.toList());
+    }
+
+    public void rent(String login, UUID resource) throws Exception {
+        var user = usersRepository.findUserByLogin(login);
+        if(!eventsRepository.isAvailable(resource)) throw new Exception();
+        var event = new Event();
+        event.setUserId(user.getGuid());
+        event.setRentDate(new Date());
+        event.setResourceId(resource);
+        eventsRepository.add(event);
+    }
+
+    //todo checks
+    public void returnResource(String login, UUID resource) throws Exception {
+        if(eventsRepository.isAvailable(resource)) throw new Exception();
+        var user = usersRepository.findUserByLogin(login);
+        var event = eventsRepository
+                .getActiveForUserAndResource(user.getGuid(), resource);
+        event.setReturnDate(new Date());
     }
 }

@@ -4,12 +4,11 @@ import dto.UserBaseDto;
 import dto.UserGetDto;
 import mappers.Mapper;
 import model.UserRole;
-import model.exceptions.ObjectAlreadyStoredException;
-import model.exceptions.ObjectNotFoundException;
-import model.exceptions.RepositoryException;
-import model.kto.User;
+import exceptions.ObjectAlreadyStoredException;
+import exceptions.ObjectNotFoundException;
+import exceptions.RepositoryException;
+import model.User;
 import repositories.interfaces.IUsersRepository;
-import services.dto.UserDto;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -25,51 +24,51 @@ public class UsersService {
     private Mapper mapper;
 
     public void add(UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException {
-        var user = mapper.map(model, User.class);
+        var user = mapper.getMapper().map(model, User.class);
         usersRepository.add(user);
     }
 
     public void update(UUID guid, UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
-        var user = mapper.map(model, User.class);
+        var user = mapper.getMapper().map(model, User.class);
         user.setGuid(guid);
         usersRepository.update(user);
     }
 
-    protected UserDto map(User user) {
-        if(user == null) {
-            return new UserDto();
-        }
-        return new UserDto(
-                user.getGuid(),
-                user.isActive(),
-                user.getRole(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getLogin(),
-                user.getPassword()
-        );
-    }
+//    protected UserDto map(User user) {
+//        if(user == null) {
+//            return new UserDto();
+//        }
+//        return new UserDto(
+//                user.getGuid(),
+//                user.isActive(),
+//                user.getRole(),
+//                user.getFirstName(),
+//                user.getLastName(),
+//                user.getLogin(),
+//                user.getPassword()
+//        );
+//    }
 
-    protected User mapBack(UserDto dto) {
-        return new User(
-                dto.getId(),
-                dto.isActive(),
-                dto.getRole(),
-                dto.getFirstName(),
-                dto.getLastName(),
-                dto.getLogin(),
-                dto.getPassword()
-        );
-    }
+//    protected User mapBack(UserDto dto) {
+//        return new User(
+//                dto.getId(),
+//                dto.isActive(),
+//                dto.getRole(),
+//                dto.getFirstName(),
+//                dto.getLastName(),
+//                dto.getLogin(),
+//                dto.getPassword()
+//        );
+//    }
 
     public UserGetDto find(UUID uuid) {
         var user = usersRepository.getByGuid(uuid);
-        return mapper.map(user, UserGetDto.class);
+        return mapper.getMapper().map(user, UserGetDto.class);
     }
 
     public UserGetDto find(String login) {
         var user = usersRepository.findUserByLogin(login);
-        return mapper.map(user, UserGetDto.class);
+        return mapper.getMapper().map(user, UserGetDto.class);
     }
 
     public List<UserGetDto> filter(String type, int page, int maxResults, String search) {
@@ -96,7 +95,7 @@ public class UsersService {
                 return result;
             });
         }
-        return stream.map(x -> mapper.map(x, UserGetDto.class))
+        return stream.map(x -> mapper.getMapper().map(x, UserGetDto.class))
                 .collect(Collectors.toList());
     }
 }

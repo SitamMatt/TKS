@@ -11,8 +11,6 @@ import java.util.Set;
 
 import model.UserRole;
 import repositories.UsersRepository;
-import services.UsersService;
-import services.dto.UserDto;
 
 @ApplicationScoped
 class InMemoryIdentityStore4Authorization implements IdentityStore {

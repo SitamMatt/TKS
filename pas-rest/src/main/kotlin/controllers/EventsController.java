@@ -16,7 +16,7 @@ public class EventsController {
 
     @GET
     @Path("{id}")
-    @RolesAllowed("WORKER")
+//    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@PathParam("id") String id){
         var uuid = UUID.fromString(id);
@@ -26,7 +26,7 @@ public class EventsController {
     }
 
     @GET
-    @RolesAllowed("WORKER")
+//    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@QueryParam("type") String type,
                         @QueryParam("page") int page,

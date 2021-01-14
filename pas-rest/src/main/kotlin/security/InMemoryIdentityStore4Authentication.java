@@ -10,7 +10,6 @@ import java.util.Set;
 import dto.UserGetDto;
 import repositories.UsersRepository;
 import services.UsersService;
-import services.dto.UserDto;
 
 import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
 
