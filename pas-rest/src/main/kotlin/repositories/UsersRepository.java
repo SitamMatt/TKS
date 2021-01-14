@@ -1,9 +1,10 @@
 package repositories;
 
 
-import fillers.UsersFiller;
+import fillers.NewUsersFiller;
+import mappers.Mapper;
+import exceptions.LoginAlreadyTakenException;
 import model.User;
-import model.exceptions.LoginAlreadyTakenException;
 import repositories.interfaces.IUsersRepository;
 
 import javax.annotation.PostConstruct;
@@ -13,17 +14,12 @@ import java.util.Optional;
 
 @ApplicationScoped
 public class UsersRepository extends RepositoryBase<User> implements IUsersRepository {
-    @Inject
-    private UsersFiller usersFiller;
+    @Inject private NewUsersFiller usersFiller;
+    @Inject private Mapper mapper;
 
     @PostConstruct
     public void usersInit() {
-        this.items = usersFiller.fillUsers();
-    }
-
-    @Override
-    protected synchronized void map(User source, User destination) {
-        destination.map(source);
+        this.items = usersFiller.fill();
     }
 
     @Override
@@ -32,7 +28,7 @@ public class UsersRepository extends RepositoryBase<User> implements IUsersRepos
                 .filter(x -> x.getLogin().equals(item.getLogin()))
                 .findFirst();
 
-        if (result.isPresent() && !result.get().getId().equals(item.getId())) {
+        if (result.isPresent() && !result.get().getGuid().equals(item.getGuid())) {
             throw new LoginAlreadyTakenException();
         }
     }

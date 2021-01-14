@@ -1,6 +1,7 @@
 package repositories;
 
-import fillers.EventsFiller;
+import fillers.NewEventsFiller;
+import mappers.Mapper;
 import model.Event;
 import repositories.interfaces.IEventsRepository;
 
@@ -8,39 +9,37 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class EventsRepository extends RepositoryBase<Event> implements IEventsRepository {
     @Inject
-    private EventsFiller eventsFiller;
+    private NewEventsFiller eventsFiller;
+    @Inject
+    private Mapper mapper;
 
     @PostConstruct
     public void eventsInit() {
-        items = eventsFiller.fillEvents();
-    }
-
-    @Override
-    protected void map(Event source, Event destination) {
-        destination.map(source);
+        items = eventsFiller.fill();
     }
 
     @Override
     public synchronized boolean isAvailable(UUID id) {
         return items.stream()
                 .noneMatch(x -> x.getReturnDate() == null
-                        && x.getResourceId().equals(id));
+                        && Objects.equals(x.getResourceId(), id));
     }
 
     @Override
-    public synchronized List<Event> getUserActiveRents(UUID id) {
+    public synchronized List<Event> getUserActiveRents(UUID guid) {
         return items.stream()
-                .filter(x -> x.getUserId().equals(id)
+                .filter(x -> Objects.equals(x.getUserId(), guid)
                         && x.getReturnDate() == null)
                 .collect(Collectors.toList());
     }
-
+//
     @Override
     public synchronized Event getActiveForUserAndResource(UUID userId, UUID resId) {
         return items.stream()
@@ -51,19 +50,9 @@ public class EventsRepository extends RepositoryBase<Event> implements IEventsRe
                 .orElse(null);
     }
 
-    @Override
-    public synchronized List<Event> getAllActiveRents() {
+    public synchronized List<Event> getActiveRents() {
         return items.stream()
                 .filter(x -> x.getReturnDate() == null)
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public synchronized List<Event> getAllArchiveRents() {
-        return items.stream()
-                .filter(x -> x.getReturnDate() != null)
-                .collect(Collectors.toList());
-    }
-
-
 }

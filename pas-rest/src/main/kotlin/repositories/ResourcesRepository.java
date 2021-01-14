@@ -1,10 +1,9 @@
 package repositories;
 
-import fillers.ResourcesFiller;
+import fillers.NewResourcesFiller;
+import mappers.Mapper;
+import exceptions.ObjectNotFoundException;
 import model.Resource;
-import model.exceptions.ObjectNotFoundException;
-import model.exceptions.RepositoryException;
-import repositories.RepositoryBase;
 import repositories.interfaces.IResourcesRepository;
 
 import javax.annotation.PostConstruct;
@@ -16,21 +15,18 @@ import java.util.UUID;
 @ApplicationScoped
 public class ResourcesRepository extends RepositoryBase<Resource> implements IResourcesRepository {
     @Inject
-    private ResourcesFiller resourcesFiller;
+    private NewResourcesFiller resourcesFiller;
+    @Inject
+    private Mapper mapper;
 
     @PostConstruct
     public void resourcesInit() {
-        items = resourcesFiller.fillResources();
-    }
-
-    @Override
-    protected void map(Resource source, Resource destination) throws RepositoryException {
-        destination.map(source);
+        items = resourcesFiller.fill();
     }
 
     @Override
     public synchronized boolean delete(UUID id) throws ObjectNotFoundException {
-        Resource item = getById(id);
+        Resource item = getByGuid(id);
         if (item == null) throw new ObjectNotFoundException();
         return items.remove(item);
     }

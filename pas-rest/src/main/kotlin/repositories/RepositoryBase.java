@@ -1,25 +1,28 @@
 package repositories;
 
 
+import mappers.Mapper;
+import exceptions.ObjectAlreadyStoredException;
+import exceptions.ObjectNotFoundException;
+import exceptions.RepositoryException;
 import model.Entity;
-import model.exceptions.ObjectAlreadyStoredException;
-import model.exceptions.ObjectNotFoundException;
-import model.exceptions.RepositoryException;
 import repositories.interfaces.IRepositoryBase;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 public abstract class RepositoryBase<T extends Entity> implements IRepositoryBase<T> {
+    @Inject protected Mapper mapper;
     protected List<T> items;
 
     public synchronized boolean has(UUID id) {
-        return items.stream().anyMatch(x -> x.getId().equals(id));
+        return items.stream().anyMatch(x -> x.getGuid().equals(id));
     }
 
-    public synchronized T getById(UUID id) {
-        return items.stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
+    public synchronized T getByGuid(UUID id) {
+        return items.stream().filter(x -> x.getGuid().equals(id)).findFirst().orElse(null);
     }
 
     @Override
@@ -41,21 +44,23 @@ public abstract class RepositoryBase<T extends Entity> implements IRepositoryBas
 
     @Override
     public synchronized void add(T item) throws ObjectAlreadyStoredException, RepositoryException {
-        if (has(item.getId())) throw new ObjectAlreadyStoredException();
+        if (has(item.getGuid())) throw new ObjectAlreadyStoredException();
         validate(item);
-        item.setId(UUID.randomUUID());
+        item.setGuid(UUID.randomUUID());
         items.add(item);
     }
 
     @Override
     public synchronized void update(T item) throws ObjectNotFoundException, RepositoryException {
-        T original = getById(item.getId());
+        T original = getByGuid(item.getGuid());
         if (original == null) throw new ObjectNotFoundException();
         validate(item);
         map(item, original);
     }
 
-    protected abstract void map(T source, T destination) throws RepositoryException;
+    protected synchronized void map(T source, T destination) throws RepositoryException{
+        mapper.getMapper().map(source, destination);
+    }
 
     protected void validate(T item) throws RepositoryException {
     }

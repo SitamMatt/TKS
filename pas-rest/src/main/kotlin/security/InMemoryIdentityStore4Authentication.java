@@ -7,8 +7,9 @@ import javax.security.enterprise.identitystore.IdentityStore;
 import java.util.EnumSet;
 import java.util.Set;
 
+import dto.UserGetDto;
+import repositories.UsersRepository;
 import services.UsersService;
-import services.dto.UserDto;
 
 import static javax.security.enterprise.identitystore.CredentialValidationResult.INVALID_RESULT;
 
@@ -16,7 +17,7 @@ import static javax.security.enterprise.identitystore.CredentialValidationResult
 public class InMemoryIdentityStore4Authentication implements IdentityStore {
 
     @Inject
-    private UsersService usersService;
+    private UsersRepository usersService;
 
     @Override
     public int priority() {
@@ -29,7 +30,7 @@ public class InMemoryIdentityStore4Authentication implements IdentityStore {
     }
 
     public CredentialValidationResult validate(UsernamePasswordCredential credential) {
-        UserDto user = usersService.find(credential.getCaller());
+        var user = usersService.findUserByLogin(credential.getCaller());
         if (user == null)
             return INVALID_RESULT;
         String password = user.getPassword();

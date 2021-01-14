@@ -1,17 +1,17 @@
 package repositories.interfaces;
 
 
+import exceptions.ObjectAlreadyStoredException;
+import exceptions.ObjectNotFoundException;
+import exceptions.RepositoryException;
 import model.Entity;
-import model.exceptions.ObjectAlreadyStoredException;
-import model.exceptions.ObjectNotFoundException;
-import model.exceptions.RepositoryException;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface IRepositoryBase<T extends Entity> {
     boolean has(UUID id);
-    T getById(UUID id);
+    T getByGuid(UUID id);
     int count();
     List<T> getAll();
     List<T> getPaged(int page, int maxResults);

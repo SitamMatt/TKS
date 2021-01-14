@@ -1,8 +1,8 @@
 package repositories.interfaces;
 
 
+import exceptions.ObjectNotFoundException;
 import model.Resource;
-import model.exceptions.ObjectNotFoundException;
 
 import java.util.UUID;
 
