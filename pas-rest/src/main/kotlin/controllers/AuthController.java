@@ -1,9 +1,9 @@
 package controllers;
 
 import model.LoginData;
+import repositories.interfaces.IUsersRepository;
 import security.TokenProvider;
 import services.UsersService;
-import services.dto.UserDto;
 
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
@@ -36,6 +36,8 @@ public class AuthController {
 
     @Inject
     private UsersService usersService;
+  @Inject
+    private IUsersRepository usersRepository;
 
 
     @POST
@@ -52,7 +54,7 @@ public class AuthController {
     @Path("refresh")
     @RolesAllowed({"ADMIN", "WORKER", "CLIENT"})
     public Response refresh() {
-        UserDto user = usersService.find(securityContext.getUserPrincipal().getName());
+        var user = usersRepository.findUserByLogin(securityContext.getUserPrincipal().getName());
         if(user != null && user.isActive()) {
             return getToken(user.getLogin(), user.getPassword());
         } else {
