@@ -3,11 +3,10 @@ package services;
 import dto.ResourceBaseDto;
 import dto.ResourceGetDto;
 import dto.ResourceType;
-import mappers.Mapper;
 import exceptions.ObjectLockedByRentException;
 import exceptions.ObjectNotFoundException;
+import mappers.Mapper;
 import mappers.MapperHelper;
-import mappers.Mapperrek;
 import model.Book;
 import model.Event;
 import model.Magazine;
@@ -31,18 +30,18 @@ public class ResourcesService {
     @Inject private IUsersRepository usersRepository;
     @Inject private Mapper mapper;
     @Inject private MapperHelper helper;
-    @Inject private Mapperrek m;
+//    private final ResourcesMapper resmap = Mappers.getMapper(ResourcesMapper.class);
 
     public void add(ResourceBaseDto model) throws Exception {
-        var resource = (Resource) mapper.getMapper().map(model,
-                getType(Objects.requireNonNull(model.getType())));
-        resourcesRepository.add(resource);
+//        var resource = (Resource) mapper.getMapper().map(model,
+//                getType(Objects.requireNonNull(model.getType())));
+//        resourcesRepository.add(resource);
     }
 
     public void update(UUID guid, ResourceBaseDto model) throws Exception {
-        var resource = (Resource) mapper.getMapper().map(model,
-                getType(Objects.requireNonNull(model.getType())));
-        resourcesRepository.update(resource);
+//        var resource = (Resource) mapper.getMapper().map(model,
+//                getType(Objects.requireNonNull(model.getType())));
+//        resourcesRepository.update(resource);
     }
 
     protected Class<?> getType(ResourceType type) throws Exception {
@@ -58,7 +57,11 @@ public class ResourcesService {
 
     public ResourceGetDto find(UUID id) {
         Resource resource =  resourcesRepository.getByGuid(id);
-        return mapper.getMapper().map(resource, ResourceGetDto.class);
+//        return mapper.getMapper().map(resource, ResourceGetDto.class);
+//        return resmap.mapResourceToDto(resource);
+        var mapper = helper.getMapper();
+        var dto = mapper.mapResourceToDto(resource);
+        return dto;
     }
 
     public boolean delete(UUID id) throws ObjectLockedByRentException, ObjectNotFoundException {
