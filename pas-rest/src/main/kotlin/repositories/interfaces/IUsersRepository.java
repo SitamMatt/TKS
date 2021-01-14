@@ -1,7 +1,7 @@
 package repositories.interfaces;
 
 
-import model.User;
+import model.kto.User;
 
 public interface IUsersRepository extends IRepositoryBase<User> {
     User findUserByLogin(String login);

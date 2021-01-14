@@ -4,7 +4,6 @@ import fillers.ResourcesFiller;
 import model.Resource;
 import model.exceptions.ObjectNotFoundException;
 import model.exceptions.RepositoryException;
-import repositories.RepositoryBase;
 import repositories.interfaces.IResourcesRepository;
 
 import javax.annotation.PostConstruct;
@@ -30,7 +29,7 @@ public class ResourcesRepository extends RepositoryBase<Resource> implements IRe
 
     @Override
     public synchronized boolean delete(UUID id) throws ObjectNotFoundException {
-        Resource item = getById(id);
+        Resource item = getByGuid(id);
         if (item == null) throw new ObjectNotFoundException();
         return items.remove(item);
     }

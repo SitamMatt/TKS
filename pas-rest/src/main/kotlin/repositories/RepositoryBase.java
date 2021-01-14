@@ -15,11 +15,11 @@ public abstract class RepositoryBase<T extends Entity> implements IRepositoryBas
     protected List<T> items;
 
     public synchronized boolean has(UUID id) {
-        return items.stream().anyMatch(x -> x.getId().equals(id));
+        return items.stream().anyMatch(x -> x.getGuid().equals(id));
     }
 
-    public synchronized T getById(UUID id) {
-        return items.stream().filter(x -> x.getId().equals(id)).findFirst().orElse(null);
+    public synchronized T getByGuid(UUID id) {
+        return items.stream().filter(x -> x.getGuid().equals(id)).findFirst().orElse(null);
     }
 
     @Override
@@ -41,15 +41,15 @@ public abstract class RepositoryBase<T extends Entity> implements IRepositoryBas
 
     @Override
     public synchronized void add(T item) throws ObjectAlreadyStoredException, RepositoryException {
-        if (has(item.getId())) throw new ObjectAlreadyStoredException();
+        if (has(item.getGuid())) throw new ObjectAlreadyStoredException();
         validate(item);
-        item.setId(UUID.randomUUID());
+        item.setGuid(UUID.randomUUID());
         items.add(item);
     }
 
     @Override
     public synchronized void update(T item) throws ObjectNotFoundException, RepositoryException {
-        T original = getById(item.getId());
+        T original = getByGuid(item.getGuid());
         if (original == null) throw new ObjectNotFoundException();
         validate(item);
         map(item, original);

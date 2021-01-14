@@ -1,8 +1,8 @@
 package fillers;
 
 
-import model.User;
 import model.UserRole;
+import model.kto.User;
 
 import javax.enterprise.context.Dependent;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Dependent
 public class UsersFiller {
-    public List<User> fillUsers() {
+    public List fillUsers() {
         List<User> result = new ArrayList<>();
         result.add(new User(
                 UUID.fromString("f9b3a442-b637-4e23-ad71-910ee816453e"),
