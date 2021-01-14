@@ -3,7 +3,7 @@ package dto
 import java.util.*
 
 open class ResourceBaseDto {
-//    var type: ResourceType? = null
+    var type: ResourceType? = null
     var title: String? = null
     var pagesCount = 0
     var publishingHouse: String? = null
