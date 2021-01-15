@@ -77,7 +77,7 @@ public class ResourcesManagementController {
     @Path("{id}")
 //    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") String id, final ResourceBaseDto model) throws ObjectNotFoundException, RepositoryException, ObjectLockedByRentException {
+    public Response update(@PathParam("id") String id, final ResourceBaseDto model) throws Exception {
         var guid = UUID.fromString(id);
         Response res = ValidationController.validate(model);
         if (res!= null) return res;

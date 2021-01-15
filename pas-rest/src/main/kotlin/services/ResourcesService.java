@@ -58,8 +58,9 @@ public class ResourcesService {
         }
     }
 
-    public ResourceGetDto find(UUID id) {
+    public ResourceGetDto find(UUID id) throws ObjectNotFoundException {
         Resource resource =  resourcesRepository.getByGuid(id);
+        if (resource == null) throw new ObjectNotFoundException();
         return mapper.getMapper().map(resource, ResourceGetDto.class);
     }
 

@@ -50,7 +50,7 @@ public class ResourcesController {
     @POST
     @Path("{id}/rent")
     @RolesAllowed("USER")
-    public Response rent(@PathParam("id") String id) throws ResourceNotAvailableException, ObjectAlreadyStoredException, RepositoryException {
+    public Response rent(@PathParam("id") String id) throws Exception {
         try {
             var guid = UUID.fromString(id);
             var login = securityContext.getUserPrincipal().getName();
@@ -79,9 +79,6 @@ public class ResourcesController {
         }
         catch (ObjectNotFoundException e){
             return Response.status(404, "User not found. ").build();
-        }
-        catch (RepositoryException e){
-            return Response.status(409, "Resource has been already returned. ").build();
         }
     }
 }

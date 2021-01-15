@@ -17,6 +17,7 @@ public class EventsController {
 
     @GET
     @Path("{id}")
+    //todo Dodać wyswietlanie resource id i user id
 //    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@PathParam("id") String id){
