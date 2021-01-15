@@ -1,20 +1,18 @@
 package controllers;
 
-
-import dto.UserBaseDto;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import dto.UserCreateDto;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectNotFoundException;
 import exceptions.RepositoryException;
+import security.JWSHelper;
 import services.UsersService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.*;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -48,19 +46,25 @@ public class UsersController {
     public Response get(@PathParam("id") String id){
         var guid = UUID.fromString(id);
         var user = usersService.find(guid);
-        if(user == null) Response.status(404).build();
-        return Response.ok(user).build();
+        if(user == null) return Response.status(404).build();
+
+        EntityTag etag = new EntityTag(JWSHelper.sign(user.getGuid().toString() + " " + user.getLogin()));
+
+        return Response.ok(user).header("ETag", etag).build();
     }
 
     @GET
     @Path("me")
     @RolesAllowed({"ADMIN", "WORKER", "CLIENT"})
     @Produces("application/json")
-    public Response getMe(){
+    public Response getMe() {
         var login = securityContext.getUserPrincipal().getName();
         var user = usersService.find(login);
-        if(user == null) Response.status(404).build();
-        return Response.ok(user).build();
+        if(user == null) return Response.status(404).build();
+
+        EntityTag etag = new EntityTag(JWSHelper.sign(user.getLogin()));
+
+        return Response.ok(user).header("ETag", etag).build();
     }
 
     // todo maybe return createdAt
@@ -78,10 +82,17 @@ public class UsersController {
     @Path("{id}")
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") String id, final UserCreateDto model) throws RepositoryException, ObjectNotFoundException {
+    public Response update(@PathParam("id") String id, final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws RepositoryException, ObjectNotFoundException {
         var guid = UUID.fromString(id);
-        usersService.update(guid, model);
-        return Response.ok().build();
+
+        var user = usersService.find(model.getLogin());
+
+        if(JWSHelper.verify(user.getLogin(), ifMatch)) {
+            usersService.update(guid, model);
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.PRECONDITION_FAILED).build();
+        }
     }
 
 //    @GET
