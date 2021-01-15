@@ -35,6 +35,33 @@ public class UsersService {
         usersRepository.update(user);
     }
 
+//    protected UserDto map(User user) {
+//        if(user == null) {
+//            return new UserDto();
+//        }
+//        return new UserDto(
+//                user.getGuid(),
+//                user.isActive(),
+//                user.getRole(),
+//                user.getFirstName(),
+//                user.getLastName(),
+//                user.getLogin(),
+//                user.getPassword()
+//        );
+//    }
+
+//    protected User mapBack(UserDto dto) {
+//        return new User(
+//                dto.getId(),
+//                dto.isActive(),
+//                dto.getRole(),
+//                dto.getFirstName(),
+//                dto.getLastName(),
+//                dto.getLogin(),
+//                dto.getPassword()
+//        );
+//    }
+
     public UserGetDto find(UUID uuid) {
         var user = usersRepository.getByGuid(uuid);
         return helper.getMapper().mapUserToDto(user);

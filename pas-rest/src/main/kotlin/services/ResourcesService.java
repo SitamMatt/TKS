@@ -28,6 +28,7 @@ public class ResourcesService {
     @Inject private IResourcesRepository resourcesRepository;
     @Inject private IEventsRepository eventsRepository;
     @Inject private IUsersRepository usersRepository;
+    @Inject private Mapper mapper;
     @Inject private MapperHelper helper;
 
     public void add(ResourceBaseDto model) throws Exception {
@@ -36,6 +37,8 @@ public class ResourcesService {
     }
 
     public void update(UUID guid, ResourceBaseDto model) throws Exception {
+        if (!eventsRepository.isAvailable(guid))
+            throw new ObjectLockedByRentException();
         var resource = (Resource) helper.getMapper().mapDtoToResource(model);
         resource.setGuid(guid);
         resourcesRepository.update(resource);
@@ -68,9 +71,7 @@ public class ResourcesService {
         return resourcesRepository.getAll().stream()
                 .filter(x -> rents.stream().noneMatch(e -> Objects
                                         .equals(e.getResourceId(), x.getGuid())))
-//                .map(r -> mapper.getMapper().map(r, ResourceGetDto.class))
                 .map(helper.getMapper()::mapResourceToDto)
-//                .map(x -> m.mapToDto(x))
                 .collect(Collectors.toList());
     }
 
@@ -103,8 +104,9 @@ public class ResourcesService {
     }
 
     //todo checks
-    public List<ResourceGetDto> getUserResources(String login) {
+    public List<ResourceGetDto> getUserResources(String login) throws UserNotFoundException {
         var user = usersRepository.findUserByLogin(login);
+        if(user == null) throw new UserNotFoundException();
         var rents = eventsRepository.getUserActiveRents(user.getGuid());
         return rents.stream()
                 .map(r -> resourcesRepository.getByGuid(r.getResourceId()))
@@ -112,9 +114,9 @@ public class ResourcesService {
                 .collect(Collectors.toList());
     }
 
-    public void rent(String login, UUID resource) throws Exception {
+    public void rent(String login, UUID resource) throws ResourceNotAvailableException, ObjectAlreadyStoredException, RepositoryException {
         var user = usersRepository.findUserByLogin(login);
-        if(!eventsRepository.isAvailable(resource)) throw new Exception();
+        if(!eventsRepository.isAvailable(resource)) throw new ResourceNotAvailableException();
         var event = new Event();
         event.setUserId(user.getGuid());
         event.setRentDate(new Date());
@@ -128,6 +130,7 @@ public class ResourcesService {
         var user = usersRepository.findUserByLogin(login);
         var event = eventsRepository
                 .getActiveForUserAndResource(user.getGuid(), resource);
-        event.setReturnDate(new Date());
+        if(event == null) throw new ResourceReturnException();
+        event.setReturnDate(new Date()); // todo consider calling update method
     }
 }

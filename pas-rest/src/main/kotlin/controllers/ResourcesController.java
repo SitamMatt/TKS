@@ -1,5 +1,9 @@
 package controllers;
 
+import exceptions.ObjectAlreadyStoredException;
+import exceptions.RepositoryException;
+import exceptions.ResourceNotAvailableException;
+import exceptions.UserNotFoundException;
 import services.ResourcesService;
 
 import javax.annotation.security.RolesAllowed;
@@ -17,11 +21,13 @@ public class ResourcesController {
     @Inject private ResourcesService resourcesService;
     @Context private SecurityContext securityContext;
 
+
+    // todo remove mode param
     @GET
     @Path("my/{mode}")
 //    @RolesAllowed("USER")
     @Produces("application/json")
-    public Response getMy(@PathParam("mode") String mode){
+    public Response getMy(@PathParam("mode") String mode) throws UserNotFoundException {
         var login = securityContext.getUserPrincipal().getName();
         var resources = resourcesService.getUserResources(login);
         return Response.ok(resources).build();
@@ -39,7 +45,7 @@ public class ResourcesController {
     @POST
     @Path("{id}/rent")
     @RolesAllowed("USER")
-    public Response rent(@PathParam("id") String id) throws Exception {
+    public Response rent(@PathParam("id") String id) throws ResourceNotAvailableException, ObjectAlreadyStoredException, RepositoryException {
         var guid = UUID.fromString(id);
         var login = securityContext.getUserPrincipal().getName();
         resourcesService.rent(login, guid);
