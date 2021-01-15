@@ -2,6 +2,7 @@ package controllers;
 
 
 import dto.UserBaseDto;
+import dto.UserCreateDto;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectNotFoundException;
 import exceptions.RepositoryException;
@@ -91,7 +92,7 @@ public class UsersController {
     @Path("{id}")
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") String id, final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public Response update(@PathParam("id") String id, final UserCreateDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
         Response res = ValidationController.validate(model);
         if (res != null) return res;
         try {

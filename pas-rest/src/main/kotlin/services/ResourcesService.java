@@ -49,7 +49,6 @@ public class ResourcesService {
         if (resource == null) throw new ObjectNotFoundException();
         var mapper = helper.getMapper();
         return mapper.mapResourceToDto(resource);
-        return mapper.getMapper().map(resource, ResourceGetDto.class);
     }
 
     public boolean delete(UUID id) throws ObjectLockedByRentException, ObjectNotFoundException {

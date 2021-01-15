@@ -2,6 +2,7 @@ package controllers;
 
 import dto.ResourceBaseDto;
 import dto.UserBaseDto;
+import dto.UserCreateDto;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -27,7 +28,7 @@ public class ValidationController {
         return null;
     }
 
-    public static Response validate(final UserBaseDto model){
+    public static Response validate(final UserCreateDto model){
         var errors = new ArrayList<String>();
         StringBuilder errorBuilder = new StringBuilder();
         validator.validate(model).forEach(violation -> errors.add(violation.getMessage()));
