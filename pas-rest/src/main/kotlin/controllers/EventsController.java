@@ -1,5 +1,6 @@
 package controllers;
 
+import exceptions.ObjectNotFoundException;
 import services.EventsService;
 
 import javax.annotation.security.RolesAllowed;
@@ -19,10 +20,14 @@ public class EventsController {
 //    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@PathParam("id") String id){
-        var uuid = UUID.fromString(id);
-        var event = eventsService.find(uuid);
-        if(event == null) Response.status(404).build();
-        return Response.ok(event).build();
+        try {
+            var uuid = UUID.fromString(id);
+            var event = eventsService.find(uuid);
+            return Response.ok(event).build();
+        }
+        catch (ObjectNotFoundException e){
+            return Response.status(404, e.getMessage()).build();
+        }
     }
 
     @GET

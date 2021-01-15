@@ -61,13 +61,15 @@ public class UsersService {
 //        );
 //    }
 
-    public UserGetDto find(UUID uuid) {
+    public UserGetDto find(UUID uuid) throws ObjectNotFoundException {
         var user = usersRepository.getByGuid(uuid);
+        if (user == null) throw new ObjectNotFoundException();
         return mapper.getMapper().map(user, UserGetDto.class);
     }
 
-    public UserGetDto find(String login) {
+    public UserGetDto find(String login) throws ObjectNotFoundException {
         var user = usersRepository.findUserByLogin(login);
+        if (user == null) throw new ObjectNotFoundException();
         return mapper.getMapper().map(user, UserGetDto.class);
     }
 

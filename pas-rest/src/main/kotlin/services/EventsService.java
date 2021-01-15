@@ -1,6 +1,7 @@
 package services;
 
 
+import exceptions.ObjectNotFoundException;
 import mappers.Mapper;
 import mappers.MapperHelper;
 import model.Event;
@@ -18,8 +19,9 @@ public class EventsService {
     @Inject private Mapper mapper;
     @Inject private MapperHelper helper;
 
-    public dto.EventDto find(UUID id) {
+    public dto.EventDto find(UUID id) throws ObjectNotFoundException {
         var event = eventsRepository.getByGuid(id);
+        if (event == null) throw new ObjectNotFoundException();
 //        return mapper.getMapper().map(event, dto.EventDto.class);
         return helper.getMapper().mapEventToDto(event);
     }

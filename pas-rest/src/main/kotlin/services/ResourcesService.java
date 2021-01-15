@@ -3,9 +3,8 @@ package services;
 import dto.ResourceBaseDto;
 import dto.ResourceGetDto;
 import dto.ResourceType;
+import exceptions.*;
 import mappers.Mapper;
-import exceptions.ObjectLockedByRentException;
-import exceptions.ObjectNotFoundException;
 import mappers.MapperHelper;
 import mappers.Mapperrek;
 import model.Book;
@@ -39,6 +38,7 @@ public class ResourcesService {
         resourcesRepository.add(resource);
     }
 
+    //todo: resource nie ma przypisanego guida po mapowaniu
     public void update(UUID guid, ResourceBaseDto model) throws Exception {
         var resource = (Resource) mapper.getMapper().map(model,
                 getType(Objects.requireNonNull(model.getType())));
@@ -56,8 +56,10 @@ public class ResourcesService {
         }
     }
 
-    public ResourceGetDto find(UUID id) {
+    public ResourceGetDto find(UUID id) throws ObjectNotFoundException {
         Resource resource =  resourcesRepository.getByGuid(id);
+        if (resource == null)
+            throw new ObjectNotFoundException();
         return mapper.getMapper().map(resource, ResourceGetDto.class);
     }
 
@@ -125,9 +127,9 @@ public class ResourcesService {
                 .collect(Collectors.toList());
     }
 
-    public void rent(String login, UUID resource) throws Exception {
+    public void rent(String login, UUID resource) throws ResourceNotAvailableException, ObjectAlreadyStoredException, RepositoryException {
         var user = usersRepository.findUserByLogin(login);
-        if(!eventsRepository.isAvailable(resource)) throw new Exception();
+        if(!eventsRepository.isAvailable(resource)) throw new ResourceNotAvailableException();
         var event = new Event();
         event.setUserId(user.getGuid());
         event.setRentDate(new Date());
@@ -136,9 +138,11 @@ public class ResourcesService {
     }
 
     //todo checks
-    public void returnResource(String login, UUID resource) throws Exception {
-        if(eventsRepository.isAvailable(resource)) throw new Exception();
+    public void returnResource(String login, UUID resource) throws RepositoryException, ObjectNotFoundException {
+        if(eventsRepository.isAvailable(resource)) throw new RepositoryException();
         var user = usersRepository.findUserByLogin(login);
+        if (user == null)
+            throw new ObjectNotFoundException();
         var event = eventsRepository
                 .getActiveForUserAndResource(user.getGuid(), resource);
         event.setReturnDate(new Date());

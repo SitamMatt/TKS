@@ -46,10 +46,14 @@ public class UsersController {
     @RolesAllowed("ADMIN")
     @Produces("application/json")
     public Response get(@PathParam("id") String id){
-        var guid = UUID.fromString(id);
-        var user = usersService.find(guid);
-        if(user == null) Response.status(404).build();
-        return Response.ok(user).build();
+        try {
+            var guid = UUID.fromString(id);
+            var user = usersService.find(guid);
+            return Response.ok(user).build();
+        }
+        catch (ObjectNotFoundException e){
+            return Response.status(404, e.getMessage()).build();
+        }
     }
 
     // todo good, but add error handling
@@ -58,10 +62,14 @@ public class UsersController {
     @RolesAllowed({"ADMIN", "WORKER", "CLIENT"})
     @Produces("application/json")
     public Response getMe(){
-        var login = securityContext.getUserPrincipal().getName();
-        var user = usersService.find(login);
-        if(user == null) Response.status(404).build();
-        return Response.ok(user).build();
+        try {
+            var login = securityContext.getUserPrincipal().getName();
+            var user = usersService.find(login);
+            return Response.ok(user).build();
+        }
+        catch (ObjectNotFoundException e){
+            return Response.status(404, e.getMessage()).build();
+        }
     }
 
     // todo good, but add error handling
@@ -70,8 +78,18 @@ public class UsersController {
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response add(final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
-        usersService.add(model);
-        return Response.ok().build();
+        Response res = ValidationController.validate(model);
+        if (res!= null) return res;
+        try {
+            usersService.add(model);
+            return Response.ok().build();
+        }
+        catch (ObjectAlreadyStoredException e){
+            return Response.status(405, "Requested object already exists. "). build();
+        }
+        catch (RepositoryException e){
+            return Response.status(409, e.getMessage()).build();
+        }
     }
 
     // todo good, but add error handling
@@ -81,9 +99,22 @@ public class UsersController {
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response update(@PathParam("id") String id, final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
-        var guid = UUID.fromString(id);
-        usersService.update(guid, model);
-        return Response.ok().build();
+        Response res = ValidationController.validate(model);
+        if (res!= null) return res;
+        try {
+            var guid = UUID.fromString(id);
+            usersService.update(guid, model);
+            return Response.ok().build();
+        }
+        catch (ObjectAlreadyStoredException e){
+            return Response.status(405, "Requested object already exists. "). build();
+        }
+        catch (RepositoryException e){
+            return Response.status(409, e.getMessage()).build();
+        }
+        catch (ObjectNotFoundException e){
+            return Response.status(404, e.getMessage()).build();
+        }
     }
 
 //    @GET

@@ -1,5 +1,10 @@
 package controllers;
 
+import exceptions.ObjectAlreadyStoredException;
+import exceptions.ObjectNotFoundException;
+import exceptions.RepositoryException;
+import exceptions.ResourceNotAvailableException;
+import org.modelmapper.internal.bytebuddy.asm.Advice;
 import services.ResourcesService;
 
 import javax.annotation.security.RolesAllowed;
@@ -40,18 +45,37 @@ public class ResourcesController {
     @Path("{id}/rent")
     @RolesAllowed("USER")
     public Response rent(@PathParam("id") String id) throws Exception {
-        var guid = UUID.fromString(id);
-        var login = securityContext.getUserPrincipal().getName();
-        resourcesService.rent(login, guid);
-        return Response.ok().build();
+        try {
+            var guid = UUID.fromString(id);
+            var login = securityContext.getUserPrincipal().getName();
+            resourcesService.rent(login, guid);
+            return Response.ok().build();
+        }
+        catch (ResourceNotAvailableException e){
+            return Response.status(405, "Requested resource is not available. ").build();
+        }
+        catch (ObjectAlreadyStoredException e){
+            return Response.status(405, "Requested object already exists. ").build();
+        }
+        catch (RepositoryException e){
+            return Response.status(409, "Rent cannot be made. ").build();
+        }
     }
 
     @POST
     @Path("{id}/return")
     public Response returnResource(@PathParam("id") String id) throws Exception {
-        var guid = UUID.fromString(id);
-        var login = securityContext.getUserPrincipal().getName();
-        resourcesService.returnResource(login, guid);
-        return Response.ok().build();
+        try {
+            var guid = UUID.fromString(id);
+            var login = securityContext.getUserPrincipal().getName();
+            resourcesService.returnResource(login, guid);
+            return Response.ok().build();
+        }
+        catch (ObjectNotFoundException e){
+            return Response.status(404, "User not found. ").build();
+        }
+        catch (RepositoryException e){
+            return Response.status(409, "Resource has been already returned. ").build();
+        }
     }
 }
