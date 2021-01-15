@@ -1,8 +1,10 @@
 package services;
 
 import dto.UserBaseDto;
+import dto.UserCreateDto;
 import dto.UserGetDto;
 import mappers.Mapper;
+import mappers.MapperHelper;
 import model.UserRole;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectNotFoundException;
@@ -20,55 +22,27 @@ import java.util.stream.Collectors;
 public class UsersService {
     @Inject
     private IUsersRepository usersRepository;
-    @Inject
-    private Mapper mapper;
+    @Inject private MapperHelper helper;
 
-    public void add(UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException {
-        var user = mapper.getMapper().map(model, User.class);
+    public void add(UserCreateDto model) throws ObjectAlreadyStoredException, RepositoryException {
+        var user = helper.getMapper().mapDtoToUser(model);
         usersRepository.add(user);
     }
 
-    public void update(UUID guid, UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
-        var user = mapper.getMapper().map(model, User.class);
+    public void update(UUID guid, UserCreateDto model) throws RepositoryException, ObjectNotFoundException {
+        var user = helper.getMapper().mapDtoToUser(model);
         user.setGuid(guid);
         usersRepository.update(user);
     }
 
-//    protected UserDto map(User user) {
-//        if(user == null) {
-//            return new UserDto();
-//        }
-//        return new UserDto(
-//                user.getGuid(),
-//                user.isActive(),
-//                user.getRole(),
-//                user.getFirstName(),
-//                user.getLastName(),
-//                user.getLogin(),
-//                user.getPassword()
-//        );
-//    }
-
-//    protected User mapBack(UserDto dto) {
-//        return new User(
-//                dto.getId(),
-//                dto.isActive(),
-//                dto.getRole(),
-//                dto.getFirstName(),
-//                dto.getLastName(),
-//                dto.getLogin(),
-//                dto.getPassword()
-//        );
-//    }
-
     public UserGetDto find(UUID uuid) {
         var user = usersRepository.getByGuid(uuid);
-        return mapper.getMapper().map(user, UserGetDto.class);
+        return helper.getMapper().mapUserToDto(user);
     }
 
     public UserGetDto find(String login) {
         var user = usersRepository.findUserByLogin(login);
-        return mapper.getMapper().map(user, UserGetDto.class);
+        return helper.getMapper().mapUserToDto(user);
     }
 
     public List<UserGetDto> filter(String type, int page, int maxResults, String search) {
@@ -88,14 +62,14 @@ public class UsersService {
         if(search != null){
             stream = stream.filter(x -> {
                 var result = x.getGuid().toString().contains(search);
-                result |= x.getFirstName().contains(search);
-                result |= x.getLastName().contains(search);
+                result |= x.getFirstname().contains(search);
+                result |= x.getLastname().contains(search);
                 result |= x.getLogin().contains(search);
                 result |= x.getRole().toString().contains(search);
                 return result;
             });
         }
-        return stream.map(x -> mapper.getMapper().map(x, UserGetDto.class))
+        return stream.map(x -> helper.getMapper().mapUserToDto(x))
                 .collect(Collectors.toList());
     }
 }

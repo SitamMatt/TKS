@@ -1,8 +1,10 @@
 package repositories;
 
+import exceptions.RepositoryException;
 import fillers.NewResourcesFiller;
 import mappers.Mapper;
 import exceptions.ObjectNotFoundException;
+import mappers.MapperHelper;
 import model.Resource;
 import repositories.interfaces.IResourcesRepository;
 
@@ -17,11 +19,16 @@ public class ResourcesRepository extends RepositoryBase<Resource> implements IRe
     @Inject
     private NewResourcesFiller resourcesFiller;
     @Inject
-    private Mapper mapper;
+    private MapperHelper mapperHelper;
 
     @PostConstruct
     public void resourcesInit() {
         items = resourcesFiller.fill();
+    }
+
+    @Override
+    protected synchronized void map(Resource source, Resource destination) {
+        mapperHelper.getEntityMapper().fromResource(source, destination);
     }
 
     @Override

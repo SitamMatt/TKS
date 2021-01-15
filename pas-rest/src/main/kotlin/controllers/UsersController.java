@@ -2,6 +2,7 @@ package controllers;
 
 
 import dto.UserBaseDto;
+import dto.UserCreateDto;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectNotFoundException;
 import exceptions.RepositoryException;
@@ -69,7 +70,7 @@ public class UsersController {
     @POST
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response add(final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public Response add(final UserCreateDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
         usersService.add(model);
         return Response.ok().build();
     }
@@ -80,7 +81,7 @@ public class UsersController {
     @Path("{id}")
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") String id, final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public Response update(@PathParam("id") String id, final UserCreateDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
         var guid = UUID.fromString(id);
         usersService.update(guid, model);
         return Response.ok().build();

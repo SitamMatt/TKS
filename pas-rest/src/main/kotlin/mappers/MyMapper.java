@@ -1,12 +1,7 @@
 package mappers;
 
-import dto.EventDto;
-import dto.ResourceGetDto;
-import dto.ResourceType;
-import model.Book;
-import model.Event;
-import model.Magazine;
-import model.Resource;
+import dto.*;
+import model.*;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -15,6 +10,10 @@ import org.mapstruct.MappingTarget;
 public interface MyMapper {
 
     EventDto mapEventToDto(Event event);
+
+    UserGetDto mapUserToDto(User user);
+
+    User mapDtoToUser(UserCreateDto dto);
 
     default ResourceGetDto mapResourceToDto(Resource resource){
         if(resource instanceof Magazine) return mapResourceToDto((Magazine) resource);
@@ -28,8 +27,14 @@ public interface MyMapper {
         else if(resource instanceof Book) dto.setType(ResourceType.Book);
     }
 
+    default Resource mapDtoToResource(ResourceBaseDto dto){
+        if(dto.getType() == ResourceType.Magazine) return mapDtoToMagazine(dto);
+        else if(dto.getType() == ResourceType.Book) return mapDtoToBook(dto);
+        else return null;
+    }
 
-
+    Book mapDtoToBook(ResourceBaseDto dto);
+    Magazine mapDtoToMagazine(ResourceBaseDto dto);
     ResourceGetDto mapResourceToDto(Magazine magazine);
     ResourceGetDto mapResourceToDto(Book book);
 }

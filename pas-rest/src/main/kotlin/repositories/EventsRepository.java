@@ -1,7 +1,9 @@
 package repositories;
 
+import exceptions.RepositoryException;
 import fillers.NewEventsFiller;
 import mappers.Mapper;
+import mappers.MapperHelper;
 import model.Event;
 import repositories.interfaces.IEventsRepository;
 
@@ -18,7 +20,7 @@ public class EventsRepository extends RepositoryBase<Event> implements IEventsRe
     @Inject
     private NewEventsFiller eventsFiller;
     @Inject
-    private Mapper mapper;
+    private MapperHelper mapperHelper;
 
     @PostConstruct
     public void eventsInit() {
@@ -39,7 +41,7 @@ public class EventsRepository extends RepositoryBase<Event> implements IEventsRe
                         && x.getReturnDate() == null)
                 .collect(Collectors.toList());
     }
-//
+
     @Override
     public synchronized Event getActiveForUserAndResource(UUID userId, UUID resId) {
         return items.stream()
@@ -54,5 +56,10 @@ public class EventsRepository extends RepositoryBase<Event> implements IEventsRe
         return items.stream()
                 .filter(x -> x.getReturnDate() == null)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    protected void map(Event source, Event destination) throws RepositoryException {
+        mapperHelper.getEntityMapper().map(source, destination);
     }
 }

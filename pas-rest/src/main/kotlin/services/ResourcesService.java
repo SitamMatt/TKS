@@ -28,40 +28,23 @@ public class ResourcesService {
     @Inject private IResourcesRepository resourcesRepository;
     @Inject private IEventsRepository eventsRepository;
     @Inject private IUsersRepository usersRepository;
-    @Inject private Mapper mapper;
     @Inject private MapperHelper helper;
-//    private final ResourcesMapper resmap = Mappers.getMapper(ResourcesMapper.class);
 
     public void add(ResourceBaseDto model) throws Exception {
-//        var resource = (Resource) mapper.getMapper().map(model,
-//                getType(Objects.requireNonNull(model.getType())));
-//        resourcesRepository.add(resource);
+        var resource = (Resource) helper.getMapper().mapDtoToResource(model);
+        resourcesRepository.add(resource);
     }
 
     public void update(UUID guid, ResourceBaseDto model) throws Exception {
-//        var resource = (Resource) mapper.getMapper().map(model,
-//                getType(Objects.requireNonNull(model.getType())));
-//        resourcesRepository.update(resource);
-    }
-
-    protected Class<?> getType(ResourceType type) throws Exception {
-        switch (type){
-            case Book:
-                return Book.class;
-            case Magazine:
-                return Magazine.class;
-            default:
-                throw new Exception(); //todo create new type
-        }
+        var resource = (Resource) helper.getMapper().mapDtoToResource(model);
+        resource.setGuid(guid);
+        resourcesRepository.update(resource);
     }
 
     public ResourceGetDto find(UUID id) {
         Resource resource =  resourcesRepository.getByGuid(id);
-//        return mapper.getMapper().map(resource, ResourceGetDto.class);
-//        return resmap.mapResourceToDto(resource);
         var mapper = helper.getMapper();
-        var dto = mapper.mapResourceToDto(resource);
-        return dto;
+        return mapper.mapResourceToDto(resource);
     }
 
     public boolean delete(UUID id) throws ObjectLockedByRentException, ObjectNotFoundException {
@@ -85,8 +68,8 @@ public class ResourcesService {
         return resourcesRepository.getAll().stream()
                 .filter(x -> rents.stream().noneMatch(e -> Objects
                                         .equals(e.getResourceId(), x.getGuid())))
-                .map(r -> mapper.getMapper().map(r, ResourceGetDto.class))
-//                .map(helper.getMapper()::mapResourceToDto)
+//                .map(r -> mapper.getMapper().map(r, ResourceGetDto.class))
+                .map(helper.getMapper()::mapResourceToDto)
 //                .map(x -> m.mapToDto(x))
                 .collect(Collectors.toList());
     }
@@ -114,7 +97,8 @@ public class ResourcesService {
                 return result;
             });
         }
-        return stream.map(x -> mapper.getMapper().map(x, ResourceGetDto.class))
+        return stream
+                .map(helper.getMapper()::mapResourceToDto)
                 .collect(Collectors.toList());
     }
 
@@ -124,7 +108,7 @@ public class ResourcesService {
         var rents = eventsRepository.getUserActiveRents(user.getGuid());
         return rents.stream()
                 .map(r -> resourcesRepository.getByGuid(r.getResourceId()))
-                .map(r -> mapper.getMapper().map(r, ResourceGetDto.class))
+                .map(helper.getMapper()::mapResourceToDto)
                 .collect(Collectors.toList());
     }
 

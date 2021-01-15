@@ -1,9 +1,11 @@
 package repositories;
 
 
+import exceptions.RepositoryException;
 import fillers.NewUsersFiller;
 import mappers.Mapper;
 import exceptions.LoginAlreadyTakenException;
+import mappers.MapperHelper;
 import model.User;
 import repositories.interfaces.IUsersRepository;
 
@@ -15,11 +17,17 @@ import java.util.Optional;
 @ApplicationScoped
 public class UsersRepository extends RepositoryBase<User> implements IUsersRepository {
     @Inject private NewUsersFiller usersFiller;
-    @Inject private Mapper mapper;
+    @Inject
+    private MapperHelper mapperHelper;
 
     @PostConstruct
     public void usersInit() {
         this.items = usersFiller.fill();
+    }
+
+    @Override
+    protected void map(User source, User destination) throws RepositoryException {
+        mapperHelper.getEntityMapper().map(source, destination);
     }
 
     @Override

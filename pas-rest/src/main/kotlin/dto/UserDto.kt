@@ -15,4 +15,8 @@ class UserGetDto : UserBaseDto() {
     var guid: UUID? = null
 }
 
+class UserCreateDto : UserBaseDto(){
+    var password: String? = null
+}
+
 

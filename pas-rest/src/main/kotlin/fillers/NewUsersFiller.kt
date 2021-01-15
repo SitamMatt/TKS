@@ -11,8 +11,8 @@ class NewUsersFiller {
             guid = UUID.fromString("f9b3a442-b637-4e23-ad71-910ee816453e")
             isActive = true
             role = UserRole.CLIENT
-            firstName = "Łukasz"
-            lastName = "Stanisławowski"
+            firstname = "Łukasz"
+            lastname = "Stanisławowski"
             login = "testo"
             password = "test0"
         })
@@ -20,8 +20,8 @@ class NewUsersFiller {
             guid = UUID.fromString("48bb061d-0a01-4f60-bdfc-f6bac839b107")
             isActive = true
             role = UserRole.CLIENT
-            firstName = "Jayne"
-            lastName = "Najera"
+            firstname = "Jayne"
+            lastname = "Najera"
             login = "user"
             password = "user0"
         })
@@ -29,8 +29,8 @@ class NewUsersFiller {
             guid = UUID.randomUUID()
             isActive = true
             role = UserRole.WORKER
-            firstName = "Adam"
-            lastName = "Mickiewicz"
+            firstname = "Adam"
+            lastname = "Mickiewicz"
             login = "worker1"
             password = "worker1"
         })
@@ -38,8 +38,8 @@ class NewUsersFiller {
             guid = UUID.fromString("411fc900-f762-4081-90b6-e17fb32d127f")
             isActive = true
             role = UserRole.WORKER
-            firstName = "John"
-            lastName = "Cena"
+            firstname = "John"
+            lastname = "Cena"
             login = "worker"
             password = "worker0"
         })
@@ -47,8 +47,8 @@ class NewUsersFiller {
             guid = UUID.fromString("3fbabdb6-7a44-4b9e-be8d-dd120a271b5b")
             isActive = true
             role = UserRole.ADMIN
-            firstName = "Janusz"
-            lastName = "Pawlacz"
+            firstname = "Janusz"
+            lastname = "Pawlacz"
             login = "admin"
             password = "admin0"
         })
@@ -56,8 +56,8 @@ class NewUsersFiller {
             guid = UUID.fromString("9c47f5f4-cbdc-414d-8f17-3c4b035f8899")
             isActive = true
             role = UserRole.CLIENT
-            firstName = "Mateusz"
-            lastName = "Szewc"
+            firstname = "Mateusz"
+            lastname = "Szewc"
             login = "matt"
             password = "1234"
         })
