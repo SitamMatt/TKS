@@ -6,7 +6,6 @@ import dto.ResourceType;
 import exceptions.*;
 import mappers.Mapper;
 import mappers.MapperHelper;
-import mappers.Mapperrek;
 import model.Book;
 import model.Event;
 import model.Magazine;
@@ -30,11 +29,9 @@ public class ResourcesService {
     @Inject private IUsersRepository usersRepository;
     @Inject private Mapper mapper;
     @Inject private MapperHelper helper;
-    @Inject private Mapperrek m;
 
-    public void add(ResourceBaseDto model) throws Exception {
-        var resource = (Resource) mapper.getMapper().map(model,
-                getType(Objects.requireNonNull(model.getType())));
+    public void add(ResourceBaseDto model) throws ObjectAlreadyStoredException, RepositoryException {
+        var resource = (Resource) helper.getMapper().mapDtoToResource(model);
         resourcesRepository.add(resource);
     }
 
@@ -42,25 +39,16 @@ public class ResourcesService {
     public void update(UUID guid, ResourceBaseDto model) throws Exception{
         if (!eventsRepository.isAvailable(guid))
             throw new ObjectLockedByRentException();
-        var resource = (Resource) mapper.getMapper().map(model,
-                getType(Objects.requireNonNull(model.getType())));
+        var resource = (Resource) helper.getMapper().mapDtoToResource(model);
+        resource.setGuid(guid);
         resourcesRepository.update(resource);
-    }
-
-    protected Class<?> getType(ResourceType type) throws Exception {
-        switch (type){
-            case Book:
-                return Book.class;
-            case Magazine:
-                return Magazine.class;
-            default:
-                throw new Exception(); //todo create new type
-        }
     }
 
     public ResourceGetDto find(UUID id) throws ObjectNotFoundException {
         Resource resource =  resourcesRepository.getByGuid(id);
         if (resource == null) throw new ObjectNotFoundException();
+        var mapper = helper.getMapper();
+        return mapper.mapResourceToDto(resource);
         return mapper.getMapper().map(resource, ResourceGetDto.class);
     }
 
@@ -85,9 +73,7 @@ public class ResourcesService {
         return resourcesRepository.getAll().stream()
                 .filter(x -> rents.stream().noneMatch(e -> Objects
                                         .equals(e.getResourceId(), x.getGuid())))
-                .map(r -> mapper.getMapper().map(r, ResourceGetDto.class))
-//                .map(helper.getMapper()::mapResourceToDto)
-//                .map(x -> m.mapToDto(x))
+                .map(helper.getMapper()::mapResourceToDto)
                 .collect(Collectors.toList());
     }
 
@@ -114,23 +100,25 @@ public class ResourcesService {
                 return result;
             });
         }
-        return stream.map(x -> mapper.getMapper().map(x, ResourceGetDto.class))
+        return stream
+                .map(helper.getMapper()::mapResourceToDto)
                 .collect(Collectors.toList());
     }
 
     //todo checks
-    public List<ResourceGetDto> getUserResources(String login) {
+    public List<ResourceGetDto> getUserResources(String login) throws UserNotFoundException {
         var user = usersRepository.findUserByLogin(login);
+        if(user == null) throw new UserNotFoundException();
         var rents = eventsRepository.getUserActiveRents(user.getGuid());
         return rents.stream()
                 .map(r -> resourcesRepository.getByGuid(r.getResourceId()))
-                .map(r -> mapper.getMapper().map(r, ResourceGetDto.class))
+                .map(helper.getMapper()::mapResourceToDto)
                 .collect(Collectors.toList());
     }
 
-    public void rent(String login, UUID resource) throws Exception {
+    public void rent(String login, UUID resource) throws ResourceNotAvailableException, ObjectAlreadyStoredException, RepositoryException {
         var user = usersRepository.findUserByLogin(login);
-        if(!eventsRepository.isAvailable(resource)) throw new Exception();
+        if(!eventsRepository.isAvailable(resource)) throw new ResourceNotAvailableException();
         var event = new Event();
         event.setUserId(user.getGuid());
         event.setRentDate(new Date());
@@ -139,13 +127,14 @@ public class ResourcesService {
     }
 
     //todo checks
-    public void returnResource(String login, UUID resource) throws ObjectNotFoundException {
+    public void returnResource(String login, UUID resource) throws Exception, ObjectNotFoundException {
+        if(eventsRepository.isAvailable(resource)) throw new Exception();
         var user = usersRepository.findUserByLogin(login);
         if (user == null)
             throw new ObjectNotFoundException();
-//        if(eventsRepository.isAvailable(resource)) throw new Exception();
         var event = eventsRepository
                 .getActiveForUserAndResource(user.getGuid(), resource);
+        if(event == null) throw new ResourceReturnException();
         event.setReturnDate(new Date());
     }
 }

@@ -1,8 +1,10 @@
 package services;
 
 import dto.UserBaseDto;
+import dto.UserCreateDto;
 import dto.UserGetDto;
 import mappers.Mapper;
+import mappers.MapperHelper;
 import model.UserRole;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectNotFoundException;
@@ -20,16 +22,15 @@ import java.util.stream.Collectors;
 public class UsersService {
     @Inject
     private IUsersRepository usersRepository;
-    @Inject
-    private Mapper mapper;
+    @Inject private MapperHelper helper;
 
-    public void add(UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException {
-        var user = mapper.getMapper().map(model, User.class);
+    public void add(UserCreateDto model) throws ObjectAlreadyStoredException, RepositoryException {
+        var user = helper.getMapper().mapDtoToUser(model);
         usersRepository.add(user);
     }
 
-    public void update(UUID guid, UserBaseDto model) throws RepositoryException, ObjectNotFoundException {
-        var user = mapper.getMapper().map(model, User.class);
+    public void update(UUID guid, UserCreateDto model) throws RepositoryException, ObjectNotFoundException {
+        var user = helper.getMapper().mapDtoToUser(model);
         user.setGuid(guid);
         usersRepository.update(user);
     }
@@ -64,14 +65,14 @@ public class UsersService {
     public UserGetDto find(UUID uuid) throws ObjectNotFoundException {
         var user = usersRepository.getByGuid(uuid);
         if (user == null) throw new ObjectNotFoundException();
-        return mapper.getMapper().map(user, UserGetDto.class);
-    }
+        return helper.getMapper().mapUserToDto(user);
+        }
 
     public UserGetDto find(String login) throws ObjectNotFoundException {
         var user = usersRepository.findUserByLogin(login);
         if (user == null) throw new ObjectNotFoundException();
-        return mapper.getMapper().map(user, UserGetDto.class);
-    }
+        return helper.getMapper().mapUserToDto(user);
+        }
 
     public List<UserGetDto> filter(String type, int page, int maxResults, String search) {
         if(page != 0 && maxResults == 0) maxResults = usersRepository.count() / page;
@@ -90,14 +91,14 @@ public class UsersService {
         if(search != null){
             stream = stream.filter(x -> {
                 var result = x.getGuid().toString().contains(search);
-                result |= x.getFirstName().contains(search);
-                result |= x.getLastName().contains(search);
+                result |= x.getFirstname().contains(search);
+                result |= x.getLastname().contains(search);
                 result |= x.getLogin().contains(search);
                 result |= x.getRole().toString().contains(search);
                 return result;
             });
         }
-        return stream.map(x -> mapper.getMapper().map(x, UserGetDto.class))
+        return stream.map(x -> helper.getMapper().mapUserToDto(x))
                 .collect(Collectors.toList());
     }
 }

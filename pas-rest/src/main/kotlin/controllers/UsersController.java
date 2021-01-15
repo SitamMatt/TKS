@@ -72,7 +72,7 @@ public class UsersController {
     @POST
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response add(final UserBaseDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public Response add(final UserCreateDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
         Response res = ValidationController.validate(model);
         if (res != null) return res;
         try {

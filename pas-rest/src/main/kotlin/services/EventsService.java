@@ -1,6 +1,7 @@
 package services;
 
 
+import dto.EventDto;
 import exceptions.ObjectNotFoundException;
 import mappers.Mapper;
 import mappers.MapperHelper;
@@ -22,19 +23,11 @@ public class EventsService {
     public dto.EventDto find(UUID id) throws ObjectNotFoundException {
         var event = eventsRepository.getByGuid(id);
         if (event == null) throw new ObjectNotFoundException();
-//        return mapper.getMapper().map(event, dto.EventDto.class);
-        return helper.getMapper().mapEventToDto(event);
+        var dto = helper.getMapper().mapEventToDto(event);
+        return dto;
     }
 
-//    public List<EventDto> getUserActiveRents(UUID id) {
-//        return eventsRepository
-//                .getUserActiveRents(id)
-//                .stream()
-//                .map(this::map)
-//                .collect(Collectors.toList());
-//    }
-
-    public List<Event> filter(String type, int page, int maxResults, String search) {
+    public List<EventDto> filter(String type, int page, int maxResults, String search) {
         if(page != 0 && maxResults == 0) maxResults = eventsRepository.count() / page;
         var stream = eventsRepository.getPaged(page, maxResults).stream();
         if(type != null) switch(type){
@@ -48,6 +41,7 @@ public class EventsService {
         if(search != null){
             stream = stream.filter(x -> x.getGuid().toString().contains(search));
         }
-        return stream.collect(Collectors.toList());
+        return stream.map(x -> helper.getMapper().mapEventToDto(x))
+                .collect(Collectors.toList());
     }
 }
