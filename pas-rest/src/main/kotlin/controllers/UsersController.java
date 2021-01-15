@@ -28,7 +28,6 @@ public class UsersController {
     @Inject
     private UsersService usersService;
 
-    // todo good, but add error handling
     @GET
     @RolesAllowed("ADMIN")
     @Produces("application/json")
@@ -56,7 +55,6 @@ public class UsersController {
         }
     }
 
-    // todo good, but add error handling
     @GET
     @Path("me")
     @RolesAllowed({"ADMIN", "WORKER", "CLIENT"})
@@ -72,7 +70,6 @@ public class UsersController {
         }
     }
 
-    // todo good, but add error handling
     // todo maybe return createdAt
     @POST
     @RolesAllowed("ADMIN")
@@ -90,7 +87,6 @@ public class UsersController {
         catch (RepositoryException e){
             return Response.status(409, e.getMessage()).build();
         }
-    }
 
     // todo good, but add error handling
     // todo maybe return createdAt
@@ -115,7 +111,6 @@ public class UsersController {
         catch (ObjectNotFoundException e){
             return Response.status(404, e.getMessage()).build();
         }
-    }
 
 //    @GET
 //    @Path("userdata")

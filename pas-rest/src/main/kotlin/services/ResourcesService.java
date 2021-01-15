@@ -39,7 +39,9 @@ public class ResourcesService {
     }
 
     //todo: resource nie ma przypisanego guida po mapowaniu
-    public void update(UUID guid, ResourceBaseDto model) throws Exception {
+    public void update(UUID guid, ResourceBaseDto model) throws Exception{
+        if (!eventsRepository.isAvailable(guid))
+            throw new ObjectLockedByRentException();
         var resource = (Resource) mapper.getMapper().map(model,
                 getType(Objects.requireNonNull(model.getType())));
         resourcesRepository.update(resource);
@@ -56,10 +58,8 @@ public class ResourcesService {
         }
     }
 
-    public ResourceGetDto find(UUID id) throws ObjectNotFoundException {
+    public ResourceGetDto find(UUID id) {
         Resource resource =  resourcesRepository.getByGuid(id);
-        if (resource == null)
-            throw new ObjectNotFoundException();
         return mapper.getMapper().map(resource, ResourceGetDto.class);
     }
 
@@ -127,9 +127,9 @@ public class ResourcesService {
                 .collect(Collectors.toList());
     }
 
-    public void rent(String login, UUID resource) throws ResourceNotAvailableException, ObjectAlreadyStoredException, RepositoryException {
+    public void rent(String login, UUID resource) throws Exception {
         var user = usersRepository.findUserByLogin(login);
-        if(!eventsRepository.isAvailable(resource)) throw new ResourceNotAvailableException();
+        if(!eventsRepository.isAvailable(resource)) throw new Exception();
         var event = new Event();
         event.setUserId(user.getGuid());
         event.setRentDate(new Date());
@@ -138,11 +138,11 @@ public class ResourcesService {
     }
 
     //todo checks
-    public void returnResource(String login, UUID resource) throws RepositoryException, ObjectNotFoundException {
-        if(eventsRepository.isAvailable(resource)) throw new RepositoryException();
+    public void returnResource(String login, UUID resource) throws ObjectNotFoundException {
         var user = usersRepository.findUserByLogin(login);
         if (user == null)
             throw new ObjectNotFoundException();
+//        if(eventsRepository.isAvailable(resource)) throw new Exception();
         var event = eventsRepository
                 .getActiveForUserAndResource(user.getGuid(), resource);
         event.setReturnDate(new Date());

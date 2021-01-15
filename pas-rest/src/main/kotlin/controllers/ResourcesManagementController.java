@@ -3,9 +3,11 @@ package controllers;
 
 import dto.ResourceBaseDto;
 import dto.ResourceGetDto;
+import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectLockedByRentException;
 import exceptions.ObjectNotFoundException;
 import model.Resource;
+import exceptions.RepositoryException;
 import services.ResourcesService;
 
 import javax.inject.Inject;
@@ -26,7 +28,6 @@ public class ResourcesManagementController {
     @Inject
     private ResourcesService resourcesService;
 
-    // todo good, but add error handling
     @GET
 //    @RolesAllowed("WORKER")
     @Produces("application/json")
@@ -38,7 +39,6 @@ public class ResourcesManagementController {
         return Response.ok(result).build();
     }
 
-    // todo good, but add error handling
     @GET
     //    @RolesAllowed("WORKER")
     @Produces("application/json")
@@ -54,7 +54,6 @@ public class ResourcesManagementController {
         }
     }
 
-    // todo good, but add error handling
     // todo maybe return createdAt
     // todo handle Exception
     @POST
@@ -78,7 +77,7 @@ public class ResourcesManagementController {
     @Path("{id}")
 //    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") String id, final ResourceBaseDto model) throws Exception {
+    public Response update(@PathParam("id") String id, final ResourceBaseDto model) throws ObjectNotFoundException, RepositoryException, ObjectLockedByRentException {
         var guid = UUID.fromString(id);
         Response res = ValidationController.validate(model);
         if (res!= null) return res;
