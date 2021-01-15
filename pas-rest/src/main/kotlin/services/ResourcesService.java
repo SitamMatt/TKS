@@ -3,8 +3,7 @@ package services;
 import dto.ResourceBaseDto;
 import dto.ResourceGetDto;
 import dto.ResourceType;
-import exceptions.ObjectLockedByRentException;
-import exceptions.ObjectNotFoundException;
+import exceptions.*;
 import mappers.Mapper;
 import mappers.MapperHelper;
 import model.Book;
@@ -31,12 +30,12 @@ public class ResourcesService {
     @Inject private Mapper mapper;
     @Inject private MapperHelper helper;
 
-    public void add(ResourceBaseDto model) throws Exception {
+    public void add(ResourceBaseDto model) throws ObjectAlreadyStoredException, RepositoryException {
         var resource = (Resource) helper.getMapper().mapDtoToResource(model);
         resourcesRepository.add(resource);
     }
 
-    public void update(UUID guid, ResourceBaseDto model) throws Exception {
+    public void update(UUID guid, ResourceBaseDto model) throws RepositoryException, ObjectNotFoundException, ObjectLockedByRentException {
         if (!eventsRepository.isAvailable(guid))
             throw new ObjectLockedByRentException();
         var resource = (Resource) helper.getMapper().mapDtoToResource(model);
