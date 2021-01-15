@@ -48,7 +48,7 @@ public class UsersController {
         var user = usersService.find(guid);
         if(user == null) return Response.status(404).build();
 
-        EntityTag etag = new EntityTag(JWSHelper.sign(user.getGuid().toString() + " " + user.getLogin()));
+        EntityTag etag = new EntityTag(JWSHelper.sign(user.getLogin()));
 
         return Response.ok(user).header("ETag", etag).build();
     }
