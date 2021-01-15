@@ -14,7 +14,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public abstract class RepositoryBase<T extends Entity> implements IRepositoryBase<T> {
-    @Inject protected Mapper mapper;
     protected List<T> items;
 
     public synchronized boolean has(UUID id) {
@@ -58,9 +57,7 @@ public abstract class RepositoryBase<T extends Entity> implements IRepositoryBas
         map(item, original);
     }
 
-    protected synchronized void map(T source, T destination) throws RepositoryException{
-        mapper.getMapper().map(source, destination);
-    }
+    protected abstract void map(T source, T destination) throws RepositoryException;
 
     protected void validate(T item) throws RepositoryException {
     }
