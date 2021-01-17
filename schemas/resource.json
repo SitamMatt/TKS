@@ -25,11 +25,39 @@
         "guid": {
             "type": "string",
             "format": "uuid"
+        },
+        "author": {
+            "type": "string"
+        },
+        "issueDate": {
+            "type": "string"
         }
     },
     "required": [
         "guid",
         "type",
         "title"
+    ],
+    "anyOf": [
+        {
+            "properties": {
+                "type": {
+                    "const": "Book"
+                }
+            },
+            "required": [
+                "author"
+            ]
+        },
+        {
+            "properties": {
+                "type": {
+                    "const": "Magazine"
+                }
+            },
+            "required": [
+                "issueDate"
+            ]
+        }
     ]
 }
