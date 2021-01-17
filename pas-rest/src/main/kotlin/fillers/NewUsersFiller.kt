@@ -27,7 +27,7 @@ class NewUsersFiller {
         })
         result.add(User().apply {
             guid = UUID.randomUUID()
-            isActive = true
+            isActive = false
             role = UserRole.WORKER
             firstname = "Adam"
             lastname = "Mickiewicz"

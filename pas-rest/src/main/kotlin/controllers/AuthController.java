@@ -67,11 +67,11 @@ public class AuthController {
         CredentialValidationResult result = identityStoreHandler.validate(credential);
         if(result.getStatus() == CredentialValidationResult.Status.VALID) {
             return Response.accepted()
-                    .type("application/jwt")
+                    .type("application/json")
                     .entity(TokenProvider.createToken(result))
                     .build();
         } else {
-            return Response.status(Response.Status.UNAUTHORIZED).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
 
