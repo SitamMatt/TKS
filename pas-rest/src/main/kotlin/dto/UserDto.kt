@@ -4,6 +4,7 @@ import model.UserRole
 import java.util.*
 
 open class UserBaseDto {
+    var guid: UUID? = null
     var active: Boolean = false
     var role: UserRole? = null
     var login: String? = null
@@ -12,7 +13,6 @@ open class UserBaseDto {
 }
 
 class UserGetDto : UserBaseDto() {
-    var guid: UUID? = null
 }
 
 class UserCreateDto : UserBaseDto(){

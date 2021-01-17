@@ -63,17 +63,17 @@ public class ResourcesManagementController {
     // todo good, but add error handling
     // todo maybe return createdAt
     @PUT
-    @Path("{id}")
+//    @Path("{id}")
 //    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@NotNull @PathParam("id") String id, final ResourceBaseDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws ObjectNotFoundException, RepositoryException, ObjectLockedByRentException {
-        var guid = UUID.fromString(id);
+    public Response update(final ResourceBaseDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws ObjectNotFoundException, RepositoryException, ObjectLockedByRentException {
+        var guid = model.getGuid();
 
-        if(JWSHelper.verify(id, ifMatch)) {
+        if(JWSHelper.verify(guid.toString(), ifMatch)) {
             resourcesService.update(guid, model);
             return Response.ok().build();
         } else {
-            return Response.status(Response.Status.PRECONDITION_FAILED).build();
+            return Response.status(Response.Status.PRECONDITION_FAILED.getStatusCode(), "Data integrity error.").build();
         }
     }
 

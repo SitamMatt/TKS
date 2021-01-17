@@ -79,11 +79,11 @@ public class UsersController {
     // todo good, but add error handling
     // todo maybe return createdAt
     @PUT
-    @Path("{id}")
+//    @Path("{id}")
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") String id, final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws RepositoryException, ObjectNotFoundException {
-        var guid = UUID.fromString(id);
+    public Response update(final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws RepositoryException, ObjectNotFoundException {
+        var guid = model.getGuid();
 
         var user = usersService.find(model.getLogin());
 
@@ -91,7 +91,7 @@ public class UsersController {
             usersService.update(guid, model);
             return Response.ok().build();
         } else {
-            return Response.status(Response.Status.PRECONDITION_FAILED).build();
+            return Response.status(Response.Status.PRECONDITION_FAILED.getStatusCode(), "Data integrity error.").build();
         }
     }
 
