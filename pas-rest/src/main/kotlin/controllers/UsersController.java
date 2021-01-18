@@ -34,7 +34,7 @@ public class UsersController {
     public Response get(@QueryParam("type") String type,
                         @QueryParam("page") int page,
                         @QueryParam("maxResults") int maxResults,
-                        @QueryParam("search") String search){
+                        @QueryParam("search") String search) {
         var result = usersService.filter(type, page, maxResults, search);
         return Response.ok(result).build();
     }
@@ -44,14 +44,17 @@ public class UsersController {
     @Path("{id}")
     @RolesAllowed("ADMIN")
     @Produces("application/json")
-    public Response get(@PathParam("id") String id){
-        var guid = UUID.fromString(id);
-        var user = usersService.find(guid);
-        if(user == null) return Response.status(404).build();
+    public Response get(@PathParam("id") String id) {
+        try {
+            var guid = UUID.fromString(id);
+            var user = usersService.find(guid);
+            if(user == null) return Response.status(404).build();
 
-        EntityTag etag = new EntityTag(JWSHelper.sign(user.getLogin()));
-
-        return Response.ok(user).header("ETag", etag).build();
+            EntityTag etag = new EntityTag(JWSHelper.sign(user.getLogin()));
+            return Response.ok(user).header("ETag", etag).build();
+        } catch (ObjectNotFoundException e) {
+            return Response.status(404, e.getMessage()).build();
+        }
     }
 
     @GET
@@ -59,22 +62,34 @@ public class UsersController {
     @RolesAllowed({"ADMIN", "WORKER", "CLIENT"})
     @Produces("application/json")
     public Response getMe() {
-        var login = securityContext.getUserPrincipal().getName();
-        var user = usersService.find(login);
-        if(user == null) return Response.status(404).build();
+        try {
+            var login = securityContext.getUserPrincipal().getName();
+            var user = usersService.find(login);
+            if(user == null) return Response.status(404).build();
 
-        EntityTag etag = new EntityTag(JWSHelper.sign(user.getLogin()));
+            EntityTag etag = new EntityTag(JWSHelper.sign(user.getLogin()));
 
-        return Response.ok(user).header("ETag", etag).build();
+            return Response.ok(user).header("ETag", etag).build();
+        } catch (ObjectNotFoundException e) {
+            return Response.status(404, e.getMessage()).build();
+        }
     }
 
     // todo maybe return createdAt
     @POST
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response add(final UserCreateDto model) throws ObjectAlreadyStoredException, RepositoryException {
-        usersService.add(model);
-        return Response.ok().build();
+    public Response add(final UserCreateDto model) {
+        Response res = ValidationController.validate(model);
+        if (res != null) return res;
+        try {
+            usersService.add(model);
+            return Response.ok().build();
+        } catch (ObjectAlreadyStoredException e) {
+            return Response.status(405, "Requested object already exists. ").build();
+        } catch (RepositoryException e) {
+            return Response.status(409, "User could not be added. ").build();
+        }
     }
 
     // todo good, but add error handling
@@ -83,16 +98,24 @@ public class UsersController {
 //    @Path("{id}")
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws RepositoryException, ObjectNotFoundException {
-        var guid = model.getGuid();
+    public Response update(final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) {
+        Response res = ValidationController.validate(model);
+        if (res != null) return res;
+        try {
+            var guid = model.getGuid();
 
-        var user = usersService.find(model.getLogin());
+            var user = usersService.find(model.getLogin());
 
-        if(JWSHelper.verify(user.getLogin(), ifMatch)) {
-            usersService.update(guid, model);
-            return Response.ok().build();
-        } else {
-            return Response.status(Response.Status.PRECONDITION_FAILED.getStatusCode(), "Data integrity error.").build();
+            if(JWSHelper.verify(user.getLogin(), ifMatch)) {
+                usersService.update(guid, model);
+                return Response.ok().build();
+            } else {
+                return Response.status(Response.Status.PRECONDITION_FAILED.getStatusCode(), "Data integrity error.").build();
+            }
+        } catch (RepositoryException e) {
+            return Response.status(409, "Requested user could not be updated. ").build();
+        } catch (ObjectNotFoundException e) {
+            return Response.status(404, e.getMessage()).build();
         }
     }
 
@@ -117,5 +140,4 @@ public class UsersController {
 //        }
 //        return Response.ok().build();
 //    }
-
 }

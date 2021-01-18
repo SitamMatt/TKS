@@ -35,7 +35,8 @@ public class ResourcesService {
         resourcesRepository.add(resource);
     }
 
-    public void update(UUID guid, ResourceBaseDto model) throws RepositoryException, ObjectNotFoundException, ObjectLockedByRentException {
+    //todo: resource nie ma przypisanego guida po mapowaniu
+    public void update(UUID guid, ResourceBaseDto model) throws ObjectLockedByRentException, RepositoryException, ObjectNotFoundException {
         if (!eventsRepository.isAvailable(guid))
             throw new ObjectLockedByRentException();
         var resource = (Resource) helper.getMapper().mapDtoToResource(model);
@@ -43,8 +44,9 @@ public class ResourcesService {
         resourcesRepository.update(resource);
     }
 
-    public ResourceGetDto find(UUID id) {
+    public ResourceGetDto find(UUID id) throws ObjectNotFoundException {
         Resource resource =  resourcesRepository.getByGuid(id);
+        if (resource == null) throw new ObjectNotFoundException();
         var mapper = helper.getMapper();
         return mapper.mapResourceToDto(resource);
     }
@@ -124,12 +126,14 @@ public class ResourcesService {
     }
 
     //todo checks
-    public void returnResource(String login, UUID resource) throws Exception {
-        if(eventsRepository.isAvailable(resource)) throw new Exception();
+    public void returnResource(String login, UUID resource) throws ObjectNotFoundException, ResourceReturnException, ResourceNotAvailableException {
+        if(eventsRepository.isAvailable(resource)) throw new ResourceNotAvailableException();
         var user = usersRepository.findUserByLogin(login);
+        if (user == null)
+            throw new ObjectNotFoundException();
         var event = eventsRepository
                 .getActiveForUserAndResource(user.getGuid(), resource);
         if(event == null) throw new ResourceReturnException();
-        event.setReturnDate(new Date()); // todo consider calling update method
+        event.setReturnDate(new Date());
     }
 }

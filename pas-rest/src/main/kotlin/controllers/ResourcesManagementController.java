@@ -2,19 +2,24 @@ package controllers;
 
 
 import dto.ResourceBaseDto;
+import dto.ResourceGetDto;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectLockedByRentException;
 import exceptions.ObjectNotFoundException;
+import model.Resource;
 import exceptions.RepositoryException;
 import security.JWSHelper;
 import services.ResourcesService;
 
 import javax.inject.Inject;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -42,38 +47,65 @@ public class ResourcesManagementController {
     @Produces("application/json")
     @Path("{id}")
     public Response get(@PathParam("id") String id){
-        var guid = UUID.fromString(id);
-        var resource = resourcesService.find(guid);
-        if(resource == null) return Response.status(404).build();
+        try {
+            var guid = UUID.fromString(id);
+            var resource = resourcesService.find(guid);
+            if(resource == null) return Response.status(404).build();
 
-        EntityTag etag = new EntityTag(JWSHelper.sign(resource.getGuid().toString()));
+            EntityTag etag = new EntityTag(JWSHelper.sign(resource.getGuid().toString()));
 
-        return Response.ok(resource).header("ETag", etag).build();
+            return Response.ok(resource).header("ETag", etag).build();
+        }
+        catch (ObjectNotFoundException e){
+            return Response.status(404, e.getMessage()).build();
+        }
+
     }
 
     // todo maybe return createdAt
+    // todo handle Exception
     @POST
 //    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response add(final ResourceBaseDto model) throws ObjectAlreadyStoredException, RepositoryException {
-        resourcesService.add(model);
-        return Response.ok().build();
+    public Response add(final ResourceBaseDto model) {
+        Response res = ValidationController.validate(model);
+        if (res!= null) return res;
+        try {
+            resourcesService.add(model);
+            return Response.ok().build();
+        } catch (RepositoryException | ObjectAlreadyStoredException e) {
+            return Response.status(409, e.getMessage()).build();
+        }
     }
 
     // todo good, but add error handling
     // todo maybe return createdAt
     @PUT
-//    @Path("{id}")
+    @Path("{id}")
 //    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(final ResourceBaseDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws ObjectNotFoundException, RepositoryException, ObjectLockedByRentException {
-        var guid = model.getGuid();
+    public Response update(@PathParam("id") String id, final ResourceBaseDto model, @NotNull @HeaderParam("If-Match") String ifMatch) {
+        var guid = UUID.fromString(id);
+        Response res = ValidationController.validate(model);
+        if (res!= null) return res;
+        try {
+//            var guid = model.getGuid();
 
-        if(JWSHelper.verify(guid.toString(), ifMatch)) {
-            resourcesService.update(guid, model);
-            return Response.ok().build();
-        } else {
-            return Response.status(Response.Status.PRECONDITION_FAILED.getStatusCode(), "Data integrity error.").build();
+            if(JWSHelper.verify(model.getGuid().toString(), ifMatch)) {
+                resourcesService.update(guid, model);
+                return Response.ok().build();
+            } else {
+                return Response.status(Response.Status.PRECONDITION_FAILED.getStatusCode(), "Data integrity error.").build();
+            }
+        }
+        catch (ObjectNotFoundException e){
+            return Response.status(404, e.getMessage()).build();
+        }
+        catch (RepositoryException e){
+            return Response.status(409, "Resource cannot be updated. ").build();
+        }
+        catch (ObjectLockedByRentException e){
+            return Response.status(405, "Requested resource is locked by ongoing rent. ").build();
         }
     }
 
@@ -82,9 +114,17 @@ public class ResourcesManagementController {
     @Path("{id}")
 //    @RolesAllowed("WORKER")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response delete(@PathParam("id") String id) throws ObjectLockedByRentException, ObjectNotFoundException {
-        var guid = UUID.fromString(id);
-        resourcesService.delete(guid);
-        return Response.ok().build();
+    public Response delete(@PathParam("id") String id) {
+        try {
+            var guid = UUID.fromString(id);
+            resourcesService.delete(guid);
+            return Response.ok().build();
+        }
+        catch (ObjectLockedByRentException e){
+            return Response.status(405, "Requested resource is locked by ongoing rent. ").build();
+        }
+        catch (ObjectNotFoundException e){
+            return Response.status(404, e.getMessage()).build();
+        }
     }
 }
