@@ -5,6 +5,7 @@ import java.util.*
 import javax.validation.constraints.*
 
 open class UserBaseDto {
+    var guid: UUID? = null
     var active: Boolean = false
     var role: UserRole? = null
     @NotNull(message = "Login cannot be null. ")
@@ -12,14 +13,13 @@ open class UserBaseDto {
     var login: String? = null
     var firstname: String? = null
     var lastname: String? = null
+    var password: String? = null
 }
 
 class UserGetDto : UserBaseDto() {
-    var guid: UUID? = null
 }
 
 class UserCreateDto : UserBaseDto(){
-    var password: String? = null
 }
 
 

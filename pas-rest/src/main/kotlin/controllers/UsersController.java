@@ -1,21 +1,20 @@
 package controllers;
 
 
-import dto.UserBaseDto;
 import dto.UserCreateDto;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectNotFoundException;
 import exceptions.RepositoryException;
+import security.JWSHelper;
 import services.UsersService;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
+import javax.ws.rs.core.*;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Path("users")
@@ -49,7 +48,10 @@ public class UsersController {
         try {
             var guid = UUID.fromString(id);
             var user = usersService.find(guid);
-            return Response.ok(user).build();
+            if(user == null) return Response.status(404).build();
+
+            EntityTag etag = new EntityTag(JWSHelper.sign(user.getLogin()));
+            return Response.ok(user).header("ETag", etag).build();
         } catch (ObjectNotFoundException e) {
             return Response.status(404, e.getMessage()).build();
         }
@@ -63,7 +65,11 @@ public class UsersController {
         try {
             var login = securityContext.getUserPrincipal().getName();
             var user = usersService.find(login);
-            return Response.ok(user).build();
+            if(user == null) return Response.status(404).build();
+
+            EntityTag etag = new EntityTag(JWSHelper.sign(user.getLogin()));
+
+            return Response.ok(user).header("ETag", etag).build();
         } catch (ObjectNotFoundException e) {
             return Response.status(404, e.getMessage()).build();
         }
@@ -89,21 +95,29 @@ public class UsersController {
     // todo good, but add error handling
     // todo maybe return createdAt
     @PUT
-    @Path("{id}")
+//    @Path("{id}")
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") String id, final UserCreateDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public Response update(final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
         Response res = ValidationController.validate(model);
         if (res != null) return res;
         try {
-            var guid = UUID.fromString(id);
-            usersService.update(guid, model);
-            return Response.ok().build();
+            var guid = model.getGuid();
+
+            var user = usersService.find(model.getLogin());
+
+            if(JWSHelper.verify(user.getLogin(), ifMatch)) {
+                usersService.update(guid, model);
+                return Response.ok().build();
+            } else {
+                return Response.status(Response.Status.PRECONDITION_FAILED.getStatusCode(), "Data integrity error.").build();
+            }
         } catch (RepositoryException e) {
             return Response.status(409, e.getMessage()).build();
         } catch (ObjectNotFoundException e) {
             return Response.status(404, e.getMessage()).build();
         }
+    }
 
 //    @GET
 //    @Path("userdata")
@@ -126,5 +140,4 @@ public class UsersController {
 //        }
 //        return Response.ok().build();
 //    }
-    }
 }

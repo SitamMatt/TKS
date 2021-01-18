@@ -36,7 +36,7 @@ public class ResourcesService {
     }
 
     //todo: resource nie ma przypisanego guida po mapowaniu
-    public void update(UUID guid, ResourceBaseDto model) throws Exception{
+    public void update(UUID guid, ResourceBaseDto model) throws ObjectLockedByRentException, RepositoryException, ObjectNotFoundException {
         if (!eventsRepository.isAvailable(guid))
             throw new ObjectLockedByRentException();
         var resource = (Resource) helper.getMapper().mapDtoToResource(model);
@@ -126,8 +126,8 @@ public class ResourcesService {
     }
 
     //todo checks
-    public void returnResource(String login, UUID resource) throws Exception, ObjectNotFoundException {
-        if(eventsRepository.isAvailable(resource)) throw new Exception();
+    public void returnResource(String login, UUID resource) throws ObjectNotFoundException, ResourceReturnException, ResourceNotAvailableException {
+        if(eventsRepository.isAvailable(resource)) throw new ResourceNotAvailableException();
         var user = usersRepository.findUserByLogin(login);
         if (user == null)
             throw new ObjectNotFoundException();

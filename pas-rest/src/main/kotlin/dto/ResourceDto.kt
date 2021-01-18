@@ -4,6 +4,7 @@ import java.util.*
 import javax.validation.constraints.*
 
 open class ResourceBaseDto {
+    var guid: UUID? = null
     var type: ResourceType? = null
     @NotNull(message = "Title cannot be null. ")
     @NotEmpty(message = "Title cannot be empty. ")
@@ -18,7 +19,6 @@ open class ResourceBaseDto {
 }
 
 class ResourceGetDto : ResourceBaseDto(){
-    var guid: UUID? = null
 }
 
 enum class ResourceType{

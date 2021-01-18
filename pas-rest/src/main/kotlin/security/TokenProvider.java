@@ -7,9 +7,13 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
+import dto.TokenDto;
 
 import javax.security.enterprise.identitystore.CredentialValidationResult;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +26,7 @@ public class TokenProvider {
 
     public static final String AUTH_CLAIM = "auth";
 
-    public static String createToken(CredentialValidationResult credential) {
+    public static TokenDto createToken(CredentialValidationResult credential) {
         try {
             JWSSigner signer = new MACSigner(SECRET);
             JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
@@ -36,11 +40,14 @@ public class TokenProvider {
             signedJWT.sign(signer);
 
             String token = signedJWT.serialize();
+            var formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
+
+
             LOG.log(Level.INFO, "JWT TOKEN GENERATED="+token);
-            return token;
+            return new TokenDto(token, formatter.format(claimsSet.getExpirationTime()));
         } catch (JOSEException e) {
             e.printStackTrace();
-            return "";
+            return null;
         }
     }
 

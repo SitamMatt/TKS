@@ -1,0 +1,63 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "title": "User",
+    "type": "object",
+    "properties": {
+        "login": {
+            "type": "string"
+        },
+        "type": {
+            "type": "string",
+            "enum": [
+                "Magazine",
+                "Book"
+            ]
+        },
+        "title": {
+            "type": "string"
+        },
+        "pagesCount": {
+            "type": "number"
+        },
+        "publishingHouse": {
+            "type": "string"
+        },
+        "guid": {
+            "type": "string",
+            "format": "uuid"
+        },
+        "author": {
+            "type": "string"
+        },
+        "issueDate": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "guid",
+        "type",
+        "title"
+    ],
+    "anyOf": [
+        {
+            "properties": {
+                "type": {
+                    "const": "Book"
+                }
+            },
+            "required": [
+                "author"
+            ]
+        },
+        {
+            "properties": {
+                "type": {
+                    "const": "Magazine"
+                }
+            },
+            "required": [
+                "issueDate"
+            ]
+        }
+    ]
+}

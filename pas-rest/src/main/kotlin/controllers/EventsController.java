@@ -24,6 +24,7 @@ public class EventsController {
         try {
             var uuid = UUID.fromString(id);
             var event = eventsService.find(uuid);
+            if(event == null) return Response.status(404).build();
             return Response.ok(event).build();
         }
         catch (ObjectNotFoundException e){

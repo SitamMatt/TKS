@@ -1,11 +1,7 @@
 package controllers;
 
+import exceptions.*;
 import exceptions.ObjectAlreadyStoredException;
-import exceptions.RepositoryException;
-import exceptions.ResourceNotAvailableException;
-import exceptions.UserNotFoundException;
-import exceptions.ObjectAlreadyStoredException;
-import exceptions.ObjectNotFoundException;
 import exceptions.RepositoryException;
 import exceptions.ResourceNotAvailableException;
 import org.modelmapper.internal.bytebuddy.asm.Advice;
@@ -50,7 +46,7 @@ public class ResourcesController {
     @POST
     @Path("{id}/rent")
     @RolesAllowed("USER")
-    public Response rent(@PathParam("id") String id) throws Exception {
+    public Response rent(@PathParam("id") String id) {
         try {
             var guid = UUID.fromString(id);
             var login = securityContext.getUserPrincipal().getName();
@@ -70,7 +66,7 @@ public class ResourcesController {
 
     @POST
     @Path("{id}/return")
-    public Response returnResource(@PathParam("id") String id) throws Exception {
+    public Response returnResource(@PathParam("id") String id) throws ResourceReturnException, ResourceNotAvailableException {
         try {
             var guid = UUID.fromString(id);
             var login = securityContext.getUserPrincipal().getName();
