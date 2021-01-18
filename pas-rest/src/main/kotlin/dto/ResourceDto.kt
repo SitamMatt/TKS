@@ -3,6 +3,7 @@ package dto
 import java.util.*
 
 open class ResourceBaseDto {
+    var guid: UUID? = null
     var type: ResourceType? = null
     var title: String? = null
     var pagesCount = 0
@@ -12,7 +13,6 @@ open class ResourceBaseDto {
 }
 
 class ResourceGetDto : ResourceBaseDto(){
-    var guid: UUID? = null
 }
 
 enum class ResourceType{

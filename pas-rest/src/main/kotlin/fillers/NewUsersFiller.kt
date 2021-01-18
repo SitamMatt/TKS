@@ -61,6 +61,15 @@ class NewUsersFiller {
             login = "matt"
             password = "1234"
         })
+        result.add(User().apply {
+            guid = UUID.fromString("3fbdbdb6-7a44-4b9e-be8d-dd120a271b5b")
+            isActive = true
+            role = UserRole.ADMIN
+            firstname = "Sebas"
+            lastname = "Chan"
+            login = "root"
+            password = "root"
+        })
         return result
     }
 }

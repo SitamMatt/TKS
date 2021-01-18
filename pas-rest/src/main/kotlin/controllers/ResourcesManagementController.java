@@ -6,10 +6,13 @@ import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectLockedByRentException;
 import exceptions.ObjectNotFoundException;
 import exceptions.RepositoryException;
+import security.JWSHelper;
 import services.ResourcesService;
 
 import javax.inject.Inject;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.UUID;
@@ -41,8 +44,11 @@ public class ResourcesManagementController {
     public Response get(@PathParam("id") String id){
         var guid = UUID.fromString(id);
         var resource = resourcesService.find(guid);
-        if(resource == null) Response.status(404).build();
-        return Response.ok(resource).build();
+        if(resource == null) return Response.status(404).build();
+
+        EntityTag etag = new EntityTag(JWSHelper.sign(resource.getGuid().toString()));
+
+        return Response.ok(resource).header("ETag", etag).build();
     }
 
     // todo maybe return createdAt
@@ -57,13 +63,18 @@ public class ResourcesManagementController {
     // todo good, but add error handling
     // todo maybe return createdAt
     @PUT
-    @Path("{id}")
+//    @Path("{id}")
 //    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") String id, final ResourceBaseDto model) throws ObjectNotFoundException, RepositoryException, ObjectLockedByRentException {
-        var guid = UUID.fromString(id);
-        resourcesService.update(guid, model);
-        return Response.ok().build();
+    public Response update(final ResourceBaseDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws ObjectNotFoundException, RepositoryException, ObjectLockedByRentException {
+        var guid = model.getGuid();
+
+        if(JWSHelper.verify(guid.toString(), ifMatch)) {
+            resourcesService.update(guid, model);
+            return Response.ok().build();
+        } else {
+            return Response.status(Response.Status.PRECONDITION_FAILED.getStatusCode(), "Data integrity error.").build();
+        }
     }
 
     // todo good, but add error handling

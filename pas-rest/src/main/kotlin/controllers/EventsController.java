@@ -21,7 +21,7 @@ public class EventsController {
     public Response get(@PathParam("id") String id){
         var uuid = UUID.fromString(id);
         var event = eventsService.find(uuid);
-        if(event == null) Response.status(404).build();
+        if(event == null) return Response.status(404).build();
         return Response.ok(event).build();
     }
 
