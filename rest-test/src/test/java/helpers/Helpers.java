@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import static io.restassured.RestAssured.given;
 
 public class Helpers {
+
     public static String auth(String login, String password) throws JSONException {
         JSONObject jsonObj = new JSONObject()
                 .put("login",login)
@@ -19,5 +20,10 @@ public class Helpers {
         res.then()
                 .statusCode(202);
         return res.body().asString();
+    }
+
+    public static String extractToken(String body) throws JSONException {
+        JSONObject jsonObj = new JSONObject(body);
+        return (String) jsonObj.get("token");
     }
 }

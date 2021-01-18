@@ -1,6 +1,6 @@
 package controllers;
 
-import com.nimbusds.jose.shaded.json.JSONObject;
+
 import dto.UserCreateDto;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectNotFoundException;
@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Path("users")

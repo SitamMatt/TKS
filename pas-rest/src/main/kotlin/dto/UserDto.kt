@@ -10,13 +10,13 @@ open class UserBaseDto {
     var login: String? = null
     var firstname: String? = null
     var lastname: String? = null
+    var password: String? = null
 }
 
 class UserGetDto : UserBaseDto() {
 }
 
 class UserCreateDto : UserBaseDto(){
-    var password: String? = null
 }
 
 
