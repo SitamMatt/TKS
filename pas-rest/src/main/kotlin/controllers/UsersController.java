@@ -79,7 +79,7 @@ public class UsersController {
     @POST
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response add(final UserCreateDto model) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public Response add(final UserCreateDto model) {
         Response res = ValidationController.validate(model);
         if (res != null) return res;
         try {
@@ -88,7 +88,7 @@ public class UsersController {
         } catch (ObjectAlreadyStoredException e) {
             return Response.status(405, "Requested object already exists. ").build();
         } catch (RepositoryException e) {
-            return Response.status(409, e.getMessage()).build();
+            return Response.status(409, "User could not be added. ").build();
         }
     }
 
@@ -98,7 +98,7 @@ public class UsersController {
 //    @Path("{id}")
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws ObjectAlreadyStoredException, RepositoryException, ObjectNotFoundException {
+    public Response update(final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) {
         Response res = ValidationController.validate(model);
         if (res != null) return res;
         try {
@@ -113,7 +113,7 @@ public class UsersController {
                 return Response.status(Response.Status.PRECONDITION_FAILED.getStatusCode(), "Data integrity error.").build();
             }
         } catch (RepositoryException e) {
-            return Response.status(409, e.getMessage()).build();
+            return Response.status(409, "Requested user could not be updated. ").build();
         } catch (ObjectNotFoundException e) {
             return Response.status(404, e.getMessage()).build();
         }

@@ -84,7 +84,7 @@ public class ResourcesManagementController {
     @Path("{id}")
 //    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(@PathParam("id") String id, final ResourceBaseDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws ObjectNotFoundException, RepositoryException, ObjectLockedByRentException {
+    public Response update(@PathParam("id") String id, final ResourceBaseDto model, @NotNull @HeaderParam("If-Match") String ifMatch) {
         var guid = UUID.fromString(id);
         Response res = ValidationController.validate(model);
         if (res!= null) return res;
@@ -100,6 +100,12 @@ public class ResourcesManagementController {
         }
         catch (ObjectNotFoundException e){
             return Response.status(404, e.getMessage()).build();
+        }
+        catch (RepositoryException e){
+            return Response.status(409, "Resource cannot be updated. ").build();
+        }
+        catch (ObjectLockedByRentException e){
+            return Response.status(405, "Requested resource is locked by ongoing rent. ").build();
         }
     }
 

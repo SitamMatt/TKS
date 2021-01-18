@@ -60,13 +60,13 @@ public class ResourcesController {
             return Response.status(405, "Requested object already exists. ").build();
         }
         catch (RepositoryException e){
-            return Response.status(409, "Rent cannot be made. ").build();
+            return Response.status(409, "Rent cannot be allocated. ").build();
         }
     }
 
     @POST
     @Path("{id}/return")
-    public Response returnResource(@PathParam("id") String id) throws ResourceReturnException, ResourceNotAvailableException {
+    public Response returnResource(@PathParam("id") String id) throws ResourceReturnException {
         try {
             var guid = UUID.fromString(id);
             var login = securityContext.getUserPrincipal().getName();
@@ -74,7 +74,14 @@ public class ResourcesController {
             return Response.ok().build();
         }
         catch (ObjectNotFoundException e){
-            return Response.status(404, "User not found. ").build();
+            return Response.status(404, e.getMessage()).build();
+        }
+        //todo: proper response code?
+        catch (ResourceNotAvailableException e){
+            return Response.status(409, "Resource has been already returned. ").build();
+        }
+        catch (ResourceReturnException e){
+            return Response.status(409, "Cannot find matching rental. ").build();
         }
     }
 }
