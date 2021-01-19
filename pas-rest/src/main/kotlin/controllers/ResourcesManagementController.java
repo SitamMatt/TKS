@@ -88,6 +88,11 @@ public class ResourcesManagementController {
     public Response update(@PathParam("id") String id, final ResourceBaseDto model, @NotNull @HeaderParam("If-Match") String ifMatch) {
         var guid = UUID.fromString(id);
         Response res = ValidationController.validate(model);
+
+        if(!guid.equals(model.getGuid())) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+
         if (res!= null) return res;
         try {
 //            var guid = model.getGuid();
@@ -113,7 +118,7 @@ public class ResourcesManagementController {
     // todo good, but add error handling
     @DELETE
     @Path("{id}")
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") String id) {
         try {

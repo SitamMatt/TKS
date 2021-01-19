@@ -36,6 +36,9 @@ public class UsersController {
                         @QueryParam("maxResults") int maxResults,
                         @QueryParam("search") String search) {
         var result = usersService.filter(type, page, maxResults, search);
+        if(result.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         return Response.ok(result).build();
     }
 
@@ -54,7 +57,10 @@ public class UsersController {
             return Response.ok(user).header("ETag", etag).build();
         } catch (ObjectNotFoundException e) {
             return Response.status(404, e.getMessage()).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), "Wrong guid format.").build();
         }
+
     }
 
     @GET
@@ -79,17 +85,24 @@ public class UsersController {
     @POST
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response add(final UserCreateDto model) {
+    public Response add(@NotNull final UserCreateDto model) {
         Response res = ValidationController.validate(model);
         if (res != null) return res;
+
+        try {
+            usersService.find(model.getLogin());
+            return Response.status(Response.Status.CONFLICT).build();
+        } catch (ObjectNotFoundException ignored) { }
+
         try {
             usersService.add(model);
-            return Response.ok().build();
+            return Response.status(Response.Status.CREATED).build();
         } catch (ObjectAlreadyStoredException e) {
-            return Response.status(405, "Requested object already exists. ").build();
+            return Response.status(409, "Requested object already exists. ").build();
         } catch (RepositoryException e) {
-            return Response.status(409, "User could not be added. ").build();
+            return Response.status(400, "User could not be added. ").build();
         }
+
     }
 
     // todo good, but add error handling
@@ -101,6 +114,11 @@ public class UsersController {
     public Response update(@PathParam("id") String id, final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) {
         var guid = UUID.fromString(id);
         Response res = ValidationController.validate(model);
+
+        if(!guid.equals(model.getGuid())) {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+
         if (res != null) return res;
         try {
 //            var guid = model.getGuid();
