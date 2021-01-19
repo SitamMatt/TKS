@@ -130,6 +130,58 @@ public class JwsTests {
     }
 
     @Test
+    public void jwsUserUpdateUnauthorizedTest() throws JSONException {
+        String token = Helpers.extractToken(Helpers.auth("admin", "admin0"));
+        var res = given().relaxedHTTPSValidation()
+                .contentType("application/json")
+                .headers("Authorization", "Bearer " + token)
+                .when().get("/api/users/me");
+        res.then()
+                .contentType("application/json")
+                .body(matchesJsonSchema(UserSchema))
+                .statusCode(200);
+        var json = new JSONObject(res.body().asString());
+
+        String etag = res.getHeaders().get("Etag").getValue();
+        etag = etag.substring(1, etag.length()-1);
+
+        json.put("firstname", "Mateusz");
+        var rs = given().relaxedHTTPSValidation()
+                .contentType("application/json")
+                .headers("If-Match", etag)
+                .body(json.toString()).when().put("/api/users");
+        rs.then()
+                .statusCode(401);
+    }
+
+    @Test
+    public void jwsUserUpdateForbiddenTest() throws JSONException {
+        String token = Helpers.extractToken(Helpers.auth("admin", "admin0"));
+        var res = given().relaxedHTTPSValidation()
+                .contentType("application/json")
+                .headers("Authorization", "Bearer " + token)
+                .when().get("/api/users/me");
+        res.then()
+                .contentType("application/json")
+                .body(matchesJsonSchema(UserSchema))
+                .statusCode(200);
+        var json = new JSONObject(res.body().asString());
+
+        String etag = res.getHeaders().get("Etag").getValue();
+        etag = etag.substring(1, etag.length()-1);
+
+        String userToken = Helpers.extractToken(Helpers.auth("user", "user0"));
+
+        json.put("firstname", "Mateusz");
+        var rs = given().relaxedHTTPSValidation()
+                .contentType("application/json")
+                .headers("Authorization", "Bearer " + userToken,"If-Match", etag)
+                .body(json.toString()).when().put("/api/users");
+        rs.then()
+                .statusCode(403);
+    }
+
+    @Test
     public void jwsUserUpdateInvalidEtagTest() throws JSONException {
         String token = Helpers.extractToken(Helpers.auth("admin", "admin0"));
         var res = given().relaxedHTTPSValidation()
@@ -179,7 +231,7 @@ public class JwsTests {
 
     @Test
     public void jwsResourceUpdateTest() throws JSONException {
-        String token = Helpers.extractToken(Helpers.auth("admin", "admin0"));
+        String token = Helpers.extractToken(Helpers.auth("worker", "worker0"));
         String resourceId = "6d094ca9-94d1-480f-96ca-fce609ac4c44";
 
         var res = given().relaxedHTTPSValidation()
@@ -217,8 +269,65 @@ public class JwsTests {
     }
 
     @Test
+    public void jwsResourceUpdateUnauthorizedTest() throws JSONException {
+        String token = Helpers.extractToken(Helpers.auth("worker", "worker0"));
+        String resourceId = "6d094ca9-94d1-480f-96ca-fce609ac4c44";
+
+        var res = given().relaxedHTTPSValidation()
+                .contentType("application/json")
+                .headers("Authorization", "Bearer " + token)
+                .when().get("/api/resources/management/" + resourceId);
+        res.then()
+                .contentType("application/json")
+                .body(matchesJsonSchema(ResourceSchema))
+                .statusCode(200);
+        var json = new JSONObject(res.body().asString());
+
+        String etag = res.getHeaders().get("Etag").getValue();
+        etag = etag.substring(1, etag.length()-1);
+
+        json.put("title", "E-BUK");
+        var rs = given().relaxedHTTPSValidation()
+                .contentType("application/json")
+                .headers("If-Match", etag)
+                .body(json.toString()).when().put("/api/resources/management/");
+        rs.then()
+                .statusCode(401);
+    }
+
+    @Test
+    public void jwsResourceUpdateForbiddenTest() throws JSONException {
+        String token = Helpers.extractToken(Helpers.auth("worker", "worker0"));
+        String resourceId = "6d094ca9-94d1-480f-96ca-fce609ac4c44";
+
+        var res = given().relaxedHTTPSValidation()
+                .contentType("application/json")
+                .headers("Authorization", "Bearer " + token)
+                .when().get("/api/resources/management/" + resourceId);
+        res.then()
+                .contentType("application/json")
+                .body(matchesJsonSchema(ResourceSchema))
+                .statusCode(200);
+        var json = new JSONObject(res.body().asString());
+
+        String etag = res.getHeaders().get("Etag").getValue();
+        etag = etag.substring(1, etag.length()-1);
+
+        String userToken = Helpers.extractToken(Helpers.auth("user", "user0"));
+
+        json.put("title", "E-BUK");
+        var rs = given().relaxedHTTPSValidation()
+                .contentType("application/json")
+                .headers("Authorization", "Bearer " + userToken, "If-Match", etag)
+                .body(json.toString()).when().put("/api/resources/management/");
+        rs.then()
+                .statusCode(403);
+    }
+
+
+    @Test
     public void jwsResourceUpdateInvalidEtagTest() throws JSONException {
-        String token = Helpers.extractToken(Helpers.auth("admin", "admin0"));
+        String token = Helpers.extractToken(Helpers.auth("worker", "worker0"));
         String resourceId = "6d094ca9-94d1-480f-96ca-fce609ac4c44";
 
         var res = given().relaxedHTTPSValidation()
@@ -244,7 +353,7 @@ public class JwsTests {
 
     @Test
     public void jwsResourceUpdateNoIfMatchTest() throws JSONException {
-        String token = Helpers.extractToken(Helpers.auth("admin", "admin0"));
+        String token = Helpers.extractToken(Helpers.auth("worker", "worker0"));
         String resourceId = "6d094ca9-94d1-480f-96ca-fce609ac4c44";
 
         var res = given().relaxedHTTPSValidation()

@@ -9,6 +9,7 @@ import exceptions.RepositoryException;
 import security.JWSHelper;
 import services.ResourcesService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -27,7 +28,7 @@ public class ResourcesManagementController {
     private ResourcesService resourcesService;
 
     @GET
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@QueryParam("type") String type,
                         @QueryParam("page") int page,
@@ -38,7 +39,7 @@ public class ResourcesManagementController {
     }
 
     @GET
-    //    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Produces("application/json")
     @Path("{id}")
     public Response get(@PathParam("id") String id){
@@ -53,7 +54,7 @@ public class ResourcesManagementController {
 
     // todo maybe return createdAt
     @POST
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response add(final ResourceBaseDto model) throws ObjectAlreadyStoredException, RepositoryException {
         resourcesService.add(model);
@@ -64,7 +65,7 @@ public class ResourcesManagementController {
     // todo maybe return createdAt
     @PUT
 //    @Path("{id}")
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response update(final ResourceBaseDto model, @NotNull @HeaderParam("If-Match") String ifMatch) throws ObjectNotFoundException, RepositoryException, ObjectLockedByRentException {
         var guid = model.getGuid();
@@ -80,7 +81,7 @@ public class ResourcesManagementController {
     // todo good, but add error handling
     @DELETE
     @Path("{id}")
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") String id) throws ObjectLockedByRentException, ObjectNotFoundException {
         var guid = UUID.fromString(id);
