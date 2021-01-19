@@ -88,9 +88,15 @@ public class UsersController {
     public Response add(@NotNull final UserCreateDto model) {
         Response res = ValidationController.validate(model);
         if (res != null) return res;
+
+        try {
+            usersService.find(model.getLogin());
+            return Response.status(Response.Status.CONFLICT).build();
+        } catch (ObjectNotFoundException ignored) { }
+
         try {
             usersService.add(model);
-            return Response.ok().build();
+            return Response.status(Response.Status.CREATED).build();
         } catch (ObjectAlreadyStoredException e) {
             return Response.status(409, "Requested object already exists. ").build();
         } catch (RepositoryException e) {

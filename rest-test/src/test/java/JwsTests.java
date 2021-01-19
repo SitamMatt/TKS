@@ -251,7 +251,7 @@ public class JwsTests {
         var rs = given().relaxedHTTPSValidation()
                 .contentType("application/json")
                 .headers("Authorization", "Bearer " + token, "If-Match", etag)
-                .body(json.toString()).when().put("/api/resources/management/");
+                .body(json.toString()).when().put("/api/resources/management/" + resourceId);
         rs.then()
                 .statusCode(200);
 
@@ -290,7 +290,7 @@ public class JwsTests {
         var rs = given().relaxedHTTPSValidation()
                 .contentType("application/json")
                 .headers("If-Match", etag)
-                .body(json.toString()).when().put("/api/resources/management/");
+                .body(json.toString()).when().put("/api/resources/management/" + resourceId);
         rs.then()
                 .statusCode(401);
     }
@@ -319,7 +319,7 @@ public class JwsTests {
         var rs = given().relaxedHTTPSValidation()
                 .contentType("application/json")
                 .headers("Authorization", "Bearer " + userToken, "If-Match", etag)
-                .body(json.toString()).when().put("/api/resources/management/");
+                .body(json.toString()).when().put("/api/resources/management/" + resourceId);
         rs.then()
                 .statusCode(403);
     }
@@ -346,7 +346,7 @@ public class JwsTests {
         var rs = given().relaxedHTTPSValidation()
                 .contentType("application/json")
                 .headers("Authorization", "Bearer " + token, "If-Match", etag)
-                .body(json.toString()).when().put("/api/resources/management/");
+                .body(json.toString()).when().put("/api/resources/management/" + resourceId);
         rs.then()
                 .statusCode(412);
     }
@@ -371,7 +371,7 @@ public class JwsTests {
         var rs = given().relaxedHTTPSValidation()
                 .contentType("application/json")
                 .headers("Authorization", "Bearer " + token)
-                .body(json.toString()).when().put("/api/resources/management/");
+                .body(json.toString()).when().put("/api/resources/management/" + resourceId);
         rs.then()
                 .statusCode(400);
     }
