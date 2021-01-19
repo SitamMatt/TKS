@@ -2,9 +2,7 @@ package services;
 
 import dto.ResourceBaseDto;
 import dto.ResourceGetDto;
-import dto.ResourceType;
 import exceptions.*;
-import mappers.Mapper;
 import mappers.MapperHelper;
 import model.Book;
 import model.Event;
@@ -27,7 +25,6 @@ public class ResourcesService {
     @Inject private IResourcesRepository resourcesRepository;
     @Inject private IEventsRepository eventsRepository;
     @Inject private IUsersRepository usersRepository;
-    @Inject private Mapper mapper;
     @Inject private MapperHelper helper;
 
     public void add(ResourceBaseDto model) throws ObjectAlreadyStoredException, RepositoryException {

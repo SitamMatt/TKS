@@ -3,9 +3,7 @@ package services;
 
 import dto.EventDto;
 import exceptions.ObjectNotFoundException;
-import mappers.Mapper;
 import mappers.MapperHelper;
-import model.Event;
 import repositories.interfaces.IEventsRepository;
 
 import javax.enterprise.context.RequestScoped;
@@ -17,7 +15,6 @@ import java.util.stream.Collectors;
 @RequestScoped
 public class EventsService {
     @Inject private IEventsRepository eventsRepository;
-    @Inject private Mapper mapper;
     @Inject private MapperHelper helper;
 
     public dto.EventDto find(UUID id) throws ObjectNotFoundException {

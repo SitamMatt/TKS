@@ -4,7 +4,6 @@ package repositories;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.RepositoryException;
 import fillers.NewUsersFiller;
-import mappers.Mapper;
 import exceptions.LoginAlreadyTakenException;
 import mappers.MapperHelper;
 import model.User;

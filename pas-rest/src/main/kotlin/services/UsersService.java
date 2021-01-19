@@ -1,15 +1,12 @@
 package services;
 
-import dto.UserBaseDto;
 import dto.UserCreateDto;
 import dto.UserGetDto;
-import mappers.Mapper;
 import mappers.MapperHelper;
 import model.UserRole;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectNotFoundException;
 import exceptions.RepositoryException;
-import model.User;
 import repositories.interfaces.IUsersRepository;
 
 import javax.enterprise.context.RequestScoped;

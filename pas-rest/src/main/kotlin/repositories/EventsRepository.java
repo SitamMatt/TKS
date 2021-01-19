@@ -2,7 +2,6 @@ package repositories;
 
 import exceptions.RepositoryException;
 import fillers.NewEventsFiller;
-import mappers.Mapper;
 import mappers.MapperHelper;
 import model.Event;
 import repositories.interfaces.IEventsRepository;

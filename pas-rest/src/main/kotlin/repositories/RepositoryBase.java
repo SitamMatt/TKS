@@ -1,7 +1,6 @@
 package repositories;
 
 
-import mappers.Mapper;
 import exceptions.ObjectAlreadyStoredException;
 import exceptions.ObjectNotFoundException;
 import exceptions.RepositoryException;
