@@ -3,6 +3,8 @@ package controllers;
 import helpers.Helpers;
 import io.restassured.RestAssured;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -99,6 +101,10 @@ public class EventsControllerTests {
         res.then()
                 .statusCode(200)
                 .body(matchesJsonSchema(eventSchema));
+        var json2 = new JSONObject(res.body().asString());
+        Assert.assertEquals("2011-12-31T23:00:00Z", json2.get("rentDate"));
+        Assert.assertEquals("1514f5ae-f54d-4b4f-ac97-97f32fe18cb0", json2.get("resourceId"));
+        Assert.assertEquals("48bb061d-0a01-4f60-bdfc-f6bac839b107", json2.get("userId"));
     }
 
     @Test
