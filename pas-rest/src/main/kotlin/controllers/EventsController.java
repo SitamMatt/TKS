@@ -1,5 +1,6 @@
 package controllers;
 
+import exceptions.ObjectNotFoundException;
 import services.EventsService;
 
 import javax.annotation.security.RolesAllowed;
@@ -16,13 +17,19 @@ public class EventsController {
 
     @GET
     @Path("{id}")
+    //todo Dodać wyswietlanie resource id i user id
 //    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@PathParam("id") String id){
-        var uuid = UUID.fromString(id);
-        var event = eventsService.find(uuid);
-        if(event == null) return Response.status(404).build();
-        return Response.ok(event).build();
+        try {
+            var uuid = UUID.fromString(id);
+            var event = eventsService.find(uuid);
+            if(event == null) return Response.status(404).build();
+            return Response.ok(event).build();
+        }
+        catch (ObjectNotFoundException e){
+            return Response.status(404, e.getMessage()).build();
+        }
     }
 
     // todo w przypadku spa należy pomyśleć o wywyłaniu info o maks liczbie stron

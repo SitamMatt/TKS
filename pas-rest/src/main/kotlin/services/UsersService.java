@@ -62,15 +62,17 @@ public class UsersService {
 //        );
 //    }
 
-    public UserGetDto find(UUID uuid) {
+    public UserGetDto find(UUID uuid) throws ObjectNotFoundException {
         var user = usersRepository.getByGuid(uuid);
+        if (user == null) throw new ObjectNotFoundException();
         return helper.getMapper().mapUserToDto(user);
-    }
+        }
 
-    public UserGetDto find(String login) {
+    public UserGetDto find(String login) throws ObjectNotFoundException {
         var user = usersRepository.findUserByLogin(login);
+        if (user == null) throw new ObjectNotFoundException();
         return helper.getMapper().mapUserToDto(user);
-    }
+        }
 
     public List<UserGetDto> filter(String type, int page, int maxResults, String search) {
         if(page != 0 && maxResults == 0) maxResults = usersRepository.count() / page;
