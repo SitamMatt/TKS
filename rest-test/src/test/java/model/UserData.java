@@ -7,17 +7,27 @@ public class UserData {
     private String guid;
     private String login;
     private String role;
+    private String password;
 
     public UserData() {
     }
 
-    public UserData(boolean active, String firstname, String lastname, String guid, String login, String role) {
+    public UserData(boolean active, String firstname, String lastname, String guid, String login, String role, String password) {
         this.active = active;
         this.firstname = firstname;
         this.lastname = lastname;
         this.guid = guid;
         this.login = login;
         this.role = role;
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public boolean isActive() {

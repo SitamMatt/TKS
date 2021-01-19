@@ -34,8 +34,11 @@ public class UsersController {
     public Response get(@QueryParam("type") String type,
                         @QueryParam("page") int page,
                         @QueryParam("maxResults") int maxResults,
-                        @QueryParam("search") String search){
+                        @QueryParam("search") String search) {
         var result = usersService.filter(type, page, maxResults, search);
+        if(result.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
         return Response.ok(result).build();
     }
 
@@ -45,7 +48,12 @@ public class UsersController {
     @RolesAllowed("ADMIN")
     @Produces("application/json")
     public Response get(@PathParam("id") String id){
-        var guid = UUID.fromString(id);
+        UUID guid;
+        try {
+            guid = UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), "Wrong guid format.").build();
+        }
         var user = usersService.find(guid);
         if(user == null) return Response.status(404).build();
 
@@ -72,9 +80,15 @@ public class UsersController {
     @POST
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response add(final UserCreateDto model) throws ObjectAlreadyStoredException, RepositoryException {
-        usersService.add(model);
-        return Response.ok().build();
+    public Response add(@NotNull final UserCreateDto model) {
+        try {
+            usersService.add(model);
+        } catch (ObjectAlreadyStoredException e) {
+            return Response.status(Response.Status.CONFLICT).build();
+        } catch (RepositoryException e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.status(Response.Status.CREATED).build();
     }
 
     // todo good, but add error handling
