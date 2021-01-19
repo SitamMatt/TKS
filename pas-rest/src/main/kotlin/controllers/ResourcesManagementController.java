@@ -11,6 +11,7 @@ import exceptions.RepositoryException;
 import security.JWSHelper;
 import services.ResourcesService;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -32,7 +33,7 @@ public class ResourcesManagementController {
     private ResourcesService resourcesService;
 
     @GET
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@QueryParam("type") String type,
                         @QueryParam("page") int page,
@@ -43,7 +44,7 @@ public class ResourcesManagementController {
     }
 
     @GET
-    //    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Produces("application/json")
     @Path("{id}")
     public Response get(@PathParam("id") String id){
@@ -65,7 +66,7 @@ public class ResourcesManagementController {
     // todo maybe return createdAt
     // todo handle Exception
     @POST
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response add(final ResourceBaseDto model) {
         Response res = ValidationController.validate(model);
@@ -82,7 +83,7 @@ public class ResourcesManagementController {
     // todo maybe return createdAt
     @PUT
     @Path("{id}")
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Consumes({MediaType.APPLICATION_JSON})
     public Response update(@PathParam("id") String id, final ResourceBaseDto model, @NotNull @HeaderParam("If-Match") String ifMatch) {
         var guid = UUID.fromString(id);
