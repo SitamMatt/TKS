@@ -209,6 +209,9 @@ public class UserControllerTests {
                 .when().get("/api/users");
         res.then()
                 .statusCode(200);
+
+        JSONArray arr = new JSONArray(res.body().asString());
+        Assert.assertTrue(arr.length() == 0);
     }
 
     @Test
