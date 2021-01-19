@@ -108,14 +108,15 @@ public class UsersController {
     // todo good, but add error handling
     // todo maybe return createdAt
     @PUT
-//    @Path("{id}")
+    @Path("{id}")
     @RolesAllowed("ADMIN")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response update(final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) {
+    public Response update(@PathParam("id") String id, final UserCreateDto model, @NotNull @HeaderParam("If-Match") String ifMatch) {
+        var guid = UUID.fromString(id);
         Response res = ValidationController.validate(model);
         if (res != null) return res;
         try {
-            var guid = model.getGuid();
+//            var guid = model.getGuid();
 
             var user = usersService.find(model.getLogin());
 
@@ -131,26 +132,4 @@ public class UsersController {
             return Response.status(404, e.getMessage()).build();
         }
     }
-
-//    @GET
-//    @Path("userdata")
-//    @RolesAllowed("ADMIN")
-//    public Response getUserData(@NotNull @QueryParam("login") String login) {
-//        UserDto user = usersService.find(login);
-//        if(user == null) {
-//            return Response.status(Response.Status.NOT_FOUND).build();
-//        }
-//        return Response.ok().entity(user).build();
-//    }
-
-//    private Response saveData(@NotNull UserDto userData) {
-//        try {
-//            usersService.save(userData);
-//        } catch (ObjectNotFoundException e) {
-//            return Response.status(Response.Status.NOT_FOUND).build();
-//        } catch (ObjectAlreadyStoredException | RepositoryException e) {
-//            return Response.status(Response.Status.CONFLICT).build();
-//        }
-//        return Response.ok().build();
-//    }
 }
