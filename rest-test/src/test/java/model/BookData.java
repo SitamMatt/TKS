@@ -8,6 +8,14 @@ public class BookData {
     protected String author;
     protected String type;
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public BookData(String title, int pagesCount, String publishingHouse, String type, String author){
         this.title = title;
         this.pagesCount = pagesCount;

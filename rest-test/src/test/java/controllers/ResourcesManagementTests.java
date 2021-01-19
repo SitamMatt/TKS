@@ -87,7 +87,7 @@ public class ResourcesManagementTests {
                 .body(matchesJsonSchema(resourceSchema));
     }
 
-    //todo proper response code at pas-rest
+    //todo proper response code at pas-rest (201)
     @Test
     public void successfulAddResourceTest() throws JSONException {
         var token = Helpers.extractToken(Helpers.auth("worker", "worker0"));
@@ -106,7 +106,7 @@ public class ResourcesManagementTests {
                 .body(obj.toString())
                 .when().post("/api/resources/management");
         res.then()
-                .statusCode(200); //może 201??
+                .statusCode(200);
     }
 
     @Test
