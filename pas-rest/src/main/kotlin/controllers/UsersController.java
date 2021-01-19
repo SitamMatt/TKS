@@ -123,7 +123,7 @@ public class UsersController {
         try {
 //            var guid = model.getGuid();
 
-            var user = usersService.find(model.getLogin());
+            var user = usersService.find(guid);
 
             if(JWSHelper.verify(user.getLogin(), ifMatch)) {
                 usersService.update(guid, model);
