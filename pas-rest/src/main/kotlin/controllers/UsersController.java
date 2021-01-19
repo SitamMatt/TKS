@@ -36,9 +36,6 @@ public class UsersController {
                         @QueryParam("maxResults") int maxResults,
                         @QueryParam("search") String search) {
         var result = usersService.filter(type, page, maxResults, search);
-        if(result.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
         return Response.ok(result).build();
     }
 
@@ -100,7 +97,7 @@ public class UsersController {
         } catch (ObjectAlreadyStoredException e) {
             return Response.status(409, "Requested object already exists. ").build();
         } catch (RepositoryException e) {
-            return Response.status(400, "User could not be added. ").build();
+            return Response.status(409, "User could not be added. ").build();
         }
 
     }

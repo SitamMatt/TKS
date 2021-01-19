@@ -106,7 +106,7 @@ public class ResourcesManagementTests {
                 .body(obj.toString())
                 .when().post("/api/resources/management");
         res.then()
-                .statusCode(200);
+                .statusCode(201);
     }
 
     @Test
@@ -193,7 +193,7 @@ public class ResourcesManagementTests {
                 .when()
                 .delete("/api/resources/management/1514f5ae-f54d-4b4f-ac97-97f32fe18cb0");
         deleteRes.then()
-                .statusCode(405);
+                .statusCode(409);
     }
 
 }

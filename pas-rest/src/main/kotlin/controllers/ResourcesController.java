@@ -54,10 +54,10 @@ public class ResourcesController {
             return Response.ok().build();
         }
         catch (ResourceNotAvailableException e){
-            return Response.status(405, "Requested resource is not available. ").build();
+            return Response.status(409, "Requested resource is not available. ").build();
         }
         catch (ObjectAlreadyStoredException e){
-            return Response.status(405, "Requested object already exists. ").build();
+            return Response.status(409, "Requested object already exists. ").build();
         }
         catch (RepositoryException e){
             return Response.status(409, "Rent cannot be allocated. ").build();

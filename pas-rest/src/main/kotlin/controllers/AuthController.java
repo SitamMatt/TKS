@@ -36,7 +36,7 @@ public class AuthController {
 
     @Inject
     private UsersService usersService;
-  @Inject
+    @Inject
     private IUsersRepository usersRepository;
 
 

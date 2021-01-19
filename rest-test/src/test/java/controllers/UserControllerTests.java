@@ -209,8 +209,7 @@ public class UserControllerTests {
                 .queryParam("search", name)
                 .when().get("/api/users");
         res.then()
-                .statusCode(404);
-
+                .statusCode(200);
     }
 
     @Test

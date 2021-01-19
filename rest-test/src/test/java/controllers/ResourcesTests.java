@@ -111,7 +111,7 @@ public class ResourcesTests {
                 .when()
                 .post("api/resources/1514f5ae-f54d-4b4f-ac97-97f32fe18cb0/rent");
         result.then()
-                .statusCode(405);
+                .statusCode(409);
     }
 
     @Test

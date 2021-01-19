@@ -73,7 +73,7 @@ public class ResourcesManagementController {
         if (res!= null) return res;
         try {
             resourcesService.add(model);
-            return Response.ok().build();
+            return Response.status(201).build();
         } catch (RepositoryException | ObjectAlreadyStoredException e) {
             return Response.status(409, e.getMessage()).build();
         }
@@ -111,7 +111,7 @@ public class ResourcesManagementController {
             return Response.status(409, "Resource cannot be updated. ").build();
         }
         catch (ObjectLockedByRentException e){
-            return Response.status(405, "Requested resource is locked by ongoing rent. ").build();
+            return Response.status(409, "Requested resource is locked by ongoing rent. ").build();
         }
     }
 
@@ -127,7 +127,7 @@ public class ResourcesManagementController {
             return Response.ok().build();
         }
         catch (ObjectLockedByRentException e){
-            return Response.status(405, "Requested resource is locked by ongoing rent. ").build();
+            return Response.status(409, "Requested resource is locked by ongoing rent. ").build();
         }
         catch (ObjectNotFoundException e){
             return Response.status(404, e.getMessage()).build();
