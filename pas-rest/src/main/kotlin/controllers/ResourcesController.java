@@ -26,7 +26,7 @@ public class ResourcesController {
     // todo remove mode param
     @GET
     @Path("my/{mode}")
-//    @RolesAllowed("USER")
+    @RolesAllowed("CLIENT")
     @Produces("application/json")
     public Response getMy(@PathParam("mode") String mode) throws UserNotFoundException {
         var login = securityContext.getUserPrincipal().getName();
@@ -36,7 +36,7 @@ public class ResourcesController {
 
     @GET
     @Path("available")
-//    @RolesAllowed({"USER", "WORKER"})
+    @RolesAllowed({"CLIENT", "WORKER"})
     @Produces("application/json")
     public Response getAvailable(){
         var resources = resourcesService.getAvailableResources();
@@ -45,7 +45,7 @@ public class ResourcesController {
 
     @POST
     @Path("{id}/rent")
-    @RolesAllowed("USER")
+    @RolesAllowed("CLIENT")
     public Response rent(@PathParam("id") String id) {
         try {
             var guid = UUID.fromString(id);
@@ -66,7 +66,8 @@ public class ResourcesController {
 
     @POST
     @Path("{id}/return")
-    public Response returnResource(@PathParam("id") String id) throws ResourceReturnException {
+    @RolesAllowed("CLIENT")
+    public Response returnResource(@PathParam("id") String id) {
         try {
             var guid = UUID.fromString(id);
             var login = securityContext.getUserPrincipal().getName();

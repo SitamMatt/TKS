@@ -113,7 +113,7 @@ public class ResourcesManagementController {
     // todo good, but add error handling
     @DELETE
     @Path("{id}")
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") String id) {
         try {
