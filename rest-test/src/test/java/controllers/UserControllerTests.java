@@ -81,7 +81,6 @@ public class UserControllerTests {
         Assert.assertEquals(json.get("firstname"), "Łukasz");
         Assert.assertEquals(json.get("lastname"), "Stanisławowski");
         Assert.assertEquals(json.get("login"), "testo");
-        Assert.assertEquals(json.get("password"), "test0");
     }
 
     @Test
