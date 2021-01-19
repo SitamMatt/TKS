@@ -76,7 +76,6 @@ public class ResourcesController {
         catch (ObjectNotFoundException e){
             return Response.status(404, e.getMessage()).build();
         }
-        //todo: proper response code?
         catch (ResourceNotAvailableException e){
             return Response.status(409, "Resource has been already returned. ").build();
         }
