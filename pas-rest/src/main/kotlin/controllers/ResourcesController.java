@@ -23,10 +23,10 @@ public class ResourcesController {
     @Context private SecurityContext securityContext;
 
 
-    // todo remove mode param
+    // todo [SPA] remove mode param
     @GET
     @Path("my/{mode}")
-//    @RolesAllowed("USER")
+    @RolesAllowed("USER")
     @Produces("application/json")
     public Response getMy(@PathParam("mode") String mode) throws UserNotFoundException {
         var login = securityContext.getUserPrincipal().getName();
@@ -36,7 +36,7 @@ public class ResourcesController {
 
     @GET
     @Path("available")
-//    @RolesAllowed({"USER", "WORKER"})
+    @RolesAllowed({"USER", "WORKER"})
     @Produces("application/json")
     public Response getAvailable(){
         var resources = resourcesService.getAvailableResources();
@@ -66,6 +66,7 @@ public class ResourcesController {
 
     @POST
     @Path("{id}/return")
+    @RolesAllowed("USER")
     public Response returnResource(@PathParam("id") String id) throws ResourceReturnException {
         try {
             var guid = UUID.fromString(id);

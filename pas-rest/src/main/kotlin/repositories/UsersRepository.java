@@ -1,6 +1,7 @@
 package repositories;
 
 
+import exceptions.ObjectAlreadyStoredException;
 import exceptions.RepositoryException;
 import fillers.NewUsersFiller;
 import mappers.Mapper;
@@ -23,6 +24,14 @@ public class UsersRepository extends RepositoryBase<User> implements IUsersRepos
     @PostConstruct
     public void usersInit() {
         this.items = usersFiller.fill();
+    }
+
+    @Override
+    public synchronized void add(User item) throws ObjectAlreadyStoredException, RepositoryException {
+        if (item.getLogin() == null || item.getLogin().isEmpty()) {
+            throw new RepositoryException();
+        }
+        super.add(item);
     }
 
     @Override
