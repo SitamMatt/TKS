@@ -23,7 +23,7 @@ public class ResourcesController {
     @Context private SecurityContext securityContext;
 
 
-    // todo remove mode param
+    // todo [SPA] remove mode param
     @GET
     @Path("my/{mode}")
     @RolesAllowed("CLIENT")

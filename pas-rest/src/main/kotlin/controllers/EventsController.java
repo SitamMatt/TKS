@@ -17,8 +17,7 @@ public class EventsController {
 
     @GET
     @Path("{id}")
-    //todo Dodać wyswietlanie resource id i user id
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@PathParam("id") String id){
         try {
@@ -32,9 +31,9 @@ public class EventsController {
         }
     }
 
-    // todo w przypadku spa należy pomyśleć o wywyłaniu info o maks liczbie stron
+    // todo [SPA] należy pomyśleć o wywyłaniu info o maks liczbie stron
     @GET
-//    @RolesAllowed("WORKER")
+    @RolesAllowed("WORKER")
     @Produces("application/json")
     public Response get(@QueryParam("type") String type,
                         @QueryParam("page") int page,
@@ -44,5 +43,5 @@ public class EventsController {
         return Response.ok(result).build();
     }
 
-    // todo get user archived events + special method for user
+    // todo [SPA] get user archived events + special method for user
 }
