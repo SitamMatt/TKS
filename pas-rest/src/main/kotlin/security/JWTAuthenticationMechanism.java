@@ -61,6 +61,5 @@ public class JWTAuthenticationMechanism implements HttpAuthenticationMechanism {
             LOG.log(Level.INFO, "JWT signature is not valid");
             return context.responseUnauthorized();
         }
-
     }
 }

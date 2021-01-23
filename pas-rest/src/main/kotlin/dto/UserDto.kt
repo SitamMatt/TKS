@@ -15,8 +15,7 @@ open class UserBaseDto {
     var lastname: String? = null
 }
 
-class UserGetDto : UserBaseDto() {
-}
+class UserGetDto : UserBaseDto()
 
 class UserCreateDto : UserBaseDto(){
     var password: String? = null

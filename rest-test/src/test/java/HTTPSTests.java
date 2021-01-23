@@ -30,6 +30,5 @@ public class HTTPSTests {
         } catch (Exception ignored) {
 
         }
-
     }
 }

@@ -99,7 +99,6 @@ public class UsersController {
         } catch (RepositoryException e) {
             return Response.status(409, "User could not be added. ").build();
         }
-
     }
 
     // todo good, but add error handling

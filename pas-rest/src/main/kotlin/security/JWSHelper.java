@@ -16,6 +16,7 @@ public class JWSHelper {
 
 
     static {
+        // todo dodać do konfiguracji
         SecureRandom random = new SecureRandom();
         random.nextBytes(SECRET);
     }
