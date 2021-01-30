@@ -55,7 +55,14 @@
                                  required="true" requiredMessage="#{msg.mag_number_required}"/>
 
                     <h:commandButton value="#{msg['back']}" action="resourcesList"/>
-                    <h:commandButton value="#{msg['submit']}" action="#{resourceFormController.saveResource}">
+                    <h:commandButton value="#{msg['submit']}" onclick="confirmA()">
+                        <script type="text/javascript">
+                            function confirmA(){
+                                if (confirm("Click OK to confirm")){
+                                    #{resourceFormController.saveResource()}
+                                }
+                            }
+                        </script>
                         <f:setPropertyActionListener target="#{resourceFormController.resId}"
                                                      value="#{resourceFormController.res.id.toString()}"/>
                     </h:commandButton>
