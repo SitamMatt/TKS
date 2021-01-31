@@ -56,7 +56,8 @@
 
                 <h:column rendered="#{userSummaryController.login == facesContext.externalContext.userPrincipal.name}">
                     <f:facet name="header"/>
-                    <h:commandButton value="#{msg['return']}" actionListener="#{userSummaryController.returnResource}">
+                    <h:commandButton value="#{msg['return']}" onclick="confirmAction()" actionListener="#{userSummaryController.returnResource}">
+                        <h:outputScript library="js" name="confirm.js" />
                         <f:attribute name="selected" value="#{rent.resource.id}"/>
                     </h:commandButton>
                 </h:column>

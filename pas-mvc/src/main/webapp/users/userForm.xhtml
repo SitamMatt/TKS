@@ -55,8 +55,9 @@
 
                     <h:commandButton value="#{msg['back']}" action="usersList"/>
 
-                    <h:commandButton value="#{msg['submit']}" action="#{userFormController.saveUser}"
+                    <h:commandButton value="#{msg['submit']}" onclick="confirmAction()" action="#{userFormController.saveUser}"
                                      binding="#{userFormController.btn}">
+                        <h:outputScript library="js" name="confirm.js" />
                         <f:setPropertyActionListener target="#{userFormController.login}"
                                                      value="#{userFormController.user.login}"/>
                     </h:commandButton>

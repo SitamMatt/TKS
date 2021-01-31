@@ -69,7 +69,8 @@
                     <h:commandButton value="#{msg['edit']}" action="#{resourcesController.editResource}">
                         <f:setPropertyActionListener target="#{resourceFormController.resId}" value="#{item.id.toString()}"/>
                     </h:commandButton>
-                    <h:commandButton value="#{msg['remove']}" actionListener="#{resourcesController.removeResource}">
+                    <h:commandButton value="#{msg['remove']}" onclick="return confirmAction()" actionListener="#{resourcesController.removeResource}">
+                        <h:outputScript library="js" name="confirm.js" />
                         <f:attribute name="selected" value="#{item.id}"/>
                     </h:commandButton>
                 </h:column>
