@@ -6,8 +6,10 @@ import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectAlreadyStoredException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.ObjectNotFoundException;
 import edu.p.lodz.pl.pas.mvc.model.exceptions.RepositoryException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IUsersRepository extends IRepositoryBase<User> {
     User findUserByLogin(String login);
+    ArrayList<User> filterByLogin(String login);
 }

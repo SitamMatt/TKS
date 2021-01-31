@@ -10,6 +10,7 @@ import edu.p.lodz.pl.pas.mvc.services.dto.UserDto;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,15 @@ public class UsersService {
     public UserDto find(String login) {
         User user = usersRepository.findUserByLogin(login);
         return map(user);
+    }
+
+    public ArrayList<UserDto> filterByLogin(String login) {
+        ArrayList<User> userArrayList = usersRepository.filterByLogin(login);
+        ArrayList<UserDto> userDtoArrayList = new ArrayList<>();
+        for (User item: userArrayList){
+            userDtoArrayList.add(map(item));
+        }
+        return userDtoArrayList;
     }
 
     public void save(UserDto user) throws ObjectNotFoundException, ObjectAlreadyStoredException, RepositoryException {

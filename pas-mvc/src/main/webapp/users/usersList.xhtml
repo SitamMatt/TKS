@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <f:metadata>
@@ -18,18 +19,41 @@
     <h:body>
         <ui:composition template="/common/templateLayout.xhtml">
         <ui:define name="content">
+            <script type="text/javascript">
+                function search(){
+                    var input, filter, table, tr, td, i, txtValue;
+                    input = document.getElementById("j_idt27:search");
+                    filter = input.value.toUpperCase();
+                    table = document.getElementById("j_idt27:usersTable");
+                    tr = table.getElementsByTagName("tr");
+
+                    for (i = 0; tr.length >= i; i++) {
+                        td = tr[i].getElementsByTagName("td")[1];
+                        if (td) {
+                            txtValue = td.textContent || td.innerText;
+                            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                tr[i].style.display = "";
+                            } else {
+                                tr[i].style.display = "none";
+                            }
+                        }
+                    }
+
+                }
+            </script>
         <h:form>
             <h:panelGroup>
-                <h:outputLabel for="search">#{msg['login_search']}:</h:outputLabel>
                 <h:inputText
                         id="search"
+                        onkeyup="return search()"
                         maxlength="21"
-                        value="#{usersController.searchQuery}"
-                        label="#{msg['search']}"
+                        value="#{usersController.filter}"
+                        label="#{msg.search}"
+                        a:placeholder="#{msg['login_search']}"
                 />
-                <h:commandButton action="#{usersController.search}" value="#{msg['search']}"/>
+                <h:commandButton action="#{usersController.reloadUsers}" value="#{msg['search']}"/>
             </h:panelGroup>
-            <h:dataTable value="#{usersController.users}" var="currentUser">
+            <h:dataTable id="usersTable" value="#{usersController.users}" var="currentUser">
                 <h:column>
                     <f:facet name="header">UID</f:facet>
                     #{currentUser.id}
