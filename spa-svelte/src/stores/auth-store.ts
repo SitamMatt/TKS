@@ -1,33 +1,43 @@
 import axios from "axios";
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
+import { requestToken, requestTokenRefresh } from "../api/requests";
+import type { Token } from "../types/token";
 
-const authUrl = "https://localhost:8181/pas-rest-1.0-SNAPSHOT/api/auth/login"
+export const tokenStore = writable<Token>(null)
+
+export const tokenRefreshed = writable<boolean>(false)
 
 export const acquireToken = async (login: string, password: string) => {
-    let response = await fetch(authUrl, {
-        body: JSON.stringify({
-            login,
-            password
-        }),
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        mode: 'cors',
-        referrerPolicy: 'unsafe-url'
-    })
-    let json = await response.json() as Token
-    return json;
+    let token = await requestToken(login, password);
+    tokenStore.set(token)
 }
+
+
 
 export const getToken = async () => {
-    let tokenResponse = await acquireToken("admin", "admin0");
-    token.set(tokenResponse);
-}
+    let tokenObj = get(tokenStore);
+    if(tokenObj == null){
+        // force to acquire token
+        console.log("Token is null");
+        return;
+    }
+    // check if token expired
+    let date = new Date();
+    date.setSeconds(date.getSeconds() + 30)
+    let tokenExpirationDate = new Date(tokenObj.expires)
+    console.log(date)
+    console.log(tokenExpirationDate)
+    if(tokenExpirationDate < date){
+        console.log("refreshing token")
+        tokenRefreshed.set(true)
+        let token = await requestTokenRefresh(tokenObj.token)
+        tokenStore.set(token)
+        tokenObj = get(tokenStore)
+        tokenRefreshed.set(false)
 
-interface Token{
-    token: string;
-    expires: Date;
+        // setTimeout(() => {
+        //     tokenRefreshed.set(false)
+        // }, 2000);
+    }
+    return tokenObj.token;
 }
-
-export const token = writable<Token>(null)
