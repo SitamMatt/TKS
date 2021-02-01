@@ -66,7 +66,7 @@ export const requestUserAdd = async (token: string, user: UserEdit) => {
 
 export const requestUserUpdate = async (token: string, etag: string, user: User) => {
     console.log("etag: " + etag);
-    let response = await fetch(saveUrl + "/" + guid, {
+    let response = await fetch(saveUrl + "/" + user.guid, {
         method: 'PUT',
         mode: 'cors',
         headers: {
@@ -90,11 +90,8 @@ export const requestUser = async (token: string, guid: string) => {
         referrerPolicy: 'unsafe-url'
     })
     let data = await response.json() as User;
-    console.log(response.headers.get("etag"))
-    for(let key of response.headers.keys()){
-        console.log(key);
-    }
     let etag = response.headers.get("ETag");
     console.log("requestUser | response: " + response.status + ", Etag: " + etag);
+    etag = etag.substring(1, etag.length - 1)
     return [data, etag];
 }

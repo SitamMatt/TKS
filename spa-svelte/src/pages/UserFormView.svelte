@@ -39,18 +39,25 @@
 
     const save = async () => {
         acquireToken("admin", "admin0").then(() => {
-            let user: UserEdit = {
-                active: active,
-                firstname: firstname,
-                lastname: lastname,
-                login: login,
-                password: password,
-                role: role,
-            };
             if(onlyEdit) {
-                editUser(guid, user);
+                editUser({
+                    active: active,
+                    firstname: firstname,
+                    lastname: lastname,
+                    login: login,
+                    guid: guid.toString(),
+                    password: password,
+                    role: role,
+                });
             } else {
-                saveUser(user);
+                saveUser({
+                    active: active,
+                    firstname: firstname,
+                    lastname: lastname,
+                    login: login,
+                    password: password,
+                    role: role,
+                });
             }
         });
         await loadUsers();
@@ -61,7 +68,7 @@
 <main>
     <h1>New User Form</h1>
     <div>Dane oznaczone znakiem '*' są obowiązkowe.</div>
-    <TextField label="Login*" bind:value={login}/>
+    <TextField label="Login*" bind:value={login} disabled={onlyEdit}/>
     <TextField label="Password*" bind:value={password} type="password" />
     <TextField label="First name" bind:value={firstname} />
     <TextField label="Last name" bind:value={lastname} />
