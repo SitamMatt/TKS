@@ -66,7 +66,8 @@
                 </h:column>
 
                 <h:column>
-                    <h:commandButton value="#{msg['rent_panel.rent']}" actionListener="#{rentingController.rent}">
+                    <h:commandButton value="#{msg['rent_panel.rent']}" onclick="confirmAction()" actionListener="#{rentingController.rent}">
+                        <h:outputScript library="js" name="confirm.js" />
                         <f:attribute name="selected" value="#{item.id}"/>
                     </h:commandButton>
                 </h:column>

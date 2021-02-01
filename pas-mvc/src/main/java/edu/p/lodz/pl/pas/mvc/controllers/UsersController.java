@@ -20,6 +20,7 @@ public class UsersController implements Serializable {
     @Inject
     private UsersService usersService;
     private String searchQuery;
+    private String filter;
 
     public List<UserDto> getUsers() {
         return users;
@@ -41,12 +42,26 @@ public class UsersController implements Serializable {
         }
     }
 
+    public void reloadUsers(){
+        if (filter != null) {
+            users = usersService.filterByLogin(filter);
+        }
+    }
+
     public String getSearchQuery() {
         return searchQuery;
     }
 
     public void setSearchQuery(String searchQuery) {
         this.searchQuery = searchQuery;
+    }
+
+    public String getFilter(){
+        return filter;
+    }
+
+    public void setFilter(String filter){
+        this.filter = filter;
     }
 
     public String editUser() {

@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <f:metadata>
@@ -20,16 +21,18 @@
         <ui:define name="content">
         <h:form>
             <h:panelGroup>
-                <h:outputLabel for="search">#{msg['login_search']}:</h:outputLabel>
                 <h:inputText
                         id="search"
                         maxlength="21"
-                        value="#{usersController.searchQuery}"
-                        label="#{msg['search']}"
-                />
-                <h:commandButton action="#{usersController.search}" value="#{msg['search']}"/>
+                        value="#{usersController.filter}"
+                        label="#{msg.search}"
+                        a:placeholder="#{msg['login_search']}">
+                    <f:ajax event="keyup" immediate="false" render="j_idt26:usersTable"
+                            listener="#{usersController.reloadUsers}" />
+                </h:inputText>
+                <h:commandButton action="#{usersController.reloadUsers}" value="#{msg['search']}"/>
             </h:panelGroup>
-            <h:dataTable value="#{usersController.users}" var="currentUser">
+            <h:dataTable id="usersTable" value="#{usersController.users}" var="currentUser">
                 <h:column>
                     <f:facet name="header">UID</f:facet>
                     #{currentUser.id}

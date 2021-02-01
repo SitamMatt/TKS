@@ -16,18 +16,30 @@
     <body>
     <ui:composition template="/common/templateLayout.xhtml">
         <ui:define name="content">
-<!--            <h:outputScript library="js" name="validate.js"/>-->
             <script type="text/javascript">
                 function validateForm(){
                     const password = document.getElementById("form:password");
+                    const login = document.getElementById("form:login");
+                    const pwdStr = "#{msg['password_too_short']}";
+                    const loginStr = "#{msg['login_required']}";
+                    var resStr = ""
                     if(password.value.length &lt; 8){
-                        alert("#{msg['password_too_short']}")
+                        resStr = resStr.concat(pwdStr, " \n")
                     }
-                    return password.value.length > 8
+                    if(login.value.length === 0){
+                        resStr = resStr.concat(loginStr, " \n")
+                    }
+                    if (resStr.length > 0){
+                        alert(resStr)
+                        return false
+                    }
+                    else {
+                        return true
+                    }
                 }
             </script>
             <h:outputLabel value="#{msg['edit_user']}"/>
-            <h:form rendered="#{not empty userFormController.user}" id="form" onsubmit="return validateForm()">
+            <h:form rendered="#{not empty userFormController.user}" id="form">
                 <h:panelGrid columns="2">
                     <h:outputLabel for="firstname" value="#{msg['firstname']}"/>
                     <h:inputText id="firstname" value="#{userFormController.user.firstName}"/>
@@ -55,8 +67,9 @@
 
                     <h:commandButton value="#{msg['back']}" action="usersList"/>
 
-                    <h:commandButton value="#{msg['submit']}" action="#{userFormController.saveUser}"
+                    <h:commandButton value="#{msg['submit']}" onclick="return validateForm()" action="#{userFormController.saveUser}"
                                      binding="#{userFormController.btn}">
+                        <h:outputScript library="js" name="confirm.js" />
                         <f:setPropertyActionListener target="#{userFormController.login}"
                                                      value="#{userFormController.user.login}"/>
                     </h:commandButton>

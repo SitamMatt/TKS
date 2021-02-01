@@ -8,6 +8,7 @@ import edu.p.lodz.pl.pas.mvc.repositories.interfaces.IUsersRepository;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -42,5 +43,16 @@ public class UsersRepository extends RepositoryBase<User> implements IUsersRepos
                 .filter(x -> x.getLogin().equals(login))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public synchronized ArrayList<User> filterByLogin(String login) {
+        ArrayList<User> resultList = new ArrayList<>();
+        for (User item: this.items){
+            if (item.getLogin().contains(login)){
+                resultList.add(item);
+            }
+        }
+        return resultList;
     }
 }

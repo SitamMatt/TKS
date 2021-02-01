@@ -28,10 +28,17 @@ public class ResourcesController implements Serializable {
 
     private List<ResourceDto> reses;
     private final ResourceBundle resourceBundle = ResourceBundle.getBundle("edu.p.lodz.pl.pas.mvc.messages");
+    private int pageSize;
+    private int pagesCount;
+    private int currentPageNumber;
+    private int allResourcesCount;
 
     @PostConstruct
     public void init(){
-        this.reses = resourcesService.getAllResources();
+        this.pageSize = 5;
+        this.currentPageNumber = 1;
+        this.allResourcesCount = resourcesService.getAllResources().size();
+        reloadResources();
     }
 
     public List<ResourceDto> getReses() {
@@ -49,6 +56,16 @@ public class ResourcesController implements Serializable {
             }else{
                 reses = Collections.singletonList(resourceDto);
             }
+        }
+    }
+
+    public void reloadResources(){
+        this.reses = resourcesService.getSelectedResources(pageSize, currentPageNumber);
+        if (this.allResourcesCount % this.pageSize == 0){
+            this.pagesCount = this.allResourcesCount/this.pageSize;
+        }
+        else{
+            this.pagesCount = this.allResourcesCount/this.pageSize + 1;
         }
     }
 
@@ -93,5 +110,25 @@ public class ResourcesController implements Serializable {
 
     public String searchActive() {
         return "resourcesList.xhtml?faces-redirect=true&searchQuery=" + searchQuery;
+    }
+
+    public int getPageSize(){
+        return pageSize;
+    }
+
+    public int getPagesCount(){
+        return pagesCount;
+    }
+
+    public int getCurrentPageNumber(){
+        return currentPageNumber;
+    }
+
+    public void setPageSize(int pageSize){
+        this.pageSize = pageSize;
+    }
+
+    public void setCurrentPageNumber(int pageNumber){
+        this.currentPageNumber = pageNumber;
     }
 }
