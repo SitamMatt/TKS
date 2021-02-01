@@ -1,9 +1,10 @@
 import type { Token } from "../types/token";
-import type { User } from "../types/user";
+import type {User, UserEdit} from "../types/user";
 
 const authUrl = "https://localhost:8181/pas-rest-1.0-SNAPSHOT/api/auth/login"
 const refreshUrl = "https://localhost:8181/pas-rest-1.0-SNAPSHOT/api/auth/refresh"
 const usersUrl = "https://localhost:8181/pas-rest-1.0-SNAPSHOT/api/users"
+const saveUrl = "https://localhost:8181/pas-rest-1.0-SNAPSHOT/api/users"
 
 
 export const requestToken = async (login: string, password: string) => {
@@ -47,4 +48,18 @@ export const requestUsers = async (token: string) => {
     })
     let data = await response.json() as User[];
     return data;
+}
+
+export const requestUserAdd = async (token: string, user: UserEdit) => {
+    let response = await fetch(saveUrl, {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json'
+        },
+        referrerPolicy: 'unsafe-url',
+        body: JSON.stringify(user)
+    });
+    console.log("Response status: " + response.status);
 }

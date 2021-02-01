@@ -4,6 +4,7 @@
     import DashboardView from "./pages/DashboardView.svelte";
     import { tokenRefreshed } from "./stores/auth-store";
     import { Notifications, notifier } from "smelte/src/components/Snackbar";
+    import UserFormView from "./pages/UserFormView.svelte";
 
     tokenRefreshed.subscribe((val) => {
         console.log(val);
@@ -13,6 +14,7 @@
 
 <Router>
     <!-- <Route path="/" component={Login} /> -->
-    <Route path="/*" component={DashboardView} />
+    <!--    <Route path="/*" component={DashboardView} />-->
+     <Route path="/" component={UserFormView} />
     <Notifications />
 </Router>
