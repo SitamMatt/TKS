@@ -27,7 +27,7 @@
                         value="#{usersController.filter}"
                         label="#{msg.search}"
                         a:placeholder="#{msg['login_search']}">
-                    <f:ajax event="keyup" immediate="false" render="j_idt27:usersTable"
+                    <f:ajax event="keyup" immediate="false" render="j_idt26:usersTable"
                             listener="#{usersController.reloadUsers}" />
                 </h:inputText>
                 <h:commandButton action="#{usersController.reloadUsers}" value="#{msg['search']}"/>
