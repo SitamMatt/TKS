@@ -22,8 +22,8 @@ export const getUser = async (guid: string) => {
     return data[0] as User;
 }
 
-export const editUser = async (guid: string, user: UserEdit) => {
+export const editUser = async (user: User) => {
     let token = await getToken()
-    let data = await requestUser(token, guid);
-    await requestUserUpdate(token, data[1] as string, guid, user);
+    let data = await requestUser(token, user.guid);
+    await requestUserUpdate(token, data[1] as string, user);
 }

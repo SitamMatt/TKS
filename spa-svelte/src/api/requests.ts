@@ -64,7 +64,7 @@ export const requestUserAdd = async (token: string, user: UserEdit) => {
     console.log("userAdd | Response status: " + response.status);
 }
 
-export const requestUserUpdate = async (token: string, etag: string, guid: string, user: UserEdit) => {
+export const requestUserUpdate = async (token: string, etag: string, user: User) => {
     console.log("etag: " + etag);
     let response = await fetch(saveUrl + "/" + guid, {
         method: 'PUT',
