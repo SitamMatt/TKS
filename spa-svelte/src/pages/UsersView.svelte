@@ -1,10 +1,10 @@
 <script lang="ts">
-    import DataTable from "smelte/src/components/DataTable";
     import Button from "smelte/src/components/Button";
-    import Snackbar, { notifier } from "smelte/src/components/Snackbar";
     import { acquireToken } from "../stores/auth-store";
     import { loadUsers, usersStore } from "../stores/user-store";
     import type { User } from "../types/user";
+    import { Link, navigate } from "svelte-navigator";
+    import SvelteTable from "svelte-table";
 
     let data: User[] = [];
     let subcription = usersStore.subscribe((value) => {
@@ -12,24 +12,29 @@
     });
     let columns = [
         {
-            field: "login",
-            class: "md:w-10",
+            title: "Guid",
+            key: "Guid",
+            value: (v) => v.guid,
         },
         {
-            field: "firstname",
+            title: "firstname",
+            key: "firstname",
+            value: (v) => v.firstname,
         },
         {
-            field: "lastname",
+            title: "lastname",
+            key: "lastname",
+            value: (v) => v.lastname,
         },
         {
-            field: "role",
+            title: "role",
+            key: "role",
+            value: (v) => v.role,
         },
         {
-            field: "active",
-        },
-        {
-            field: "action",
-            value: (v) => `<Link to="/users/51">Edit</Link>`,
+            title: "active",
+            key: "active",
+            value: (v) => v.active,
         },
     ];
     acquireToken("admin", "admin0").then(() => loadUsers());
@@ -37,9 +42,17 @@
     const refresh = () => {
         loadUsers();
     };
+
+    const editUser = (user) => {
+        navigate(`/users/${user.guid}`);
+    };
 </script>
 
 <main>
     <Button on:click={refresh}>Refresh</Button>
-    <DataTable class="w-full" {data} {columns} pagination={true} />
+    <SvelteTable
+        rows={data}
+        {columns}
+        on:clickRow={(v) => editUser(v.detail.row)}
+    />
 </main>

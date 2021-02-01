@@ -7,5 +7,7 @@
 <Router>
     <h3>Welcome Samurai</h3>
     <Route path="/" component={UsersView} />
-    <Route path="/user" component={UserFormView} />
+    <Route path="/users/:id" let:params>
+        <UserFormView guid={params.id} />
+    </Route>
 </Router>

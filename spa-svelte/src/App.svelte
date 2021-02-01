@@ -14,7 +14,6 @@
 
 <Router>
     <!-- <Route path="/" component={Login} /> -->
-    <!--    <Route path="/*" component={DashboardView} />-->
-     <Route path="/" component={UserFormView} />
+    <Route path="/*" component={DashboardView} />
     <Notifications />
 </Router>
