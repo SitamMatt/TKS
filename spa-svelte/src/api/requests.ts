@@ -61,5 +61,36 @@ export const requestUserAdd = async (token: string, user: UserEdit) => {
         referrerPolicy: 'unsafe-url',
         body: JSON.stringify(user)
     });
-    console.log("Response status: " + response.status);
+    console.log("userAdd | Response status: " + response.status);
+}
+
+export const requestUserUpdate = async (token: string, etag: string, guid: string, user: UserEdit) => {
+    console.log("etag: " + etag);
+    let response = await fetch(saveUrl + "/" + guid, {
+        method: 'PUT',
+        mode: 'cors',
+        headers: {
+            "Authorization": "Bearer " + token,
+            'Content-Type': 'application/json',
+            'If-Match': etag,
+        },
+        referrerPolicy: 'unsafe-url',
+        body: JSON.stringify(user)
+    });
+    console.log("userUpdate | Response status: " + response.status);
+}
+
+export const requestUser = async (token: string, guid: string) => {
+    let response = await fetch(usersUrl + "/" + guid, {
+        method: 'GET',
+        mode: 'cors',
+        headers:{
+            "Authorization": "Bearer " + token,
+        },
+        referrerPolicy: 'unsafe-url'
+    })
+    let data = await response.json() as User;
+    let etag = response.headers.get("ETag");
+    console.log("requestUser | response: " + response.status + ", Etag: " + etag);
+    return [data, etag];
 }

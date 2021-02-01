@@ -6,7 +6,7 @@ export interface UserBase {
     role: string;
 }
 
-export interface User {
+export interface User extends UserBase{
     guid: string;
 }
 
