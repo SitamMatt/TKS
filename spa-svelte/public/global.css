@@ -15,25 +15,6 @@ tr.svelte-w7dofd th select.svelte-w7dofd{
 .wrapper.svelte-142y8oi{
   display:inline-block
 }
-.label-top.svelte-r33x2y{
-  line-height:0.05
-}
-
-.label-transition.svelte-r33x2y{
-  -webkit-transition:font-size 0.05s, line-height 0.1s;
-  -o-transition:font-size 0.05s, line-height 0.1s;
-  transition:font-size 0.05s, line-height 0.1s
-}
-
-label.text-xs{
-  font-size:0.7rem
-}
-.line.svelte-xd9zs6{
-  height:1px
-}
-.p-1\/2.svelte-ixci48{
-  padding:0.125rem
-}
 .reverse.svelte-zzky5a{
   -webkit-transform:rotate(180deg);
   -ms-transform:rotate(180deg);
@@ -44,6 +25,16 @@ label.text-xs{
   -webkit-transform:rotate(90deg);
   -ms-transform:rotate(90deg);
   transform:rotate(90deg)
+}
+.p-1\/2.svelte-ixci48{
+  padding:0.125rem
+}
+.drawer.svelte-6qcjcu{
+  min-width:250px
+}
+
+aside.svelte-6qcjcu{
+  height:100vh
 }
 .circular.svelte-1xkiyez{
   -webkit-animation:svelte-1xkiyez-rotate 2s linear infinite;
@@ -106,13 +97,6 @@ label.text-xs{
     stroke-dashoffset:-124
   }
 }
-.drawer.svelte-6qcjcu{
-  min-width:250px
-}
-
-aside.svelte-6qcjcu{
-  height:100vh
-}
 .inc.svelte-mguqwa{
   -webkit-animation:svelte-mguqwa-increase 2s ease-in-out infinite;
   animation:svelte-mguqwa-increase 2s ease-in-out infinite
@@ -170,11 +154,21 @@ aside.svelte-6qcjcu{
     width:10%
   }
 }
-.tooltip.svelte-1n6auy7{
-  left:50%;
-  -webkit-transform:translateX(-50%);
-  -ms-transform:translateX(-50%);
-  transform:translateX(-50%)
+.line.svelte-xd9zs6{
+  height:1px
+}
+.label-top.svelte-r33x2y{
+  line-height:0.05
+}
+
+.label-transition.svelte-r33x2y{
+  -webkit-transition:font-size 0.05s, line-height 0.1s;
+  -o-transition:font-size 0.05s, line-height 0.1s;
+  transition:font-size 0.05s, line-height 0.1s
+}
+
+label.text-xs{
+  font-size:0.7rem
 }
 th.svelte-1qy4u3g .asc.svelte-1qy4u3g{
   -webkit-transform:rotate(180deg);
@@ -183,6 +177,12 @@ th.svelte-1qy4u3g .asc.svelte-1qy4u3g{
 }
 .ripple.svelte-1o8z87d{
   position:absolute !important
+}
+.tooltip.svelte-1n6auy7{
+  left:50%;
+  -webkit-transform:translateX(-50%);
+  -ms-transform:translateX(-50%);
+  transform:translateX(-50%)
 }
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 

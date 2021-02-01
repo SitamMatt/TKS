@@ -90,6 +90,10 @@ export const requestUser = async (token: string, guid: string) => {
         referrerPolicy: 'unsafe-url'
     })
     let data = await response.json() as User;
+    console.log(response.headers.get("etag"))
+    for(let key of response.headers.keys()){
+        console.log(key);
+    }
     let etag = response.headers.get("ETag");
     console.log("requestUser | response: " + response.status + ", Etag: " + etag);
     return [data, etag];
