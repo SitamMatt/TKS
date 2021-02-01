@@ -15,6 +15,7 @@ import edu.p.lodz.pl.pas.mvc.services.dto.ResourceDto;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -109,6 +110,12 @@ public class ResourcesService {
         List<Event> rents = eventsRepository.getAllActiveRents();
         return resourcesRepository.getAll().stream()
                 .filter(x -> rents.stream().noneMatch(e -> e.getResourceId().equals(x.getId())))
+                .map(this::map)
+                .collect(Collectors.toList());
+    }
+
+    public List<ResourceDto> getSelectedResources(int pageSize, int pageNumber){
+        return resourcesRepository.getSelectedResources(pageSize, pageNumber).stream()
                 .map(this::map)
                 .collect(Collectors.toList());
     }

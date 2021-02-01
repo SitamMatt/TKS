@@ -4,6 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <f:metadata>
@@ -29,7 +30,18 @@
                 />
                 <h:commandButton action="#{resourcesController.searchActive}" value="#{msg['search']}"/>
             </h:panelGroup>
-            <h:dataTable value="#{resourcesController.reses}" var="item">
+            <br/>
+            <h:panelGroup>
+                <h:outputLabel>#{msg['elements_per_site']}</h:outputLabel>
+                <h:selectOneMenu value="#{resourcesController.pageSize}">
+                    <f:selectItem itemValue="5" itemLabel="5"/>
+                    <f:selectItem itemValue="10" itemLabel="10"/>
+                    <f:selectItem itemValue="20" itemLabel="20"/>
+                    <f:ajax event="change" immediate="false" render="@form"
+                            listener="#{resourcesController.reloadResources}" />
+                </h:selectOneMenu>
+            </h:panelGroup>
+            <h:dataTable id="resTable" value="#{resourcesController.reses}" var="item">
                 <h:column>
                     <f:facet name="header">UID</f:facet>
                     #{item.id}
@@ -75,6 +87,15 @@
                     </h:commandButton>
                 </h:column>
             </h:dataTable>
+            <h:outputLabel>#{msg['page_number']}</h:outputLabel>
+            <h:selectOneMenu value="#{resourcesController.currentPageNumber}">
+                <c:forEach var="i" begin="1" end="#{resourcesController.pagesCount}">
+                    <f:selectItem itemLabel="#{i}" itemValue="#{i}" />
+                </c:forEach>
+                <f:ajax event="change" immediate="false" render="@form"
+                        listener="#{resourcesController.reloadResources}" />
+            </h:selectOneMenu>
+            <br/>
             <h:commandButton value="#{msg['add_resource']}" action="#{resourcesController.createResource}"/>
         </h:form>
         </ui:define>

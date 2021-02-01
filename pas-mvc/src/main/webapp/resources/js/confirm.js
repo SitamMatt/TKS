@@ -1,10 +1,10 @@
 function confirmAction(){
-    var res = confirm("Click OK to confirm action.");
+    var res = confirm("Kliknij OK aby potwierdzić operację.");
     if (res == true){
         return true
     }
     else {
-        alert("Operacja anulowana")
+        alert("Operacja została anulowana.")
         return false
     }
 }
