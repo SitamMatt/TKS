@@ -3,79 +3,79 @@
     import { Button, Checkbox, Select } from "smelte";
     import { acquireToken } from "../stores/auth-store";
     import { navigate } from "svelte-navigator";
-    import {editUser, getUser, loadUsers, saveUser} from "../stores/user-store";
-    import type {User, UserEdit} from "../types/user";
+    import {
+        editUser,
+        getUser,
+        loadUsers,
+        saveUser,
+    } from "../stores/user-store";
+    import type { User } from "../types/user";
+    import { onMount } from "svelte";
 
     const label = "User Type";
     const items = [
-        { value: 1, text: "CLIENT" },
-        { value: 2, text: "ADMIN" },
-        { value: 3, text: "WORKER" },
+        { value: "CLIENT", text: "CLIENT" },
+        { value: "ADMIN", text: "ADMIN" },
+        { value: "WORKER", text: "WORKER" },
     ];
 
     let login = "";
     let password = "";
     let firstname = "";
     let lastname = "";
-    let role = "CLIENT";
+    let role = "";
     let active = true;
+    let onlyEdit = false;
 
     export let guid = null;
 
-    let onlyEdit = false;
-    if (guid != null) {
-        onlyEdit = true;
-        acquireToken("admin", "admin0").then(async () => {
+    onMount(async () => {
+        console.log("Mounted");
+        if (guid != null) {
+            onlyEdit = true;
             let user: User = await getUser(guid);
             login = user.login;
             firstname = user.firstname;
             lastname = user.lastname;
             role = user.role;
             active = user.active;
-        });
-    }
-
-
+        }
+    });
 
     const save = async () => {
-        acquireToken("admin", "admin0").then(() => {
-            if(onlyEdit) {
-                editUser({
-                    active: active,
-                    firstname: firstname,
-                    lastname: lastname,
-                    login: login,
-                    guid: guid.toString(),
-                    password: password,
-                    role: role,
-                });
-            } else {
-                saveUser({
-                    active: active,
-                    firstname: firstname,
-                    lastname: lastname,
-                    login: login,
-                    password: password,
-                    role: role,
-                });
-            }
-        });
+        if (onlyEdit) {
+            editUser({
+                active: active,
+                firstname: firstname,
+                lastname: lastname,
+                login: login,
+                guid: guid.toString(),
+                password: password,
+                role: role,
+            });
+        } else {
+            saveUser({
+                guid: null,
+                active: active,
+                firstname: firstname,
+                lastname: lastname,
+                login: login,
+                password: password,
+                role: role,
+            });
+        }
         await loadUsers();
-        navigate(-1);
+        navigate("/dashboard/users");
     };
 </script>
 
 <main>
-    <h1>New User Form</h1>
     <div>Dane oznaczone znakiem '*' są obowiązkowe.</div>
-    <TextField label="Login*" bind:value={login} disabled={onlyEdit}/>
+    <TextField label="Login*" bind:value={login} disabled={onlyEdit} />
     <TextField label="Password*" bind:value={password} type="password" />
     <TextField label="First name" bind:value={firstname} />
     <TextField label="Last name" bind:value={lastname} />
-    <Select
-        {label}
-        {items}
-        on:change={(v) => (role = items[v.detail - 1].text)}/>
-    <Checkbox label="Active" bind:value={active} checked="{active}" />
+    <Select {label} {items} bind:value={role} />
+    <Checkbox label="Active" bind:value={active} checked={active} />
     <Button on:click={save}>Save</Button>
 </main>

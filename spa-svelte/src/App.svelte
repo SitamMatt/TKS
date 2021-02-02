@@ -13,7 +13,7 @@
 </script>
 
 <Router>
-    <!-- <Route path="/" component={Login} /> -->
-    <Route path="/*" component={DashboardView} />
+    <Route path="/" component={Login} />
+    <Route path="/dashboard/*" component={DashboardView} />
     <Notifications />
 </Router>

@@ -1,4 +1,5 @@
-export interface UserBase {
+export interface User {
+    guid: string;
     active: boolean;
     firstname: string;
     lastname: string;
@@ -6,10 +7,6 @@ export interface UserBase {
     role: string;
 }
 
-export interface User extends UserBase{
-    guid: string;
-}
-
-export interface UserEdit extends UserBase {
+export interface UserEdit extends User {
     password: string;
 }

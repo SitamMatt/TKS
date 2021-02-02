@@ -1,9 +1,8 @@
 <script lang="ts">
     import Button from "smelte/src/components/Button";
-    import { acquireToken } from "../stores/auth-store";
     import { loadUsers, usersStore } from "../stores/user-store";
     import type { User } from "../types/user";
-    import { Link, navigate } from "svelte-navigator";
+    import { navigate } from "svelte-navigator";
     import SvelteTable from "svelte-table";
 
     let data: User[] = [];
@@ -37,19 +36,24 @@
             value: (v) => v.active,
         },
     ];
-    acquireToken("admin", "admin0").then(() => loadUsers());
+    loadUsers();
 
     const refresh = () => {
         loadUsers();
     };
 
     const editUser = (user) => {
-        navigate(`/users/${user.guid}`);
+        navigate(`/dashboard/users/${user.guid}`);
+    };
+
+    const createUser = () => {
+        navigate("/dashboard/users/new");
     };
 </script>
 
 <main>
     <Button on:click={refresh}>Refresh</Button>
+    <Button on:click={createUser}>Create New User</Button>
     <SvelteTable
         rows={data}
         {columns}

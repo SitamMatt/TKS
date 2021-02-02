@@ -95,3 +95,19 @@ export const requestUser = async (token: string, guid: string) => {
     etag = etag.substring(1, etag.length - 1)
     return [data, etag];
 }
+
+export const requestMyInfo = async (token: string) => {
+    let response = await fetch(usersUrl + "/me", {
+        method: 'GET',
+        mode: 'cors',
+        headers:{
+            "Authorization": "Bearer " + token,
+        },
+        referrerPolicy: 'unsafe-url'
+    })
+    let data = await response.json() as User;
+    let etag = response.headers.get("ETag");
+    console.log("requestUser | response: " + response.status + ", Etag: " + etag);
+    etag = etag.substring(1, etag.length - 1)
+    return [data, etag];
+}
