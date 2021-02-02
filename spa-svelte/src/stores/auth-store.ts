@@ -13,6 +13,11 @@ export const acquireToken = async (login: string, password: string) => {
     localStorage.setItem("token", JSON.stringify(token))
 }
 
+export const logout = async () => {
+    tokenStore.set(null);
+    localStorage.removeItem("token")
+}
+
 
 
 export const getToken = async () => {
