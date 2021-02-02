@@ -1,6 +1,8 @@
 <script lang="ts">
     import TextField from "smelte/src/components/TextField";
-    import { Button, Checkbox, Select } from "smelte";
+    import Button from "smelte/src/components/Button";
+    import Checkbox from "smelte/src/components/Checkbox";
+    import Select from "smelte/src/components/Select";
     import { acquireToken } from "../stores/auth-store";
     import { navigate } from "svelte-navigator";
     import {
@@ -24,7 +26,7 @@
     let firstname = "";
     let lastname = "";
     let role = "";
-    let active = true;
+    let active = false;
     let onlyEdit = false;
 
     export let guid = null;
@@ -76,6 +78,6 @@
     <TextField label="First name" bind:value={firstname} />
     <TextField label="Last name" bind:value={lastname} />
     <Select {label} {items} bind:value={role} />
-    <Checkbox label="Active" bind:value={active} checked={active} />
+    <Checkbox label="Active" bind:checked={active} />
     <Button on:click={save}>Save</Button>
 </main>
