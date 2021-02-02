@@ -19,7 +19,8 @@ import java.util.logging.Logger;
 
 public class TokenProvider {
     private static final String SECRET = "a0a2abd8-6162-41c3-83d6-1cf559b46afc";
-    private static final long JWT_TIMEOUT = 15 * 1000 * 60;
+//    private static final long JWT_TIMEOUT = 15 * 1000 * 60;
+    private static final long JWT_TIMEOUT = 60 * 1000;
     private static final Logger LOG = Logger.getLogger(TokenProvider.class.getName());
 
     public static final String AUTH_CLAIM = "auth";
