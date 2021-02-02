@@ -16,6 +16,12 @@
             value: (v) => v.guid,
         },
         {
+            title: "Login",
+            key: "login",
+            value: (v) => v.login,
+        },
+
+        {
             title: "firstname",
             key: "firstname",
             value: (v) => v.firstname,

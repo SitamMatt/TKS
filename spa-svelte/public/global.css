@@ -1,16 +1,8 @@
-table.svelte-w7dofd.svelte-w7dofd{
-  width:100%
-}
-
-.isSortable.svelte-w7dofd.svelte-w7dofd{
-  cursor:pointer
-}
-
-tr.svelte-w7dofd th select.svelte-w7dofd{
-  width:100%
-}
 .snackbar.svelte-1ym8qvd{
   min-width:344px
+}
+.line.svelte-xd9zs6{
+  height:1px
 }
 .label-top.svelte-r33x2y{
   line-height:0.05
@@ -24,9 +16,6 @@ tr.svelte-w7dofd th select.svelte-w7dofd{
 
 label.text-xs{
   font-size:0.7rem
-}
-.line.svelte-xd9zs6{
-  height:1px
 }
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
@@ -115452,6 +115441,9 @@ tr.selected {
   }
 }
 
+.ripple.svelte-1o8z87d{
+  position:absolute !important
+}
 .reverse.svelte-zzky5a{
   -webkit-transform:rotate(180deg);
   -ms-transform:rotate(180deg);
@@ -115463,6 +115455,14 @@ tr.selected {
   -ms-transform:rotate(90deg);
   transform:rotate(90deg)
 }
-.ripple.svelte-1o8z87d{
-  position:absolute !important
+table.svelte-w7dofd.svelte-w7dofd{
+  width:100%
+}
+
+.isSortable.svelte-w7dofd.svelte-w7dofd{
+  cursor:pointer
+}
+
+tr.svelte-w7dofd th select.svelte-w7dofd{
+  width:100%
 }
