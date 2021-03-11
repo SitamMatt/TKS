@@ -1,4 +1,4 @@
-TKS Projekt 2021  
+TKS Projekt lato 2021  
 IAS 6 semestr  
 Grupa MKWA_CZW_1215_06  
 Uczestnicy:  
