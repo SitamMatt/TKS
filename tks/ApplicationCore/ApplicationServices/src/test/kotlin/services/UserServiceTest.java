@@ -2,7 +2,7 @@ package services;
 
 import exceptions.DuplicatedEmailException;
 import exceptions.UserNotFoundException;
-import interfaces.UserFilterPort;
+import interfaces.UserQueryPort;
 import interfaces.UserSavePort;
 import model.User;
 import model.UserRole;
@@ -26,18 +26,18 @@ class UserServiceTest {
     @Mock
     UserSavePort userSavePort;
     @Mock
-    UserFilterPort userFilterPort;
+    UserQueryPort userQueryPort;
 
     @BeforeEach
     public void init(){
-        userService = new UserService(userSavePort, userFilterPort);
+        userService = new UserService(userSavePort, userQueryPort);
         sampleUser = new User("mszewc@edu.pl", UserRole.ADMIN, "####", true);
         sampleEmail = "mszewc@edu.pl";
     }
 
     @Test
     public void GivenValidUser_RegistrationShouldSuccess() throws DuplicatedEmailException {
-        when(userFilterPort.findByEmail(eq(sampleEmail))).thenReturn(null);
+        when(userQueryPort.findByEmail(eq(sampleEmail))).thenReturn(null);
         userService.register(sampleUser);
         verify(userSavePort).add(eq(sampleUser));
     }
@@ -45,7 +45,7 @@ class UserServiceTest {
     @Test
     public void GivenUser_With_DuplicatedEmail_RegistrationShouldFail() throws DuplicatedEmailException {
         var duplicatedUser = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userFilterPort.findByEmail(eq(sampleEmail))).thenReturn(duplicatedUser);
+        when(userQueryPort.findByEmail(eq(sampleEmail))).thenReturn(duplicatedUser);
         assertThrows(DuplicatedEmailException.class, () -> userService.register(sampleUser));
         verify(userSavePort, never()).add(any());
     }
@@ -53,7 +53,7 @@ class UserServiceTest {
     @Test
     public void GivenValidEmailAndNewRole_ShouldSuccess() throws UserNotFoundException {
         var user = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userFilterPort.findByEmail(eq(sampleEmail))).thenReturn(user);
+        when(userQueryPort.findByEmail(eq(sampleEmail))).thenReturn(user);
         userService.changeRole(sampleEmail, UserRole.ADMIN);
         verify(userSavePort).update(eq(user));
         assertEquals(UserRole.ADMIN, user.getRole());
@@ -62,7 +62,7 @@ class UserServiceTest {
     @Test
     public void GivenValidEmailAndSameRole_ShouldSuccess_ButNotPersist() throws UserNotFoundException {
         var user = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userFilterPort.findByEmail(eq(sampleEmail))).thenReturn(user);
+        when(userQueryPort.findByEmail(eq(sampleEmail))).thenReturn(user);
         userService.changeRole(sampleEmail, UserRole.CLIENT);
         verify(userSavePort, never()).update(any());
         assertEquals(UserRole.CLIENT, user.getRole());
@@ -70,14 +70,14 @@ class UserServiceTest {
 
     @Test
     public void GivenInvalidEmailAndAnyRole_ShouldFail(){
-        when(userFilterPort.findByEmail(eq(sampleEmail))).thenReturn(null);
+        when(userQueryPort.findByEmail(eq(sampleEmail))).thenReturn(null);
         assertThrows(UserNotFoundException.class, () -> userService.changeRole(sampleEmail, UserRole.CLIENT));
         verify(userSavePort, never()).update(any());
     }
 
     @Test
     public void GivenInvalidEmailAndAnyState_ShouldFail(){
-        when(userFilterPort.findByEmail(eq(sampleEmail))).thenReturn(null);
+        when(userQueryPort.findByEmail(eq(sampleEmail))).thenReturn(null);
         assertThrows(UserNotFoundException.class, () -> userService.changeState(sampleEmail, true));
         verify(userSavePort, never()).update(any());
     }
@@ -85,7 +85,7 @@ class UserServiceTest {
     @Test
     public void GivenValidEmailAndSameState_ShouldSuccess_ButNotPersist() throws UserNotFoundException {
         var user = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userFilterPort.findByEmail(eq(sampleEmail))).thenReturn(user);
+        when(userQueryPort.findByEmail(eq(sampleEmail))).thenReturn(user);
         userService.changeState(sampleEmail, true);
         verify(userSavePort, never()).update(any());
         assertTrue(user.getActive());
@@ -94,7 +94,7 @@ class UserServiceTest {
     @Test
     public void GivenValidEmailAndNewState_ShouldSuccess() throws UserNotFoundException {
         var user = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userFilterPort.findByEmail(eq(sampleEmail))).thenReturn(user);
+        when(userQueryPort.findByEmail(eq(sampleEmail))).thenReturn(user);
         userService.changeState(sampleEmail, false);
         verify(userSavePort).update(eq(user));
         assertFalse(user.getActive());
@@ -103,7 +103,7 @@ class UserServiceTest {
     @Test
     public void GivenValidEmail_ShouldReturnUserDetails() throws UserNotFoundException {
         var user = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userFilterPort.findByEmail(eq(sampleEmail))).thenReturn(user);
+        when(userQueryPort.findByEmail(eq(sampleEmail))).thenReturn(user);
         var result = userService.getDetails(sampleEmail);
         assertSame(result, user);
         assertEquals(result, user);
@@ -111,7 +111,7 @@ class UserServiceTest {
 
     @Test
     public void GivenInvalidEmail_ShouldFail(){
-        when(userFilterPort.findByEmail(eq(sampleEmail))).thenReturn(null);
+        when(userQueryPort.findByEmail(eq(sampleEmail))).thenReturn(null);
         assertThrows(UserNotFoundException.class, () -> userService.getDetails(sampleEmail));
     }
 }

@@ -1,7 +1,7 @@
 package adapters;
 
 import data.UserEntity;
-import interfaces.UserFilterPort;
+import interfaces.UserQueryPort;
 import interfaces.UserSavePort;
 import mappers.UserMapper;
 import model.User;
@@ -9,10 +9,10 @@ import repositories.RepositoryBase;
 
 import java.util.Objects;
 
-public class UserRepositoryAdapter implements UserSavePort, UserFilterPort {
+public class UserRepositoryAdapter implements UserSavePort, UserQueryPort {
 
-    private RepositoryBase<UserEntity> repository;
-    private UserMapper mapper;
+    private final RepositoryBase<UserEntity> repository;
+    private final UserMapper mapper;
 
     public UserRepositoryAdapter(RepositoryBase<UserEntity> repository, UserMapper mapper) {
         this.repository = repository;

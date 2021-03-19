@@ -2,7 +2,7 @@ package interfaces;
 
 import model.User;
 
-public interface UserFilterPort {
+public interface UserQueryPort {
 
     User findByEmail(String email);
 }

@@ -5,8 +5,6 @@ import exceptions.ResourceNotFoundException;
 import exceptions.UnknownResourceException;
 import interfaces.ResourceManagePort;
 import interfaces.ResourceQueryPort;
-import interfaces.UserFilterPort;
-import interfaces.UserSavePort;
 import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
