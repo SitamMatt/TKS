@@ -1,8 +1,10 @@
 package services
 
 import exceptions.IncompatibleResourceFormatException
+import exceptions.ResourceBlockedByRentException
 import exceptions.ResourceNotFoundException
 import exceptions.UnknownResourceException
+import interfaces.RentQueryPort
 import interfaces.ResourceManagePort
 import interfaces.ResourceQueryPort
 import model.Book
@@ -12,7 +14,8 @@ import java.util.*
 
 class ResourcesService(
     private val resourceManagePort: ResourceManagePort,
-    private val resourceQueryPort: ResourceQueryPort
+    private val resourceQueryPort: ResourceQueryPort,
+    private val rentQueryPort: RentQueryPort
 ) {
 
 
@@ -35,7 +38,8 @@ class ResourcesService(
 
     fun remove(resourceId: UUID){
         val resource = resourceQueryPort.findById(resourceId) ?: throw ResourceNotFoundException()
-        // todo check existing rent
+        val rent = rentQueryPort.findActiveByResourceId(resourceId);
+        if(rent != null) throw ResourceBlockedByRentException()
         resourceManagePort.remove(resource)
     }
 

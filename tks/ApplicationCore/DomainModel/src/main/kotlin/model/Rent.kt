@@ -3,8 +3,9 @@ package model
 import java.util.*
 
 data class Rent(
+    var id: UUID?,
     val startDate: Date,
-    val endDate: Date?,
+    var endDate: Date?,
     val userEmail: String,
-    val reosurceId: UUID
+    val resourceId: UUID
 )

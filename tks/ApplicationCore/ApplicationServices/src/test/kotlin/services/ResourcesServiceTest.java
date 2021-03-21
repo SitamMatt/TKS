@@ -1,8 +1,10 @@
 package services;
 
 import exceptions.IncompatibleResourceFormatException;
+import exceptions.ResourceBlockedByRentException;
 import exceptions.ResourceNotFoundException;
 import exceptions.UnknownResourceException;
+import interfaces.RentQueryPort;
 import interfaces.ResourceManagePort;
 import interfaces.ResourceQueryPort;
 import model.*;
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,10 +33,12 @@ public class ResourcesServiceTest {
     ResourceManagePort resourceManagePort;
     @Mock
     ResourceQueryPort resourceQueryPort;
+    @Mock
+    RentQueryPort rentQueryPort;
 
     @BeforeEach
     public void init() {
-        resourcesService = new ResourcesService(resourceManagePort, resourceQueryPort);
+        resourcesService = new ResourcesService(resourceManagePort, resourceQueryPort, rentQueryPort);
         sampleBook = new Book(null, "Diuna", "Frank Herbert");
         sampleMagazine = new Magazine(null, "Świerszczyk", "Nowa era");
         invalidResource = new InvalidResource(null, "invalid");
@@ -89,6 +94,7 @@ public class ResourcesServiceTest {
         var guid = UUID.randomUUID();
         sampleMagazine.setId(guid);
         when(resourceQueryPort.findById(eq(guid))).thenReturn(sampleMagazine);
+        when(rentQueryPort.findActiveByResourceId(eq(guid))).thenReturn(null);
         resourcesService.remove(guid);
         verify(resourceManagePort).remove(sampleMagazine);
     }
@@ -101,7 +107,15 @@ public class ResourcesServiceTest {
         verify(resourceManagePort, never()).remove(any());
     }
 
-// todo remove test with rent check
+    @Test
+    public void GivenRentResourceId_Remove_ShouldFail(){
+        var guid = UUID.randomUUID();
+        sampleMagazine.setId(guid);
+        when(resourceQueryPort.findById(eq(guid))).thenReturn(sampleMagazine);
+        when(rentQueryPort.findActiveByResourceId(eq(guid))).thenReturn(new Rent(UUID.randomUUID(), new Date(), null, "mszewc@edu.pl", guid));
+        assertThrows(ResourceBlockedByRentException.class, () -> resourcesService.remove(guid));
+        verify(resourceManagePort, never()).remove(any());
+    }
 
     @Test
     public void GivenValidResourceId_GetDetails_ShouldSuccess(){
