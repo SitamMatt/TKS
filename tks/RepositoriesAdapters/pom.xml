@@ -11,13 +11,6 @@
 
     <artifactId>RepositoriesAdapters</artifactId>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
-        <mapstruct.version>1.4.2.Final</mapstruct.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>edu.p.lodz.pl</groupId>
@@ -30,16 +23,9 @@
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -50,7 +36,6 @@
                         <arg>-Xjvm-default=enable</arg>
                     </args>
                 </configuration>
-
                 <executions>
                     <execution>
                         <id>kapt</id>
@@ -78,7 +63,6 @@
                             <goal>compile</goal>
                         </goals>
                     </execution>
-
                     <execution>
                         <id>test-compile</id>
                         <goals>
