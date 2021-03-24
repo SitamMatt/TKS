@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+        <artifactId>pas-rest2</artifactId>
+        <groupId>edu.p.lodz.pl</groupId>
+        <version>1.0-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
 
     <repositories>
@@ -10,12 +14,6 @@
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
-
-    <groupId>edu.p.lodz.pl</groupId>
-    <artifactId>pas-rest</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>pas-rest</name>
-    <packaging>war</packaging>
 
     <properties>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -26,11 +24,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
-        </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
