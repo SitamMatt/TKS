@@ -1,18 +1,43 @@
 package controllers;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
+
+import dto.UserDto;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
-@Path("users")
+@Path("user")
 public class UserResource {
 
     @GET
     @Path("{id}")
+    @Produces("application/json")
     public Response get(@PathParam("id") String email){
-        return Response.ok(email).build();
+        var resource = new UserDto();
+        resource.setActive(true);
+        resource.setEmail("mszewc@edu.pl");
+        resource.setPassword("####");
+        resource.setRole("Loczek");
+        return Response.ok(resource).build();
     }
+
+    // creating new user
+    // by admin
+    @POST
+    public Response post(UserDto dto){
+        return Response.ok().build();
+    }
+
+    // update user
+    // by admin
+    // password is ignored
+    @PUT
+    public Response put(UserDto dto){
+        return Response.ok().build();
+    }
+
+
+
+
 
 }
