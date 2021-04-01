@@ -2,6 +2,7 @@ package controllers;
 
 
 import dto.UserDto;
+import org.eclipse.microprofile.openapi.annotations.Operation;
 import services.UserService;
 
 import javax.inject.Inject;
@@ -22,6 +23,7 @@ public class UserResource {
     @GET
     @Path("{id}")
     @Produces("application/json")
+    @Operation(operationId = "Get User Info", description = "Get the user for the given email")
     public Response get(@PathParam("id") String email){
         var resource = new UserDto();
         resource.setActive(true);
