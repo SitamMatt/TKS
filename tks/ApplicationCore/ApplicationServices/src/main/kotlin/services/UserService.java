@@ -1,9 +1,9 @@
 package services;
 
+import drivenports.UserQueryPort;
+import drivenports.UserSavePort;
 import exceptions.DuplicatedEmailException;
 import exceptions.UserNotFoundException;
-import interfaces.UserQueryPort;
-import interfaces.UserSavePort;
 import model.User;
 import model.UserRole;
 

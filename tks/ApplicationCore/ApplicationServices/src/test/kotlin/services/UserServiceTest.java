@@ -2,8 +2,8 @@ package services;
 
 import exceptions.DuplicatedEmailException;
 import exceptions.UserNotFoundException;
-import interfaces.UserQueryPort;
-import interfaces.UserSavePort;
+import drivenports.UserQueryPort;
+import drivenports.UserSavePort;
 import model.User;
 import model.UserRole;
 import org.junit.jupiter.api.BeforeEach;

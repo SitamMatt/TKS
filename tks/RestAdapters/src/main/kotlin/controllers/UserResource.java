@@ -2,12 +2,22 @@ package controllers;
 
 
 import dto.UserDto;
+import services.UserService;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 @Path("user")
 public class UserResource {
+
+    @Context
+    private UriInfo context;
+
+    @Inject
+    private UserService userService;
 
     @GET
     @Path("{id}")
@@ -25,7 +35,10 @@ public class UserResource {
     // by admin
     @POST
     public Response post(UserDto dto){
-        return Response.ok().build();
+
+
+        var resourceLink = context.getAbsolutePathBuilder().path(dto.getEmail()).build();
+        return Response.created(resourceLink).entity(dto).build();
     }
 
     // update user

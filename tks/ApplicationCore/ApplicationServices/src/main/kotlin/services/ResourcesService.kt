@@ -4,9 +4,9 @@ import exceptions.IncompatibleResourceFormatException
 import exceptions.ResourceBlockedByRentException
 import exceptions.ResourceNotFoundException
 import exceptions.UnknownResourceException
-import interfaces.RentQueryPort
-import interfaces.ResourceManagePort
-import interfaces.ResourceQueryPort
+import drivenports.RentQueryPort
+import drivenports.ResourceManagePort
+import drivenports.ResourceQueryPort
 import model.Book
 import model.Magazine
 import model.Resource

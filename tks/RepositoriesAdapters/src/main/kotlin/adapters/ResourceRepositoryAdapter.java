@@ -1,8 +1,8 @@
 package adapters;
 
 import data.AbstractResourceEntity;
-import interfaces.ResourceManagePort;
-import interfaces.ResourceQueryPort;
+import drivenports.ResourceManagePort;
+import drivenports.ResourceQueryPort;
 import mappers.ResourceMapper;
 import model.Resource;
 import org.jetbrains.annotations.NotNull;

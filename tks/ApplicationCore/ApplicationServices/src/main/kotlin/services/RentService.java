@@ -1,10 +1,10 @@
 package services;
 
 import exceptions.*;
-import interfaces.RentManagePort;
-import interfaces.RentQueryPort;
-import interfaces.ResourceQueryPort;
-import interfaces.UserQueryPort;
+import drivenports.RentManagePort;
+import drivenports.RentQueryPort;
+import drivenports.ResourceQueryPort;
+import drivenports.UserQueryPort;
 import model.Rent;
 
 import java.util.Date;

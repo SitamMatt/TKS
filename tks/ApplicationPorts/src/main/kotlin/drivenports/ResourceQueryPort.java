@@ -1,4 +1,4 @@
-package interfaces;
+package drivenports;
 
 import model.Resource;
 

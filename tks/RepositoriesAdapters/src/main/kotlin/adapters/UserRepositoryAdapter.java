@@ -1,8 +1,8 @@
 package adapters;
 
 import data.UserEntity;
-import interfaces.UserQueryPort;
-import interfaces.UserSavePort;
+import drivenports.UserQueryPort;
+import drivenports.UserSavePort;
 import mappers.UserMapper;
 import model.User;
 import repositories.RepositoryBase;
