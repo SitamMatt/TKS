@@ -10,16 +10,17 @@ import ports.secondary.ResourceSearchPort
 import model.Book
 import model.Magazine
 import model.Resource
+import ports.primary.IResourceService
 import java.util.*
 
 class ResourcesService(
     private val resourcePersistencePort: ResourcePersistencePort,
     private val resourceSearchPort: ResourceSearchPort,
     private val rentQueryPort: RentQueryPort
-) {
+) : IResourceService{
 
 
-    fun create(resource: Resource) {
+    override fun create(resource: Resource) {
         if(resource.id != null) throw UnknownResourceException()
         when(resource){
             is Book, is Magazine -> {
@@ -30,20 +31,20 @@ class ResourcesService(
         }
     }
 
-    fun update(resource: Resource){
+    override fun update(resource: Resource){
         val original = resourceSearchPort.findById(resource.id) ?: throw ResourceNotFoundException()
         if(resource::class != original::class) throw IncompatibleResourceFormatException()
         resourcePersistencePort.save(resource)
     }
 
-    fun remove(resourceId: UUID){
+    override fun remove(resourceId: UUID){
         val resource = resourceSearchPort.findById(resourceId) ?: throw ResourceNotFoundException()
         val rent = rentQueryPort.findActiveByResourceId(resourceId);
         if(rent != null) throw ResourceBlockedByRentException()
         resourcePersistencePort.remove(resource)
     }
 
-    fun getDetails(resourceId: UUID): Resource {
+    override fun getDetails(resourceId: UUID): Resource {
         return resourceSearchPort.findById(resourceId) ?: throw ResourceNotFoundException();
     }
 }
