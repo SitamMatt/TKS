@@ -22,6 +22,6 @@ class UserRepositoryAdapterTest {
     public void init(){
         store = List.of(sampleUser1, sampleUser2);
         var repository = new RepositoryBase<>(store);
-        adapter = new UserRepositoryAdapter(repository, UserMapper.INSTANCE);
+        adapter = new UserRepositoryAdapter(repository, UserMapper.Companion.getINSTANCE());
     }
 }

@@ -16,7 +16,7 @@ class UserMapperTest {
 
     @BeforeEach
     public void init(){
-        mapper = UserMapper.INSTANCE;
+        mapper = UserMapper.Companion.getINSTANCE();
     }
 
     @Test

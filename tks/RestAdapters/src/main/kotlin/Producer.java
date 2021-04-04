@@ -3,11 +3,13 @@ import data.UserEntity;
 import drivenports.UserQueryPort;
 import drivenports.UserSavePort;
 import mappers.UserMapper;
+import mappers.UserMapperDto;
 import repositories.RepositoryBase;
 import services.UserService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
+import javax.inject.Singleton;
 import java.util.ArrayList;
 
 @ApplicationScoped
@@ -24,6 +26,7 @@ public class Producer {
     }
 
     @Produces
+    @Singleton
     public RepositoryBase<UserEntity> produceUserRepository(){
         var list = new ArrayList<UserEntity>();
         return new RepositoryBase<>(list);
@@ -31,6 +34,11 @@ public class Producer {
 
     @Produces
     public UserMapper produceUserMapper(){
-        return UserMapper.INSTANCE;
+        return UserMapper.Companion.getINSTANCE();
     }
+
+//    @Produces
+//    public UserMapperDto produceUserMapperDto(){
+//        return UserMapperDto.Companion.getINSTANCE();
+//    }
 }
