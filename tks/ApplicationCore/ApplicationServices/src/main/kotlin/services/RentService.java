@@ -3,7 +3,7 @@ package services;
 import exceptions.*;
 import drivenports.RentManagePort;
 import drivenports.RentQueryPort;
-import drivenports.ResourceQueryPort;
+import ports.secondary.ResourceSearchPort;
 import ports.secondary.UserSearchPort;
 import model.Rent;
 
@@ -15,19 +15,19 @@ public class RentService {
    private final RentManagePort rentManagePort;
    private final RentQueryPort rentQueryPort;
    private final UserSearchPort userSearchPort;
-   private final ResourceQueryPort resourceQueryPort;
+   private final ResourceSearchPort resourceSearchPort;
 
-    public RentService(RentManagePort rentManagePort, RentQueryPort rentQueryPort, UserSearchPort userSearchPort, ResourceQueryPort resourceQueryPort) {
+    public RentService(RentManagePort rentManagePort, RentQueryPort rentQueryPort, UserSearchPort userSearchPort, ResourceSearchPort resourceSearchPort) {
         this.rentManagePort = rentManagePort;
         this.rentQueryPort = rentQueryPort;
         this.userSearchPort = userSearchPort;
-        this.resourceQueryPort = resourceQueryPort;
+        this.resourceSearchPort = resourceSearchPort;
     }
 
     public void rent(String email, UUID resourceId) throws UserNotFoundException, ResourceNotFoundException, UserNotActiveException, ResourceAlreadyRentException {
         var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
-        var resource = resourceQueryPort.findById(resourceId);
+        var resource = resourceSearchPort.findById(resourceId);
         if(resource == null) throw new ResourceNotFoundException();
         if(!user.getActive()) throw new UserNotActiveException();
         var existingRent = rentQueryPort.findActiveByResourceId(resourceId);
@@ -39,7 +39,7 @@ public class RentService {
     public void returnResource(String email, UUID resourceId) throws UserNotFoundException, ResourceNotFoundException, ResourceNotRentException, InvalidUserException {
         var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
-        var resource = resourceQueryPort.findById(resourceId);
+        var resource = resourceSearchPort.findById(resourceId);
         if(resource == null) throw new ResourceNotFoundException();
         var rent = rentQueryPort.findActiveByResourceId(resourceId);
         if(rent == null) throw new ResourceNotRentException();

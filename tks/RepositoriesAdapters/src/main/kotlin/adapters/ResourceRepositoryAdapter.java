@@ -1,8 +1,8 @@
 package adapters;
 
 import data.AbstractResourceEntity;
-import drivenports.ResourceManagePort;
-import drivenports.ResourceQueryPort;
+import ports.secondary.ResourcePersistencePort;
+import ports.secondary.ResourceSearchPort;
 import mappers.ResourceMapper;
 import model.Resource;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +11,7 @@ import repositories.RepositoryBase;
 import java.util.Objects;
 import java.util.UUID;
 
-public class ResourceRepositoryAdapter implements ResourceManagePort, ResourceQueryPort {
+public class ResourceRepositoryAdapter implements ResourcePersistencePort, ResourceSearchPort {
     private final RepositoryBase<AbstractResourceEntity> repository;
     private final ResourceMapper mapper;
 
