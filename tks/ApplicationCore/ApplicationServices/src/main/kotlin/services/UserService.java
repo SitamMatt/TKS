@@ -13,9 +13,6 @@ public class UserService {
     UserSavePort userSavePort;
     UserQueryPort userQueryPort;
 
-    public UserService() {
-    }
-
     public UserService(UserSavePort userSavePort, UserQueryPort userQueryPort) {
         this.userSavePort = userSavePort;
         this.userQueryPort = userQueryPort;
