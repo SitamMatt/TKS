@@ -38,7 +38,7 @@ public class UserResource {
     @GET
     @Path("{id}")
     @Produces("application/json")
-    @Operation(operationId = "Get user info", description = "Get the user for the given email")
+    @Operation(operationId = "Get user info", description = "Get the user for the given email", summary = "Get user info")
     public Response get(@PathParam("id") String email) {
         try {
             var user = userService.getDetails(email);
@@ -51,7 +51,7 @@ public class UserResource {
 
     @POST
     @Produces("application/json")
-    @Operation(operationId = "Register new user", description = "Registers new user from given data")
+    @Operation(operationId = "Register new user", description = "Registers new user from given data", summary = "Register new user")
     public Response post(UserDto dto) {
         try {
             var email = adapter.registerCommand(dto);
