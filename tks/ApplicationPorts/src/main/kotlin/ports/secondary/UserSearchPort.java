@@ -1,8 +1,8 @@
-package drivenports;
+package ports.secondary;
 
 import model.User;
 
-public interface UserQueryPort {
+public interface UserSearchPort {
 
     User findByEmail(String email);
 }

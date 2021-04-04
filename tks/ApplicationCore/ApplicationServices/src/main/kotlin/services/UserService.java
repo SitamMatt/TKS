@@ -1,49 +1,50 @@
 package services;
 
-import drivenports.UserQueryPort;
-import drivenports.UserSavePort;
+import ports.primary.IUserService;
+import ports.secondary.UserSearchPort;
+import ports.secondary.UserPersistencePort;
 import exceptions.DuplicatedEmailException;
 import exceptions.UserNotFoundException;
 import model.User;
 import model.UserRole;
 
 
-public class UserService {
+public class UserService implements IUserService {
 
-    UserSavePort userSavePort;
-    UserQueryPort userQueryPort;
+    UserPersistencePort userPersistencePort;
+    UserSearchPort userSearchPort;
 
-    public UserService(UserSavePort userSavePort, UserQueryPort userQueryPort) {
-        this.userSavePort = userSavePort;
-        this.userQueryPort = userQueryPort;
+    public UserService(UserPersistencePort userPersistencePort, UserSearchPort userSearchPort) {
+        this.userPersistencePort = userPersistencePort;
+        this.userSearchPort = userSearchPort;
     }
 
     public void register(User user) throws DuplicatedEmailException {
-        var duplicate = userQueryPort.findByEmail(user.getEmail());
+        var duplicate = userSearchPort.findByEmail(user.getEmail());
         if(duplicate != null) throw new DuplicatedEmailException();
-        userSavePort.add(user);
+        userPersistencePort.add(user);
     }
 
     public void changeRole(String email, UserRole role) throws UserNotFoundException {
-        var user = userQueryPort.findByEmail(email);
+        var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
         if(!user.getRole().equals(role)){
             user.setRole(role);
-            userSavePort.update(user);
+            userPersistencePort.update(user);
         }
     }
 
     public void changeState(String email, boolean state) throws UserNotFoundException {
-        var user = userQueryPort.findByEmail(email);
+        var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
         if(!user.getActive() == state){
             user.setActive(state);
-            userSavePort.update(user);
+            userPersistencePort.update(user);
         }
     }
 
     public User getDetails(String email) throws UserNotFoundException {
-        var user = userQueryPort.findByEmail(email);
+        var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
         return user;
     }

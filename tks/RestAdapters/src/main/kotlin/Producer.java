@@ -1,9 +1,8 @@
 import adapters.UserRepositoryAdapter;
 import data.UserEntity;
-import drivenports.UserQueryPort;
-import drivenports.UserSavePort;
+import ports.secondary.UserSearchPort;
+import ports.secondary.UserPersistencePort;
 import mappers.UserMapper;
-import mappers.UserMapperDto;
 import repositories.RepositoryBase;
 import services.UserService;
 
@@ -16,8 +15,8 @@ import java.util.ArrayList;
 public class Producer {
 
     @Produces
-    public UserService produceUserService(UserSavePort userSavePort, UserQueryPort userQueryPort){
-        return new UserService(userSavePort, userQueryPort);
+    public UserService produceUserService(UserPersistencePort userPersistencePort, UserSearchPort userSearchPort){
+        return new UserService(userPersistencePort, userSearchPort);
     }
 
     @Produces

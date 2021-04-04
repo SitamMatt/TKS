@@ -4,7 +4,7 @@ import exceptions.*;
 import drivenports.RentManagePort;
 import drivenports.RentQueryPort;
 import drivenports.ResourceQueryPort;
-import drivenports.UserQueryPort;
+import ports.secondary.UserSearchPort;
 import model.Rent;
 
 import java.util.Date;
@@ -14,18 +14,18 @@ public class RentService {
 
    private final RentManagePort rentManagePort;
    private final RentQueryPort rentQueryPort;
-   private final UserQueryPort userQueryPort;
+   private final UserSearchPort userSearchPort;
    private final ResourceQueryPort resourceQueryPort;
 
-    public RentService(RentManagePort rentManagePort, RentQueryPort rentQueryPort, UserQueryPort userQueryPort, ResourceQueryPort resourceQueryPort) {
+    public RentService(RentManagePort rentManagePort, RentQueryPort rentQueryPort, UserSearchPort userSearchPort, ResourceQueryPort resourceQueryPort) {
         this.rentManagePort = rentManagePort;
         this.rentQueryPort = rentQueryPort;
-        this.userQueryPort = userQueryPort;
+        this.userSearchPort = userSearchPort;
         this.resourceQueryPort = resourceQueryPort;
     }
 
     public void rent(String email, UUID resourceId) throws UserNotFoundException, ResourceNotFoundException, UserNotActiveException, ResourceAlreadyRentException {
-        var user = userQueryPort.findByEmail(email);
+        var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
         var resource = resourceQueryPort.findById(resourceId);
         if(resource == null) throw new ResourceNotFoundException();
@@ -37,7 +37,7 @@ public class RentService {
     }
 
     public void returnResource(String email, UUID resourceId) throws UserNotFoundException, ResourceNotFoundException, ResourceNotRentException, InvalidUserException {
-        var user = userQueryPort.findByEmail(email);
+        var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
         var resource = resourceQueryPort.findById(resourceId);
         if(resource == null) throw new ResourceNotFoundException();

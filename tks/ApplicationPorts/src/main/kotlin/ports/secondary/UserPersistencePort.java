@@ -1,8 +1,8 @@
-package drivenports;
+package ports.secondary;
 
 import model.User;
 
-public interface UserSavePort {
+public interface UserPersistencePort {
 
     void add(User user);
 

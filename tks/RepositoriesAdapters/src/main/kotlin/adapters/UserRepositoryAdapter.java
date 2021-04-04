@@ -1,15 +1,15 @@
 package adapters;
 
 import data.UserEntity;
-import drivenports.UserQueryPort;
-import drivenports.UserSavePort;
+import ports.secondary.UserSearchPort;
+import ports.secondary.UserPersistencePort;
 import mappers.UserMapper;
 import model.User;
 import repositories.RepositoryBase;
 
 import java.util.Objects;
 
-public class UserRepositoryAdapter implements UserSavePort, UserQueryPort {
+public class UserRepositoryAdapter implements UserPersistencePort, UserSearchPort {
 
     private final RepositoryBase<UserEntity> repository;
     private final UserMapper mapper;
