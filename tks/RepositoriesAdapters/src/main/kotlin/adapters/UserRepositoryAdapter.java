@@ -1,6 +1,8 @@
 package adapters;
 
 import data.UserEntity;
+import model.values.Email;
+import org.jetbrains.annotations.NotNull;
 import ports.secondary.UserSearchPort;
 import ports.secondary.UserPersistencePort;
 import mappers.UserMapper;
@@ -20,8 +22,9 @@ public class UserRepositoryAdapter implements UserPersistencePort, UserSearchPor
     }
 
     @Override
-    public User findByEmail(String email) {
-        var entity = repository.find(x -> x.getEmail().equals(email));
+    public User findByEmail(@NotNull Email email) {
+        var emailValue = email.getValue();
+        var entity = repository.find(x -> x.getEmail().equals(emailValue));
         return mapper.mapEntityToDomainObject(entity);
     }
 

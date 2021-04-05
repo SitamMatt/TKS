@@ -5,6 +5,8 @@ import exceptions.ResourceBlockedByRentException;
 import exceptions.ResourceNotFoundException;
 import exceptions.UnknownResourceException;
 import drivenports.RentQueryPort;
+import lombok.SneakyThrows;
+import model.values.Email;
 import ports.secondary.ResourcePersistencePort;
 import ports.secondary.ResourceSearchPort;
 import model.*;
@@ -107,12 +109,13 @@ public class ResourcesServiceTest {
         verify(resourcePersistencePort, never()).remove(any());
     }
 
+    @SneakyThrows
     @Test
     public void GivenRentResourceId_Remove_ShouldFail(){
         var guid = UUID.randomUUID();
         sampleMagazine.setId(guid);
         when(resourceSearchPort.findById(eq(guid))).thenReturn(sampleMagazine);
-        when(rentQueryPort.findActiveByResourceId(eq(guid))).thenReturn(new Rent(UUID.randomUUID(), new Date(), null, "mszewc@edu.pl", guid));
+        when(rentQueryPort.findActiveByResourceId(eq(guid))).thenReturn(new Rent(UUID.randomUUID(), new Date(), null, new Email("mszewc@edu.pl"), guid));
         assertThrows(ResourceBlockedByRentException.class, () -> resourcesService.remove(guid));
         verify(resourcePersistencePort, never()).remove(any());
     }

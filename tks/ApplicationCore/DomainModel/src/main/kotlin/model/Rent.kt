@@ -1,11 +1,12 @@
 package model
 
+import model.values.Email
 import java.util.*
 
 data class Rent(
     var id: UUID?,
     val startDate: Date,
     var endDate: Date?,
-    val userEmail: String,
+    val userEmail: Email,
     val resourceId: UUID
 )

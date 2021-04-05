@@ -4,9 +4,10 @@ import data.UserEntity
 import org.mapstruct.MappingTarget
 import model.User
 import org.mapstruct.Mapper
+import org.mapstruct.Mapping
 import org.mapstruct.factory.Mappers
 
-@Mapper
+@Mapper(uses =[EmailMapper::class])
 interface UserMapper {
     fun mapEntityToDomainObject(entity: UserEntity?): User?
     fun mapDomainObjectToEntity(user: User?): UserEntity?

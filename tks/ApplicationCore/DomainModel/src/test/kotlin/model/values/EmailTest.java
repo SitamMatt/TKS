@@ -28,6 +28,9 @@ class EmailTest {
         Assertions.assertThrows(TypeValidationFailedException.class, () -> new Email("mszewc"));
 
         Assertions.assertThrows(TypeValidationFailedException.class, () -> new Email("mszewc@edu.pl@hehe"));
+
+        Assertions.assertThrows(TypeValidationFailedException.class, () -> new Email(null));
+        Assertions.assertThrows(TypeValidationFailedException.class, () -> new Email(""));
     }
 
 }

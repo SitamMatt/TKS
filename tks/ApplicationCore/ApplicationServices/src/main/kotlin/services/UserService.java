@@ -1,5 +1,6 @@
 package services;
 
+import model.values.Email;
 import ports.primary.IUserService;
 import ports.secondary.UserSearchPort;
 import ports.secondary.UserPersistencePort;
@@ -25,7 +26,7 @@ public class UserService implements IUserService {
         userPersistencePort.add(user);
     }
 
-    public void changeRole(String email, UserRole role) throws UserNotFoundException {
+    public void changeRole(Email email, UserRole role) throws UserNotFoundException {
         var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
         if(!user.getRole().equals(role)){
@@ -34,7 +35,7 @@ public class UserService implements IUserService {
         }
     }
 
-    public void changeState(String email, boolean state) throws UserNotFoundException {
+    public void changeState(Email email, boolean state) throws UserNotFoundException {
         var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
         if(!user.getActive() == state){
@@ -43,7 +44,7 @@ public class UserService implements IUserService {
         }
     }
 
-    public User getDetails(String email) throws UserNotFoundException {
+    public User getDetails(Email email) throws UserNotFoundException {
         var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
         return user;

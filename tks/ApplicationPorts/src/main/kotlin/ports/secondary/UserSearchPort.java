@@ -1,8 +1,9 @@
 package ports.secondary;
 
 import model.User;
+import model.values.Email;
 
 public interface UserSearchPort {
 
-    User findByEmail(String email);
+    User findByEmail(Email email);
 }

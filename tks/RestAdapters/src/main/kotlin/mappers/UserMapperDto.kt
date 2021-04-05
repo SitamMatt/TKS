@@ -5,7 +5,7 @@ import model.User
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
-@Mapper
+@Mapper(uses = [EmailMapper::class])
 interface UserMapperDto {
     fun toDomainObject(userDto: UserDto?): User?
     fun toDto(user: User): UserDto?

@@ -32,7 +32,8 @@ public class RentRepositoryAdapter implements RentQueryPort, RentManagePort {
         if(entity == null){
             entity = mapper.mapDomainObjectToEntity(rent);
             var resource = resourceRepository.find(x -> Objects.equals(x.getId(), rent.getResourceId()));
-            var user = userRepository.find(x -> x.getEmail().equals(rent.getUserEmail()));
+            var emailValue = rent.getUserEmail().getValue();
+            var user = userRepository.find(x -> x.getEmail().equals(emailValue));
             // todo should nullability be checked ?
             entity.setResource(resource);
             entity.setUser(user);

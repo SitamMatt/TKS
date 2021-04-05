@@ -3,6 +3,8 @@ package services;
 import exceptions.*;
 import drivenports.RentManagePort;
 import drivenports.RentQueryPort;
+import lombok.SneakyThrows;
+import model.values.Email;
 import ports.secondary.ResourceSearchPort;
 import ports.secondary.UserSearchPort;
 import model.*;
@@ -26,8 +28,8 @@ class RentServiceTest {
     Resource sampleResource;
     User sampleUser;
     Rent sampleRent;
-    String sampleEmail;
-    String sampleEmail2;
+    Email sampleEmail;
+    Email sampleEmail2;
     UUID sampleResId;
     UUID sampleRentId;
 
@@ -40,10 +42,11 @@ class RentServiceTest {
     @Mock
     RentManagePort rentManagePort;
 
+    @SneakyThrows
     @BeforeEach
     public void init(){
-        sampleEmail = "mszewc@edu.pl";
-        sampleEmail2 = "mzab@edu.pl";
+        sampleEmail = new Email("mszewc@edu.pl");
+        sampleEmail2 = new Email("mzab@edu.pl");
         sampleResId = UUID.randomUUID();
         sampleRentId = UUID.randomUUID();
         sampleUser = new User(sampleEmail, UserRole.CLIENT, "####", true);

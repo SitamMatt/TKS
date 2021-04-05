@@ -2,6 +2,8 @@ package services;
 
 import exceptions.DuplicatedEmailException;
 import exceptions.UserNotFoundException;
+import lombok.SneakyThrows;
+import model.values.Email;
 import ports.secondary.UserSearchPort;
 import ports.secondary.UserPersistencePort;
 import model.User;
@@ -21,18 +23,19 @@ class UserServiceTest {
     UserService userService;
 
     User sampleUser;
-    String sampleEmail;
+    Email sampleEmail;
 
     @Mock
     UserPersistencePort userPersistencePort;
     @Mock
     UserSearchPort userSearchPort;
 
+    @SneakyThrows
     @BeforeEach
     public void init(){
         userService = new UserService(userPersistencePort, userSearchPort);
-        sampleUser = new User("mszewc@edu.pl", UserRole.ADMIN, "####", true);
-        sampleEmail = "mszewc@edu.pl";
+        sampleEmail = new Email("mszewc@edu.pl");
+        sampleUser = new User(sampleEmail, UserRole.ADMIN, "####", true);
     }
 
     @Test

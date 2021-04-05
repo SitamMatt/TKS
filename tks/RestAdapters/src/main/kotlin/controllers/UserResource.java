@@ -5,6 +5,7 @@ import adapters.UserResourceAdapter;
 import dto.Error;
 import dto.UserDto;
 import exceptions.DuplicatedEmailException;
+import exceptions.TypeValidationFailedException;
 import exceptions.UserNotFoundException;
 import mappers.UserMapperDto;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -17,17 +18,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.Objects;
 
-import static helpers.ErrorHelper.conflict;
-import static helpers.ErrorHelper.notFound;
+import static helpers.ErrorHelper.*;
 
 @Path("user")
 public class UserResource {
 
     @Context
     private UriInfo context;
-
-    @Inject
-    private UserService userService;
 
     @Inject
     private UserMapperDto mapper;
@@ -41,11 +38,12 @@ public class UserResource {
     @Operation(operationId = "Get user info", description = "Get the user for the given email", summary = "Get user info")
     public Response get(@PathParam("id") String email) {
         try {
-            var user = userService.getDetails(email);
-            var dto = mapper.toDto(user);
+            var dto = adapter.queryUser(email);
             return Response.ok(dto).build();
         } catch (UserNotFoundException e) {
             return notFound(1, "User not found");
+        } catch (TypeValidationFailedException e) {
+            return badRequest(1, "Invalid parameter");
         }
     }
 

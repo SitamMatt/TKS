@@ -3,6 +3,7 @@ package services;
 import exceptions.*;
 import drivenports.RentManagePort;
 import drivenports.RentQueryPort;
+import model.values.Email;
 import ports.secondary.ResourceSearchPort;
 import ports.secondary.UserSearchPort;
 import model.Rent;
@@ -24,7 +25,7 @@ public class RentService {
         this.resourceSearchPort = resourceSearchPort;
     }
 
-    public void rent(String email, UUID resourceId) throws UserNotFoundException, ResourceNotFoundException, UserNotActiveException, ResourceAlreadyRentException {
+    public void rent(Email email, UUID resourceId) throws UserNotFoundException, ResourceNotFoundException, UserNotActiveException, ResourceAlreadyRentException {
         var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
         var resource = resourceSearchPort.findById(resourceId);
@@ -36,7 +37,7 @@ public class RentService {
         rentManagePort.save(rent);
     }
 
-    public void returnResource(String email, UUID resourceId) throws UserNotFoundException, ResourceNotFoundException, ResourceNotRentException, InvalidUserException {
+    public void returnResource(Email email, UUID resourceId) throws UserNotFoundException, ResourceNotFoundException, ResourceNotRentException, InvalidUserException {
         var user = userSearchPort.findByEmail(email);
         if(user == null) throw new UserNotFoundException();
         var resource = resourceSearchPort.findById(resourceId);

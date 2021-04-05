@@ -2,7 +2,10 @@ package adapters;
 
 import dto.UserDto;
 import exceptions.DuplicatedEmailException;
+import exceptions.TypeValidationFailedException;
+import exceptions.UserNotFoundException;
 import mappers.UserMapperDto;
+import model.values.Email;
 import ports.primary.IUserService;
 
 import javax.inject.Inject;
@@ -19,6 +22,12 @@ public class UserResourceAdapter {
         var user = mapper.toDomainObject(dto);
         Objects.requireNonNull(user);
         userService.register(user);
-        return user.getEmail();
+        return user.getEmail().getValue();
+    }
+
+    public UserDto queryUser(String email) throws TypeValidationFailedException, UserNotFoundException {
+        var emailObject = new Email(email);
+        var user = userService.getDetails(emailObject);
+        return mapper.toDto(user);
     }
 }

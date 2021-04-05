@@ -19,4 +19,11 @@ public class ErrorHelper {
                 .entity(new Error(message, code))
                 .build();
     }
+
+    public static Response badRequest(int code, String message){
+        return Response
+                .status(Response.Status.BAD_REQUEST)
+                .entity(new Error(message, code))
+                .build();
+    }
 }
