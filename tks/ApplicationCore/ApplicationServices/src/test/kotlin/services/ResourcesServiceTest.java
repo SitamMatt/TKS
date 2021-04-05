@@ -7,6 +7,7 @@ import exceptions.UnknownResourceException;
 import drivenports.RentQueryPort;
 import helpers.AccessionNumberHelper;
 import lombok.SneakyThrows;
+import model.values.AccessionNumber;
 import model.values.Email;
 import ports.secondary.ResourcePersistencePort;
 import ports.secondary.ResourceSearchPort;
@@ -31,6 +32,7 @@ public class ResourcesServiceTest {
     Resource sampleBook;
     Resource sampleMagazine;
     Resource invalidResource;
+    AccessionNumber sampleAccessionNumber;
 
     @Mock
     ResourcePersistencePort resourcePersistencePort;
@@ -41,6 +43,7 @@ public class ResourcesServiceTest {
 
     @BeforeEach
     public void init() {
+        sampleAccessionNumber = AccessionNumberHelper.generate();
         resourcesService = new ResourcesService(resourcePersistencePort, resourceSearchPort, rentQueryPort);
         sampleBook = new Book(null, "Diuna", "Frank Herbert");
         sampleMagazine = new Magazine(null, "Świerszczyk", "Nowa era");
@@ -48,83 +51,79 @@ public class ResourcesServiceTest {
     }
 
     @Test
-    public void GivenResourceOfValidType_Create_ShouldSuccess(){
+    public void GivenResourceOfValidType_Create_ShouldSuccess() {
         resourcesService.create(sampleBook);
         verify(resourcePersistencePort).add(eq(sampleBook));
         assertNotNull(sampleBook.getAccessionNumber());
     }
 
     @Test
-    public void GivenResourceOfInvalidType_Create_ShouldFail(){
+    public void GivenResourceOfInvalidType_Create_ShouldFail() {
         assertThrows(UnknownResourceException.class, () -> resourcesService.create(invalidResource));
         verify(resourcePersistencePort, never()).add(any());
     }
 
     @Test
-    public void GivenResourceWithNotNullId_Create_ShouldFail(){
-        sampleBook.setAccessionNumber(AccessionNumberHelper.generate());
+    public void GivenResourceWithNotNullId_Create_ShouldFail() {
+        sampleBook.setAccessionNumber(sampleAccessionNumber);
         assertThrows(UnknownResourceException.class, () -> resourcesService.create(sampleBook));
         verify(resourcePersistencePort, never()).add(any());
     }
 
     @Test
-    public void GivenValidResourceWithNotNullId_Update_ShouldSuccess(){
-        sampleMagazine.setAccessionNumber(AccessionNumberHelper.generate());
-        when(resourceSearchPort.findById(eq(sampleMagazine.getAccessionNumber()))).thenReturn(sampleMagazine);
+    public void GivenValidResourceWithNotNullId_Update_ShouldSuccess() {
+        sampleMagazine.setAccessionNumber(sampleAccessionNumber);
+        when(resourceSearchPort.findById(eq(sampleAccessionNumber))).thenReturn(sampleMagazine);
         resourcesService.update(sampleMagazine);
         verify(resourcePersistencePort).save(sampleMagazine);
     }
 
     @Test
-    public void GivenNonExistingResource_Update_ShouldFail(){
-        sampleMagazine.setAccessionNumber(AccessionNumberHelper.generate());
+    public void GivenNonExistingResource_Update_ShouldFail() {
+        sampleMagazine.setAccessionNumber(sampleAccessionNumber);
         when(resourceSearchPort.findById(eq(sampleMagazine.getAccessionNumber()))).thenReturn(null);
         assertThrows(ResourceNotFoundException.class, () -> resourcesService.update(sampleMagazine));
         verify(resourcePersistencePort, never()).save(any());
     }
 
     @Test
-    public void GivenOtherResourceType_Update_ShouldFail(){
-        sampleMagazine.setAccessionNumber(AccessionNumberHelper.generate());
-        sampleBook.setAccessionNumber(sampleMagazine.getAccessionNumber());
-        when(resourceSearchPort.findById(eq(sampleMagazine.getAccessionNumber()))).thenReturn(sampleMagazine);
+    public void GivenOtherResourceType_Update_ShouldFail() {
+        sampleMagazine.setAccessionNumber(sampleAccessionNumber);
+        sampleBook.setAccessionNumber(sampleAccessionNumber);
+        when(resourceSearchPort.findById(eq(sampleAccessionNumber))).thenReturn(sampleMagazine);
         assertThrows(IncompatibleResourceFormatException.class, () -> resourcesService.update(sampleBook));
         verify(resourcePersistencePort, never()).save(any());
     }
 
     @Test
-    public void GivenValidResourceId_Remove_ShouldSuccess(){
-        var accessionNumber = AccessionNumberHelper.generate();
-        sampleMagazine.setAccessionNumber(accessionNumber);
-        when(resourceSearchPort.findById(eq(accessionNumber))).thenReturn(sampleMagazine);
-        when(rentQueryPort.findActiveByResourceId(eq(accessionNumber))).thenReturn(null);
-        resourcesService.remove(accessionNumber);
+    public void GivenValidResourceId_Remove_ShouldSuccess() {
+        sampleMagazine.setAccessionNumber(sampleAccessionNumber);
+        when(resourceSearchPort.findById(eq(sampleAccessionNumber))).thenReturn(sampleMagazine);
+        when(rentQueryPort.findActiveByResourceId(eq(sampleAccessionNumber))).thenReturn(null);
+        resourcesService.remove(sampleAccessionNumber);
         verify(resourcePersistencePort).remove(sampleMagazine);
     }
 
     @Test
-    public void GivenInvalidResourceId_Remove_ShouldFail(){
-        var accessionNumber = AccessionNumberHelper.generate();
-        when(resourceSearchPort.findById(eq(accessionNumber))).thenReturn(null);
-        assertThrows(ResourceNotFoundException.class, () -> resourcesService.remove(accessionNumber));
+    public void GivenInvalidResourceId_Remove_ShouldFail() {
+        when(resourceSearchPort.findById(eq(sampleAccessionNumber))).thenReturn(null);
+        assertThrows(ResourceNotFoundException.class, () -> resourcesService.remove(sampleAccessionNumber));
         verify(resourcePersistencePort, never()).remove(any());
     }
 
     @SneakyThrows
     @Test
-    public void GivenRentResourceId_Remove_ShouldFail(){
-        var accessionNumber = AccessionNumberHelper.generate();
-        sampleMagazine.setAccessionNumber(accessionNumber);
-        when(resourceSearchPort.findById(eq(accessionNumber))).thenReturn(sampleMagazine);
-        when(rentQueryPort.findActiveByResourceId(eq(accessionNumber))).thenReturn(new Rent(UUID.randomUUID(), new Date(), null, new Email("mszewc@edu.pl"), accessionNumber));
-        assertThrows(ResourceBlockedByRentException.class, () -> resourcesService.remove(accessionNumber));
+    public void GivenRentResourceId_Remove_ShouldFail() {
+        sampleMagazine.setAccessionNumber(sampleAccessionNumber);
+        when(resourceSearchPort.findById(eq(sampleAccessionNumber))).thenReturn(sampleMagazine);
+        when(rentQueryPort.findActiveByResourceId(eq(sampleAccessionNumber))).thenReturn(new Rent(UUID.randomUUID(), new Date(), null, new Email("mszewc@edu.pl"), sampleAccessionNumber));
+        assertThrows(ResourceBlockedByRentException.class, () -> resourcesService.remove(sampleAccessionNumber));
         verify(resourcePersistencePort, never()).remove(any());
     }
 
     @Test
-    public void GivenValidResourceId_GetDetails_ShouldSuccess(){
-        var accessionNumber = AccessionNumberHelper.generate();
-        sampleMagazine.setAccessionNumber(accessionNumber);
+    public void GivenValidResourceId_GetDetails_ShouldSuccess() {
+        sampleMagazine.setAccessionNumber(sampleAccessionNumber);
         when(resourceSearchPort.findById(eq(sampleMagazine.getAccessionNumber()))).thenReturn(sampleMagazine);
         var result = resourcesService.getDetails(sampleMagazine.getAccessionNumber());
         verify(resourceSearchPort).findById(eq(sampleMagazine.getAccessionNumber()));
@@ -132,9 +131,8 @@ public class ResourcesServiceTest {
     }
 
     @Test
-    public void GivenInvalidResourceId_GetDetails_ShouldFail(){
-        var accessionNumber = AccessionNumberHelper.generate();
-        when(resourceSearchPort.findById(eq(accessionNumber))).thenReturn(null);
-        assertThrows(ResourceNotFoundException.class, () -> resourcesService.getDetails(accessionNumber));
+    public void GivenInvalidResourceId_GetDetails_ShouldFail() {
+        when(resourceSearchPort.findById(eq(ResourcesServiceTest.this.sampleAccessionNumber))).thenReturn(null);
+        assertThrows(ResourceNotFoundException.class, () -> resourcesService.getDetails(ResourcesServiceTest.this.sampleAccessionNumber));
     }
 }
