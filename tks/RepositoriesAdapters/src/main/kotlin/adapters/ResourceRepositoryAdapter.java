@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import repositories.RepositoryBase;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class ResourceRepositoryAdapter implements ResourcePersistencePort, ResourceSearchPort {
     private final RepositoryBase<AbstractResourceEntity> repository;
@@ -29,7 +28,7 @@ public class ResourceRepositoryAdapter implements ResourcePersistencePort, Resou
 
     @Override
     public void save(@NotNull Resource resource) {
-        var accessionNumberValue = resource.getId().getValue();
+        var accessionNumberValue = resource.getAccessionNumber().getValue();
         var entity = repository.find(x -> Objects.equals(x.getId(), accessionNumberValue));
         assert entity != null; // todo prepare proper exception
         mapper.mapDomainObjectToEntity(resource, entity);
@@ -38,15 +37,15 @@ public class ResourceRepositoryAdapter implements ResourcePersistencePort, Resou
 
     @Override
     public void remove(@NotNull Resource resource) {
-        var accessionNumberValue = resource.getId().getValue();
+        var accessionNumberValue = resource.getAccessionNumber().getValue();
         var entity = repository.find(x -> Objects.equals(x.getId(), accessionNumberValue));
         assert entity != null; // todo prepare proper exception
         repository.remove(entity);
     }
 
     @Override
-    public Resource findById(AccessionNumber id) {
-        var accessionNumberValue = id.getValue();
+    public Resource findById(AccessionNumber accessionNumber) {
+        var accessionNumberValue = accessionNumber.getValue();
         var entity = repository.find(x -> Objects.equals(x.getId(), accessionNumberValue));
         return mapper.mapEntityToDomainObject(entity);
     }

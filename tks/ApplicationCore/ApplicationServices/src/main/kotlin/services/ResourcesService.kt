@@ -13,7 +13,6 @@ import model.Magazine
 import model.Resource
 import model.values.AccessionNumber
 import ports.primary.IResourceService
-import java.util.*
 
 class ResourcesService(
     private val resourcePersistencePort: ResourcePersistencePort,
@@ -23,10 +22,10 @@ class ResourcesService(
 
 
     override fun create(resource: Resource) {
-        if(resource.id != null) throw UnknownResourceException()
+        if(resource.accessionNumber != null) throw UnknownResourceException()
         when(resource){
             is Book, is Magazine -> {
-                resource.id = AccessionNumberHelper.generate()
+                resource.accessionNumber = AccessionNumberHelper.generate()
                 resourcePersistencePort.add(resource)
             }
             else -> throw UnknownResourceException()
@@ -34,19 +33,19 @@ class ResourcesService(
     }
 
     override fun update(resource: Resource){
-        val original = resourceSearchPort.findById(resource.id) ?: throw ResourceNotFoundException()
+        val original = resourceSearchPort.findById(resource.accessionNumber) ?: throw ResourceNotFoundException()
         if(resource::class != original::class) throw IncompatibleResourceFormatException()
         resourcePersistencePort.save(resource)
     }
 
-    override fun remove(resourceId: AccessionNumber){
-        val resource = resourceSearchPort.findById(resourceId) ?: throw ResourceNotFoundException()
-        val rent = rentQueryPort.findActiveByResourceId(resourceId);
+    override fun remove(accessionNumber: AccessionNumber){
+        val resource = resourceSearchPort.findById(accessionNumber) ?: throw ResourceNotFoundException()
+        val rent = rentQueryPort.findActiveByResourceId(accessionNumber);
         if(rent != null) throw ResourceBlockedByRentException()
         resourcePersistencePort.remove(resource)
     }
 
-    override fun getDetails(resourceId: AccessionNumber): Resource {
-        return resourceSearchPort.findById(resourceId) ?: throw ResourceNotFoundException();
+    override fun getDetails(accessionNumber: AccessionNumber): Resource {
+        return resourceSearchPort.findById(accessionNumber) ?: throw ResourceNotFoundException();
     }
 }

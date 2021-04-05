@@ -51,7 +51,7 @@ public class ResourcesServiceTest {
     public void GivenResourceOfValidType_Create_ShouldSuccess(){
         resourcesService.create(sampleBook);
         verify(resourcePersistencePort).add(eq(sampleBook));
-        assertNotNull(sampleBook.getId());
+        assertNotNull(sampleBook.getAccessionNumber());
     }
 
     @Test
@@ -62,32 +62,32 @@ public class ResourcesServiceTest {
 
     @Test
     public void GivenResourceWithNotNullId_Create_ShouldFail(){
-        sampleBook.setId(AccessionNumberHelper.generate());
+        sampleBook.setAccessionNumber(AccessionNumberHelper.generate());
         assertThrows(UnknownResourceException.class, () -> resourcesService.create(sampleBook));
         verify(resourcePersistencePort, never()).add(any());
     }
 
     @Test
     public void GivenValidResourceWithNotNullId_Update_ShouldSuccess(){
-        sampleMagazine.setId(AccessionNumberHelper.generate());
-        when(resourceSearchPort.findById(eq(sampleMagazine.getId()))).thenReturn(sampleMagazine);
+        sampleMagazine.setAccessionNumber(AccessionNumberHelper.generate());
+        when(resourceSearchPort.findById(eq(sampleMagazine.getAccessionNumber()))).thenReturn(sampleMagazine);
         resourcesService.update(sampleMagazine);
         verify(resourcePersistencePort).save(sampleMagazine);
     }
 
     @Test
     public void GivenNonExistingResource_Update_ShouldFail(){
-        sampleMagazine.setId(AccessionNumberHelper.generate());
-        when(resourceSearchPort.findById(eq(sampleMagazine.getId()))).thenReturn(null);
+        sampleMagazine.setAccessionNumber(AccessionNumberHelper.generate());
+        when(resourceSearchPort.findById(eq(sampleMagazine.getAccessionNumber()))).thenReturn(null);
         assertThrows(ResourceNotFoundException.class, () -> resourcesService.update(sampleMagazine));
         verify(resourcePersistencePort, never()).save(any());
     }
 
     @Test
     public void GivenOtherResourceType_Update_ShouldFail(){
-        sampleMagazine.setId(AccessionNumberHelper.generate());
-        sampleBook.setId(sampleMagazine.getId());
-        when(resourceSearchPort.findById(eq(sampleMagazine.getId()))).thenReturn(sampleMagazine);
+        sampleMagazine.setAccessionNumber(AccessionNumberHelper.generate());
+        sampleBook.setAccessionNumber(sampleMagazine.getAccessionNumber());
+        when(resourceSearchPort.findById(eq(sampleMagazine.getAccessionNumber()))).thenReturn(sampleMagazine);
         assertThrows(IncompatibleResourceFormatException.class, () -> resourcesService.update(sampleBook));
         verify(resourcePersistencePort, never()).save(any());
     }
@@ -95,7 +95,7 @@ public class ResourcesServiceTest {
     @Test
     public void GivenValidResourceId_Remove_ShouldSuccess(){
         var accessionNumber = AccessionNumberHelper.generate();
-        sampleMagazine.setId(accessionNumber);
+        sampleMagazine.setAccessionNumber(accessionNumber);
         when(resourceSearchPort.findById(eq(accessionNumber))).thenReturn(sampleMagazine);
         when(rentQueryPort.findActiveByResourceId(eq(accessionNumber))).thenReturn(null);
         resourcesService.remove(accessionNumber);
@@ -114,7 +114,7 @@ public class ResourcesServiceTest {
     @Test
     public void GivenRentResourceId_Remove_ShouldFail(){
         var accessionNumber = AccessionNumberHelper.generate();
-        sampleMagazine.setId(accessionNumber);
+        sampleMagazine.setAccessionNumber(accessionNumber);
         when(resourceSearchPort.findById(eq(accessionNumber))).thenReturn(sampleMagazine);
         when(rentQueryPort.findActiveByResourceId(eq(accessionNumber))).thenReturn(new Rent(UUID.randomUUID(), new Date(), null, new Email("mszewc@edu.pl"), accessionNumber));
         assertThrows(ResourceBlockedByRentException.class, () -> resourcesService.remove(accessionNumber));
@@ -124,10 +124,10 @@ public class ResourcesServiceTest {
     @Test
     public void GivenValidResourceId_GetDetails_ShouldSuccess(){
         var accessionNumber = AccessionNumberHelper.generate();
-        sampleMagazine.setId(accessionNumber);
-        when(resourceSearchPort.findById(eq(sampleMagazine.getId()))).thenReturn(sampleMagazine);
-        var result = resourcesService.getDetails(sampleMagazine.getId());
-        verify(resourceSearchPort).findById(eq(sampleMagazine.getId()));
+        sampleMagazine.setAccessionNumber(accessionNumber);
+        when(resourceSearchPort.findById(eq(sampleMagazine.getAccessionNumber()))).thenReturn(sampleMagazine);
+        var result = resourcesService.getDetails(sampleMagazine.getAccessionNumber());
+        verify(resourceSearchPort).findById(eq(sampleMagazine.getAccessionNumber()));
         assertEquals(sampleMagazine, result);
     }
 

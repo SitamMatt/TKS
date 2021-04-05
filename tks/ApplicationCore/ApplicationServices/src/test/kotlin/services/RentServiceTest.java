@@ -60,7 +60,7 @@ class RentServiceTest {
     @Test
     public void GivenInvalidUserId_Rent_ShouldFail(){
         when(userSearchPort.findByEmail(eq(sampleUser.getEmail()))).thenReturn(null);
-        assertThrows(UserNotFoundException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getId()));
+        assertThrows(UserNotFoundException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getAccessionNumber()));
         verify(rentManagePort, never()).save(any());
     }
 
@@ -68,7 +68,7 @@ class RentServiceTest {
     public void GivenInvalidResourceId_Rent_ShouldFail(){
         when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(sampleUser);
         when(resourceSearchPort.findById(eq(sampleResId))).thenReturn(null);
-        assertThrows(ResourceNotFoundException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getId()));
+        assertThrows(ResourceNotFoundException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getAccessionNumber()));
         verify(rentManagePort, never()).save(any());
     }
 
@@ -77,7 +77,7 @@ class RentServiceTest {
         sampleUser.setActive(false);
         when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(sampleUser);
         when(resourceSearchPort.findById(eq(sampleResId))).thenReturn(sampleResource);
-        assertThrows(UserNotActiveException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getId()));
+        assertThrows(UserNotActiveException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getAccessionNumber()));
         verify(rentManagePort, never()).save(any());
     }
 
@@ -86,7 +86,7 @@ class RentServiceTest {
         when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(sampleUser);
         when(resourceSearchPort.findById(eq(sampleResId))).thenReturn(sampleResource);
         when(rentQueryPort.findActiveByResourceId(sampleResId)).thenReturn(sampleRent);
-        assertThrows(ResourceAlreadyRentException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getId()));
+        assertThrows(ResourceAlreadyRentException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getAccessionNumber()));
         verify(rentManagePort, never()).save(any());
     }
 

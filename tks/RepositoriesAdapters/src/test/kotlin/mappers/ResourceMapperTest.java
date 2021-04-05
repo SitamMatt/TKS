@@ -27,7 +27,7 @@ public class ResourceMapperTest {
         var entity = mapper.mapDomainObjectToEntity(book);
         assertNotNull(entity);
         assertTrue(entity instanceof BookEntity);
-        assertEquals(book.getId(), entity.getId());
+        assertEquals(book.getAccessionNumber(), entity.getId());
         assertEquals(book.getTitle(), entity.getTitle());
         assertNull(entity.getGuid());
         assertEquals(((Book)book).getAuthor(), ((BookEntity)entity).getAuthor());
@@ -40,7 +40,7 @@ public class ResourceMapperTest {
         var book = mapper.mapEntityToDomainObject(entity);
         assertNotNull(book);
         assertTrue(book instanceof Book);
-        assertEquals(entity.getId(), book.getId());
+        assertEquals(entity.getId(), book.getAccessionNumber());
         assertEquals(entity.getTitle(), book.getTitle());
         assertEquals(((BookEntity)entity).getAuthor(), ((Book)book).getAuthor());
     }
@@ -52,7 +52,7 @@ public class ResourceMapperTest {
         var guid = UUID.randomUUID();
         entity.setGuid(guid);
         mapper.mapDomainObjectToEntity(book, entity);
-        assertEquals(book.getId(), entity.getId());
+        assertEquals(book.getAccessionNumber(), entity.getId());
         assertEquals(book.getTitle(), entity.getTitle());
         assertEquals(((Book)book).getAuthor(), ((BookEntity)entity).getAuthor());
         assertEquals(guid, entity.getGuid());

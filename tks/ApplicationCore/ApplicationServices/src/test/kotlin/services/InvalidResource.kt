@@ -5,6 +5,6 @@ import model.values.AccessionNumber
 import java.util.*
 
 data class InvalidResource(
-    override var id: AccessionNumber?,
+    override var accessionNumber: AccessionNumber?,
     override var title: String
 ) : Resource()
