@@ -3,12 +3,11 @@ import adapters.UserRepositoryAdapter;
 import data.AbstractResourceEntity;
 import data.UserEntity;
 import mappers.ResourceMapper;
-import model.Resource;
+import mappers.UserMapper;
 import ports.secondary.ResourcePersistencePort;
 import ports.secondary.ResourceSearchPort;
-import ports.secondary.UserSearchPort;
 import ports.secondary.UserPersistencePort;
-import mappers.UserMapper;
+import ports.secondary.UserSearchPort;
 import repositories.RepositoryBase;
 import services.ResourcesService;
 import services.UserService;
@@ -64,9 +63,4 @@ public class Producer {
     public ResourceMapper produceResourceMapper(){
         return ResourceMapper.Companion.getINSTANCE();
     }
-
-//    @Produces
-//    public UserMapperDto produceUserMapperDto(){
-//        return UserMapperDto.Companion.getINSTANCE();
-//    }
 }

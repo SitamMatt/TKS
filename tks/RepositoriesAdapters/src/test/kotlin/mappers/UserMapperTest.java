@@ -26,6 +26,7 @@ class UserMapperTest {
     public void UserToEntityTest(){
         var user = new User(new Email("mszewc@edu.pl"), UserRole.ADMIN, "####", true);
         var entity = mapper.mapDomainObjectToEntity(user);
+        assertNotNull(entity);
         assertEquals(user.getEmail().getValue(), entity.getEmail());
         assertEquals(user.getPassword(), entity.getPassword());
         assertEquals(user.getRole().toString(), entity.getRole());
@@ -37,6 +38,7 @@ class UserMapperTest {
         var entity = new UserEntity("mszewc@edu.pl", UserRole.ADMIN.toString(), "####", true);
         entity.setGuid(UUID.randomUUID());
         var user = mapper.mapEntityToDomainObject(entity);
+        assertNotNull(user);
         assertEquals(entity.getEmail(), user.getEmail().getValue());
         assertEquals(entity.getPassword(), user.getPassword());
         assertEquals(UserRole.valueOf(entity.getRole()), user.getRole());

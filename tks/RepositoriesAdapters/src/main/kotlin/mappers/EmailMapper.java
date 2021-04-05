@@ -3,7 +3,6 @@ package mappers;
 import exceptions.TypeValidationFailedException;
 import model.values.Email;
 import org.mapstruct.Mapper;
-import org.mapstruct.Named;
 
 @Mapper
 public interface EmailMapper {

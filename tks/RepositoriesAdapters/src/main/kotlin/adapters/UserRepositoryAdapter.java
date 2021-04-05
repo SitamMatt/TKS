@@ -36,7 +36,8 @@ public class UserRepositoryAdapter implements UserPersistencePort, UserSearchPor
 
     @Override
     public void update(User user) {
-        var entity = repository.find(x -> Objects.equals(x.getEmail(), user.getEmail()));
+        var emailValue = user.getEmail().getValue();
+        var entity = repository.find(x -> Objects.equals(x.getEmail(), emailValue));
         assert entity != null; // todo prepare proper exception
         mapper.mapDomainObjectToEntity(user, entity);
         repository.update(entity);

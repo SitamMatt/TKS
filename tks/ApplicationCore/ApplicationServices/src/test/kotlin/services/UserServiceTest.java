@@ -46,7 +46,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void GivenUser_With_DuplicatedEmail_RegistrationShouldFail() throws DuplicatedEmailException {
+    public void GivenUser_With_DuplicatedEmail_RegistrationShouldFail() {
         var duplicatedUser = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
         when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(duplicatedUser);
         assertThrows(DuplicatedEmailException.class, () -> userService.register(sampleUser));

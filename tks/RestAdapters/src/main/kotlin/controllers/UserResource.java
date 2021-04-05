@@ -2,21 +2,18 @@ package controllers;
 
 
 import adapters.UserResourceAdapter;
-import dto.Error;
 import dto.UserDto;
 import exceptions.DuplicatedEmailException;
 import exceptions.TypeValidationFailedException;
 import exceptions.UserNotFoundException;
 import mappers.UserMapperDto;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import services.UserService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.Objects;
 
 import static helpers.ErrorHelper.*;
 

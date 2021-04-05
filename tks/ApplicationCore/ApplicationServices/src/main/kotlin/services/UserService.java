@@ -12,8 +12,8 @@ import model.UserRole;
 
 public class UserService implements IUserService {
 
-    UserPersistencePort userPersistencePort;
-    UserSearchPort userSearchPort;
+    private final UserPersistencePort userPersistencePort;
+    private final UserSearchPort userSearchPort;
 
     public UserService(UserPersistencePort userPersistencePort, UserSearchPort userSearchPort) {
         this.userPersistencePort = userPersistencePort;
