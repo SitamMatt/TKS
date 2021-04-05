@@ -1,8 +1,8 @@
 package model
 
-import java.util.*
+import model.values.AccessionNumber
 
 abstract class Resource {
-    abstract var id: UUID?
+    abstract var id: AccessionNumber?
     abstract var title: String
 }

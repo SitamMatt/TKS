@@ -1,6 +1,7 @@
 package adapters;
 
 import data.AbstractResourceEntity;
+import model.values.AccessionNumber;
 import ports.secondary.ResourcePersistencePort;
 import ports.secondary.ResourceSearchPort;
 import mappers.ResourceMapper;
@@ -28,7 +29,8 @@ public class ResourceRepositoryAdapter implements ResourcePersistencePort, Resou
 
     @Override
     public void save(@NotNull Resource resource) {
-        var entity = repository.find(x -> Objects.equals(x.getId(), resource.getId()));
+        var accessionNumberValue = resource.getId().getValue();
+        var entity = repository.find(x -> Objects.equals(x.getId(), accessionNumberValue));
         assert entity != null; // todo prepare proper exception
         mapper.mapDomainObjectToEntity(resource, entity);
         repository.update(entity);
@@ -36,14 +38,16 @@ public class ResourceRepositoryAdapter implements ResourcePersistencePort, Resou
 
     @Override
     public void remove(@NotNull Resource resource) {
-        var entity = repository.find(x -> Objects.equals(x.getId(), resource.getId()));
+        var accessionNumberValue = resource.getId().getValue();
+        var entity = repository.find(x -> Objects.equals(x.getId(), accessionNumberValue));
         assert entity != null; // todo prepare proper exception
         repository.remove(entity);
     }
 
     @Override
-    public Resource findById(UUID id) {
-        var entity = repository.find(x -> Objects.equals(x.getId(), id));
+    public Resource findById(AccessionNumber id) {
+        var accessionNumberValue = id.getValue();
+        var entity = repository.find(x -> Objects.equals(x.getId(), accessionNumberValue));
         return mapper.mapEntityToDomainObject(entity);
     }
 }

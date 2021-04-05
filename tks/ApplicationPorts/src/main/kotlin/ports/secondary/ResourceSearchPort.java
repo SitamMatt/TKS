@@ -1,9 +1,8 @@
 package ports.secondary;
 
 import model.Resource;
-
-import java.util.UUID;
+import model.values.AccessionNumber;
 
 public interface ResourceSearchPort {
-    Resource findById(UUID id);
+    Resource findById(AccessionNumber id);
 }

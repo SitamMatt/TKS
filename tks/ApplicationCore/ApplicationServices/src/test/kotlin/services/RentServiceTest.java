@@ -3,7 +3,9 @@ package services;
 import exceptions.*;
 import drivenports.RentManagePort;
 import drivenports.RentQueryPort;
+import helpers.AccessionNumberHelper;
 import lombok.SneakyThrows;
+import model.values.AccessionNumber;
 import model.values.Email;
 import ports.secondary.ResourceSearchPort;
 import ports.secondary.UserSearchPort;
@@ -30,7 +32,7 @@ class RentServiceTest {
     Rent sampleRent;
     Email sampleEmail;
     Email sampleEmail2;
-    UUID sampleResId;
+    AccessionNumber sampleResId;
     UUID sampleRentId;
 
     @Mock
@@ -47,7 +49,7 @@ class RentServiceTest {
     public void init(){
         sampleEmail = new Email("mszewc@edu.pl");
         sampleEmail2 = new Email("mzab@edu.pl");
-        sampleResId = UUID.randomUUID();
+        sampleResId = AccessionNumberHelper.generate();
         sampleRentId = UUID.randomUUID();
         sampleUser = new User(sampleEmail, UserRole.CLIENT, "####", true);
         sampleResource = new Book(sampleResId, "Diuna", "Frank Herbert");

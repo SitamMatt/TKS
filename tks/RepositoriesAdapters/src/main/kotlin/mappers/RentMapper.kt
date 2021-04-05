@@ -1,19 +1,20 @@
-package mappers;
+package mappers
 
-import data.RentEntity;
-import model.Rent;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
+import mappers.AccessionNumberMapper
+import data.RentEntity
+import model.Rent
+import org.mapstruct.MappingTarget
+import mappers.RentMapper
+import org.mapstruct.Mapper
+import org.mapstruct.factory.Mappers
 
-@Mapper
-public interface RentMapper {
+@Mapper(uses = [EmailMapper::class])
+interface RentMapper {
+    fun mapEntityToDomainObject(entity: RentEntity?): Rent?
+    fun mapDomainObjectToEntity(user: Rent?): RentEntity?
+    fun mapDomainObjectToEntity(user: Rent?, @MappingTarget entity: RentEntity?)
 
-    RentMapper INSTANCE = Mappers.getMapper(RentMapper.class);
-
-    Rent mapEntityToDomainObject(RentEntity entity);
-
-    RentEntity mapDomainObjectToEntity(Rent user);
-
-    void mapDomainObjectToEntity(Rent user, @MappingTarget RentEntity entity);
+    companion object {
+        val INSTANCE = Mappers.getMapper(RentMapper::class.java)
+    }
 }

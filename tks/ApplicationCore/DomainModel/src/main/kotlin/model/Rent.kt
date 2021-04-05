@@ -1,5 +1,6 @@
 package model
 
+import model.values.AccessionNumber
 import model.values.Email
 import java.util.*
 
@@ -8,5 +9,5 @@ data class Rent(
     val startDate: Date,
     var endDate: Date?,
     val userEmail: Email,
-    val resourceId: UUID
+    val resourceId: AccessionNumber
 )

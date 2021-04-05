@@ -7,10 +7,10 @@ import drivenports.RentManagePort;
 import drivenports.RentQueryPort;
 import mappers.RentMapper;
 import model.Rent;
+import model.values.AccessionNumber;
 import repositories.RepositoryBase;
 
 import java.util.Objects;
-import java.util.UUID;
 
 public class RentRepositoryAdapter implements RentQueryPort, RentManagePort {
 
@@ -45,8 +45,9 @@ public class RentRepositoryAdapter implements RentQueryPort, RentManagePort {
     }
 
     @Override
-    public Rent findActiveByResourceId(UUID resourceId) {
-        var entity = repository.find(x -> Objects.equals(x.getResource().getId(), resourceId) && x.getEndDate() == null);
+    public Rent findActiveByResourceId(AccessionNumber resourceId) {
+        var accessionNumberValue = resourceId.getValue();
+        var entity = repository.find(x -> Objects.equals(x.getResource().getId(), accessionNumberValue) && x.getEndDate() == null);
         return mapper.mapEntityToDomainObject(entity);
     }
 }

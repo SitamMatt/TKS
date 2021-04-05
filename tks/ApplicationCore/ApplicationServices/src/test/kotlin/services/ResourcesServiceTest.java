@@ -5,6 +5,7 @@ import exceptions.ResourceBlockedByRentException;
 import exceptions.ResourceNotFoundException;
 import exceptions.UnknownResourceException;
 import drivenports.RentQueryPort;
+import helpers.AccessionNumberHelper;
 import lombok.SneakyThrows;
 import model.values.Email;
 import ports.secondary.ResourcePersistencePort;
@@ -61,14 +62,14 @@ public class ResourcesServiceTest {
 
     @Test
     public void GivenResourceWithNotNullId_Create_ShouldFail(){
-        sampleBook.setId(UUID.randomUUID());
+        sampleBook.setId(AccessionNumberHelper.generate());
         assertThrows(UnknownResourceException.class, () -> resourcesService.create(sampleBook));
         verify(resourcePersistencePort, never()).add(any());
     }
 
     @Test
     public void GivenValidResourceWithNotNullId_Update_ShouldSuccess(){
-        sampleMagazine.setId(UUID.randomUUID());
+        sampleMagazine.setId(AccessionNumberHelper.generate());
         when(resourceSearchPort.findById(eq(sampleMagazine.getId()))).thenReturn(sampleMagazine);
         resourcesService.update(sampleMagazine);
         verify(resourcePersistencePort).save(sampleMagazine);
@@ -76,7 +77,7 @@ public class ResourcesServiceTest {
 
     @Test
     public void GivenNonExistingResource_Update_ShouldFail(){
-        sampleMagazine.setId(UUID.randomUUID());
+        sampleMagazine.setId(AccessionNumberHelper.generate());
         when(resourceSearchPort.findById(eq(sampleMagazine.getId()))).thenReturn(null);
         assertThrows(ResourceNotFoundException.class, () -> resourcesService.update(sampleMagazine));
         verify(resourcePersistencePort, never()).save(any());
@@ -84,7 +85,7 @@ public class ResourcesServiceTest {
 
     @Test
     public void GivenOtherResourceType_Update_ShouldFail(){
-        sampleMagazine.setId(UUID.randomUUID());
+        sampleMagazine.setId(AccessionNumberHelper.generate());
         sampleBook.setId(sampleMagazine.getId());
         when(resourceSearchPort.findById(eq(sampleMagazine.getId()))).thenReturn(sampleMagazine);
         assertThrows(IncompatibleResourceFormatException.class, () -> resourcesService.update(sampleBook));
@@ -93,36 +94,37 @@ public class ResourcesServiceTest {
 
     @Test
     public void GivenValidResourceId_Remove_ShouldSuccess(){
-        var guid = UUID.randomUUID();
-        sampleMagazine.setId(guid);
-        when(resourceSearchPort.findById(eq(guid))).thenReturn(sampleMagazine);
-        when(rentQueryPort.findActiveByResourceId(eq(guid))).thenReturn(null);
-        resourcesService.remove(guid);
+        var accessionNumber = AccessionNumberHelper.generate();
+        sampleMagazine.setId(accessionNumber);
+        when(resourceSearchPort.findById(eq(accessionNumber))).thenReturn(sampleMagazine);
+        when(rentQueryPort.findActiveByResourceId(eq(accessionNumber))).thenReturn(null);
+        resourcesService.remove(accessionNumber);
         verify(resourcePersistencePort).remove(sampleMagazine);
     }
 
     @Test
     public void GivenInvalidResourceId_Remove_ShouldFail(){
-        var guid = UUID.randomUUID();
-        when(resourceSearchPort.findById(eq(guid))).thenReturn(null);
-        assertThrows(ResourceNotFoundException.class, () -> resourcesService.remove(guid));
+        var accessionNumber = AccessionNumberHelper.generate();
+        when(resourceSearchPort.findById(eq(accessionNumber))).thenReturn(null);
+        assertThrows(ResourceNotFoundException.class, () -> resourcesService.remove(accessionNumber));
         verify(resourcePersistencePort, never()).remove(any());
     }
 
     @SneakyThrows
     @Test
     public void GivenRentResourceId_Remove_ShouldFail(){
-        var guid = UUID.randomUUID();
-        sampleMagazine.setId(guid);
-        when(resourceSearchPort.findById(eq(guid))).thenReturn(sampleMagazine);
-        when(rentQueryPort.findActiveByResourceId(eq(guid))).thenReturn(new Rent(UUID.randomUUID(), new Date(), null, new Email("mszewc@edu.pl"), guid));
-        assertThrows(ResourceBlockedByRentException.class, () -> resourcesService.remove(guid));
+        var accessionNumber = AccessionNumberHelper.generate();
+        sampleMagazine.setId(accessionNumber);
+        when(resourceSearchPort.findById(eq(accessionNumber))).thenReturn(sampleMagazine);
+        when(rentQueryPort.findActiveByResourceId(eq(accessionNumber))).thenReturn(new Rent(UUID.randomUUID(), new Date(), null, new Email("mszewc@edu.pl"), accessionNumber));
+        assertThrows(ResourceBlockedByRentException.class, () -> resourcesService.remove(accessionNumber));
         verify(resourcePersistencePort, never()).remove(any());
     }
 
     @Test
     public void GivenValidResourceId_GetDetails_ShouldSuccess(){
-        sampleMagazine.setId(UUID.randomUUID());
+        var accessionNumber = AccessionNumberHelper.generate();
+        sampleMagazine.setId(accessionNumber);
         when(resourceSearchPort.findById(eq(sampleMagazine.getId()))).thenReturn(sampleMagazine);
         var result = resourcesService.getDetails(sampleMagazine.getId());
         verify(resourceSearchPort).findById(eq(sampleMagazine.getId()));
@@ -131,8 +133,8 @@ public class ResourcesServiceTest {
 
     @Test
     public void GivenInvalidResourceId_GetDetails_ShouldFail(){
-        var guid = UUID.randomUUID();
-        when(resourceSearchPort.findById(eq(guid))).thenReturn(null);
-        assertThrows(ResourceNotFoundException.class, () -> resourcesService.getDetails(guid));
+        var accessionNumber = AccessionNumberHelper.generate();
+        when(resourceSearchPort.findById(eq(accessionNumber))).thenReturn(null);
+        assertThrows(ResourceNotFoundException.class, () -> resourcesService.getDetails(accessionNumber));
     }
 }

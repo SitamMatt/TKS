@@ -10,7 +10,7 @@ import model.Resource
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
-@Mapper
+@Mapper(uses = [AccessionNumberMapper::class])
 interface ResourceMapper {
     @JvmDefault
     fun mapEntityToDomainObject(entity: AbstractResourceEntity?): Resource? = when(entity){
