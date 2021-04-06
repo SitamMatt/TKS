@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.16</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -50,11 +50,6 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.googlecode.jmapper-framework</groupId>
-            <artifactId>jmapper-core</artifactId>
-            <version>1.6.0.1</version>
         </dependency>
     </dependencies>
 
@@ -89,7 +84,7 @@
                                 <annotationProcessorPath>
                                     <groupId>org.projectlombok</groupId>
                                     <artifactId>lombok</artifactId>
-                                    <version>1.18.16</version>
+                                    <version>${lombok.version}</version>
                                 </annotationProcessorPath>
                                 <annotationProcessorPath>
                                     <groupId>org.projectlombok</groupId>
