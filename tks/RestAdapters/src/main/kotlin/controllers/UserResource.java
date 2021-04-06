@@ -2,10 +2,11 @@ package controllers;
 
 
 import adapters.UserResourceAdapter;
-import dto.UserDto;
 import domain.exceptions.DuplicatedEmailException;
 import domain.exceptions.TypeValidationFailedException;
 import domain.exceptions.UserNotFoundException;
+import dto.UserDto;
+import helpers.ErrorExtensionsKt;
 import mappers.UserMapperDto;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
@@ -15,7 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import static helpers.ErrorHelper.*;
+import static helpers.ErrorHelper.badRequest;
 
 @Path("user")
 public class UserResource {
@@ -32,13 +33,17 @@ public class UserResource {
     @GET
     @Path("{id}")
     @Produces("application/json")
-    @Operation(operationId = "Get user info", description = "Get the user for the given email", summary = "Get user info")
+    @Operation(
+            operationId = "Get user info",
+            description = "Get the user for the given email",
+            summary = "Get user info"
+    )
     public Response get(@PathParam("id") String email) {
         try {
             var dto = adapter.queryUser(email);
             return Response.ok(dto).build();
         } catch (UserNotFoundException e) {
-            return notFound(1, "User not found");
+            return ErrorExtensionsKt.notFound(e.getError());
         } catch (TypeValidationFailedException e) {
             return badRequest(1, "Invalid parameter");
         }
@@ -46,14 +51,18 @@ public class UserResource {
 
     @POST
     @Produces("application/json")
-    @Operation(operationId = "Register new user", description = "Registers new user from given data", summary = "Register new user")
+    @Operation(
+            operationId = "Register new user",
+            description = "Registers new user from given data",
+            summary = "Register new user"
+    )
     public Response post(UserDto dto) {
         try {
             var email = adapter.registerCommand(dto);
             var resourceLink = context.getAbsolutePathBuilder().path(email).build();
             return Response.created(resourceLink).entity(dto).build();
         } catch (DuplicatedEmailException e) {
-            return conflict(1, "Email already taken");
+            return ErrorExtensionsKt.conflict(e.getError());
         }
     }
 
