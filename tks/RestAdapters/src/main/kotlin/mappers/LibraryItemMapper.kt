@@ -1,5 +1,6 @@
 package mappers
 
+import common.mappers.AccessionNumberMapper
 import dto.LibraryItemDto
 import model.Book
 import model.Magazine

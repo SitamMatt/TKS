@@ -1,5 +1,6 @@
 package mappers
 
+import common.mappers.EmailMapper
 import dto.UserDto
 import model.User
 import org.mapstruct.Mapper

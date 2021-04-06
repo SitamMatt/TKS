@@ -1,10 +1,9 @@
 package mappers
 
-import mappers.AccessionNumberMapper
+import common.mappers.EmailMapper
 import data.RentEntity
 import model.Rent
 import org.mapstruct.MappingTarget
-import mappers.RentMapper
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 

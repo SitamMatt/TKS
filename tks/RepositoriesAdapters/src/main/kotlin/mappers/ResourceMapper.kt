@@ -1,5 +1,6 @@
 package mappers
 
+import common.mappers.AccessionNumberMapper
 import data.AbstractResourceEntity
 import org.mapstruct.MappingTarget
 import data.BookEntity
