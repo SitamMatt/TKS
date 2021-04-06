@@ -9,7 +9,7 @@ public class DomainException extends Exception{
         this.error = error;
     }
 
-    public Error getErrors() {
+    public Error getError() {
         return error;
     }
 }
