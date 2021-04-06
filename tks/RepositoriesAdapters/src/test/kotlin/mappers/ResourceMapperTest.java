@@ -31,7 +31,7 @@ public class ResourceMapperTest {
         var entity = mapper.mapDomainObjectToEntity(book);
         assertNotNull(entity);
         assertTrue(entity instanceof BookEntity);
-        assertEquals(Objects.requireNonNull(book.getAccessionNumber()).getValue(), entity.getId());
+        assertEquals(Objects.requireNonNull(book.getAccessionNumber()).getValue(), entity.getAccessionNumber());
         assertEquals(book.getTitle(), entity.getTitle());
         assertNull(entity.getGuid());
         assertEquals(((Book)book).getAuthor(), ((BookEntity)entity).getAuthor());
@@ -44,7 +44,7 @@ public class ResourceMapperTest {
         var book = mapper.mapEntityToDomainObject(entity);
         assertNotNull(book);
         assertTrue(book instanceof Book);
-        assertEquals(entity.getId(), Objects.requireNonNull(book.getAccessionNumber()).getValue());
+        assertEquals(entity.getAccessionNumber(), Objects.requireNonNull(book.getAccessionNumber()).getValue());
         assertEquals(entity.getTitle(), book.getTitle());
         assertEquals(((BookEntity)entity).getAuthor(), ((Book)book).getAuthor());
     }
@@ -57,7 +57,7 @@ public class ResourceMapperTest {
         var guid = UUID.randomUUID();
         entity.setGuid(guid);
         mapper.mapDomainObjectToEntity(book, entity);
-        assertEquals(Objects.requireNonNull(book.getAccessionNumber()).getValue(), entity.getId());
+        assertEquals(Objects.requireNonNull(book.getAccessionNumber()).getValue(), entity.getAccessionNumber());
         assertEquals(book.getTitle(), entity.getTitle());
         assertEquals(((Book)book).getAuthor(), ((BookEntity)entity).getAuthor());
         assertEquals(guid, entity.getGuid());

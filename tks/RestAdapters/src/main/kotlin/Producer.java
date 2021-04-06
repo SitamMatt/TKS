@@ -8,11 +8,13 @@ import mappers.LibraryItemMapper;
 import mappers.RentMapper;
 import mappers.ResourceMapper;
 import mappers.UserMapper;
+import ports.primary.ResourceRentCommandPort;
 import ports.secondary.ResourcePersistencePort;
 import ports.secondary.ResourceSearchPort;
 import ports.secondary.UserPersistencePort;
 import ports.secondary.UserSearchPort;
 import repositories.RepositoryBase;
+import services.RentService;
 import services.ResourcesService;
 import services.UserService;
 
@@ -42,6 +44,11 @@ public class Producer {
     @Produces
     public ResourceRepositoryAdapter produceResourceRepository(RepositoryBase<AbstractResourceEntity> repository, ResourceMapper mapper){
         return new ResourceRepositoryAdapter(repository, mapper);
+    }
+
+    @Produces
+    public ResourceRentCommandPort produceResourceRentCommandPort(RentRepositoryAdapter adapter, UserRepositoryAdapter userRepositoryAdapter, ResourceRepositoryAdapter resourceRepositoryAdapter){
+        return new RentService(adapter, adapter, userRepositoryAdapter, resourceRepositoryAdapter);
     }
 
     @Produces

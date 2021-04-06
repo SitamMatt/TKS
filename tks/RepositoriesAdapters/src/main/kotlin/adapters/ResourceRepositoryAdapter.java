@@ -29,7 +29,7 @@ public class ResourceRepositoryAdapter implements ResourcePersistencePort, Resou
     @Override
     public void save(@NotNull Resource resource) {
         var accessionNumberValue = resource.getAccessionNumber().getValue();
-        var entity = repository.find(x -> Objects.equals(x.getId(), accessionNumberValue));
+        var entity = repository.find(x -> Objects.equals(x.getAccessionNumber(), accessionNumberValue));
         assert entity != null; // todo prepare proper exception
         mapper.mapDomainObjectToEntity(resource, entity);
         repository.update(entity);
@@ -38,7 +38,7 @@ public class ResourceRepositoryAdapter implements ResourcePersistencePort, Resou
     @Override
     public void remove(@NotNull Resource resource) {
         var accessionNumberValue = resource.getAccessionNumber().getValue();
-        var entity = repository.find(x -> Objects.equals(x.getId(), accessionNumberValue));
+        var entity = repository.find(x -> Objects.equals(x.getAccessionNumber(), accessionNumberValue));
         assert entity != null; // todo prepare proper exception
         repository.remove(entity);
     }
@@ -46,7 +46,7 @@ public class ResourceRepositoryAdapter implements ResourcePersistencePort, Resou
     @Override
     public Resource findById(AccessionNumber accessionNumber) {
         var accessionNumberValue = accessionNumber.getValue();
-        var entity = repository.find(x -> Objects.equals(x.getId(), accessionNumberValue));
+        var entity = repository.find(x -> Objects.equals(x.getAccessionNumber(), accessionNumberValue));
         return mapper.mapEntityToDomainObject(entity);
     }
 }

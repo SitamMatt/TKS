@@ -17,9 +17,10 @@ public class LibraryItemResourceAdapter {
     @Inject
     private LibraryItemMapper mapper;
 
-    public void add(LibraryItemDto dto) throws UnknownResourceException {
+    public AccessionNumber add(LibraryItemDto dto) throws UnknownResourceException {
         var resource = mapper.toDomainObject(dto);
         resourceService.create(resource);
+        return resource.getAccessionNumber();
     }
 
     public LibraryItemDto query(String id) throws TypeValidationFailedException, ResourceNotFoundException {

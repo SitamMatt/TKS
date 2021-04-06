@@ -8,13 +8,13 @@ import org.mapstruct.Mapper
 @Mapper
 interface AccessionNumberMapper {
     @JvmDefault
-    fun toValue(accessionNumber: AccessionNumber?): String? {
-        return accessionNumber?.value
+    fun toValue(accessionNumber: AccessionNumber): String? {
+        return accessionNumber.value
     }
 
     @JvmDefault
     @Throws(TypeValidationFailedException::class)
     fun toAccessionNumber(value: String?): AccessionNumber? {
-        return value?.let { AccessionNumber(it) }
+        return AccessionNumber(value)
     }
 }

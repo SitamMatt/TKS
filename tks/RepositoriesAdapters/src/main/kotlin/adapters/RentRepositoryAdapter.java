@@ -31,7 +31,7 @@ public class RentRepositoryAdapter implements RentSearchPort, RentPersistencePor
         var entity = repository.find(x -> Objects.equals(x.getId(), rent.getId()));
         if(entity == null){
             entity = mapper.mapDomainObjectToEntity(rent);
-            var resource = resourceRepository.find(x -> Objects.equals(x.getId(), rent.getResourceId()));
+            var resource = resourceRepository.find(x -> Objects.equals(x.getAccessionNumber(), rent.getResourceId()));
             var emailValue = rent.getUserEmail().getValue();
             var user = userRepository.find(x -> x.getEmail().equals(emailValue));
             // todo should nullability be checked ?
@@ -47,7 +47,7 @@ public class RentRepositoryAdapter implements RentSearchPort, RentPersistencePor
     @Override
     public Rent findActiveByResourceId(AccessionNumber resourceId) {
         var accessionNumberValue = resourceId.getValue();
-        var entity = repository.find(x -> Objects.equals(x.getResource().getId(), accessionNumberValue) && x.getEndDate() == null);
+        var entity = repository.find(x -> Objects.equals(x.getResource().getAccessionNumber(), accessionNumberValue) && x.getEndDate() == null);
         return mapper.mapEntityToDomainObject(entity);
     }
 }

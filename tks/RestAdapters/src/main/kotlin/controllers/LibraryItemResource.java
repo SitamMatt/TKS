@@ -39,8 +39,8 @@ public class LibraryItemResource {
     @POST
     public Response post(LibraryItemDto dto){
         try{
-            adapter.add(dto);
-            var resourceLink = context.getAbsolutePathBuilder().path("example").build();
+            var an = adapter.add(dto);
+            var resourceLink = context.getAbsolutePathBuilder().path(an.getValue()).build();
             return Response.created(resourceLink).entity(dto).build();
         }catch (UnknownResourceException e){
             return badRequest(1, "Unknown resource type");
