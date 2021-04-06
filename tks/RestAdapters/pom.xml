@@ -87,11 +87,6 @@
                             </sourceDirs>
                             <annotationProcessorPaths>
                                 <annotationProcessorPath>
-                                    <groupId>org.mapstruct</groupId>
-                                    <artifactId>mapstruct-processor</artifactId>
-                                    <version>${mapstruct.version}</version>
-                                </annotationProcessorPath>
-                                <annotationProcessorPath>
                                     <groupId>org.projectlombok</groupId>
                                     <artifactId>lombok</artifactId>
                                     <version>1.18.16</version>
@@ -100,6 +95,11 @@
                                     <groupId>org.projectlombok</groupId>
                                     <artifactId>lombok-mapstruct-binding</artifactId>
                                     <version>0.2.0</version>
+                                </annotationProcessorPath>
+                                <annotationProcessorPath>
+                                    <groupId>org.mapstruct</groupId>
+                                    <artifactId>mapstruct-processor</artifactId>
+                                    <version>${mapstruct.version}</version>
                                 </annotationProcessorPath>
                             </annotationProcessorPaths>
                         </configuration>

@@ -51,7 +51,7 @@ public class ResourcesServiceTest {
     }
 
     @Test
-    public void GivenResourceOfValidType_Create_ShouldSuccess() {
+    public void GivenResourceOfValidType_Create_ShouldSuccess() throws UnknownResourceException {
         resourcesService.create(sampleBook);
         verify(resourcePersistencePort).add(eq(sampleBook));
         assertNotNull(sampleBook.getAccessionNumber());
@@ -122,7 +122,7 @@ public class ResourcesServiceTest {
     }
 
     @Test
-    public void GivenValidResourceId_GetDetails_ShouldSuccess() {
+    public void GivenValidResourceId_GetDetails_ShouldSuccess() throws ResourceNotFoundException {
         sampleMagazine.setAccessionNumber(sampleAccessionNumber);
         when(resourceSearchPort.findById(eq(sampleMagazine.getAccessionNumber()))).thenReturn(sampleMagazine);
         var result = resourcesService.getDetails(sampleMagazine.getAccessionNumber());

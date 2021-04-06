@@ -1,39 +1,59 @@
 package controllers;
 
-import dto.BookDto;
+import adapters.LibraryItemResourceAdapter;
+import dto.LibraryItemDto;
+import exceptions.ResourceNotFoundException;
+import exceptions.TypeValidationFailedException;
+import exceptions.UnknownResourceException;
 import ports.primary.IResourceService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+
+import static helpers.ErrorHelper.badRequest;
+import static helpers.ErrorHelper.notFound;
 
 @Path("library/item")
 public class LibraryItemResource {
 
-    @Inject private IResourceService resourceService;
+    @Context private UriInfo context;
+
+    @Inject private LibraryItemResourceAdapter adapter;
 
     @GET
     @Path("{id}")
     public Response get(@PathParam("id") String id){
-        var book = new BookDto();
-        book.setId("elo");
-        book.setAuthor("Johny");
-        book.setTitle("king arthur");
-        return Response.ok(book).build();
+        try{
+            var dto = adapter.query(id);
+            return Response.ok(dto).build();
+        } catch (TypeValidationFailedException e) {
+            return badRequest(1, "Invalid resource format");
+        } catch (ResourceNotFoundException e) {
+            return notFound(1, "Resource not found");
+        }
     }
 
-//    @POST
-//    public Response post(BookDto dto){
-//
-//    }
+    @POST
+    public Response post(LibraryItemDto dto){
+        try{
+            adapter.add(dto);
+            var resourceLink = context.getAbsolutePathBuilder().path("example").build();
+            return Response.created(resourceLink).entity(dto).build();
+        }catch (UnknownResourceException e){
+            return badRequest(1, "Unknown resource type");
+        }
+    }
 //
 //    @PUT
-//    public Response put(BookDto dto){
+//    public Response put(LibraryItemDto dto){
 //
 //    }
 //
 //    @DELETE
-//    public Response delete(BookDto dto){
+//    public Response delete(LibraryItemDto dto){
 //
 //    }
 }

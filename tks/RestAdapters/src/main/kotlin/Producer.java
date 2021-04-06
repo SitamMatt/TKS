@@ -1,7 +1,11 @@
+import adapters.RentRepositoryAdapter;
 import adapters.ResourceRepositoryAdapter;
 import adapters.UserRepositoryAdapter;
 import data.AbstractResourceEntity;
+import data.RentEntity;
 import data.UserEntity;
+import mappers.LibraryItemMapper;
+import mappers.RentMapper;
 import mappers.ResourceMapper;
 import mappers.UserMapper;
 import ports.secondary.ResourcePersistencePort;
@@ -26,8 +30,8 @@ public class Producer {
     }
 
     @Produces
-    public ResourcesService produceResourceService(ResourcePersistencePort resourcePersistencePort, ResourceSearchPort resourceSearchPort){
-        return new ResourcesService(resourcePersistencePort, resourceSearchPort, null);
+    public ResourcesService produceResourceService(ResourcePersistencePort resourcePersistencePort, ResourceSearchPort resourceSearchPort, RentRepositoryAdapter rentRepositoryAdapter){
+        return new ResourcesService(resourcePersistencePort, resourceSearchPort, rentRepositoryAdapter);
     }
 
     @Produces
@@ -38,6 +42,11 @@ public class Producer {
     @Produces
     public ResourceRepositoryAdapter produceResourceRepository(RepositoryBase<AbstractResourceEntity> repository, ResourceMapper mapper){
         return new ResourceRepositoryAdapter(repository, mapper);
+    }
+
+    @Produces
+    public RentRepositoryAdapter produceRentRepositoryAdapter(RepositoryBase<UserEntity> userRepository, RepositoryBase<AbstractResourceEntity> resourceRepository, RepositoryBase<RentEntity> rentRepository, RentMapper rentMapper){
+        return new RentRepositoryAdapter(rentRepository,resourceRepository, userRepository, rentMapper);
     }
 
     @Produces
@@ -55,6 +64,13 @@ public class Producer {
     }
 
     @Produces
+    @Singleton
+    public RepositoryBase<RentEntity> produceRentRepository(){
+        var list = new ArrayList<RentEntity>();
+        return new RepositoryBase<>(list);
+    }
+
+    @Produces
     public UserMapper produceUserMapper(){
         return UserMapper.Companion.getINSTANCE();
     }
@@ -62,5 +78,10 @@ public class Producer {
     @Produces
     public ResourceMapper produceResourceMapper(){
         return ResourceMapper.Companion.getINSTANCE();
+    }
+
+    @Produces
+    public RentMapper produceRentMapper(){
+        return RentMapper.Companion.getINSTANCE();
     }
 }

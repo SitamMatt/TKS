@@ -21,6 +21,7 @@ class ResourcesService(
 ) : IResourceService{
 
 
+    @Throws(UnknownResourceException::class)
     override fun create(resource: Resource) {
         if(resource.accessionNumber != null) throw UnknownResourceException()
         when(resource){
@@ -45,6 +46,7 @@ class ResourcesService(
         resourcePersistencePort.remove(resource)
     }
 
+    @Throws(ResourceNotFoundException::class)
     override fun getDetails(accessionNumber: AccessionNumber): Resource {
         return resourceSearchPort.findById(accessionNumber) ?: throw ResourceNotFoundException();
     }

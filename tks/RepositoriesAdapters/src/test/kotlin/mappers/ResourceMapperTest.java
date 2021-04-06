@@ -3,11 +3,14 @@ package mappers;
 import data.AbstractResourceEntity;
 import data.BookEntity;
 import data.MagazineEntity;
+import lombok.SneakyThrows;
 import model.Book;
 import model.Resource;
+import model.values.AccessionNumber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,13 +24,14 @@ public class ResourceMapperTest {
         mapper = ResourceMapper.Companion.getINSTANCE();
     }
 
+    @SneakyThrows
     @Test
     public void  BookToEntityTest(){
-        Resource book = new Book(UUID.randomUUID(), "Diuna", "Frank Herbert");
+        Resource book = new Book(new AccessionNumber("EEEE-456"), "Diuna", "Frank Herbert");
         var entity = mapper.mapDomainObjectToEntity(book);
         assertNotNull(entity);
         assertTrue(entity instanceof BookEntity);
-        assertEquals(book.getAccessionNumber(), entity.getId());
+        assertEquals(Objects.requireNonNull(book.getAccessionNumber()).getValue(), entity.getId());
         assertEquals(book.getTitle(), entity.getTitle());
         assertNull(entity.getGuid());
         assertEquals(((Book)book).getAuthor(), ((BookEntity)entity).getAuthor());
@@ -35,33 +39,35 @@ public class ResourceMapperTest {
 
     @Test
     public void EntityToBookTest(){
-        AbstractResourceEntity entity = new BookEntity(UUID.randomUUID(), "Diuna", "Frank Herbert");
+        AbstractResourceEntity entity = new BookEntity("EEEE-456", "Diuna", "Frank Herbert");
         entity.setGuid(UUID.randomUUID());
         var book = mapper.mapEntityToDomainObject(entity);
         assertNotNull(book);
         assertTrue(book instanceof Book);
-        assertEquals(entity.getId(), book.getAccessionNumber());
+        assertEquals(entity.getId(), Objects.requireNonNull(book.getAccessionNumber()).getValue());
         assertEquals(entity.getTitle(), book.getTitle());
         assertEquals(((BookEntity)entity).getAuthor(), ((Book)book).getAuthor());
     }
 
+    @SneakyThrows
     @Test
     public void BookToExistingEntityTest(){
-        Resource book = new Book(UUID.randomUUID(), "Diuna", "Frank Herbert");
-        AbstractResourceEntity entity = new BookEntity(UUID.randomUUID(), "Kolor magii", "Terry Pratchett");
+        Resource book = new Book(new AccessionNumber("EEEE-456"), "Diuna", "Frank Herbert");
+        AbstractResourceEntity entity = new BookEntity("EEEE-456", "Kolor magii", "Terry Pratchett");
         var guid = UUID.randomUUID();
         entity.setGuid(guid);
         mapper.mapDomainObjectToEntity(book, entity);
-        assertEquals(book.getAccessionNumber(), entity.getId());
+        assertEquals(Objects.requireNonNull(book.getAccessionNumber()).getValue(), entity.getId());
         assertEquals(book.getTitle(), entity.getTitle());
         assertEquals(((Book)book).getAuthor(), ((BookEntity)entity).getAuthor());
         assertEquals(guid, entity.getGuid());
     }
 
+    @SneakyThrows
     @Test
     public void BookToExistingMagazineTest(){
-        Resource book = new Book(UUID.randomUUID(), "Diuna", "Frank Herbert");
-        AbstractResourceEntity entity = new MagazineEntity(UUID.randomUUID(), "Nature", "Nature Publishing Group");
+        Resource book = new Book(new AccessionNumber("EEEE-456"), "Diuna", "Frank Herbert");
+        AbstractResourceEntity entity = new MagazineEntity("EEEE-456", "Nature", "Nature Publishing Group");
         assertThrows(Exception.class, () -> mapper.mapDomainObjectToEntity(book, entity));
     }
 }
