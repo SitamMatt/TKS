@@ -1,6 +1,7 @@
 package services;
 
 import domain.exceptions.*;
+import ports.primary.IRentService;
 import ports.primary.ResourceRentCommandPort;
 import ports.secondary.RentPersistencePort;
 import ports.secondary.RentSearchPort;
@@ -13,7 +14,7 @@ import domain.model.Rent;
 import java.util.Date;
 import java.util.UUID;
 
-public class RentService implements ResourceRentCommandPort {
+public class RentService implements IRentService {
 
    private final RentPersistencePort rentPersistencePort;
    private final RentSearchPort rentSearchPort;
