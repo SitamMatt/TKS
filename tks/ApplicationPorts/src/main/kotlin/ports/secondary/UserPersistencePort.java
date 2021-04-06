@@ -1,6 +1,6 @@
 package ports.secondary;
 
-import model.User;
+import domain.model.User;
 
 public interface UserPersistencePort {
 

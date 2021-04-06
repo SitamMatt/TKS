@@ -4,9 +4,9 @@ import data.AbstractResourceEntity;
 import data.BookEntity;
 import data.MagazineEntity;
 import lombok.SneakyThrows;
-import model.Book;
-import model.Resource;
-import model.values.AccessionNumber;
+import domain.model.Book;
+import domain.model.Resource;
+import domain.model.values.AccessionNumber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

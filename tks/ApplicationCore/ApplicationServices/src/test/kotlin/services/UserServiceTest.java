@@ -1,13 +1,13 @@
 package services;
 
-import exceptions.DuplicatedEmailException;
-import exceptions.UserNotFoundException;
+import domain.exceptions.DuplicatedEmailException;
+import domain.exceptions.UserNotFoundException;
 import lombok.SneakyThrows;
-import model.values.Email;
+import domain.model.values.Email;
 import ports.secondary.UserSearchPort;
 import ports.secondary.UserPersistencePort;
-import model.User;
-import model.UserRole;
+import domain.model.User;
+import domain.model.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

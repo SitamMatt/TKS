@@ -1,6 +1,6 @@
-package model.values;
+package domain.model.values;
 
-import exceptions.TypeValidationFailedException;
+import domain.exceptions.TypeValidationFailedException;
 import lombok.Value;
 import org.apache.commons.validator.routines.EmailValidator;
 

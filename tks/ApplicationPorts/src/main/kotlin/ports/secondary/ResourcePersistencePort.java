@@ -1,6 +1,6 @@
 package ports.secondary;
 
-import model.Resource;
+import domain.model.Resource;
 import org.jetbrains.annotations.NotNull;
 
 public interface ResourcePersistencePort {

@@ -1,7 +1,7 @@
 package ports.secondary;
 
-import model.User;
-import model.values.Email;
+import domain.model.User;
+import domain.model.values.Email;
 
 public interface UserSearchPort {
 

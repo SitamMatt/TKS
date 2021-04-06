@@ -1,7 +1,6 @@
-package model
+package domain.model
 
-import model.values.AccessionNumber
-import java.util.*
+import domain.model.values.AccessionNumber
 
 data class Magazine(
     override var accessionNumber: AccessionNumber?,

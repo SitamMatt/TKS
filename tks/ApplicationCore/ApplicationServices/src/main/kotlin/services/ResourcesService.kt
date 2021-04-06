@@ -1,17 +1,17 @@
 package services
 
-import exceptions.IncompatibleResourceFormatException
-import exceptions.ResourceBlockedByRentException
-import exceptions.ResourceNotFoundException
-import exceptions.UnknownResourceException
+import domain.exceptions.IncompatibleResourceFormatException
+import domain.exceptions.ResourceBlockedByRentException
+import domain.exceptions.ResourceNotFoundException
+import domain.exceptions.UnknownResourceException
 import ports.secondary.RentSearchPort
 import helpers.AccessionNumberHelper
 import ports.secondary.ResourcePersistencePort
 import ports.secondary.ResourceSearchPort
-import model.Book
-import model.Magazine
-import model.Resource
-import model.values.AccessionNumber
+import domain.model.Book
+import domain.model.Magazine
+import domain.model.Resource
+import domain.model.values.AccessionNumber
 import ports.primary.IResourceService
 
 class ResourcesService(

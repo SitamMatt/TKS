@@ -1,10 +1,8 @@
 package ports.primary;
 
-import exceptions.UnknownResourceException;
-import model.Resource;
-import model.values.AccessionNumber;
-
-import java.util.UUID;
+import domain.exceptions.UnknownResourceException;
+import domain.model.Resource;
+import domain.model.values.AccessionNumber;
 
 public interface ResourceManageCommandPort {
 

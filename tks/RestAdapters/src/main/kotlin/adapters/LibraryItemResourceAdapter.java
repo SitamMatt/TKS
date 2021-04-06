@@ -1,11 +1,11 @@
 package adapters;
 
 import dto.LibraryItemDto;
-import exceptions.ResourceNotFoundException;
-import exceptions.TypeValidationFailedException;
-import exceptions.UnknownResourceException;
+import domain.exceptions.ResourceNotFoundException;
+import domain.exceptions.TypeValidationFailedException;
+import domain.exceptions.UnknownResourceException;
 import mappers.LibraryItemMapper;
-import model.values.AccessionNumber;
+import domain.model.values.AccessionNumber;
 import ports.primary.IResourceService;
 
 import javax.inject.Inject;

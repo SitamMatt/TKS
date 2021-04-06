@@ -1,7 +1,7 @@
-package model
+package domain.model
 
-import model.values.AccessionNumber
-import model.values.Email
+import domain.model.values.AccessionNumber
+import domain.model.values.Email
 import java.util.*
 
 data class Rent(

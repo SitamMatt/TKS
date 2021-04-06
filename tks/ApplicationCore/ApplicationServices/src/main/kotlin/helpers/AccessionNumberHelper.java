@@ -1,7 +1,7 @@
 package helpers;
 
 import lombok.SneakyThrows;
-import model.values.AccessionNumber;
+import domain.model.values.AccessionNumber;
 
 import java.util.Random;
 

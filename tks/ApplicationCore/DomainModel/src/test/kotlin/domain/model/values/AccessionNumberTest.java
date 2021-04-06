@@ -1,6 +1,6 @@
-package model.values;
+package domain.model.values;
 
-import exceptions.TypeValidationFailedException;
+import domain.exceptions.TypeValidationFailedException;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 

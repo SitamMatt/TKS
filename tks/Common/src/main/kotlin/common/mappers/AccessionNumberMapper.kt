@@ -1,6 +1,6 @@
 package common.mappers
 
-import model.values.AccessionNumber
+import domain.model.values.AccessionNumber
 import org.mapstruct.Mapper
 
 @Mapper

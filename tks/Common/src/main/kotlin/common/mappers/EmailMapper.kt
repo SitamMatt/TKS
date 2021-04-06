@@ -1,6 +1,6 @@
 package common.mappers
 
-import model.values.Email
+import domain.model.values.Email
 import org.mapstruct.Mapper
 
 @Mapper

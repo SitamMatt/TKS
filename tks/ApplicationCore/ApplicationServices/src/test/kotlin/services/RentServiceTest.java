@@ -1,15 +1,15 @@
 package services;
 
-import exceptions.*;
+import domain.exceptions.*;
 import ports.secondary.RentPersistencePort;
 import ports.secondary.RentSearchPort;
 import helpers.AccessionNumberHelper;
 import lombok.SneakyThrows;
-import model.values.AccessionNumber;
-import model.values.Email;
+import domain.model.values.AccessionNumber;
+import domain.model.values.Email;
 import ports.secondary.ResourceSearchPort;
 import ports.secondary.UserSearchPort;
-import model.*;
+import domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,8 +1,8 @@
 package ports.primary;
 
-import exceptions.*;
-import model.values.AccessionNumber;
-import model.values.Email;
+import domain.exceptions.*;
+import domain.model.values.AccessionNumber;
+import domain.model.values.Email;
 
 public interface ResourceRentCommandPort {
 

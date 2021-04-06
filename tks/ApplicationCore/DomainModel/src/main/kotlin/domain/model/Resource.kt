@@ -1,6 +1,6 @@
-package model
+package domain.model
 
-import model.values.AccessionNumber
+import domain.model.values.AccessionNumber
 
 abstract class Resource {
     abstract var accessionNumber: AccessionNumber?

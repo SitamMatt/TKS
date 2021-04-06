@@ -6,8 +6,8 @@ import data.UserEntity;
 import ports.secondary.RentPersistencePort;
 import ports.secondary.RentSearchPort;
 import mappers.RentMapper;
-import model.Rent;
-import model.values.AccessionNumber;
+import domain.model.Rent;
+import domain.model.values.AccessionNumber;
 import repositories.RepositoryBase;
 
 import java.util.Objects;

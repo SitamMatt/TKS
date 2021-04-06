@@ -1,8 +1,8 @@
 package adapters
 
-import exceptions.*
-import model.values.AccessionNumber
-import model.values.Email
+import domain.exceptions.*
+import domain.model.values.AccessionNumber
+import domain.model.values.Email
 import ports.primary.ResourceRentCommandPort
 import javax.inject.Inject
 import kotlin.jvm.Throws

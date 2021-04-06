@@ -5,9 +5,9 @@ import data.AbstractResourceEntity
 import org.mapstruct.MappingTarget
 import data.BookEntity
 import data.MagazineEntity
-import model.Book
-import model.Magazine
-import model.Resource
+import domain.model.Book
+import domain.model.Magazine
+import domain.model.Resource
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 

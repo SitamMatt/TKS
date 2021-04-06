@@ -1,12 +1,12 @@
 package adapters;
 
 import data.UserEntity;
-import model.values.Email;
+import domain.model.values.Email;
 import org.jetbrains.annotations.NotNull;
 import ports.secondary.UserSearchPort;
 import ports.secondary.UserPersistencePort;
 import mappers.UserMapper;
-import model.User;
+import domain.model.User;
 import repositories.RepositoryBase;
 
 import java.util.Objects;

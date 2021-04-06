@@ -1,10 +1,8 @@
 package ports.primary;
 
-import exceptions.ResourceNotFoundException;
-import model.Resource;
-import model.values.AccessionNumber;
-
-import java.util.UUID;
+import domain.exceptions.ResourceNotFoundException;
+import domain.model.Resource;
+import domain.model.values.AccessionNumber;
 
 public interface ResourceQueryPort {
     Resource getDetails(AccessionNumber accessionNumber) throws ResourceNotFoundException;

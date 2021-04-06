@@ -2,7 +2,7 @@ package mappers
 
 import common.mappers.EmailMapper
 import dto.UserDto
-import model.User
+import domain.model.User
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 

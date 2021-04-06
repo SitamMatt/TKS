@@ -1,9 +1,7 @@
 package ports.secondary;
 
-import model.Rent;
-import model.values.AccessionNumber;
-
-import java.util.UUID;
+import domain.model.Rent;
+import domain.model.values.AccessionNumber;
 
 public interface RentSearchPort {
 

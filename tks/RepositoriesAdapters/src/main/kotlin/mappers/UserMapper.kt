@@ -3,9 +3,8 @@ package mappers
 import common.mappers.EmailMapper
 import data.UserEntity
 import org.mapstruct.MappingTarget
-import model.User
+import domain.model.User
 import org.mapstruct.Mapper
-import org.mapstruct.Mapping
 import org.mapstruct.factory.Mappers
 
 @Mapper(uses =[EmailMapper::class])

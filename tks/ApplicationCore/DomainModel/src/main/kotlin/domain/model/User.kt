@@ -1,6 +1,6 @@
-package model
+package domain.model
 
-import model.values.Email
+import domain.model.values.Email
 
 data class User(
     var email: Email,

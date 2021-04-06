@@ -2,7 +2,7 @@ package controllers;
 
 import helpers.Helpers;
 import io.restassured.RestAssured;
-import model.BookData;
+import domain.model.BookData;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

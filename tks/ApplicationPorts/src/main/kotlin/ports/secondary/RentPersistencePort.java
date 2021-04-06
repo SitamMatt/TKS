@@ -1,6 +1,6 @@
 package ports.secondary;
 
-import model.Rent;
+import domain.model.Rent;
 
 public interface RentPersistencePort {
     void save(Rent rent);

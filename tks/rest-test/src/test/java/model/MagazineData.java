@@ -1,4 +1,4 @@
-package model;
+package domain.model;
 
 public class MagazineData {
     protected String title;

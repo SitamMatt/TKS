@@ -1,11 +1,11 @@
 package adapters;
 
 import dto.UserDto;
-import exceptions.DuplicatedEmailException;
-import exceptions.TypeValidationFailedException;
-import exceptions.UserNotFoundException;
+import domain.exceptions.DuplicatedEmailException;
+import domain.exceptions.TypeValidationFailedException;
+import domain.exceptions.UserNotFoundException;
 import mappers.UserMapperDto;
-import model.values.Email;
+import domain.model.values.Email;
 import ports.primary.IUserService;
 
 import javax.inject.Inject;

@@ -1,14 +1,14 @@
 package services;
 
-import exceptions.*;
+import domain.exceptions.*;
 import ports.primary.ResourceRentCommandPort;
 import ports.secondary.RentPersistencePort;
 import ports.secondary.RentSearchPort;
-import model.values.AccessionNumber;
-import model.values.Email;
+import domain.model.values.AccessionNumber;
+import domain.model.values.Email;
 import ports.secondary.ResourceSearchPort;
 import ports.secondary.UserSearchPort;
-import model.Rent;
+import domain.model.Rent;
 
 import java.util.Date;
 import java.util.UUID;

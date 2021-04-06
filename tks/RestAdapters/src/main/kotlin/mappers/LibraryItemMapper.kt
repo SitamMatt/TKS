@@ -2,9 +2,9 @@ package mappers
 
 import common.mappers.AccessionNumberMapper
 import dto.LibraryItemDto
-import model.Book
-import model.Magazine
-import model.Resource
+import domain.model.Book
+import domain.model.Magazine
+import domain.model.Resource
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 

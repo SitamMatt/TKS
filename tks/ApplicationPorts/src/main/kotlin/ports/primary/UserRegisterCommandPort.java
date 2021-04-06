@@ -1,7 +1,7 @@
 package ports.primary;
 
-import exceptions.DuplicatedEmailException;
-import model.User;
+import domain.exceptions.DuplicatedEmailException;
+import domain.model.User;
 
 public interface UserRegisterCommandPort {
 

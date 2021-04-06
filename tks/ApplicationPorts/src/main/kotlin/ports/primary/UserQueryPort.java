@@ -1,8 +1,8 @@
 package ports.primary;
 
-import exceptions.UserNotFoundException;
-import model.User;
-import model.values.Email;
+import domain.exceptions.UserNotFoundException;
+import domain.model.User;
+import domain.model.values.Email;
 
 public interface UserQueryPort {
 

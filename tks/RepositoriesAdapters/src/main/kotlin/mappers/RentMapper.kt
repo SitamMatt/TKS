@@ -2,7 +2,7 @@ package mappers
 
 import common.mappers.EmailMapper
 import data.RentEntity
-import model.Rent
+import domain.model.Rent
 import org.mapstruct.MappingTarget
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers

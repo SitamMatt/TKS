@@ -1,8 +1,7 @@
 package services
 
-import model.Resource
-import model.values.AccessionNumber
-import java.util.*
+import domain.model.Resource
+import domain.model.values.AccessionNumber
 
 data class InvalidResource(
     override var accessionNumber: AccessionNumber?,

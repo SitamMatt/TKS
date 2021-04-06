@@ -2,9 +2,9 @@ package mappers;
 
 import data.UserEntity;
 import lombok.SneakyThrows;
-import model.User;
-import model.UserRole;
-import model.values.Email;
+import domain.model.User;
+import domain.model.UserRole;
+import domain.model.values.Email;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

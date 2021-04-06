@@ -1,11 +1,11 @@
 package adapters;
 
 import data.AbstractResourceEntity;
-import model.values.AccessionNumber;
+import domain.model.values.AccessionNumber;
 import ports.secondary.ResourcePersistencePort;
 import ports.secondary.ResourceSearchPort;
 import mappers.ResourceMapper;
-import model.Resource;
+import domain.model.Resource;
 import org.jetbrains.annotations.NotNull;
 import repositories.RepositoryBase;
 

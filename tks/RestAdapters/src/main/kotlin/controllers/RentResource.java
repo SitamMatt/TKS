@@ -1,7 +1,7 @@
 package controllers;
 
 import adapters.RentResourceAdapter;
-import exceptions.*;
+import domain.exceptions.*;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

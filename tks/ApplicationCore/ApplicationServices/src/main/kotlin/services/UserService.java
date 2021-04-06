@@ -1,13 +1,13 @@
 package services;
 
-import model.values.Email;
+import domain.model.values.Email;
 import ports.primary.IUserService;
 import ports.secondary.UserSearchPort;
 import ports.secondary.UserPersistencePort;
-import exceptions.DuplicatedEmailException;
-import exceptions.UserNotFoundException;
-import model.User;
-import model.UserRole;
+import domain.exceptions.DuplicatedEmailException;
+import domain.exceptions.UserNotFoundException;
+import domain.model.User;
+import domain.model.UserRole;
 
 
 public class UserService implements IUserService {

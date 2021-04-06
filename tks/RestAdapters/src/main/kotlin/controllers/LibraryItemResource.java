@@ -2,10 +2,9 @@ package controllers;
 
 import adapters.LibraryItemResourceAdapter;
 import dto.LibraryItemDto;
-import exceptions.ResourceNotFoundException;
-import exceptions.TypeValidationFailedException;
-import exceptions.UnknownResourceException;
-import ports.primary.IResourceService;
+import domain.exceptions.ResourceNotFoundException;
+import domain.exceptions.TypeValidationFailedException;
+import domain.exceptions.UnknownResourceException;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

@@ -1,17 +1,17 @@
 package services;
 
-import exceptions.IncompatibleResourceFormatException;
-import exceptions.ResourceBlockedByRentException;
-import exceptions.ResourceNotFoundException;
-import exceptions.UnknownResourceException;
+import domain.exceptions.IncompatibleResourceFormatException;
+import domain.exceptions.ResourceBlockedByRentException;
+import domain.exceptions.ResourceNotFoundException;
+import domain.exceptions.UnknownResourceException;
 import ports.secondary.RentSearchPort;
 import helpers.AccessionNumberHelper;
 import lombok.SneakyThrows;
-import model.values.AccessionNumber;
-import model.values.Email;
+import domain.model.values.AccessionNumber;
+import domain.model.values.Email;
 import ports.secondary.ResourcePersistencePort;
 import ports.secondary.ResourceSearchPort;
-import model.*;
+import domain.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
