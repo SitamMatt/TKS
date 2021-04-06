@@ -3,8 +3,8 @@ package adapters;
 import data.AbstractResourceEntity;
 import data.RentEntity;
 import data.UserEntity;
-import drivenports.RentManagePort;
-import drivenports.RentQueryPort;
+import ports.secondary.RentPersistencePort;
+import ports.secondary.RentSearchPort;
 import mappers.RentMapper;
 import model.Rent;
 import model.values.AccessionNumber;
@@ -12,7 +12,7 @@ import repositories.RepositoryBase;
 
 import java.util.Objects;
 
-public class RentRepositoryAdapter implements RentQueryPort, RentManagePort {
+public class RentRepositoryAdapter implements RentSearchPort, RentPersistencePort {
 
     private final RepositoryBase<RentEntity> repository;
     private final RepositoryBase<AbstractResourceEntity> resourceRepository;

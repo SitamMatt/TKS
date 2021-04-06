@@ -1,8 +1,8 @@
 package services;
 
 import exceptions.*;
-import drivenports.RentManagePort;
-import drivenports.RentQueryPort;
+import ports.secondary.RentPersistencePort;
+import ports.secondary.RentSearchPort;
 import helpers.AccessionNumberHelper;
 import lombok.SneakyThrows;
 import model.values.AccessionNumber;
@@ -40,9 +40,9 @@ class RentServiceTest {
     @Mock
     UserSearchPort userSearchPort;
     @Mock
-    RentQueryPort rentQueryPort;
+    RentSearchPort rentSearchPort;
     @Mock
-    RentManagePort rentManagePort;
+    RentPersistencePort rentPersistencePort;
 
     @SneakyThrows
     @BeforeEach
@@ -54,14 +54,14 @@ class RentServiceTest {
         sampleUser = new User(sampleEmail, UserRole.CLIENT, "####", true);
         sampleResource = new Book(sampleResId, "Diuna", "Frank Herbert");
         sampleRent = new Rent(sampleRentId, new Date(), null, sampleEmail2, sampleResId);
-        rentService = new RentService(rentManagePort, rentQueryPort, userSearchPort, resourceSearchPort);
+        rentService = new RentService(rentPersistencePort, rentSearchPort, userSearchPort, resourceSearchPort);
     }
 
     @Test
     public void GivenInvalidUserId_Rent_ShouldFail(){
         when(userSearchPort.findByEmail(eq(sampleUser.getEmail()))).thenReturn(null);
         assertThrows(UserNotFoundException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getAccessionNumber()));
-        verify(rentManagePort, never()).save(any());
+        verify(rentPersistencePort, never()).save(any());
     }
 
     @Test
@@ -69,7 +69,7 @@ class RentServiceTest {
         when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(sampleUser);
         when(resourceSearchPort.findById(eq(sampleResId))).thenReturn(null);
         assertThrows(ResourceNotFoundException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getAccessionNumber()));
-        verify(rentManagePort, never()).save(any());
+        verify(rentPersistencePort, never()).save(any());
     }
 
     @Test
@@ -78,16 +78,16 @@ class RentServiceTest {
         when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(sampleUser);
         when(resourceSearchPort.findById(eq(sampleResId))).thenReturn(sampleResource);
         assertThrows(UserNotActiveException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getAccessionNumber()));
-        verify(rentManagePort, never()).save(any());
+        verify(rentPersistencePort, never()).save(any());
     }
 
     @Test
     public void GivenAlreadyRentResId_Rent_ShouldFail(){
         when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(sampleUser);
         when(resourceSearchPort.findById(eq(sampleResId))).thenReturn(sampleResource);
-        when(rentQueryPort.findActiveByResourceId(sampleResId)).thenReturn(sampleRent);
+        when(rentSearchPort.findActiveByResourceId(sampleResId)).thenReturn(sampleRent);
         assertThrows(ResourceAlreadyRentException.class, () -> rentService.rent(sampleUser.getEmail(), sampleResource.getAccessionNumber()));
-        verify(rentManagePort, never()).save(any());
+        verify(rentPersistencePort, never()).save(any());
     }
 
     @Test
@@ -107,7 +107,7 @@ class RentServiceTest {
     public void GivenNotRentResourceId_Return_ShouldFail(){
         when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(sampleUser);
         when(resourceSearchPort.findById(eq(sampleResId))).thenReturn(sampleResource);
-        when(rentQueryPort.findActiveByResourceId(sampleResId)).thenReturn(null);
+        when(rentSearchPort.findActiveByResourceId(sampleResId)).thenReturn(null);
         assertThrows(ResourceNotRentException.class, () -> rentService.returnResource(sampleEmail, sampleResId));
     }
 
@@ -116,7 +116,7 @@ class RentServiceTest {
         when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(sampleUser);
         when(resourceSearchPort.findById(eq(sampleResId))).thenReturn(sampleResource);
         sampleRent = new Rent(sampleRentId, new Date(), null, sampleEmail2, sampleResId);
-        when(rentQueryPort.findActiveByResourceId(sampleResId)).thenReturn(sampleRent);
+        when(rentSearchPort.findActiveByResourceId(sampleResId)).thenReturn(sampleRent);
         assertThrows(InvalidUserException.class, () -> rentService.returnResource(sampleEmail, sampleResId));
     }
 

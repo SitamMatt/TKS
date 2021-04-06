@@ -1,13 +1,12 @@
 package controllers;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
-@Path("book/{id}/rent")
+@Path("library/item/{id}/rent")
 public class RentResource {
+
+    String email = "mszewc@edu.pl";
 
     // get info
     @GET
@@ -23,9 +22,8 @@ public class RentResource {
     }
 
     // return book
-    @PUT
-    public Response returnn(){
+    @DELETE
+    public Response returnItem(){
         return Response.ok().build();
     }
-
 }

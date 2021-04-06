@@ -4,7 +4,7 @@ import exceptions.IncompatibleResourceFormatException
 import exceptions.ResourceBlockedByRentException
 import exceptions.ResourceNotFoundException
 import exceptions.UnknownResourceException
-import drivenports.RentQueryPort
+import ports.secondary.RentSearchPort
 import helpers.AccessionNumberHelper
 import ports.secondary.ResourcePersistencePort
 import ports.secondary.ResourceSearchPort
@@ -17,7 +17,7 @@ import ports.primary.IResourceService
 class ResourcesService(
     private val resourcePersistencePort: ResourcePersistencePort,
     private val resourceSearchPort: ResourceSearchPort,
-    private val rentQueryPort: RentQueryPort
+    private val rentSearchPort: RentSearchPort
 ) : IResourceService{
 
 
@@ -41,7 +41,7 @@ class ResourcesService(
 
     override fun remove(accessionNumber: AccessionNumber){
         val resource = resourceSearchPort.findById(accessionNumber) ?: throw ResourceNotFoundException()
-        val rent = rentQueryPort.findActiveByResourceId(accessionNumber);
+        val rent = rentSearchPort.findActiveByResourceId(accessionNumber);
         if(rent != null) throw ResourceBlockedByRentException()
         resourcePersistencePort.remove(resource)
     }

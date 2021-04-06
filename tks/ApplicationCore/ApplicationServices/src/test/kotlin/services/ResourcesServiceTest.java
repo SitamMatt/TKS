@@ -4,7 +4,7 @@ import exceptions.IncompatibleResourceFormatException;
 import exceptions.ResourceBlockedByRentException;
 import exceptions.ResourceNotFoundException;
 import exceptions.UnknownResourceException;
-import drivenports.RentQueryPort;
+import ports.secondary.RentSearchPort;
 import helpers.AccessionNumberHelper;
 import lombok.SneakyThrows;
 import model.values.AccessionNumber;
@@ -39,12 +39,12 @@ public class ResourcesServiceTest {
     @Mock
     ResourceSearchPort resourceSearchPort;
     @Mock
-    RentQueryPort rentQueryPort;
+    RentSearchPort rentSearchPort;
 
     @BeforeEach
     public void init() {
         sampleAccessionNumber = AccessionNumberHelper.generate();
-        resourcesService = new ResourcesService(resourcePersistencePort, resourceSearchPort, rentQueryPort);
+        resourcesService = new ResourcesService(resourcePersistencePort, resourceSearchPort, rentSearchPort);
         sampleBook = new Book(null, "Diuna", "Frank Herbert");
         sampleMagazine = new Magazine(null, "Świerszczyk", "Nowa era");
         invalidResource = new InvalidResource(null, "invalid");
@@ -99,7 +99,7 @@ public class ResourcesServiceTest {
     public void GivenValidResourceId_Remove_ShouldSuccess() {
         sampleMagazine.setAccessionNumber(sampleAccessionNumber);
         when(resourceSearchPort.findById(eq(sampleAccessionNumber))).thenReturn(sampleMagazine);
-        when(rentQueryPort.findActiveByResourceId(eq(sampleAccessionNumber))).thenReturn(null);
+        when(rentSearchPort.findActiveByResourceId(eq(sampleAccessionNumber))).thenReturn(null);
         resourcesService.remove(sampleAccessionNumber);
         verify(resourcePersistencePort).remove(sampleMagazine);
     }
@@ -116,7 +116,7 @@ public class ResourcesServiceTest {
     public void GivenRentResourceId_Remove_ShouldFail() {
         sampleMagazine.setAccessionNumber(sampleAccessionNumber);
         when(resourceSearchPort.findById(eq(sampleAccessionNumber))).thenReturn(sampleMagazine);
-        when(rentQueryPort.findActiveByResourceId(eq(sampleAccessionNumber))).thenReturn(new Rent(UUID.randomUUID(), new Date(), null, new Email("mszewc@edu.pl"), sampleAccessionNumber));
+        when(rentSearchPort.findActiveByResourceId(eq(sampleAccessionNumber))).thenReturn(new Rent(UUID.randomUUID(), new Date(), null, new Email("mszewc@edu.pl"), sampleAccessionNumber));
         assertThrows(ResourceBlockedByRentException.class, () -> resourcesService.remove(sampleAccessionNumber));
         verify(resourcePersistencePort, never()).remove(any());
     }
