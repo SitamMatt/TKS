@@ -1,11 +1,11 @@
-package services;
+package application.services;
 
 import domain.exceptions.IncompatibleResourceFormatException;
 import domain.exceptions.ResourceBlockedByRentException;
 import domain.exceptions.ResourceNotFoundException;
 import domain.exceptions.UnknownResourceException;
 import ports.secondary.RentSearchPort;
-import helpers.AccessionNumberHelper;
+import application.helpers.AccessionNumberHelper;
 import lombok.SneakyThrows;
 import domain.model.values.AccessionNumber;
 import domain.model.values.Email;

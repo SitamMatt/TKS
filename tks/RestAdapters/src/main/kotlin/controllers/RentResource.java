@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
-import static helpers.ErrorHelper.*;
+import static application.helpers.ErrorHelper.*;
 
 @Path("library/item/{id}/rent")
 public class RentResource {

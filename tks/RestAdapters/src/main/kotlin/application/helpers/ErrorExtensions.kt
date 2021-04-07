@@ -1,4 +1,4 @@
-package helpers
+package application.helpers
 
 import dto.ErrorDto
 import javax.ws.rs.core.Response

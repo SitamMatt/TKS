@@ -1,4 +1,4 @@
-package helpers;
+package application.helpers;
 
 import lombok.SneakyThrows;
 import domain.model.values.AccessionNumber;

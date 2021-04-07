@@ -1,8 +1,7 @@
-package services;
+package application.services;
 
 import domain.exceptions.*;
 import ports.primary.IRentService;
-import ports.primary.ResourceRentCommandPort;
 import ports.secondary.RentPersistencePort;
 import ports.secondary.RentSearchPort;
 import domain.model.values.AccessionNumber;

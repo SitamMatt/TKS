@@ -1,4 +1,4 @@
-package services;
+package application.services;
 
 import domain.exceptions.DuplicatedEmailException;
 import domain.exceptions.UserNotFoundException;

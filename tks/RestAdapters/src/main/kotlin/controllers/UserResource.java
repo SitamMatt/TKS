@@ -6,7 +6,7 @@ import domain.exceptions.DuplicatedEmailException;
 import domain.exceptions.TypeValidationFailedException;
 import domain.exceptions.UserNotFoundException;
 import dto.UserDto;
-import helpers.ErrorExtensionsKt;
+import application.helpers.ErrorExtensionsKt;
 import mappers.UserMapperDto;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
@@ -16,7 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import static helpers.ErrorHelper.badRequest;
+import static application.helpers.ErrorHelper.badRequest;
 
 @Path("user")
 public class UserResource {

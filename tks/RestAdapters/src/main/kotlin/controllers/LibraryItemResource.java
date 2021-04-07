@@ -12,8 +12,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import static helpers.ErrorHelper.badRequest;
-import static helpers.ErrorHelper.notFound;
+import static application.helpers.ErrorHelper.badRequest;
+import static application.helpers.ErrorHelper.notFound;
 
 @Path("library/item")
 public class LibraryItemResource {

@@ -1,11 +1,11 @@
-package services
+package application.services
 
 import domain.exceptions.IncompatibleResourceFormatException
 import domain.exceptions.ResourceBlockedByRentException
 import domain.exceptions.ResourceNotFoundException
 import domain.exceptions.UnknownResourceException
 import ports.secondary.RentSearchPort
-import helpers.AccessionNumberHelper
+import application.helpers.AccessionNumberHelper
 import ports.secondary.ResourcePersistencePort
 import ports.secondary.ResourceSearchPort
 import domain.model.Book

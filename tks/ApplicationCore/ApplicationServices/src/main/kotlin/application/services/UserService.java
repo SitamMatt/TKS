@@ -1,4 +1,4 @@
-package services;
+package application.services;
 
 import domain.model.values.Email;
 import ports.primary.IUserService;

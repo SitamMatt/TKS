@@ -1,4 +1,4 @@
-package services
+package application.services
 
 import domain.model.Resource
 import domain.model.values.AccessionNumber
