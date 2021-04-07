@@ -1,15 +1,15 @@
 package domain.exceptions;
 
-import domain.model.Error;
+import domain.model.ErrorCode;
 
 public class DomainException extends Exception{
-    private final Error error;
+    private final ErrorCode errorCode;
 
-    public DomainException(Error error) {
-        this.error = error;
+    public DomainException(ErrorCode errorCode) {
+        this.errorCode = errorCode;
     }
 
-    public Error getError() {
-        return error;
+    public ErrorCode getError() {
+        return errorCode;
     }
 }

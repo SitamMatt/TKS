@@ -1,9 +1,9 @@
 package domain.exceptions;
 
-import domain.model.Error;
+import domain.model.ErrorCode;
 
 public class UserNotFoundException extends DomainException{
     public UserNotFoundException() {
-        super(Error.UserNotFound);
+        super(ErrorCode.UserNotFound);
     }
 }

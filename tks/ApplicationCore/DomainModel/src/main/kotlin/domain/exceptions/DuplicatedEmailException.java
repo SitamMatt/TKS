@@ -1,9 +1,9 @@
 package domain.exceptions;
 
-import domain.model.Error;
+import domain.model.ErrorCode;
 
 public class DuplicatedEmailException extends DomainException{
     public DuplicatedEmailException() {
-        super(Error.DuplicatedEmail);
+        super(ErrorCode.DuplicatedEmail);
     }
 }

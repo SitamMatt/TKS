@@ -1,6 +1,6 @@
 package domain.model
 
-enum class Error(val message: String, val code: Int) {
+enum class ErrorCode(val message: String, val code: Int) {
     UserNotFound("User not found", 1),
     ResourceNotFound("Resource not found", 2),
     RentDoesNotExist("Rent does not exist", 3),
