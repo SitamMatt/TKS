@@ -1,12 +1,12 @@
 package rest.api.controllers;
 
 
+import application.helpers.ErrorExtensionsKt;
 import rest.api.adapters.UserResourceAdapter;
 import domain.exceptions.DuplicatedEmailException;
 import domain.exceptions.TypeValidationFailedException;
 import domain.exceptions.UserNotFoundException;
 import rest.api.dto.UserDto;
-import rest.api.application.helpers.ErrorExtensionsKt;
 import rest.api.mappers.UserMapperDto;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 
@@ -16,7 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import static rest.api.application.helpers.ErrorHelper.badRequest;
+import static rest.api.ErrorHelper.badRequest;
 
 @Path("user")
 public class UserResource {
@@ -53,7 +53,7 @@ public class UserResource {
     @Produces("application/json")
     @Operation(
             operationId = "Register new user",
-            description = "Registers new user from given data",
+            description = "Registers new user from given repository.data",
             summary = "Register new user"
     )
     public Response post(UserDto dto) {

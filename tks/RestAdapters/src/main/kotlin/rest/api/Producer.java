@@ -1,23 +1,23 @@
 package rest.api;
 
-import rest.api.adapters.RentRepositoryAdapter;
-import rest.api.adapters.ResourceRepositoryAdapter;
-import rest.api.adapters.UserRepositoryAdapter;
-import data.AbstractResourceEntity;
-import data.RentEntity;
-import data.UserEntity;
-import rest.api.mappers.RentMapper;
-import rest.api.mappers.ResourceMapper;
-import rest.api.mappers.UserMapper;
+import repository.adapters.RentRepositoryAdapter;
+import repository.adapters.ResourceRepositoryAdapter;
+import repository.adapters.UserRepositoryAdapter;
+import repository.data.AbstractResourceEntity;
+import repository.data.RentEntity;
+import repository.data.UserEntity;
+import repository.mappers.RentMapper;
+import repository.mappers.ResourceMapper;
+import repository.mappers.UserMapper;
 import ports.primary.ResourceRentCommandPort;
 import ports.secondary.ResourcePersistencePort;
 import ports.secondary.ResourceSearchPort;
 import ports.secondary.UserPersistencePort;
 import ports.secondary.UserSearchPort;
-import repositories.RepositoryBase;
-import rest.api.application.services.RentService;
-import rest.api.application.services.ResourcesService;
-import rest.api.application.services.UserService;
+import repository.repositories.RepositoryBase;
+import application.services.RentService;
+import application.services.ResourcesService;
+import application.services.UserService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

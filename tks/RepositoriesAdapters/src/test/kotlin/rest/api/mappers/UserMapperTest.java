@@ -1,12 +1,13 @@
 package rest.api.mappers;
 
-import data.UserEntity;
+import repository.data.UserEntity;
 import lombok.SneakyThrows;
 import domain.model.User;
 import domain.model.UserRole;
 import domain.model.values.Email;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import repository.mappers.UserMapper;
 
 import java.util.UUID;
 

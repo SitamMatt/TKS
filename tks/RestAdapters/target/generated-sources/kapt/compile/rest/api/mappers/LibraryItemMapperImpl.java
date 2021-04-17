@@ -1,16 +1,16 @@
 package rest.api.mappers;
 
 import common.mappers.AccessionNumberMapper;
-import rest.api.dto.LibraryItemDto;
-import javax.annotation.processing.Generated;
 import domain.model.Book;
 import domain.model.Magazine;
 import domain.model.values.AccessionNumber;
+import javax.annotation.processing.Generated;
 import org.mapstruct.factory.Mappers;
+import rest.api.dto.LibraryItemDto;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-07T00:42:39+0200",
+    date = "2021-04-15T22:59:44+0200",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.9 (Oracle Corporation)"
 )
 public class LibraryItemMapperImpl implements LibraryItemMapper {

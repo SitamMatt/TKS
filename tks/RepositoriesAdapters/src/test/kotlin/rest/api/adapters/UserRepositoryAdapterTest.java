@@ -1,9 +1,10 @@
 package rest.api.adapters;
 
-import data.UserEntity;
-import rest.api.mappers.UserMapper;
+import repository.adapters.UserRepositoryAdapter;
+import repository.data.UserEntity;
+import repository.mappers.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
-import repositories.RepositoryBase;
+import repository.repositories.RepositoryBase;
 
 import java.util.List;
 

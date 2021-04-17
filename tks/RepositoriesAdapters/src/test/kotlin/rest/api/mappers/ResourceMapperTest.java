@@ -1,14 +1,15 @@
 package rest.api.mappers;
 
-import data.AbstractResourceEntity;
-import data.BookEntity;
-import data.MagazineEntity;
+import repository.data.AbstractResourceEntity;
+import repository.data.BookEntity;
+import repository.data.MagazineEntity;
 import lombok.SneakyThrows;
 import domain.model.Book;
 import domain.model.Resource;
 import domain.model.values.AccessionNumber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import repository.mappers.ResourceMapper;
 
 import java.util.Objects;
 import java.util.UUID;
