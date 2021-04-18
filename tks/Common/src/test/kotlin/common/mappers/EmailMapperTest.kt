@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers
 class EmailMapperTest {
 
     @Test
-    fun toDomainObjectTest(){
+    fun toDomainObjectTest() {
         val mapper = Mappers.getMapper(EmailMapper::class.java)
         val source = "matzab@edu.pl"
         val email = mapper.toEmail(source)
@@ -19,7 +19,7 @@ class EmailMapperTest {
     }
 
     @Test
-    fun toDomainObjectNullableTest(){
+    fun toDomainObjectNullableTest() {
         val mapper = Mappers.getMapper(EmailMapper::class.java)
         var email: Email? = Email("matzab@edu.pl")
         Assertions.assertDoesNotThrow {
@@ -29,7 +29,7 @@ class EmailMapperTest {
     }
 
     @Test
-    fun toStringTest(){
+    fun toStringTest() {
         val mapper = Mappers.getMapper(EmailMapper::class.java)
         val email = Email("matzab@edu.pl")
         val emailStr = mapper.toString(email)
@@ -38,7 +38,7 @@ class EmailMapperTest {
     }
 
     @Test
-    fun toStringNullableTest(){
+    fun toStringNullableTest() {
         val mapper = Mappers.getMapper(EmailMapper::class.java)
         var emailStr: String? = ""
         Assertions.assertDoesNotThrow {
@@ -48,7 +48,7 @@ class EmailMapperTest {
     }
 
     @Test
-    fun validationErrorTest(){
+    fun validationErrorTest() {
         val mapper = Mappers.getMapper(EmailMapper::class.java)
         val source = "matt.edu.pl"
         assertThrows<TypeValidationFailedException> { mapper.toEmail(source) }

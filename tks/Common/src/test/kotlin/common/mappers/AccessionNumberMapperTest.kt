@@ -1,8 +1,9 @@
+@file:Suppress("SpellCheckingInspection")
+
 package common.mappers
 
 import domain.exceptions.TypeValidationFailedException
 import domain.model.values.AccessionNumber
-import domain.model.values.Email
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.mapstruct.factory.Mappers
@@ -10,16 +11,16 @@ import org.mapstruct.factory.Mappers
 class AccessionNumberMapperTest {
 
     @Test
-    fun toDomainObjectTest(){
+    fun toDomainObjectTest() {
         val mapper = Mappers.getMapper(AccessionNumberMapper::class.java)
-        val source = "ABCD-123";
+        val source = "ABCD-123"
         val accessionNumber = mapper.toAccessionNumber(source)
         assertNotNull(accessionNumber)
         assertEquals(source, accessionNumber?.value)
     }
 
     @Test
-    fun toDomainObjectNullableTest(){
+    fun toDomainObjectNullableTest() {
         val mapper = Mappers.getMapper(AccessionNumberMapper::class.java)
         var accessionNumber: AccessionNumber? = AccessionNumber("ABCD-123")
         assertDoesNotThrow {
@@ -29,7 +30,7 @@ class AccessionNumberMapperTest {
     }
 
     @Test
-    fun toStringTest(){
+    fun toStringTest() {
         val mapper = Mappers.getMapper(AccessionNumberMapper::class.java)
         val accessionNumber = AccessionNumber("ABCD-123")
         val accessionNumberStr = mapper.toString(accessionNumber)
@@ -38,19 +39,19 @@ class AccessionNumberMapperTest {
     }
 
     @Test
-    fun toStringNullableTest(){
+    fun toStringNullableTest() {
         val mapper = Mappers.getMapper(AccessionNumberMapper::class.java)
         var accessionNumberStr: String? = ""
-        assertDoesNotThrow{
+        assertDoesNotThrow {
             accessionNumberStr = mapper.toString(null)
         }
         assertNull(accessionNumberStr)
     }
 
     @Test
-    fun validationErrorTest(){
+    fun validationErrorTest() {
         val mapper = Mappers.getMapper(AccessionNumberMapper::class.java)
-        val source ="matt.edu.pl"
+        val source = "matt.edu.pl"
         org.junit.jupiter.api.assertThrows<TypeValidationFailedException> { mapper.toAccessionNumber(source) }
     }
 }
