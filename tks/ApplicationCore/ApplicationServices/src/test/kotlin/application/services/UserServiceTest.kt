@@ -1,120 +1,128 @@
-package application.services;
+package application.services
 
-import domain.exceptions.DuplicatedEmailException;
-import domain.exceptions.UserNotFoundException;
-import lombok.SneakyThrows;
-import domain.model.values.Email;
-import ports.secondary.UserSearchPort;
-import ports.secondary.UserPersistencePort;
-import domain.model.User;
-import domain.model.UserRole;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import domain.exceptions.DuplicatedEmailException
+import domain.exceptions.UserNotFoundException
+import domain.model.User
+import domain.model.UserRole
+import domain.model.values.Email
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.junit.jupiter.MockitoExtension
+import ports.secondary.UserPersistencePort
+import ports.secondary.UserSearchPort
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
-@ExtendWith(MockitoExtension.class)
-class UserServiceTest {
-
-    UserService userService;
-
-    User sampleUser;
-    Email sampleEmail;
+@ExtendWith(MockitoExtension::class)
+internal class UserServiceTest {
+    lateinit var userService: UserService
+    lateinit var sampleUser: User
+    var sampleEmail: Email? = null
 
     @Mock
-    UserPersistencePort userPersistencePort;
-    @Mock
-    UserSearchPort userSearchPort;
+    lateinit var userPersistencePort: UserPersistencePort
 
-    @SneakyThrows
+    @Mock
+    lateinit var userSearchPort: UserSearchPort
+
     @BeforeEach
-    public void init(){
-        userService = new UserService(userPersistencePort, userSearchPort);
-        sampleEmail = new Email("mszewc@edu.pl");
-        sampleUser = new User(sampleEmail, UserRole.ADMIN, "####", true);
+    fun init() {
+        userService = UserService(userPersistencePort, userSearchPort)
+        sampleEmail = Email("mszewc@edu.pl")
+        sampleUser = User(sampleEmail!!, UserRole.ADMIN, "####", true)
     }
 
     @Test
-    public void GivenValidUser_RegistrationShouldSuccess() throws DuplicatedEmailException {
-        when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(null);
-        userService.register(sampleUser);
-        verify(userPersistencePort).add(eq(sampleUser));
+    @Throws(DuplicatedEmailException::class)
+    fun GivenValidUser_RegistrationShouldSuccess() {
+        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(null)
+        userService.register(sampleUser)
+        Mockito.verify(userPersistencePort).add(ArgumentMatchers.eq(sampleUser))
     }
 
     @Test
-    public void GivenUser_With_DuplicatedEmail_RegistrationShouldFail() {
-        var duplicatedUser = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(duplicatedUser);
-        assertThrows(DuplicatedEmailException.class, () -> userService.register(sampleUser));
-        verify(userPersistencePort, never()).add(any());
+    fun GivenUser_With_DuplicatedEmail_RegistrationShouldFail() {
+        val duplicatedUser = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
+        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(duplicatedUser)
+        Assertions.assertThrows(DuplicatedEmailException::class.java) { userService.register(sampleUser) }
+        Mockito.verify(userPersistencePort, Mockito.never()).add(ArgumentMatchers.any())
     }
 
     @Test
-    public void GivenValidEmailAndNewRole_ShouldSuccess() throws UserNotFoundException {
-        var user = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(user);
-        userService.changeRole(sampleEmail, UserRole.ADMIN);
-        verify(userPersistencePort).update(eq(user));
-        assertEquals(UserRole.ADMIN, user.getRole());
+    @Throws(UserNotFoundException::class)
+    fun GivenValidEmailAndNewRole_ShouldSuccess() {
+        val user = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
+        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(user)
+        userService.changeRole(sampleEmail, UserRole.ADMIN)
+        Mockito.verify(userPersistencePort).update(ArgumentMatchers.eq(user))
+        Assertions.assertEquals(UserRole.ADMIN, user.role)
     }
 
     @Test
-    public void GivenValidEmailAndSameRole_ShouldSuccess_ButNotPersist() throws UserNotFoundException {
-        var user = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(user);
-        userService.changeRole(sampleEmail, UserRole.CLIENT);
-        verify(userPersistencePort, never()).update(any());
-        assertEquals(UserRole.CLIENT, user.getRole());
+    @Throws(UserNotFoundException::class)
+    fun GivenValidEmailAndSameRole_ShouldSuccess_ButNotPersist() {
+        val user = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
+        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(user)
+        userService.changeRole(sampleEmail, UserRole.CLIENT)
+        Mockito.verify(userPersistencePort, Mockito.never()).update(ArgumentMatchers.any())
+        Assertions.assertEquals(UserRole.CLIENT, user.role)
     }
 
     @Test
-    public void GivenInvalidEmailAndAnyRole_ShouldFail(){
-        when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(null);
-        assertThrows(UserNotFoundException.class, () -> userService.changeRole(sampleEmail, UserRole.CLIENT));
-        verify(userPersistencePort, never()).update(any());
+    fun GivenInvalidEmailAndAnyRole_ShouldFail() {
+        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(null)
+        Assertions.assertThrows(UserNotFoundException::class.java) {
+            userService.changeRole(
+                sampleEmail,
+                UserRole.CLIENT
+            )
+        }
+        Mockito.verify(userPersistencePort, Mockito.never()).update(ArgumentMatchers.any())
     }
 
     @Test
-    public void GivenInvalidEmailAndAnyState_ShouldFail(){
-        when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(null);
-        assertThrows(UserNotFoundException.class, () -> userService.changeState(sampleEmail, true));
-        verify(userPersistencePort, never()).update(any());
+    fun GivenInvalidEmailAndAnyState_ShouldFail() {
+        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(null)
+        Assertions.assertThrows(UserNotFoundException::class.java) { userService.changeState(sampleEmail, true) }
+        Mockito.verify(userPersistencePort, Mockito.never()).update(ArgumentMatchers.any())
     }
 
     @Test
-    public void GivenValidEmailAndSameState_ShouldSuccess_ButNotPersist() throws UserNotFoundException {
-        var user = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(user);
-        userService.changeState(sampleEmail, true);
-        verify(userPersistencePort, never()).update(any());
-        assertTrue(user.getActive());
+    @Throws(UserNotFoundException::class)
+    fun GivenValidEmailAndSameState_ShouldSuccess_ButNotPersist() {
+        val user = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
+        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(user)
+        userService.changeState(sampleEmail, true)
+        Mockito.verify(userPersistencePort, Mockito.never()).update(ArgumentMatchers.any())
+        Assertions.assertTrue(user.active)
     }
 
     @Test
-    public void GivenValidEmailAndNewState_ShouldSuccess() throws UserNotFoundException {
-        var user = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(user);
-        userService.changeState(sampleEmail, false);
-        verify(userPersistencePort).update(eq(user));
-        assertFalse(user.getActive());
+    @Throws(UserNotFoundException::class)
+    fun GivenValidEmailAndNewState_ShouldSuccess() {
+        val user = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
+        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(user)
+        userService.changeState(sampleEmail, false)
+        Mockito.verify(userPersistencePort).update(ArgumentMatchers.eq(user))
+        Assertions.assertFalse(user.active)
     }
 
     @Test
-    public void GivenValidEmail_ShouldReturnUserDetails() throws UserNotFoundException {
-        var user = new User(sampleEmail, UserRole.CLIENT, "wwww", true);
-        when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(user);
-        var result = userService.getDetails(sampleEmail);
-        assertSame(result, user);
-        assertEquals(result, user);
+    @Throws(UserNotFoundException::class)
+    fun GivenValidEmail_ShouldReturnUserDetails() {
+        val user = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
+        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(user)
+        val result = userService.getDetails(sampleEmail!!)
+        Assertions.assertSame(result, user)
+        Assertions.assertEquals(result, user)
     }
 
     @Test
-    public void GivenInvalidEmail_ShouldFail(){
-        when(userSearchPort.findByEmail(eq(sampleEmail))).thenReturn(null);
-        assertThrows(UserNotFoundException.class, () -> userService.getDetails(sampleEmail));
+    fun GivenInvalidEmail_ShouldFail() {
+        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(null)
+        Assertions.assertThrows(UserNotFoundException::class.java) { userService.getDetails(sampleEmail!!) }
     }
 }

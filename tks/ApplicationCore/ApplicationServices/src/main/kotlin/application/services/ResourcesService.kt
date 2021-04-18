@@ -10,7 +10,7 @@ import ports.secondary.ResourcePersistencePort
 import ports.secondary.ResourceSearchPort
 import domain.model.Book
 import domain.model.Magazine
-import domain.model.Resource
+import domain.model.traits.Resource
 import domain.model.values.AccessionNumber
 import ports.primary.IResourceService
 

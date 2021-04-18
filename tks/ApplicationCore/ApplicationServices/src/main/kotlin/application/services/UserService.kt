@@ -1,52 +1,46 @@
-package application.services;
+package application.services
 
-import domain.model.values.Email;
-import ports.primary.IUserService;
-import ports.secondary.UserSearchPort;
-import ports.secondary.UserPersistencePort;
-import domain.exceptions.DuplicatedEmailException;
-import domain.exceptions.UserNotFoundException;
-import domain.model.User;
-import domain.model.UserRole;
+import domain.exceptions.DuplicatedEmailException
+import domain.exceptions.UserNotFoundException
+import domain.model.User
+import domain.model.UserRole
+import domain.model.values.Email
+import ports.primary.IUserService
+import ports.secondary.UserPersistencePort
+import ports.secondary.UserSearchPort
 
+class UserService(
+    private val userPersistencePort: UserPersistencePort,
+    private val userSearchPort: UserSearchPort
+) : IUserService {
 
-public class UserService implements IUserService {
-
-    private final UserPersistencePort userPersistencePort;
-    private final UserSearchPort userSearchPort;
-
-    public UserService(UserPersistencePort userPersistencePort, UserSearchPort userSearchPort) {
-        this.userPersistencePort = userPersistencePort;
-        this.userSearchPort = userSearchPort;
+    @Throws(DuplicatedEmailException::class)
+    override fun register(user: User) {
+        val duplicate = userSearchPort.findByEmail(user.email)
+        if (duplicate != null) throw DuplicatedEmailException()
+        userPersistencePort.add(user)
     }
 
-    public void register(User user) throws DuplicatedEmailException {
-        var duplicate = userSearchPort.findByEmail(user.getEmail());
-        if(duplicate != null) throw new DuplicatedEmailException();
-        userPersistencePort.add(user);
-    }
-
-    public void changeRole(Email email, UserRole role) throws UserNotFoundException {
-        var user = userSearchPort.findByEmail(email);
-        if(user == null) throw new UserNotFoundException();
-        if(!user.getRole().equals(role)){
-            user.setRole(role);
-            userPersistencePort.update(user);
+    @Throws(UserNotFoundException::class)
+    fun changeRole(email: Email?, role: UserRole) {
+        val user = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
+        if (user.role != role) {
+            user.role = role
+            userPersistencePort.update(user)
         }
     }
 
-    public void changeState(Email email, boolean state) throws UserNotFoundException {
-        var user = userSearchPort.findByEmail(email);
-        if(user == null) throw new UserNotFoundException();
-        if(!user.getActive() == state){
-            user.setActive(state);
-            userPersistencePort.update(user);
+    @Throws(UserNotFoundException::class)
+    fun changeState(email: Email?, state: Boolean) {
+        val user = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
+        if (!user.active == state) {
+            user.active = state
+            userPersistencePort.update(user)
         }
     }
 
-    public User getDetails(Email email) throws UserNotFoundException {
-        var user = userSearchPort.findByEmail(email);
-        if(user == null) throw new UserNotFoundException();
-        return user;
+    @Throws(UserNotFoundException::class)
+    override fun getDetails(email: Email): User {
+        return userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
     }
 }

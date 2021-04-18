@@ -1,14 +1,12 @@
-package application.helpers;
+package application.helpers
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.function.ThrowingSupplier
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class AccessionNumberHelperTest {
-
+internal class AccessionNumberHelperTest {
     @Test
-    public void validityTest(){
-        assertDoesNotThrow(AccessionNumberHelper::generate);
+    fun validityTest() {
+        Assertions.assertDoesNotThrow(AccessionNumberHelper::generate)
     }
-
 }

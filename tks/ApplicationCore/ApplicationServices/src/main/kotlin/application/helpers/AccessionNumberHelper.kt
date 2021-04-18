@@ -1,27 +1,25 @@
-package application.helpers;
+package application.helpers
 
-import lombok.SneakyThrows;
-import domain.model.values.AccessionNumber;
+import domain.model.values.AccessionNumber
+import lombok.SneakyThrows
+import java.util.*
 
-import java.util.Random;
+object AccessionNumberHelper {
 
-public class AccessionNumberHelper {
-
-    @SneakyThrows
-    public static AccessionNumber generate(){
-        int leftLimit = 65; // letter 'A'
-        int rightLimit = 90; // letter 'Z'
-        int targetStringLength = 8;
-        Random random = new Random();
-        StringBuilder buffer = new StringBuilder(targetStringLength);
-        for (int i = 0; i < 4; i++) {
-            int randomLimitedInt = leftLimit + (int)
-                    (random.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
+    @JvmStatic
+    fun generate(): AccessionNumber {
+        val leftLimit = 65 // letter 'A'
+        val rightLimit = 90 // letter 'Z'
+        val targetStringLength = 8
+        val random = Random()
+        val buffer = StringBuilder(targetStringLength)
+        for (i in 0..3) {
+            val randomLimitedInt = leftLimit + (random.nextFloat() * (rightLimit - leftLimit + 1)).toInt()
+            buffer.append(randomLimitedInt.toChar())
         }
-        buffer.append('-');
-        buffer.append(random.nextInt(900) + 100);
-        String generatedString = buffer.toString();
-        return new AccessionNumber(generatedString);
+        buffer.append('-')
+        buffer.append(random.nextInt(900) + 100)
+        val generatedString = buffer.toString()
+        return AccessionNumber(generatedString)
     }
 }
