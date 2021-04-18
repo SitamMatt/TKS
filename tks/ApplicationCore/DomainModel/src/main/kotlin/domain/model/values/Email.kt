@@ -1,7 +1,6 @@
 package domain.model.values
 
 import domain.exceptions.TypeValidationFailedException
-import lombok.Value
 import org.apache.commons.validator.routines.EmailValidator
 
 @JvmInline

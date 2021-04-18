@@ -11,21 +11,20 @@ import domain.model.Rent
 import domain.model.traits.Resource
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
-import lombok.SneakyThrows
+import io.mockk.every
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.junit.jupiter.MockitoExtension
 import ports.secondary.RentSearchPort
 import ports.secondary.ResourcePersistencePort
 import ports.secondary.ResourceSearchPort
 import java.util.*
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 class ResourcesServiceTest {
 
     data class InvalidResource(
@@ -33,24 +32,23 @@ class ResourcesServiceTest {
         override var title: String
     ) : Resource
 
-    lateinit var resourcesService: ResourcesService
-    lateinit var sampleBook: Resource
-    lateinit var sampleMagazine: Resource
-    lateinit var invalidResource: Resource
-    var sampleAccessionNumber: AccessionNumber? = null
+    private lateinit var resourcesService: ResourcesService
+    private lateinit var sampleBook: Resource
+    private lateinit var sampleMagazine: Resource
+    private lateinit var invalidResource: Resource
+    private val sampleAccessionNumber: AccessionNumber = AccessionNumberHelper.generate()
 
-    @Mock
+    @RelaxedMockK
     lateinit var resourcePersistencePort: ResourcePersistencePort
 
-    @Mock
+    @RelaxedMockK
     lateinit var resourceSearchPort: ResourceSearchPort
 
-    @Mock
+    @RelaxedMockK
     lateinit var rentSearchPort: RentSearchPort
 
     @BeforeEach
     fun init() {
-        sampleAccessionNumber = AccessionNumberHelper.generate()
         resourcesService = ResourcesService(resourcePersistencePort, resourceSearchPort, rentSearchPort)
         sampleBook = Book(null, "Diuna", "Frank Herbert")
         sampleMagazine = Magazine(null, "Świerszczyk", "Nowa era")
@@ -58,130 +56,111 @@ class ResourcesServiceTest {
     }
 
     @Test
-    @Throws(UnknownResourceException::class)
-    fun GivenResourceOfValidType_Create_ShouldSuccess() {
+    fun `Given resource of valid type then create should success`() {
         resourcesService.create(sampleBook)
-        Mockito.verify(resourcePersistencePort).add(ArgumentMatchers.eq(sampleBook))
+        verify(exactly = 1) { (resourcePersistencePort).add(sampleBook) }
         Assertions.assertNotNull(sampleBook.accessionNumber)
     }
 
     @Test
-    fun GivenResourceOfInvalidType_Create_ShouldFail() {
+    fun `Given resource of invalid type then create should fail`() {
         Assertions.assertThrows(UnknownResourceException::class.java) {
             resourcesService.create(
                 invalidResource
             )
         }
-        Mockito.verify(resourcePersistencePort, Mockito.never()).add(ArgumentMatchers.any())
+        verify(exactly = 0) { resourcePersistencePort.add(any()) }
     }
 
     @Test
-    fun GivenResourceWithNotNullId_Create_ShouldFail() {
+    fun `Given resource with not null id then create should fail`() {
         sampleBook.accessionNumber = sampleAccessionNumber
         Assertions.assertThrows(UnknownResourceException::class.java) {
             resourcesService.create(sampleBook)
         }
-        Mockito.verify(resourcePersistencePort, Mockito.never()).add(ArgumentMatchers.any())
+        verify(exactly = 0) { resourcePersistencePort.add(any()) }
     }
 
     @Test
-    fun GivenValidResourceWithNotNullId_Update_ShouldSuccess() {
+    fun `Given valid resource with not null id then update should success`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleAccessionNumber)))
-            .thenReturn(sampleMagazine)
+        every { (resourceSearchPort.findById(sampleAccessionNumber)) }.returns(sampleMagazine)
         resourcesService.update(sampleMagazine)
-        Mockito.verify(resourcePersistencePort).save(sampleMagazine)
+        verify(exactly = 1) { (resourcePersistencePort).save(sampleMagazine) }
     }
 
     @Test
-    fun GivenNonExistingResource_Update_ShouldFail() {
+    fun `Given non existing resource then update should fail`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
-        Mockito.`when`(
-            resourceSearchPort.findById(
-                ArgumentMatchers.eq(sampleMagazine.accessionNumber)
-            )
-        ).thenReturn(null)
+        every { resourceSearchPort.findById(sampleMagazine.accessionNumber!!) } returns null
         Assertions.assertThrows(ResourceNotFoundException::class.java) {
-            resourcesService.update(
-                sampleMagazine
-            )
+            resourcesService.update(sampleMagazine)
         }
-        Mockito.verify(resourcePersistencePort, Mockito.never()).save(ArgumentMatchers.any())
+        verify(exactly = 0) { resourcePersistencePort.save(any()) }
     }
 
     @Test
-    fun GivenOtherResourceType_Update_ShouldFail() {
+    fun `Given different resource type then update should fail`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
         sampleBook.accessionNumber = sampleAccessionNumber
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleAccessionNumber)))
-            .thenReturn(sampleMagazine)
+        every { resourceSearchPort.findById(sampleAccessionNumber) } returns sampleMagazine
         Assertions.assertThrows(
             IncompatibleResourceFormatException::class.java
-        ) {
-            resourcesService.update(sampleBook)
-        }
-        Mockito.verify(resourcePersistencePort, Mockito.never()).save(ArgumentMatchers.any())
+        ) { resourcesService.update(sampleBook) }
+        verify(exactly = 0) { resourcePersistencePort.save(any()) }
     }
 
     @Test
-    fun GivenValidResourceId_Remove_ShouldSuccess() {
+    fun `Given valid resource rd then remove should success`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleAccessionNumber)))
-            .thenReturn(sampleMagazine)
-        Mockito.`when`(rentSearchPort.findActiveByResourceId(ArgumentMatchers.eq(sampleAccessionNumber)))
-            .thenReturn(null)
-        resourcesService.remove(sampleAccessionNumber!!)
-        Mockito.verify(resourcePersistencePort).remove(sampleMagazine)
+        every { resourceSearchPort.findById(sampleAccessionNumber) } returns sampleMagazine
+        every { rentSearchPort.findActiveByResourceId(sampleAccessionNumber) } returns null
+        resourcesService.remove(sampleAccessionNumber)
+        verify(exactly = 1) { resourcePersistencePort.remove(sampleMagazine) }
     }
 
     @Test
-    fun GivenInvalidResourceId_Remove_ShouldFail() {
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleAccessionNumber))).thenReturn(null)
+    fun `Given invalid resource id then remove should fail`() {
+        every { resourceSearchPort.findById(sampleAccessionNumber) } returns null
         Assertions.assertThrows(ResourceNotFoundException::class.java) {
-            resourcesService.remove(sampleAccessionNumber!!)
+            resourcesService.remove(sampleAccessionNumber)
         }
-        Mockito.verify(resourcePersistencePort, Mockito.never()).remove(ArgumentMatchers.any())
-    }
-
-    @SneakyThrows
-    @Test
-    fun GivenRentResourceId_Remove_ShouldFail() {
-        sampleMagazine.accessionNumber = sampleAccessionNumber
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleAccessionNumber)))
-            .thenReturn(sampleMagazine)
-        Mockito.`when`(rentSearchPort.findActiveByResourceId(ArgumentMatchers.eq(sampleAccessionNumber)))
-            .thenReturn(Rent(UUID.randomUUID(), Date(), null, Email("mszewc@edu.pl"), sampleAccessionNumber!!))
-        Assertions.assertThrows(ResourceBlockedByRentException::class.java) {
-            resourcesService.remove(sampleAccessionNumber!!)
-        }
-        Mockito.verify(resourcePersistencePort, Mockito.never()).remove(ArgumentMatchers.any())
+        verify(exactly = 0) { resourcePersistencePort.remove(any()) }
     }
 
     @Test
-    @Throws(ResourceNotFoundException::class)
-    fun GivenValidResourceId_GetDetails_ShouldSuccess() {
+    fun `Given rent resource id then remove should fail`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
-        Mockito.`when`(
-            resourceSearchPort.findById(
-                ArgumentMatchers.eq(sampleMagazine.accessionNumber)
-            )
-        ).thenReturn(sampleMagazine)
-        val result = resourcesService.getDetails(sampleMagazine.accessionNumber!!)
-        Mockito.verify(resourceSearchPort).findById(
-            ArgumentMatchers.eq(
-                sampleMagazine.accessionNumber
-            )
+        every { resourceSearchPort.findById(sampleAccessionNumber) } returns sampleMagazine
+        every { rentSearchPort.findActiveByResourceId(sampleAccessionNumber) } returns Rent(
+            UUID.randomUUID(),
+            Date(),
+            null,
+            Email("mszewc@edu.pl"),
+            sampleAccessionNumber
         )
+        Assertions.assertThrows(ResourceBlockedByRentException::class.java) {
+            resourcesService.remove(sampleAccessionNumber)
+        }
+        verify(exactly = 0) { resourcePersistencePort.remove(any()) }
+    }
+
+    @Test
+    fun `Given valid resource id then getDetails should success`() {
+        sampleMagazine.accessionNumber = sampleAccessionNumber
+        every { resourceSearchPort.findById(sampleMagazine.accessionNumber!!) } returns sampleMagazine
+
+        val result = resourcesService.getDetails(sampleMagazine.accessionNumber!!)
+
+        verify(exactly = 1) { resourceSearchPort.findById(sampleMagazine.accessionNumber!!) }
         Assertions.assertEquals(sampleMagazine, result)
     }
 
     @Test
-    fun GivenInvalidResourceId_GetDetails_ShouldFail() {
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleAccessionNumber))).thenReturn(null)
+    fun `Given invalid resource id then getDetails should fail`() {
+        every { resourceSearchPort.findById(sampleAccessionNumber) } returns null
         Assertions.assertThrows(ResourceNotFoundException::class.java) {
-            resourcesService.getDetails(
-                sampleAccessionNumber!!
-            )
+            resourcesService.getDetails(sampleAccessionNumber)
         }
     }
 }

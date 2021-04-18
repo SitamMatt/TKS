@@ -4,14 +4,14 @@ import domain.exceptions.*
 import domain.model.Rent
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
-import ports.primary.IRentService
+import ports.primary.combined.IRentService
 import ports.secondary.RentPersistencePort
 import ports.secondary.RentSearchPort
 import ports.secondary.ResourceSearchPort
 import ports.secondary.UserSearchPort
 import java.util.*
 
-class RentService(
+open class RentService(
     private val rentPersistencePort: RentPersistencePort,
     private val rentSearchPort: RentSearchPort,
     private val userSearchPort: UserSearchPort,

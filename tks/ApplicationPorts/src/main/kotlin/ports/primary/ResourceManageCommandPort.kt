@@ -8,5 +8,5 @@ interface ResourceManageCommandPort {
     @Throws(UnknownResourceException::class)
     fun create(resource: Resource)
     fun update(resource: Resource)
-    fun remove(id: AccessionNumber)
+    fun remove(accessionNumber: AccessionNumber)
 }

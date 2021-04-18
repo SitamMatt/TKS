@@ -1,7 +1,6 @@
 package domain.model.values
 
 import domain.exceptions.TypeValidationFailedException
-import lombok.Value
 
 @JvmInline
 value class AccessionNumber(val value: String) {

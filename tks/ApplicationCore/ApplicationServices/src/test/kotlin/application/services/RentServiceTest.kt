@@ -9,150 +9,146 @@ import domain.model.UserRole
 import domain.model.traits.Resource
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
+import io.mockk.every
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.junit.jupiter.MockitoExtension
 import ports.secondary.RentPersistencePort
 import ports.secondary.RentSearchPort
 import ports.secondary.ResourceSearchPort
 import ports.secondary.UserSearchPort
 import java.util.*
 
-@ExtendWith(MockitoExtension::class)
+@ExtendWith(MockKExtension::class)
 internal class RentServiceTest {
-    lateinit var rentService: RentService
-    lateinit var sampleResource: Resource
-    lateinit var sampleUser: User
-    lateinit var sampleRent: Rent
-    var sampleEmail: Email? = null
-    var sampleEmail2: Email? = null
-    var sampleResId: AccessionNumber? = null
-    lateinit var sampleRentId: UUID
+    private lateinit var rentService: RentService
+    private lateinit var sampleResource: Resource
+    private lateinit var sampleUser: User
+    private lateinit var sampleRent: Rent
+    private val sampleEmail: Email = Email("mszewc@edu.pl")
+    private val sampleEmail2: Email = Email("mzab@edu.pl")
+    private val sampleResId: AccessionNumber = AccessionNumberHelper.generate()
+    private val sampleRentId: UUID = UUID.randomUUID()
 
-    @Mock
+    @RelaxedMockK
     lateinit var resourceSearchPort: ResourceSearchPort
 
-    @Mock
+    @RelaxedMockK
     lateinit var userSearchPort: UserSearchPort
 
-    @Mock
+    @RelaxedMockK
     lateinit var rentSearchPort: RentSearchPort
 
-    @Mock
+    @RelaxedMockK
     lateinit var rentPersistencePort: RentPersistencePort
 
     @BeforeEach
     fun init() {
-        sampleEmail = Email("mszewc@edu.pl")
-        sampleEmail2 = Email("mzab@edu.pl")
-        sampleResId = AccessionNumberHelper.generate()
-        sampleRentId = UUID.randomUUID()
-        sampleUser = User(sampleEmail!!, UserRole.CLIENT, "####", true)
+        sampleUser = User(sampleEmail, UserRole.CLIENT, "####", true)
         sampleResource = Book(sampleResId, "Diuna", "Frank Herbert")
-        sampleRent = Rent(sampleRentId, Date(), null, sampleEmail2!!, sampleResId!!)
+        sampleRent = Rent(sampleRentId, Date(), null, sampleEmail2, sampleResId)
         rentService = RentService(rentPersistencePort, rentSearchPort, userSearchPort, resourceSearchPort)
     }
 
     @Test
-    fun GivenInvalidUserId_Rent_ShouldFail() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleUser.email))).thenReturn(null)
+    fun `Given invalid user id then rent should fail`() {
+        every { userSearchPort.findByEmail(sampleUser.email) } returns null
         Assertions.assertThrows(UserNotFoundException::class.java) {
             rentService.rent(
                 sampleUser.email, sampleResource.accessionNumber!!
             )
         }
-        Mockito.verify(rentPersistencePort, Mockito.never())?.save(ArgumentMatchers.any())
+        verify(exactly = 0) { rentPersistencePort.save(any()) }
     }
 
     @Test
-    fun GivenInvalidResourceId_Rent_ShouldFail() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(sampleUser)
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleResId))).thenReturn(null)
+    fun `Given invalid resource id then rent should fail`() {
+        every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
+        every { resourceSearchPort.findById(sampleResId) } returns null
         Assertions.assertThrows(ResourceNotFoundException::class.java) {
             rentService.rent(
                 sampleUser.email, sampleResource.accessionNumber!!
             )
         }
-        Mockito.verify(rentPersistencePort, Mockito.never()).save(ArgumentMatchers.any())
+        verify(exactly = 0) { rentPersistencePort.save(any()) }
     }
 
     @Test
-    fun GivenNonActiveUserId_Rent_ShouldFail() {
+    fun `Given inactive user email then rent should fail`() {
         sampleUser.active = false
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(sampleUser)
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleResId))).thenReturn(sampleResource)
+        every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
+        every { resourceSearchPort.findById(sampleResId) } returns sampleResource
         Assertions.assertThrows(UserNotActiveException::class.java) {
             rentService.rent(
                 sampleUser.email, sampleResource.accessionNumber!!
             )
         }
-        Mockito.verify(rentPersistencePort, Mockito.never()).save(ArgumentMatchers.any())
+        verify(exactly = 0) { rentPersistencePort.save(any()) }
     }
 
     @Test
-    fun GivenAlreadyRentResId_Rent_ShouldFail() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(sampleUser)
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleResId))).thenReturn(sampleResource)
-        Mockito.`when`(rentSearchPort.findActiveByResourceId(sampleResId)).thenReturn(sampleRent)
+    fun `Given already rent resource id then rent should fail`() {
+        every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
+        every { resourceSearchPort.findById(sampleResId) } returns sampleResource
+        every { rentSearchPort.findActiveByResourceId(sampleResId) } returns sampleRent
         Assertions.assertThrows(ResourceAlreadyRentException::class.java) {
             rentService.rent(
                 sampleUser.email, sampleResource.accessionNumber!!
             )
         }
-        Mockito.verify(rentPersistencePort, Mockito.never()).save(ArgumentMatchers.any())
+        verify(exactly = 0) { rentPersistencePort.save(any()) }
     }
 
     @Test
-    fun GivenInvalidUserId_Return_ShouldFail() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(null)
+    fun `Given invalid user id then returnResource should fail`() {
+        every { userSearchPort.findByEmail(sampleEmail) } returns null
         Assertions.assertThrows(UserNotFoundException::class.java) {
             rentService.returnResource(
-                sampleEmail!!,
-                sampleResId!!
+                sampleEmail,
+                sampleResId
             )
         }
     }
 
     @Test
-    fun GivenInvalidResourceId_Return_ShouldFail() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(sampleUser)
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleResId))).thenReturn(null)
+    fun `Given invalid resource id then returnResource should fail`() {
+        every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
+        every { resourceSearchPort.findById(sampleResId) } returns null
         Assertions.assertThrows(ResourceNotFoundException::class.java) {
             rentService.returnResource(
-                sampleEmail!!,
-                sampleResId!!
+                sampleEmail,
+                sampleResId
             )
         }
     }
 
     @Test
-    fun GivenNotRentResourceId_Return_ShouldFail() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(sampleUser)
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleResId))).thenReturn(sampleResource)
-        Mockito.`when`(rentSearchPort.findActiveByResourceId(sampleResId)).thenReturn(null)
+    fun `Given not rent resource id returnResource should fail`() {
+        every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
+        every { resourceSearchPort.findById(sampleResId) } returns sampleResource
+        every { rentSearchPort.findActiveByResourceId(sampleResId) } returns null
         Assertions.assertThrows(ResourceNotRentException::class.java) {
             rentService.returnResource(
-                sampleEmail!!,
-                sampleResId!!
+                sampleEmail,
+                sampleResId
             )
         }
     }
 
     @Test
-    fun GivenResourceRentByOtherUser_Return_ShouldFail() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(sampleUser)
-        Mockito.`when`(resourceSearchPort.findById(ArgumentMatchers.eq(sampleResId))).thenReturn(sampleResource)
-        sampleRent = Rent(sampleRentId, Date(), null, sampleEmail2!!, sampleResId!!)
-        Mockito.`when`(rentSearchPort.findActiveByResourceId(sampleResId)).thenReturn(sampleRent)
+    fun `Given resource rent by other user then returnResource should fail`() {
+        every { userSearchPort.findByEmail((sampleEmail)) } returns sampleUser
+        every { resourceSearchPort.findById((sampleResId)) } returns sampleResource
+        sampleRent = Rent(sampleRentId, Date(), null, sampleEmail2, sampleResId)
+        every { rentSearchPort.findActiveByResourceId(sampleResId) } returns sampleRent
         Assertions.assertThrows(InvalidUserException::class.java) {
             rentService.returnResource(
-                sampleEmail!!,
-                sampleResId!!
+                sampleEmail,
+                sampleResId
             )
         }
     }

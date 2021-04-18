@@ -1,7 +1,6 @@
 package application.helpers
 
 import domain.model.values.AccessionNumber
-import lombok.SneakyThrows
 import java.util.*
 
 object AccessionNumberHelper {

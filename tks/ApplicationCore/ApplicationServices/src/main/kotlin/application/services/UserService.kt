@@ -5,11 +5,11 @@ import domain.exceptions.UserNotFoundException
 import domain.model.User
 import domain.model.UserRole
 import domain.model.values.Email
-import ports.primary.IUserService
+import ports.primary.combined.IUserService
 import ports.secondary.UserPersistencePort
 import ports.secondary.UserSearchPort
 
-class UserService(
+open class UserService(
     private val userPersistencePort: UserPersistencePort,
     private val userSearchPort: UserSearchPort
 ) : IUserService {
@@ -22,7 +22,7 @@ class UserService(
     }
 
     @Throws(UserNotFoundException::class)
-    fun changeRole(email: Email?, role: UserRole) {
+    open fun changeRole(email: Email, role: UserRole) {
         val user = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
         if (user.role != role) {
             user.role = role
@@ -31,7 +31,7 @@ class UserService(
     }
 
     @Throws(UserNotFoundException::class)
-    fun changeState(email: Email?, state: Boolean) {
+    open fun changeState(email: Email, state: Boolean) {
         val user = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
         if (!user.active == state) {
             user.active = state

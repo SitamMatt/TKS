@@ -5,124 +5,121 @@ import domain.exceptions.UserNotFoundException
 import domain.model.User
 import domain.model.UserRole
 import domain.model.values.Email
+import io.mockk.every
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.ArgumentMatchers
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.junit.jupiter.MockitoExtension
 import ports.secondary.UserPersistencePort
 import ports.secondary.UserSearchPort
 
-@ExtendWith(MockitoExtension::class)
-internal class UserServiceTest {
-    lateinit var userService: UserService
-    lateinit var sampleUser: User
-    var sampleEmail: Email? = null
 
-    @Mock
+@ExtendWith(MockKExtension::class)
+internal class UserServiceTest {
+    private lateinit var userService: UserService
+    private lateinit var sampleUser: User
+    private val sampleEmail: Email = Email("mszewc@edu.pl")
+
+    @RelaxedMockK
     lateinit var userPersistencePort: UserPersistencePort
 
-    @Mock
+    @RelaxedMockK
     lateinit var userSearchPort: UserSearchPort
 
     @BeforeEach
     fun init() {
         userService = UserService(userPersistencePort, userSearchPort)
-        sampleEmail = Email("mszewc@edu.pl")
-        sampleUser = User(sampleEmail!!, UserRole.ADMIN, "####", true)
+        sampleUser = User(sampleEmail, UserRole.ADMIN, "####", true)
     }
 
     @Test
-    @Throws(DuplicatedEmailException::class)
-    fun GivenValidUser_RegistrationShouldSuccess() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(null)
+    fun `Given valid user then registration should success`() {
+        every { userSearchPort.findByEmail(sampleEmail) } returns null
         userService.register(sampleUser)
-        Mockito.verify(userPersistencePort).add(ArgumentMatchers.eq(sampleUser))
+        verify(exactly = 1) { userPersistencePort.add(sampleUser) }
     }
 
     @Test
-    fun GivenUser_With_DuplicatedEmail_RegistrationShouldFail() {
-        val duplicatedUser = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(duplicatedUser)
-        Assertions.assertThrows(DuplicatedEmailException::class.java) { userService.register(sampleUser) }
-        Mockito.verify(userPersistencePort, Mockito.never()).add(ArgumentMatchers.any())
+    fun `Given user with duplicated email then registration should fail`() {
+        val duplicatedUser = User(sampleEmail, UserRole.CLIENT, "password", true)
+        every { userSearchPort.findByEmail(sampleEmail) } returns duplicatedUser
+        assertThrows(DuplicatedEmailException::class.java) { userService.register(sampleUser) }
+        verify(exactly = 0) { userPersistencePort.add(any()) }
     }
 
     @Test
-    @Throws(UserNotFoundException::class)
-    fun GivenValidEmailAndNewRole_ShouldSuccess() {
-        val user = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(user)
+    fun `Given valid email and new role then changeRole should success`() {
+        val user = User(sampleEmail, UserRole.CLIENT, "password", true)
+        every { userSearchPort.findByEmail(sampleEmail) } returns user
         userService.changeRole(sampleEmail, UserRole.ADMIN)
-        Mockito.verify(userPersistencePort).update(ArgumentMatchers.eq(user))
+        verify(exactly = 1) { userPersistencePort.update(user) }
         Assertions.assertEquals(UserRole.ADMIN, user.role)
     }
 
     @Test
-    @Throws(UserNotFoundException::class)
-    fun GivenValidEmailAndSameRole_ShouldSuccess_ButNotPersist() {
-        val user = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(user)
+    fun `Given valid email and same role then changeRole should success but not persist`() {
+        val user = User(sampleEmail, UserRole.CLIENT, "password", true)
+        every { userSearchPort.findByEmail(sampleEmail) } returns user
         userService.changeRole(sampleEmail, UserRole.CLIENT)
-        Mockito.verify(userPersistencePort, Mockito.never()).update(ArgumentMatchers.any())
+        verify(exactly = 0) { userPersistencePort.update(any()) }
         Assertions.assertEquals(UserRole.CLIENT, user.role)
     }
 
     @Test
-    fun GivenInvalidEmailAndAnyRole_ShouldFail() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(null)
-        Assertions.assertThrows(UserNotFoundException::class.java) {
+    fun `Given invalid email and any role then changeRole should fail`() {
+        every { userSearchPort.findByEmail(sampleEmail) } returns null
+        assertThrows(UserNotFoundException::class.java) {
             userService.changeRole(
                 sampleEmail,
                 UserRole.CLIENT
             )
         }
-        Mockito.verify(userPersistencePort, Mockito.never()).update(ArgumentMatchers.any())
+        verify(exactly = 0) { userPersistencePort.update(any()) }
     }
 
     @Test
-    fun GivenInvalidEmailAndAnyState_ShouldFail() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(null)
-        Assertions.assertThrows(UserNotFoundException::class.java) { userService.changeState(sampleEmail, true) }
-        Mockito.verify(userPersistencePort, Mockito.never()).update(ArgumentMatchers.any())
+    fun `Given invalid email and any state then changeState should fail`() {
+        every { userSearchPort.findByEmail(sampleEmail) } returns null
+        assertThrows(UserNotFoundException::class.java) { userService.changeState(sampleEmail, true) }
+        verify(exactly = 0) { userPersistencePort.update(any()) }
     }
 
     @Test
     @Throws(UserNotFoundException::class)
-    fun GivenValidEmailAndSameState_ShouldSuccess_ButNotPersist() {
-        val user = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(user)
+    fun `Given valid email and same state then changeState should success but not persist`() {
+        val user = User(sampleEmail, UserRole.CLIENT, "password", true)
+        every { userSearchPort.findByEmail(sampleEmail) } returns user
         userService.changeState(sampleEmail, true)
-        Mockito.verify(userPersistencePort, Mockito.never()).update(ArgumentMatchers.any())
+        verify(exactly = 0) { userPersistencePort.update(any()) }
         Assertions.assertTrue(user.active)
     }
 
     @Test
     @Throws(UserNotFoundException::class)
-    fun GivenValidEmailAndNewState_ShouldSuccess() {
-        val user = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(user)
+    fun `Given valid email and new state then changeState should success`() {
+        val user = User(sampleEmail, UserRole.CLIENT, "password", true)
+        every { (userSearchPort.findByEmail(sampleEmail)) } returns (user)
         userService.changeState(sampleEmail, false)
-        Mockito.verify(userPersistencePort).update(ArgumentMatchers.eq(user))
+        verify(exactly = 1) { (userPersistencePort).update(user) }
         Assertions.assertFalse(user.active)
     }
 
     @Test
     @Throws(UserNotFoundException::class)
-    fun GivenValidEmail_ShouldReturnUserDetails() {
-        val user = User(sampleEmail!!, UserRole.CLIENT, "wwww", true)
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(user)
-        val result = userService.getDetails(sampleEmail!!)
-        Assertions.assertSame(result, user)
+    fun `Given valid email then getDetails should return user details`() {
+        val user = User(sampleEmail, UserRole.CLIENT, "password", true)
+        every { (userSearchPort.findByEmail(sampleEmail)) }returns (user)
+        val result = userService.getDetails(sampleEmail)
         Assertions.assertEquals(result, user)
     }
 
     @Test
-    fun GivenInvalidEmail_ShouldFail() {
-        Mockito.`when`(userSearchPort.findByEmail(ArgumentMatchers.eq(sampleEmail))).thenReturn(null)
-        Assertions.assertThrows(UserNotFoundException::class.java) { userService.getDetails(sampleEmail!!) }
+    fun `Given invalid email then getDetails should fail`() {
+        every { userSearchPort.findByEmail(sampleEmail) }returns null
+        assertThrows(UserNotFoundException::class.java) { userService.getDetails(sampleEmail) }
     }
 }
