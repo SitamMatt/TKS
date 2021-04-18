@@ -2,13 +2,13 @@ package rest.api.controllers;
 
 
 import application.helpers.ErrorExtensionsKt;
-import rest.api.adapters.UserResourceAdapter;
 import domain.exceptions.DuplicatedEmailException;
 import domain.exceptions.TypeValidationFailedException;
 import domain.exceptions.UserNotFoundException;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import rest.api.adapters.UserResourceAdapter;
 import rest.api.dto.UserDto;
 import rest.api.mappers.UserMapperDto;
-import org.eclipse.microprofile.openapi.annotations.Operation;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

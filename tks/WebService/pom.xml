@@ -57,6 +57,23 @@
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.microshed</groupId>
+            <artifactId>microshed-testing-testcontainers</artifactId>
+            <version>0.9.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.microshed</groupId>
+            <artifactId>microshed-testing-payara-server</artifactId>
+            <version>0.9.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.30</version>
+        </dependency>
     </dependencies>
 
 

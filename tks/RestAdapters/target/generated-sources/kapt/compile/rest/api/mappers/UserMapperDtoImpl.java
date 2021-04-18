@@ -10,7 +10,7 @@ import rest.api.dto.UserDto;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-15T22:59:44+0200",
+    date = "2021-04-18T01:30:58+0200",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 11.0.9 (Oracle Corporation)"
 )
 public class UserMapperDtoImpl implements UserMapperDto {

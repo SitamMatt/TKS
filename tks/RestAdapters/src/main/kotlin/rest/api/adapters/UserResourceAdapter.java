@@ -6,7 +6,7 @@ import domain.exceptions.TypeValidationFailedException;
 import domain.exceptions.UserNotFoundException;
 import rest.api.mappers.UserMapperDto;
 import domain.model.values.Email;
-import ports.primary.IUserService;
+import ports.primary.combined.IUserService;
 
 import javax.inject.Inject;
 import java.util.Objects;

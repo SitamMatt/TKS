@@ -1,7 +1,7 @@
 package webservice.mappers
 
 import common.mappers.AccessionNumberMapper
-import domain.model.Resource
+import domain.model.traits.Resource
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 import webservice.dto.LibraryItemSoapDto

@@ -19,8 +19,8 @@ public class UserRepositoryTest {
 
     @BeforeEach
     public void init(){
-        sampleUser1 = new UserEntity("mszewc@edu.pl", "ADMIN", "####", true);
-        sampleUser2 = new UserEntity("mzab@edu.pl", "CLIENT", "####", true);
+        sampleUser1 = new UserEntity(null, "mszewc@edu.pl", "ADMIN", "####", true);
+        sampleUser2 = new UserEntity(null, "mzab@edu.pl", "CLIENT", "####", true);
         store = new ArrayList<>();
         repository = new RepositoryBase<>(store);
     }

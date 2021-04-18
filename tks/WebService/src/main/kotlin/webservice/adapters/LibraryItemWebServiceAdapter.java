@@ -3,7 +3,7 @@ package webservice.adapters;
 import domain.exceptions.ResourceNotFoundException;
 import domain.exceptions.TypeValidationFailedException;
 import domain.model.values.AccessionNumber;
-import ports.primary.IResourceService;
+import ports.primary.combined.IResourceService;
 import webservice.dto.LibraryItemSoapDto;
 import webservice.mappers.IResourceMapper;
 

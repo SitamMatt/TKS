@@ -1,45 +1,77 @@
 package repository.mappers
 
-import common.mappers.AccessionNumberMapper
-import repository.data.AbstractResourceEntity
-import org.mapstruct.MappingTarget
-import repository.data.BookEntity
-import repository.data.MagazineEntity
 import domain.model.Book
 import domain.model.Magazine
-import domain.model.Resource
-import org.mapstruct.Mapper
-import org.mapstruct.factory.Mappers
+import domain.model.traits.Resource
+import domain.model.values.AccessionNumber
+import repository.data.AbstractResourceEntity
+import repository.data.BookEntity
+import repository.data.MagazineEntity
 
-@Mapper(uses = [AccessionNumberMapper::class])
-interface ResourceMapper {
-    @JvmDefault
-    fun mapEntityToDomainObject(entity: AbstractResourceEntity?): Resource? = when(entity){
-        is BookEntity -> mapEntityToDomainObject(entity)
-        is MagazineEntity -> mapEntityToDomainObject(entity)
-        else -> throw Exception() // todo specify exact name
-    }
-    @JvmDefault
-    fun mapDomainObjectToEntity(resource: Resource?): AbstractResourceEntity? = when(resource){
-        is Book -> mapDomainObjectToEntity(resource)
-        is Magazine -> mapDomainObjectToEntity(resource)
-        else -> throw Exception() // todo specify exact name
-    }
-    @JvmDefault
-    fun mapDomainObjectToEntity(resource: Resource?, @MappingTarget entity: AbstractResourceEntity?) = when{
-        entity is BookEntity && resource is Book -> mapDomainObjectToEntity(resource, entity)
-        entity is MagazineEntity && resource is Magazine -> mapDomainObjectToEntity(resource, entity)
+class ResourceMapper {
+    fun mapEntityToDomainObject(src: AbstractResourceEntity?): Resource? = when (src) {
+        is BookEntity -> mapEntityToDomainObject(src)
+        is MagazineEntity -> mapEntityToDomainObject(src)
         else -> throw Exception() // todo specify exact name
     }
 
-    fun mapEntityToDomainObject(entity: BookEntity?): Book?
-    fun mapDomainObjectToEntity(resource: Book?): BookEntity?
-    fun mapDomainObjectToEntity(resource: Book?, @MappingTarget entity: BookEntity?)
-    fun mapEntityToDomainObject(entity: MagazineEntity?): Magazine?
-    fun mapDomainObjectToEntity(resource: Magazine?): MagazineEntity?
-    fun mapDomainObjectToEntity(resource: Magazine?, @MappingTarget entity: MagazineEntity?)
+    fun mapDomainObjectToEntity(src: Resource?): AbstractResourceEntity? = when (src) {
+        is Book -> mapDomainObjectToEntity(src)
+        is Magazine -> mapDomainObjectToEntity(src)
+        else -> throw Exception() // todo specify exact name
+    }
+
+    fun mapDomainObjectToEntity(src: Resource?, target: AbstractResourceEntity) = when (target) {
+        is BookEntity -> mapDomainObjectToEntity(src, target)
+        is MagazineEntity -> mapDomainObjectToEntity(src, target)
+        else -> throw Exception() // todo specify exact name
+    }
+
+    fun mapEntityToDomainObject(src: BookEntity?): Book? = if (src == null) null else Book(
+        AccessionNumber(src.accessionNumber!!),
+        src.title,
+        src.author
+    )
+
+    fun mapDomainObjectToEntity(src: Book?): BookEntity? = if (src == null) null else BookEntity(
+        null,
+        src.accessionNumber?.value,
+        src.title,
+        src.author
+    )
+
+    fun mapDomainObjectToEntity(src: Resource?, target: BookEntity) {
+        src ?: return
+        if (src is Book) target.apply {
+            accessionNumber = src.accessionNumber?.value
+            author = src.author
+            title = src.title
+        } else throw Exception() // todo specify exact name
+    }
+
+    fun mapEntityToDomainObject(src: MagazineEntity?): Magazine? = if (src == null) null else Magazine(
+        AccessionNumber(src.accessionNumber!!),
+        src.title,
+        src.publisher
+    )
+
+    fun mapDomainObjectToEntity(src: Magazine?): MagazineEntity? = if (src == null) null else MagazineEntity(
+        null,
+        src.accessionNumber?.value,
+        src.title,
+        src.publisher
+    )
+
+    fun mapDomainObjectToEntity(src: Resource?, target: MagazineEntity) {
+        src ?: return
+        if (src is Magazine) target.apply {
+            accessionNumber = src.accessionNumber?.value
+            title = src.title
+            publisher = src.publisher
+        } else throw Exception() // todo specify exact name
+    }
 
     companion object {
-        val INSTANCE: ResourceMapper = Mappers.getMapper(ResourceMapper::class.java)
+        val INSTANCE: ResourceMapper = ResourceMapper()
     }
 }

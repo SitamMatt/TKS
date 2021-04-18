@@ -2,10 +2,11 @@ package repository.data
 
 import java.util.*
 
-data class RentEntity(
+class RentEntity(
+    override var guid: UUID?,
     var id: UUID?,
-    val startDate: Date,
+    var startDate: Date,
     var endDate: Date?,
     var user: UserEntity?,
-    var resource: AbstractResourceEntity?
+    var resource: AbstractResourceEntity?,
 ) : EntityBase();

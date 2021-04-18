@@ -6,7 +6,7 @@ import domain.exceptions.TypeValidationFailedException;
 import domain.exceptions.UnknownResourceException;
 import rest.api.mappers.LibraryItemMapper;
 import domain.model.values.AccessionNumber;
-import ports.primary.IResourceService;
+import ports.primary.combined.IResourceService;
 
 import javax.inject.Inject;
 

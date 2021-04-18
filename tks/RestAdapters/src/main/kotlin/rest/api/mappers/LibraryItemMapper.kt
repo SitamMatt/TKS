@@ -4,7 +4,7 @@ import common.mappers.AccessionNumberMapper
 import rest.api.dto.LibraryItemDto
 import domain.model.Book
 import domain.model.Magazine
-import domain.model.Resource
+import domain.model.traits.Resource
 import org.mapstruct.Mapper
 import org.mapstruct.factory.Mappers
 
