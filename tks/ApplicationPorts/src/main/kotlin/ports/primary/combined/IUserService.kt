@@ -1,4 +1,6 @@
-package ports.primary;
+package ports.primary.combined
 
-public interface IUserService extends UserQueryPort, UserRegisterCommandPort {
-}
+import ports.primary.UserQueryPort
+import ports.primary.UserRegisterCommandPort
+
+interface IUserService : UserQueryPort, UserRegisterCommandPort

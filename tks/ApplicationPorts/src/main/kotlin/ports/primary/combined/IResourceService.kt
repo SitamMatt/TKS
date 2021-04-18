@@ -1,4 +1,6 @@
-package ports.primary;
+package ports.primary.combined
 
-public interface IResourceService extends ResourceQueryPort, ResourceManageCommandPort{
-}
+import ports.primary.ResourceManageCommandPort
+import ports.primary.ResourceQueryPort
+
+interface IResourceService : ResourceQueryPort, ResourceManageCommandPort

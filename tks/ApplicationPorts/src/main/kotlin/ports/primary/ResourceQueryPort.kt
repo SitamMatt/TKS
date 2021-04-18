@@ -1,9 +1,10 @@
-package ports.primary;
+package ports.primary
 
-import domain.exceptions.ResourceNotFoundException;
-import domain.model.Resource;
-import domain.model.values.AccessionNumber;
+import domain.exceptions.ResourceNotFoundException
+import domain.model.traits.Resource
+import domain.model.values.AccessionNumber
 
-public interface ResourceQueryPort {
-    Resource getDetails(AccessionNumber accessionNumber) throws ResourceNotFoundException;
+interface ResourceQueryPort {
+    @Throws(ResourceNotFoundException::class)
+    fun getDetails(accessionNumber: AccessionNumber): Resource?
 }

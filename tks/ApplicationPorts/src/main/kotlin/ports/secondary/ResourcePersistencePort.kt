@@ -1,10 +1,9 @@
-package ports.secondary;
+package ports.secondary
 
-import domain.model.Resource;
-import org.jetbrains.annotations.NotNull;
+import domain.model.traits.Resource
 
-public interface ResourcePersistencePort {
-    void add(@NotNull Resource resource);
-    void save(@NotNull Resource resource);
-    void remove(@NotNull Resource resource);
+interface ResourcePersistencePort {
+    fun add(resource: Resource)
+    fun save(resource: Resource)
+    fun remove(resource: Resource)
 }

@@ -1,4 +1,6 @@
-package ports.primary;
+package ports.primary.combined
 
-public interface IRentService extends RentQueryPort, ResourceRentCommandPort{
-}
+import ports.primary.RentQueryPort
+import ports.primary.ResourceRentCommandPort
+
+interface IRentService : RentQueryPort, ResourceRentCommandPort

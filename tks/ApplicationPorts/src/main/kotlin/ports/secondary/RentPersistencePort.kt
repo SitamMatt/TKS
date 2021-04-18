@@ -1,7 +1,7 @@
-package ports.secondary;
+package ports.secondary
 
-import domain.model.Rent;
+import domain.model.Rent
 
-public interface RentPersistencePort {
-    void save(Rent rent);
+interface RentPersistencePort {
+    fun save(rent: Rent)
 }

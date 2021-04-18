@@ -1,9 +1,9 @@
-package ports.primary;
+package ports.primary
 
-import domain.exceptions.DuplicatedEmailException;
-import domain.model.User;
+import domain.exceptions.DuplicatedEmailException
+import domain.model.User
 
-public interface UserRegisterCommandPort {
-
-    void register(User user) throws DuplicatedEmailException;
+interface UserRegisterCommandPort {
+    @Throws(DuplicatedEmailException::class)
+    fun register(user: User)
 }
