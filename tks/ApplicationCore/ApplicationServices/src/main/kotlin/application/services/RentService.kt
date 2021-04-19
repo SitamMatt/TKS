@@ -26,7 +26,7 @@ open class RentService(
     )
     override fun rent(email: Email, resourceId: AccessionNumber) {
         val (userEmail, _, _, active) = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
-        resourceSearchPort.findById(resourceId) ?: throw ResourceNotFoundException()
+        resourceSearchPort.findByAccessionNumber(resourceId) ?: throw ResourceNotFoundException()
         if (!active) throw UserNotActiveException()
         val existingRent = rentSearchPort.findActiveByResourceId(resourceId)
         if (existingRent != null) throw ResourceAlreadyRentException()
@@ -42,7 +42,7 @@ open class RentService(
     )
     override fun returnResource(email: Email, resourceId: AccessionNumber) {
         val (userEmail) = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
-        resourceSearchPort.findById(resourceId) ?: throw ResourceNotFoundException()
+        resourceSearchPort.findByAccessionNumber(resourceId) ?: throw ResourceNotFoundException()
         val rent = rentSearchPort.findActiveByResourceId(resourceId) ?: throw ResourceNotRentException()
         if (rent.userEmail != userEmail) throw InvalidUserException()
         rent.endDate = Date()

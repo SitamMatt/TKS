@@ -68,7 +68,7 @@ internal class RentServiceTest {
     @Test
     fun `Given invalid resource id then rent should fail`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
-        every { resourceSearchPort.findById(sampleResId) } returns null
+        every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns null
         Assertions.assertThrows(ResourceNotFoundException::class.java) {
             rentService.rent(
                 sampleUser.email, sampleResource.accessionNumber!!
@@ -81,7 +81,7 @@ internal class RentServiceTest {
     fun `Given inactive user email then rent should fail`() {
         sampleUser.active = false
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
-        every { resourceSearchPort.findById(sampleResId) } returns sampleResource
+        every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns sampleResource
         Assertions.assertThrows(UserNotActiveException::class.java) {
             rentService.rent(
                 sampleUser.email, sampleResource.accessionNumber!!
@@ -93,7 +93,7 @@ internal class RentServiceTest {
     @Test
     fun `Given already rent resource id then rent should fail`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
-        every { resourceSearchPort.findById(sampleResId) } returns sampleResource
+        every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns sampleResource
         every { rentSearchPort.findActiveByResourceId(sampleResId) } returns sampleRent
         Assertions.assertThrows(ResourceAlreadyRentException::class.java) {
             rentService.rent(
@@ -117,7 +117,7 @@ internal class RentServiceTest {
     @Test
     fun `Given invalid resource id then returnResource should fail`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
-        every { resourceSearchPort.findById(sampleResId) } returns null
+        every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns null
         Assertions.assertThrows(ResourceNotFoundException::class.java) {
             rentService.returnResource(
                 sampleEmail,
@@ -129,7 +129,7 @@ internal class RentServiceTest {
     @Test
     fun `Given not rent resource id returnResource should fail`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
-        every { resourceSearchPort.findById(sampleResId) } returns sampleResource
+        every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns sampleResource
         every { rentSearchPort.findActiveByResourceId(sampleResId) } returns null
         Assertions.assertThrows(ResourceNotRentException::class.java) {
             rentService.returnResource(
@@ -142,7 +142,7 @@ internal class RentServiceTest {
     @Test
     fun `Given resource rent by other user then returnResource should fail`() {
         every { userSearchPort.findByEmail((sampleEmail)) } returns sampleUser
-        every { resourceSearchPort.findById((sampleResId)) } returns sampleResource
+        every { resourceSearchPort.findByAccessionNumber((sampleResId)) } returns sampleResource
         sampleRent = Rent(sampleRentId, Date(), null, sampleEmail2, sampleResId)
         every { rentSearchPort.findActiveByResourceId(sampleResId) } returns sampleRent
         Assertions.assertThrows(InvalidUserException::class.java) {

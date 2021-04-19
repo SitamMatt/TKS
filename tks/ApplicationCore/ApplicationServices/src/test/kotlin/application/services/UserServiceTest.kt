@@ -19,7 +19,7 @@ import ports.secondary.UserSearchPort
 
 
 @ExtendWith(MockKExtension::class)
-internal class UserServiceTest {
+class UserServiceTest {
     private lateinit var userService: UserService
     private lateinit var sampleUser: User
     private val sampleEmail: Email = Email("mszewc@edu.pl")
@@ -40,7 +40,7 @@ internal class UserServiceTest {
     fun `Given valid user then registration should success`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns null
         userService.register(sampleUser)
-        verify(exactly = 1) { userPersistencePort.add(sampleUser) }
+        verify(exactly = 1) { userPersistencePort.save(sampleUser) }
     }
 
     @Test
@@ -48,7 +48,7 @@ internal class UserServiceTest {
         val duplicatedUser = User(sampleEmail, UserRole.CLIENT, "password", true)
         every { userSearchPort.findByEmail(sampleEmail) } returns duplicatedUser
         assertThrows(DuplicatedEmailException::class.java) { userService.register(sampleUser) }
-        verify(exactly = 0) { userPersistencePort.add(any()) }
+        verify(exactly = 0) { userPersistencePort.save(any()) }
     }
 
     @Test
@@ -56,7 +56,7 @@ internal class UserServiceTest {
         val user = User(sampleEmail, UserRole.CLIENT, "password", true)
         every { userSearchPort.findByEmail(sampleEmail) } returns user
         userService.changeRole(sampleEmail, UserRole.ADMIN)
-        verify(exactly = 1) { userPersistencePort.update(user) }
+        verify(exactly = 1) { userPersistencePort.save(user) }
         Assertions.assertEquals(UserRole.ADMIN, user.role)
     }
 
@@ -65,7 +65,7 @@ internal class UserServiceTest {
         val user = User(sampleEmail, UserRole.CLIENT, "password", true)
         every { userSearchPort.findByEmail(sampleEmail) } returns user
         userService.changeRole(sampleEmail, UserRole.CLIENT)
-        verify(exactly = 0) { userPersistencePort.update(any()) }
+        verify(exactly = 0) { userPersistencePort.save(any()) }
         Assertions.assertEquals(UserRole.CLIENT, user.role)
     }
 
@@ -78,14 +78,14 @@ internal class UserServiceTest {
                 UserRole.CLIENT
             )
         }
-        verify(exactly = 0) { userPersistencePort.update(any()) }
+        verify(exactly = 0) { userPersistencePort.save(any()) }
     }
 
     @Test
     fun `Given invalid email and any state then changeState should fail`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns null
         assertThrows(UserNotFoundException::class.java) { userService.changeState(sampleEmail, true) }
-        verify(exactly = 0) { userPersistencePort.update(any()) }
+        verify(exactly = 0) { userPersistencePort.save(any()) }
     }
 
     @Test
@@ -94,7 +94,7 @@ internal class UserServiceTest {
         val user = User(sampleEmail, UserRole.CLIENT, "password", true)
         every { userSearchPort.findByEmail(sampleEmail) } returns user
         userService.changeState(sampleEmail, true)
-        verify(exactly = 0) { userPersistencePort.update(any()) }
+        verify(exactly = 0) { userPersistencePort.save(any()) }
         Assertions.assertTrue(user.active)
     }
 
@@ -104,7 +104,7 @@ internal class UserServiceTest {
         val user = User(sampleEmail, UserRole.CLIENT, "password", true)
         every { (userSearchPort.findByEmail(sampleEmail)) } returns (user)
         userService.changeState(sampleEmail, false)
-        verify(exactly = 1) { (userPersistencePort).update(user) }
+        verify(exactly = 1) { (userPersistencePort).save(user) }
         Assertions.assertFalse(user.active)
     }
 

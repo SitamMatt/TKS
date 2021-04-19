@@ -27,7 +27,7 @@ open class ResourcesService(
         when(resource){
             is Book, is Magazine -> {
                 resource.accessionNumber = AccessionNumberHelper.generate()
-                resourcePersistencePort.add(resource)
+                resourcePersistencePort.save(resource)
             }
             else -> throw UnknownResourceException()
         }
@@ -35,13 +35,13 @@ open class ResourcesService(
 
     override fun update(resource: Resource){
         if(resource.accessionNumber == null) throw ResourceNotFoundException()
-        val original = resourceSearchPort.findById(resource.accessionNumber!!) ?: throw ResourceNotFoundException()
+        val original = resourceSearchPort.findByAccessionNumber(resource.accessionNumber!!) ?: throw ResourceNotFoundException()
         if(resource::class != original::class) throw IncompatibleResourceFormatException()
         resourcePersistencePort.save(resource)
     }
 
     override fun remove(accessionNumber: AccessionNumber){
-        val resource = resourceSearchPort.findById(accessionNumber) ?: throw ResourceNotFoundException()
+        val resource = resourceSearchPort.findByAccessionNumber(accessionNumber) ?: throw ResourceNotFoundException()
         val rent = rentSearchPort.findActiveByResourceId(accessionNumber)
         if(rent != null) throw ResourceBlockedByRentException()
         resourcePersistencePort.remove(resource)
@@ -49,6 +49,6 @@ open class ResourcesService(
 
     @Throws(ResourceNotFoundException::class)
     override fun getDetails(accessionNumber: AccessionNumber): Resource {
-        return resourceSearchPort.findById(accessionNumber) ?: throw ResourceNotFoundException()
+        return resourceSearchPort.findByAccessionNumber(accessionNumber) ?: throw ResourceNotFoundException()
     }
 }

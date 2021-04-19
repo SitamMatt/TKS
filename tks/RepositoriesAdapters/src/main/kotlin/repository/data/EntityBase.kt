@@ -5,7 +5,11 @@ import java.util.*
 abstract class EntityBase {
     abstract var guid: UUID?
 
-    override fun equals(other: Any?): Boolean {
+    override fun hashCode(): Int {
+        return guid?.hashCode() ?: 0
+    }
+
+    final override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
@@ -14,9 +18,5 @@ abstract class EntityBase {
         if (guid != other.guid) return false
 
         return true
-    }
-
-    override fun hashCode(): Int {
-        return guid?.hashCode() ?: 0
     }
 }

@@ -1,58 +1,35 @@
-//package repository.adapters;
-//
-//import repository.data.AbstractResourceEntity;
-//import domain.model.values.AccessionNumber;
-//import ports.secondary.ResourcePersistencePort;
-//import ports.secondary.ResourceSearchPort;
-//import repository.mappers.ResourceMapper;
-//import domain.model.traits.Resource;
-//import org.jetbrains.annotations.NotNull;
-//import repository.repositories.RepositoryBase;
-//
-//import java.util.Objects;
-//
-//@Mappings({
-//        @Mapping(source = "programInstance", target = "title", qualifiedByName = "title"),
-//        @Mapping(source = "programInstance", target = "seriesName", qualifiedByName = "seriesName"),
-//        @Mapping(source = "programInstance", target = "season", qualifiedByName = "season"),
-//        @Mapping(source = "programInstance", target = "epNumber", qualifiedByName = "epNumber"),
-//})
-//public class ResourceRepositoryAdapter implements ResourcePersistencePort, ResourceSearchPort {
-//    private final RepositoryBase<AbstractResourceEntity> repository;
-//    private final ResourceMapper mapper;
-//
-//    public ResourceRepositoryAdapter(RepositoryBase<AbstractResourceEntity> repository, ResourceMapper mapper) {
-//        this.repository = repository;
-//        this.mapper = mapper;
-//    }
-//
-//    @Override
-//    public void add(@NotNull Resource resource) {
-//        var entity = mapper.mapDomainObjectToEntity(resource);
-//        repository.add(entity);
-//    }
-//
-//    @Override
-//    public void save(@NotNull Resource resource) {
-//        var accessionNumberValue = resource.getAccessionNumber().getValue();
-//        var entity = repository.find(x -> Objects.equals(x.getAccessionNumber(), accessionNumberValue));
-//        assert entity != null; // todo prepare proper exception
-//        mapper.mapDomainObjectToEntity(resource, entity);
-//        repository.update(entity);
-//    }
-//
-//    @Override
-//    public void remove(@NotNull Resource resource) {
-//        var accessionNumberValue = resource.getAccessionNumber().getValue();
-//        var entity = repository.find(x -> Objects.equals(x.getAccessionNumber(), accessionNumberValue));
-//        assert entity != null; // todo prepare proper exception
-//        repository.remove(entity);
-//    }
-//
-//    @Override
-//    public Resource findById(AccessionNumber accessionNumber) {
-//        var accessionNumberValue = accessionNumber.getValue();
-//        var entity = repository.find(x -> Objects.equals(x.getAccessionNumber(), accessionNumberValue));
-//        return mapper.mapEntityToDomainObject(entity);
-//    }
-//}
+package repository.adapters
+
+import domain.model.traits.Resource
+import domain.model.values.AccessionNumber
+import ports.secondary.ResourcePersistencePort
+import ports.secondary.ResourceSearchPort
+import repository.data.AbstractResourceEntity
+import repository.mappers.ResourceMapper
+import repository.repositories.IRepository
+
+class ResourceRepositoryAdapter(
+    private val repository: IRepository<AbstractResourceEntity>,
+    private val mapper: ResourceMapper
+) : ResourcePersistencePort, ResourceSearchPort {
+
+    override fun save(resource: Resource) {
+        val entity = repository.find { x: AbstractResourceEntity -> x.accessionNumber == resource.accessionNumber?.value }
+        if(entity == null){
+            repository.add(mapper.mapDomainObjectToEntity(resource)!!)
+        }else{
+            mapper.mapDomainObjectToEntity(resource, entity)
+            repository.update(entity)
+        }
+    }
+
+    override fun remove(resource: Resource) {
+        val entity = repository.find { x: AbstractResourceEntity -> x.accessionNumber == resource.accessionNumber?.value } ?: throw Exception()
+        repository.remove(entity)
+    }
+
+    override fun findByAccessionNumber(accessionNumber: AccessionNumber): Resource? {
+        val entity = repository.find { x: AbstractResourceEntity -> x.accessionNumber == accessionNumber.value }
+        return mapper.mapEntityToDomainObject(entity)
+    }
+}

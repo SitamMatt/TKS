@@ -4,5 +4,5 @@ import domain.model.Rent
 import domain.model.values.AccessionNumber
 
 interface RentSearchPort {
-    fun findActiveByResourceId(resourceId: AccessionNumber): Rent?
+    fun findActiveByResourceId(accessionNumber: AccessionNumber): Rent?
 }

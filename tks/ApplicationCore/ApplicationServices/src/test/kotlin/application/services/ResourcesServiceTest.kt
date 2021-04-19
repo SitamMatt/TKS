@@ -58,7 +58,7 @@ class ResourcesServiceTest {
     @Test
     fun `Given resource of valid type then create should success`() {
         resourcesService.create(sampleBook)
-        verify(exactly = 1) { (resourcePersistencePort).add(sampleBook) }
+        verify(exactly = 1) { (resourcePersistencePort).save(sampleBook) }
         Assertions.assertNotNull(sampleBook.accessionNumber)
     }
 
@@ -69,7 +69,7 @@ class ResourcesServiceTest {
                 invalidResource
             )
         }
-        verify(exactly = 0) { resourcePersistencePort.add(any()) }
+        verify(exactly = 0) { resourcePersistencePort.save(any()) }
     }
 
     @Test
@@ -78,13 +78,13 @@ class ResourcesServiceTest {
         Assertions.assertThrows(UnknownResourceException::class.java) {
             resourcesService.create(sampleBook)
         }
-        verify(exactly = 0) { resourcePersistencePort.add(any()) }
+        verify(exactly = 0) { resourcePersistencePort.save(any()) }
     }
 
     @Test
     fun `Given valid resource with not null id then update should success`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
-        every { (resourceSearchPort.findById(sampleAccessionNumber)) }.returns(sampleMagazine)
+        every { (resourceSearchPort.findByAccessionNumber(sampleAccessionNumber)) }.returns(sampleMagazine)
         resourcesService.update(sampleMagazine)
         verify(exactly = 1) { (resourcePersistencePort).save(sampleMagazine) }
     }
@@ -92,7 +92,7 @@ class ResourcesServiceTest {
     @Test
     fun `Given non existing resource then update should fail`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
-        every { resourceSearchPort.findById(sampleMagazine.accessionNumber!!) } returns null
+        every { resourceSearchPort.findByAccessionNumber(sampleMagazine.accessionNumber!!) } returns null
         Assertions.assertThrows(ResourceNotFoundException::class.java) {
             resourcesService.update(sampleMagazine)
         }
@@ -103,7 +103,7 @@ class ResourcesServiceTest {
     fun `Given different resource type then update should fail`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
         sampleBook.accessionNumber = sampleAccessionNumber
-        every { resourceSearchPort.findById(sampleAccessionNumber) } returns sampleMagazine
+        every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns sampleMagazine
         Assertions.assertThrows(
             IncompatibleResourceFormatException::class.java
         ) { resourcesService.update(sampleBook) }
@@ -113,7 +113,7 @@ class ResourcesServiceTest {
     @Test
     fun `Given valid resource rd then remove should success`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
-        every { resourceSearchPort.findById(sampleAccessionNumber) } returns sampleMagazine
+        every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns sampleMagazine
         every { rentSearchPort.findActiveByResourceId(sampleAccessionNumber) } returns null
         resourcesService.remove(sampleAccessionNumber)
         verify(exactly = 1) { resourcePersistencePort.remove(sampleMagazine) }
@@ -121,7 +121,7 @@ class ResourcesServiceTest {
 
     @Test
     fun `Given invalid resource id then remove should fail`() {
-        every { resourceSearchPort.findById(sampleAccessionNumber) } returns null
+        every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns null
         Assertions.assertThrows(ResourceNotFoundException::class.java) {
             resourcesService.remove(sampleAccessionNumber)
         }
@@ -131,7 +131,7 @@ class ResourcesServiceTest {
     @Test
     fun `Given rent resource id then remove should fail`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
-        every { resourceSearchPort.findById(sampleAccessionNumber) } returns sampleMagazine
+        every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns sampleMagazine
         every { rentSearchPort.findActiveByResourceId(sampleAccessionNumber) } returns Rent(
             UUID.randomUUID(),
             Date(),
@@ -148,17 +148,17 @@ class ResourcesServiceTest {
     @Test
     fun `Given valid resource id then getDetails should success`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
-        every { resourceSearchPort.findById(sampleMagazine.accessionNumber!!) } returns sampleMagazine
+        every { resourceSearchPort.findByAccessionNumber(sampleMagazine.accessionNumber!!) } returns sampleMagazine
 
         val result = resourcesService.getDetails(sampleMagazine.accessionNumber!!)
 
-        verify(exactly = 1) { resourceSearchPort.findById(sampleMagazine.accessionNumber!!) }
+        verify(exactly = 1) { resourceSearchPort.findByAccessionNumber(sampleMagazine.accessionNumber!!) }
         Assertions.assertEquals(sampleMagazine, result)
     }
 
     @Test
     fun `Given invalid resource id then getDetails should fail`() {
-        every { resourceSearchPort.findById(sampleAccessionNumber) } returns null
+        every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns null
         Assertions.assertThrows(ResourceNotFoundException::class.java) {
             resourcesService.getDetails(sampleAccessionNumber)
         }

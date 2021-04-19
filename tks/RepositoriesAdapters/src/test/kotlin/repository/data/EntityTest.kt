@@ -6,7 +6,7 @@ import java.util.UUID
 
 class EntityTest {
     @Test
-    fun EqualityTest() {
+    fun equalityTest() {
         val sampleUser1 = UserEntity(null, "mszewc@edu.pl", "ADMIN", "####", true)
         val sampleUser2 = UserEntity(null, "mszewc@edu.pl", "ADMIN", "####", true)
         Assertions.assertEquals(sampleUser2, sampleUser1)
@@ -16,7 +16,7 @@ class EntityTest {
         Assertions.assertEquals(sampleUser2, sampleUser1)
         Assertions.assertNotSame(sampleUser1, sampleUser2)
         sampleUser2.email = "mzab@edu.pl"
-        Assertions.assertNotEquals(sampleUser1, sampleUser2)
+        Assertions.assertEquals(sampleUser1, sampleUser2)
         Assertions.assertNotSame(sampleUser1, sampleUser2)
     }
 }

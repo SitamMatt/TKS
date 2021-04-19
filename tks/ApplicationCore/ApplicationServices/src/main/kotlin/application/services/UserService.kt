@@ -18,7 +18,7 @@ open class UserService(
     override fun register(user: User) {
         val duplicate = userSearchPort.findByEmail(user.email)
         if (duplicate != null) throw DuplicatedEmailException()
-        userPersistencePort.add(user)
+        userPersistencePort.save(user)
     }
 
     @Throws(UserNotFoundException::class)
@@ -26,7 +26,7 @@ open class UserService(
         val user = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
         if (user.role != role) {
             user.role = role
-            userPersistencePort.update(user)
+            userPersistencePort.save(user)
         }
     }
 
@@ -35,7 +35,7 @@ open class UserService(
         val user = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
         if (!user.active == state) {
             user.active = state
-            userPersistencePort.update(user)
+            userPersistencePort.save(user)
         }
     }
 
