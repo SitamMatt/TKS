@@ -50,7 +50,7 @@ class ResourceRepositoryAdapterTest {
     @Test
     fun `Given invalid accessionNumber, adapter should return null`() {
         every { repository.find(any()) } returns null
-        assertThrows<Exception> { adapter.findByAccessionNumber(AccessionNumber("EEEE-254")) }
+        assertNull(adapter.findByAccessionNumber(AccessionNumber("EEEE-254")))
         verify(exactly = 1) { repository.find(any()) }
     }
 

@@ -152,4 +152,18 @@ internal class RentServiceTest {
             )
         }
     }
+
+    @Test
+    fun `Given valid id then getDetails should return rent`() {
+        val rent = Rent(sampleRentId, Date(), null, sampleEmail, sampleResId)
+        every { (rentSearchPort.getById(sampleRentId)) }returns rent
+        val result = rentService.getDetails(sampleRentId)
+        Assertions.assertEquals(result, rent)
+    }
+
+    @Test
+    fun `Given invalid id then getDetails should fail`() {
+        every { rentSearchPort.getById(sampleRentId) }returns null
+        Assertions.assertThrows(RentNotFoundException::class.java) { rentService.getDetails(sampleRentId) }
+    }
 }

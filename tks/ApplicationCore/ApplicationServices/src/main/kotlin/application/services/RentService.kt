@@ -48,4 +48,9 @@ open class RentService(
         rent.endDate = Date()
         rentPersistencePort.save(rent)
     }
+
+    @Throws(RentNotFoundException::class)
+    override fun getDetails(id: UUID): Rent {
+        return rentSearchPort.getById(id) ?: throw RentNotFoundException();
+    }
 }

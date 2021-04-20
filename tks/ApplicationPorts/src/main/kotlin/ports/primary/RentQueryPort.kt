@@ -1,3 +1,10 @@
 package ports.primary
 
-interface RentQueryPort 
+import domain.exceptions.RentNotFoundException
+import domain.model.Rent
+import java.util.*
+
+interface RentQueryPort {
+    @Throws(RentNotFoundException::class)
+    fun getDetails(id: UUID): Rent
+}

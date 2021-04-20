@@ -12,13 +12,13 @@ class ResourceMapper {
     fun mapEntityToDomainObject(src: AbstractResourceEntity?): Resource? = when (src) {
         is BookEntity -> mapEntityToDomainObject(src)
         is MagazineEntity -> mapEntityToDomainObject(src)
-        else -> throw Exception() // todo specify exact name
+        else -> null
     }
 
     fun mapDomainObjectToEntity(src: Resource?): AbstractResourceEntity? = when (src) {
         is Book -> mapDomainObjectToEntity(src)
         is Magazine -> mapDomainObjectToEntity(src)
-        else -> throw Exception() // todo specify exact name
+        else -> null
     }
 
     fun mapDomainObjectToEntity(src: Resource?, target: AbstractResourceEntity) = when (target) {

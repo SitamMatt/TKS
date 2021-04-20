@@ -9,6 +9,7 @@ import repository.data.RentEntity
 import repository.data.UserEntity
 import repository.mappers.RentMapper
 import repository.repositories.IRepository
+import java.util.*
 
 class RentRepositoryAdapter(
     private val repository: IRepository<RentEntity>,
@@ -36,6 +37,11 @@ class RentRepositoryAdapter(
     override fun findActiveByResourceId(accessionNumber: AccessionNumber): Rent? {
         val entity =
             repository.find { x: RentEntity -> x.resource?.accessionNumber == accessionNumber.value && x.endDate == null }
+        return mapper.mapEntityToDomainObject(entity)
+    }
+
+    override fun getById(id: UUID): Rent? {
+        val entity = repository.find { x: RentEntity -> x.id == id }
         return mapper.mapEntityToDomainObject(entity)
     }
 }

@@ -90,4 +90,25 @@ class RentRepositoryAdapterTest {
         verify(exactly = 0) { rentRepository.add(any()) }
         verify(exactly = 1) { rentRepository.update(any()) }
     }
+
+    @Test
+    fun `Given valid id, adapter should return proper Rent`() {
+        val guid = UUID.randomUUID()
+        val userEntity = UserEntity(UUID.randomUUID(), "mszewc@edu.pl", "ADMIN", "password", true)
+        val resourceEntity = BookEntity(UUID.randomUUID(), "EEEE-254", "Diuna", "Frank Herbert")
+        val entity = RentEntity(UUID.randomUUID(), guid, Date(), null, userEntity, resourceEntity)
+        every { rentRepository.find(any()) } returns entity
+        val rent = adapter.getById(guid)
+        assertNotNull(rent)
+        verify(exactly = 1) { rentRepository.find(any()) }
+    }
+
+    @Test
+    fun `Given id that not exist, adapter should return null`() {
+        val guid = UUID.randomUUID()
+        every { rentRepository.find(any()) } returns null
+        val rent = adapter.getById(guid)
+        assertNull(rent)
+        verify(exactly = 1) { rentRepository.find(any()) }
+    }
 }

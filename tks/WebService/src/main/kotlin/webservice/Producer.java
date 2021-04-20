@@ -12,19 +12,20 @@ import repository.adapters.RentRepositoryAdapter;
 import repository.adapters.ResourceRepositoryAdapter;
 import repository.adapters.UserRepositoryAdapter;
 import repository.data.AbstractResourceEntity;
+import repository.data.BookEntity;
 import repository.data.RentEntity;
 import repository.data.UserEntity;
 import repository.mappers.RentMapper;
 import repository.mappers.ResourceMapper;
 import repository.mappers.UserMapper;
 import repository.repositories.RepositoryBase;
-import webservice.mappers.IResourceMapper;
-import webservice.mappers.IUserMapper;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 @ApplicationScoped
 public class Producer {
@@ -37,6 +38,11 @@ public class Producer {
     @Produces
     public ResourcesService produceResourceService(ResourcePersistencePort resourcePersistencePort, ResourceSearchPort resourceSearchPort, RentRepositoryAdapter rentRepositoryAdapter) {
         return new ResourcesService(resourcePersistencePort, resourceSearchPort, rentRepositoryAdapter);
+    }
+
+    @Produces
+    public RentService produceRentService(ResourceSearchPort resourceSearchPort, RentRepositoryAdapter rentRepositoryAdapter, UserSearchPort userSearchPort) {
+        return new RentService(rentRepositoryAdapter, rentRepositoryAdapter, userSearchPort, resourceSearchPort);
     }
 
     @Produces
@@ -59,10 +65,27 @@ public class Producer {
         return new RentRepositoryAdapter(rentRepository, resourceRepository, userRepository, rentMapper);
     }
 
+    BookEntity book = new BookEntity(
+            UUID.randomUUID(),
+            "EEEE-254",
+            "Diuna",
+            "Frank Herbert"
+    );
+
+    UserEntity user = new UserEntity(
+            UUID.randomUUID(),
+            "mszewc@edu.pl",
+            "ADMIN",
+            "password",
+            true
+    );
+
+
     @Produces
     @Singleton
     public RepositoryBase<UserEntity> produceUserRepository() {
         var list = new ArrayList<UserEntity>();
+        list.add(user);
         return new RepositoryBase<>(list);
     }
 
@@ -70,6 +93,7 @@ public class Producer {
     @Singleton
     public RepositoryBase<AbstractResourceEntity> produceResourceRepository() {
         var list = new ArrayList<AbstractResourceEntity>();
+        list.add(book);
         return new RepositoryBase<>(list);
     }
 
@@ -77,6 +101,11 @@ public class Producer {
     @Singleton
     public RepositoryBase<RentEntity> produceRentRepository() {
         var list = new ArrayList<RentEntity>();
+        list.add(new RentEntity(
+                UUID.randomUUID(),
+                UUID.fromString("8245c01f-0a67-4f7a-b184-4af7534bb930"),
+                new Date(), null, user, book
+        ));
         return new RepositoryBase<>(list);
     }
 
@@ -84,6 +113,7 @@ public class Producer {
     public UserMapper produceUserMapper() {
         return UserMapper.Companion.getINSTANCE();
     }
+
 
     @Produces
     public ResourceMapper produceResourceMapper() {

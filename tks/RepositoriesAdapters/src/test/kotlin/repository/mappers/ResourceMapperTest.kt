@@ -45,7 +45,7 @@ class ResourceMapperTest {
 
     @Test
     fun nullableEntityToBookTest() {
-        assertThrows<Exception> { mapper.mapEntityToDomainObject(null as AbstractResourceEntity?) }
+        assertNull(mapper.mapEntityToDomainObject(null as AbstractResourceEntity?))
     }
 
     @Test
