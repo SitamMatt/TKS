@@ -1,27 +1,27 @@
 package rest.api.mappers
 
+import domain.exceptions.UnknownResourceException
 import rest.api.dto.LibraryItemDto
 import domain.model.Book
 import domain.model.Magazine
 import domain.model.traits.Resource
 import domain.model.values.AccessionNumber
-import org.mapstruct.factory.Mappers
 
 class LibraryItemMapper {
 
     fun toDomainObject(src: LibraryItemDto?): Resource = when(src?.type){
-        "Book" -> toBook(src)
-        "Magazine" -> toMagazine(src)
-        else -> throw Exception() // todo specify exact name
+        "BOOK" -> toBook(src)
+        "MAGAZINE" -> toMagazine(src)
+        else -> throw UnknownResourceException() // todo specify exact name
     }
 
     fun toBook(src: LibraryItemDto): Book = Book(
-        AccessionNumber(src.accessionNumber!!),
+        if (src.accessionNumber == null) null else AccessionNumber(src.accessionNumber!!),
         src.title!!,
         src.author!!
     )
     fun toMagazine(src: LibraryItemDto): Magazine = Magazine(
-        AccessionNumber(src.accessionNumber!!),
+        if (src.accessionNumber == null) null else AccessionNumber(src.accessionNumber!!),
         src.title!!,
         src.publisher!!
     )
@@ -29,7 +29,7 @@ class LibraryItemMapper {
     fun toDto(source: Resource): LibraryItemDto = when(source){
         is Book -> toDto(source)
         is Magazine -> toDto(source)
-        else -> throw Exception() // todo specify exact name
+        else -> throw UnknownResourceException() // todo specify exact name
     }
 
     fun toDto(src: Book): LibraryItemDto = LibraryItemDto(

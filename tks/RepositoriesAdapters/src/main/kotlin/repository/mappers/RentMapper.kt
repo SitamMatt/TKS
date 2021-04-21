@@ -3,7 +3,6 @@ package repository.mappers
 import domain.model.Rent
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
-import org.mapstruct.MappingTarget
 import repository.data.RentEntity
 
 class RentMapper {
@@ -25,7 +24,7 @@ class RentMapper {
         null
     )
 
-    fun mapDomainObjectToEntity(user: Rent?, @MappingTarget entity: RentEntity) {
+    fun mapDomainObjectToEntity(user: Rent?, entity: RentEntity) {
         user ?: return
         entity.apply {
             id = user.id

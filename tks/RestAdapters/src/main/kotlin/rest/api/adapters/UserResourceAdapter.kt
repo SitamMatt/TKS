@@ -21,7 +21,7 @@ class UserResourceAdapter @Inject constructor(
     }
 
     @Throws(TypeValidationFailedException::class, UserNotFoundException::class)
-    fun queryUser(email: String?): UserDto? {
+    fun queryUser(email: String?): UserDto {
         val emailObject = Email(email!!)
         val user = userService.getDetails(emailObject)
         return mapper.toDto(user!!)

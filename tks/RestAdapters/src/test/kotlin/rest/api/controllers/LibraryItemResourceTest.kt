@@ -6,6 +6,7 @@ import org.hamcrest.Matchers
 import org.hamcrest.core.Is
 import org.hamcrest.core.StringContains
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import rest.api.dto.ErrorDto
 import rest.api.dto.LibraryItemDto
@@ -15,7 +16,7 @@ class LibraryItemResourceTest {
 
     @Test
     fun `Given valid resource id should return resource` (){
-        val expected = LibraryItemDto("EEEE-254", "Diuna", "Frank Herbert")
+        val expected = LibraryItemDto("EEEE-254", "Diuna", "Frank Herbert", null, "BOOK")
 
         val response = RestAssured.given()
                 .port(8080)
@@ -58,33 +59,36 @@ class LibraryItemResourceTest {
 
     @Test
     fun `Given valid item resource, post should create new library item resource`(){
-        val model = LibraryItemDto("EEEE-154", "Elantris", "Brandon Sanderson", "MAG")
-        val expected = LibraryItemDto("EEEE-154", "Elantris", "Brandon Sanderson", "MAG")
+        val model = LibraryItemDto(null, "Elantris", "Brandon Sanderson", null, "BOOK")
+        val expected = LibraryItemDto(null, "Elantris", "Brandon Sanderson", null, "BOOK")
 
-        RestAssured.given()
+        val response1 = RestAssured.given()
                 .port(8080)
                 .baseUri("http://localhost/tks/api/library/item")
                 .contentType(ContentType.JSON)
                 .body(model)
                 .post()
-                .then()
-                .statusCode(201)
 
-        val response = RestAssured.given()
+        response1.then().statusCode(201)
+
+        val header = response1.headers["Location"]
+        assertNotNull(header)
+
+        val response2 = RestAssured.given()
                 .port(8080)
-                .baseUri("http://localhost/tks/api/library/item")
                 .contentType(ContentType.JSON)
-                .get("/EEEE-154")
+                .get(header.value)
 
-        response.then().statusCode(200)
-        val body = response.body.`as`<LibraryItemDto>(LibraryItemDto::class.java)
+        response2.then().statusCode(200)
+        val body = response2.body.`as`<LibraryItemDto>(LibraryItemDto::class.java) as LibraryItemDto
+        body.accessionNumber = null
         Assertions.assertEquals(expected, body)
     }
 
     @Test
-    fun `Given library item with wrong format, post should return BAD REQUEST`() {
+    fun `Given library item with wrong format or type, post should return BAD REQUEST`() {
         val expected = ErrorDto("The resource format is invalid", 14)
-        val model = LibraryItemDto("Elantris", "Brandon Sanderson", "MAG")
+        val model = LibraryItemDto("Elantris", "Brandon Sanderson", "MAG", null, "EBOOK")
 
         val response = RestAssured.given()
                 .port(8080)
