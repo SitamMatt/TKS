@@ -5,7 +5,6 @@ import domain.model.Book
 import domain.model.Magazine
 import domain.model.traits.Resource
 import domain.model.values.AccessionNumber
-import org.mapstruct.factory.Mappers
 
 class LibraryItemMapper {
 

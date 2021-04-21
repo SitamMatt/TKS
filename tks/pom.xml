@@ -13,7 +13,6 @@
         <module>ApplicationPorts</module>
         <module>ApplicationCore</module>
         <module>RestAdapters</module>
-        <module>Common</module>
         <module>WebService</module>
     </modules>
 
@@ -35,7 +34,17 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib</artifactId>
+            <artifactId>kotlin-stdlib-common</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk7</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
         <dependency>
