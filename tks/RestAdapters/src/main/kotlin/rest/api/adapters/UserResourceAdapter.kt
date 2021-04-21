@@ -1,33 +1,29 @@
-package rest.api.adapters;
+package rest.api.adapters
 
-import rest.api.dto.UserDto;
-import domain.exceptions.DuplicatedEmailException;
-import domain.exceptions.TypeValidationFailedException;
-import domain.exceptions.UserNotFoundException;
-import rest.api.mappers.UserMapperDto;
-import domain.model.values.Email;
-import ports.primary.combined.IUserService;
+import domain.exceptions.DuplicatedEmailException
+import domain.exceptions.TypeValidationFailedException
+import domain.exceptions.UserNotFoundException
+import domain.model.values.Email
+import ports.primary.combined.IUserService
+import rest.api.dto.UserDto
+import rest.api.mappers.UserMapperDto
+import javax.inject.Inject
 
-import javax.inject.Inject;
-import java.util.Objects;
+class UserResourceAdapter @Inject constructor(
+    private val userService: IUserService,
+    private val mapper: UserMapperDto
+) {
 
-public class UserResourceAdapter {
-
-    @Inject
-    private IUserService userService;
-    @Inject
-    private UserMapperDto mapper;
-
-    public String registerCommand(UserDto dto) throws DuplicatedEmailException {
-        var user = mapper.toDomainObject(dto);
-        Objects.requireNonNull(user);
-        userService.register(user);
-        return user.getEmail().getValue();
+    @Throws(DuplicatedEmailException::class)
+    fun registerCommand(dto: UserDto?) {
+        val user = mapper.toDomainObject(dto) ?: throw Exception()
+        userService.register(user)
     }
 
-    public UserDto queryUser(String email) throws TypeValidationFailedException, UserNotFoundException {
-        var emailObject = new Email(email);
-        var user = userService.getDetails(emailObject);
-        return mapper.toDto(user);
+    @Throws(TypeValidationFailedException::class, UserNotFoundException::class)
+    fun queryUser(email: String?): UserDto? {
+        val emailObject = Email(email!!)
+        val user = userService.getDetails(emailObject)
+        return mapper.toDto(user!!)
     }
 }

@@ -4,6 +4,7 @@ import domain.model.Rent
 import domain.model.values.AccessionNumber
 import ports.secondary.RentPersistencePort
 import ports.secondary.RentSearchPort
+import ports.secondary.combined.IRentRepositoryAdapter
 import repository.data.AbstractResourceEntity
 import repository.data.RentEntity
 import repository.data.UserEntity
@@ -16,7 +17,7 @@ class RentRepositoryAdapter(
     private val resourceRepository: IRepository<AbstractResourceEntity>,
     private val userRepository: IRepository<UserEntity>,
     private val mapper: RentMapper
-) : RentSearchPort, RentPersistencePort {
+) : IRentRepositoryAdapter {
 
     override fun save(rent: Rent) {
         var entity = repository.find { x: RentEntity -> x.id == rent.id }

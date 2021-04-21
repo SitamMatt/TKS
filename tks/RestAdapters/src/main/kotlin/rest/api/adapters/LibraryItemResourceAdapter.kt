@@ -1,31 +1,30 @@
-package rest.api.adapters;
+package rest.api.adapters
 
-import rest.api.dto.LibraryItemDto;
-import domain.exceptions.ResourceNotFoundException;
-import domain.exceptions.TypeValidationFailedException;
-import domain.exceptions.UnknownResourceException;
-import rest.api.mappers.LibraryItemMapper;
-import domain.model.values.AccessionNumber;
-import ports.primary.combined.IResourceService;
+import domain.exceptions.ResourceNotFoundException
+import domain.exceptions.TypeValidationFailedException
+import domain.exceptions.UnknownResourceException
+import domain.model.values.AccessionNumber
+import ports.primary.combined.IResourceService
+import rest.api.dto.LibraryItemDto
+import rest.api.mappers.LibraryItemMapper
+import javax.inject.Inject
 
-import javax.inject.Inject;
+class LibraryItemResourceAdapter @Inject constructor(
+    private val resourceService: IResourceService,
+    private val mapper: LibraryItemMapper
+) {
 
-public class LibraryItemResourceAdapter {
-
-    @Inject
-    private IResourceService resourceService;
-    @Inject
-    private LibraryItemMapper mapper;
-
-    public AccessionNumber add(LibraryItemDto dto) throws UnknownResourceException {
-        var resource = mapper.toDomainObject(dto);
-        resourceService.create(resource);
-        return resource.getAccessionNumber();
+    @Throws(UnknownResourceException::class)
+    fun add(dto: LibraryItemDto?): String {
+        val resource = mapper.toDomainObject(dto!!)
+        resourceService.create(resource)
+        return resource.accessionNumber!!.value
     }
 
-    public LibraryItemDto query(String id) throws TypeValidationFailedException, ResourceNotFoundException {
-        var accessionNumber = new AccessionNumber(id);
-        var resource = resourceService.getDetails(accessionNumber);
-        return mapper.toDto(resource);
+    @Throws(TypeValidationFailedException::class, ResourceNotFoundException::class)
+    fun query(id: String?): LibraryItemDto {
+        val accessionNumber = AccessionNumber(id!!)
+        val resource = resourceService.getDetails(accessionNumber)
+        return mapper.toDto(resource!!)
     }
 }

@@ -4,6 +4,7 @@ import domain.model.traits.Resource
 import domain.model.values.AccessionNumber
 import ports.secondary.ResourcePersistencePort
 import ports.secondary.ResourceSearchPort
+import ports.secondary.combined.IResourceRepositoryAdapter
 import repository.data.AbstractResourceEntity
 import repository.mappers.ResourceMapper
 import repository.repositories.IRepository
@@ -11,7 +12,7 @@ import repository.repositories.IRepository
 class ResourceRepositoryAdapter(
     private val repository: IRepository<AbstractResourceEntity>,
     private val mapper: ResourceMapper
-) : ResourcePersistencePort, ResourceSearchPort {
+) : IResourceRepositoryAdapter {
 
     override fun save(resource: Resource) {
         val entity = repository.find { x: AbstractResourceEntity -> x.accessionNumber == resource.accessionNumber?.value }

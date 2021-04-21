@@ -1,95 +1,98 @@
-package rest.api;
+package rest.api
 
-import repository.adapters.RentRepositoryAdapter;
-import repository.adapters.ResourceRepositoryAdapter;
-import repository.adapters.UserRepositoryAdapter;
-import repository.data.AbstractResourceEntity;
-import repository.data.RentEntity;
-import repository.data.UserEntity;
-import repository.mappers.RentMapper;
-import repository.mappers.ResourceMapper;
-import repository.mappers.UserMapper;
-import ports.primary.ResourceRentCommandPort;
-import ports.secondary.ResourcePersistencePort;
-import ports.secondary.ResourceSearchPort;
-import ports.secondary.UserPersistencePort;
-import ports.secondary.UserSearchPort;
-import repository.repositories.RepositoryBase;
-import application.services.RentService;
-import application.services.ResourcesService;
-import application.services.UserService;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Singleton;
-import java.util.ArrayList;
+import application.services.RentService
+import application.services.ResourcesService
+import application.services.UserService
+import ports.secondary.combined.IResourceRepositoryAdapter
+import ports.secondary.combined.IUserRepositoryAdapter
+import repository.adapters.RentRepositoryAdapter
+import repository.adapters.ResourceRepositoryAdapter
+import repository.adapters.UserRepositoryAdapter
+import repository.data.AbstractResourceEntity
+import repository.data.BookEntity
+import repository.data.RentEntity
+import repository.data.UserEntity
+import repository.mappers.RentMapper
+import repository.mappers.ResourceMapper
+import repository.mappers.UserMapper
+import repository.repositories.RepositoryBase
+import java.util.*
+import javax.enterprise.context.ApplicationScoped
+import javax.enterprise.inject.Produces
+import javax.inject.Singleton
 
 @ApplicationScoped
-public class Producer {
+class Producer {
 
-    @Produces
-    public UserService produceUserService(UserPersistencePort userPersistencePort, UserSearchPort userSearchPort){
-        return new UserService(userPersistencePort, userSearchPort);
+
+    private var resources: MutableList<AbstractResourceEntity>
+    private var users: MutableList<UserEntity>
+    private var rents: MutableList<RentEntity>
+
+    init {
+        val guid = UUID.fromString("7b4399fe-5f73-40fe-90a4-1163f3dfc221")
+        val user = UserEntity(UUID.randomUUID(), "mszewc@edu.pl", "ADMIN", "password", true)
+        val book = BookEntity(UUID.randomUUID(), "EEEE-254", "Diuna", "Frank Herbert")
+        val rent = RentEntity(UUID.randomUUID(), guid, Date(), null, user, book)
+        rents = mutableListOf(rent)
+        users = mutableListOf(user)
+        resources = mutableListOf(book)
     }
 
     @Produces
-    public ResourcesService produceResourceService(ResourcePersistencePort resourcePersistencePort, ResourceSearchPort resourceSearchPort, RentRepositoryAdapter rentRepositoryAdapter){
-        return new ResourcesService(resourcePersistencePort, resourceSearchPort, rentRepositoryAdapter);
-    }
+    fun produceUserService(adapter: IUserRepositoryAdapter): UserService = UserService(adapter, adapter)
 
     @Produces
-    public UserRepositoryAdapter produceUserSavePort(RepositoryBase<UserEntity> repository, UserMapper mapper){
-        return new UserRepositoryAdapter(repository, mapper);
-    }
+    fun produceResourceService(
+        resourceAdapter: IResourceRepositoryAdapter,
+        rentRepositoryAdapter: RentRepositoryAdapter
+    ): ResourcesService = ResourcesService(resourceAdapter, resourceAdapter, rentRepositoryAdapter)
 
     @Produces
-    public ResourceRepositoryAdapter produceResourceRepository(RepositoryBase<AbstractResourceEntity> repository, ResourceMapper mapper){
-        return new ResourceRepositoryAdapter(repository, mapper);
-    }
+    fun produceRentService(
+        userAdapter: IUserRepositoryAdapter,
+        resourceAdapter: IResourceRepositoryAdapter,
+        rentAdapter: RentRepositoryAdapter
+    ): RentService = RentService(rentAdapter, rentAdapter, userAdapter, resourceAdapter)
 
     @Produces
-    public ResourceRentCommandPort produceResourceRentCommandPort(RentRepositoryAdapter adapter, UserRepositoryAdapter userRepositoryAdapter, ResourceRepositoryAdapter resourceRepositoryAdapter){
-        return new RentService(adapter, adapter, userRepositoryAdapter, resourceRepositoryAdapter);
-    }
+    fun produceUserRepositoryAdapter(
+        repository: RepositoryBase<UserEntity>,
+        mapper: UserMapper
+    ): UserRepositoryAdapter = UserRepositoryAdapter(repository, mapper)
 
     @Produces
-    public RentRepositoryAdapter produceRentRepositoryAdapter(RepositoryBase<UserEntity> userRepository, RepositoryBase<AbstractResourceEntity> resourceRepository, RepositoryBase<RentEntity> rentRepository, RentMapper rentMapper){
-        return new RentRepositoryAdapter(rentRepository,resourceRepository, userRepository, rentMapper);
-    }
+    fun produceResourceRepositoryAdapter(
+        repository: RepositoryBase<AbstractResourceEntity>,
+        mapper: ResourceMapper
+    ): ResourceRepositoryAdapter = ResourceRepositoryAdapter(repository, mapper)
+
+    @Produces
+    fun produceRentRepositoryAdapter(
+        userRepository: RepositoryBase<UserEntity>,
+        resourceRepository: RepositoryBase<AbstractResourceEntity>,
+        rentRepository: RepositoryBase<RentEntity>,
+        rentMapper: RentMapper
+    ): RentRepositoryAdapter = RentRepositoryAdapter(rentRepository, resourceRepository, userRepository, rentMapper)
 
     @Produces
     @Singleton
-    public RepositoryBase<UserEntity> produceUserRepository(){
-        var list = new ArrayList<UserEntity>();
-        return new RepositoryBase<>(list);
-    }
+    fun produceUserRepository(): RepositoryBase<UserEntity> = RepositoryBase(users)
 
     @Produces
     @Singleton
-    public RepositoryBase<AbstractResourceEntity> produceResourceRepository(){
-        var list = new ArrayList<AbstractResourceEntity>();
-        return new RepositoryBase<>(list);
-    }
+    fun produceResourceRepository(): RepositoryBase<AbstractResourceEntity> = RepositoryBase(resources)
 
     @Produces
     @Singleton
-    public RepositoryBase<RentEntity> produceRentRepository(){
-        var list = new ArrayList<RentEntity>();
-        return new RepositoryBase<>(list);
-    }
+    fun produceRentRepository(): RepositoryBase<RentEntity> = RepositoryBase(rents)
 
     @Produces
-    public UserMapper produceUserMapper(){
-        return UserMapper.Companion.getINSTANCE();
-    }
+    fun produceUserMapper(): UserMapper = UserMapper.INSTANCE
 
     @Produces
-    public ResourceMapper produceResourceMapper(){
-        return ResourceMapper.Companion.getINSTANCE();
-    }
+    fun produceResourceMapper(): ResourceMapper = ResourceMapper.INSTANCE
 
     @Produces
-    public RentMapper produceRentMapper(){
-        return RentMapper.Companion.getINSTANCE();
-    }
+    fun produceRentMapper(): RentMapper = RentMapper.INSTANCE
 }

@@ -24,7 +24,7 @@ open class RentService(
         UserNotActiveException::class,
         ResourceAlreadyRentException::class
     )
-    override fun rent(email: Email, resourceId: AccessionNumber) {
+    override fun rent(email: Email, resourceId: AccessionNumber): UUID {
         val (userEmail, _, _, active) = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
         resourceSearchPort.findByAccessionNumber(resourceId) ?: throw ResourceNotFoundException()
         if (!active) throw UserNotActiveException()
@@ -32,6 +32,7 @@ open class RentService(
         if (existingRent != null) throw ResourceAlreadyRentException()
         val rent = Rent(UUID.randomUUID(), Date(), null, userEmail, resourceId)
         rentPersistencePort.save(rent)
+        return rent.id!!
     }
 
     @Throws(

@@ -1,76 +1,57 @@
-package rest.api.controllers;
+package rest.api.controllers
 
-
-import application.helpers.ErrorExtensionsKt;
-import domain.exceptions.DuplicatedEmailException;
-import domain.exceptions.TypeValidationFailedException;
-import domain.exceptions.UserNotFoundException;
-import org.eclipse.microprofile.openapi.annotations.Operation;
-import rest.api.adapters.UserResourceAdapter;
-import rest.api.dto.UserDto;
-import rest.api.mappers.UserMapperDto;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
-import static rest.api.ErrorHelper.badRequest;
+import application.helpers.badRequest
+import application.helpers.conflict
+import application.helpers.notFound
+import domain.exceptions.DuplicatedEmailException
+import domain.exceptions.TypeValidationFailedException
+import domain.exceptions.UserNotFoundException
+import org.eclipse.microprofile.openapi.annotations.Operation
+import rest.api.ErrorHelper
+import rest.api.adapters.UserResourceAdapter
+import rest.api.dto.UserDto
+import rest.api.mappers.UserMapperDto
+import java.net.URI
+import javax.inject.Inject
+import javax.ws.rs.*
+import javax.ws.rs.core.Context
+import javax.ws.rs.core.Response
+import javax.ws.rs.core.UriInfo
 
 @Path("user")
-public class UserResource {
-
-    @Context
-    private UriInfo context;
-
-    @Inject
-    private UserMapperDto mapper;
-
-    @Inject
-    private UserResourceAdapter adapter;
+open class UserResource @Inject constructor(
+    private val adapter: UserResourceAdapter,
+) {
 
     @GET
     @Path("{id}")
     @Produces("application/json")
     @Operation(
-            operationId = "Get user info",
-            description = "Get the user for the given email",
-            summary = "Get user info"
+        operationId = "Get user info",
+        description = "Get the user for the given email",
+        summary = "Get user info"
     )
-    public Response get(@PathParam("id") String email) {
-        try {
-            var dto = adapter.queryUser(email);
-            return Response.ok(dto).build();
-        } catch (UserNotFoundException e) {
-            return ErrorExtensionsKt.notFound(e.getError());
-        } catch (TypeValidationFailedException e) {
-            return badRequest(1, "Invalid parameter");
-        }
+    fun get(@PathParam("id") email: String?): Response = try {
+        val dto = adapter.queryUser(email)
+        Response.ok(dto).build()
+    } catch (e: UserNotFoundException) {
+        e.error.notFound()
+    } catch (e: TypeValidationFailedException) {
+        e.error.badRequest()
     }
 
     @POST
     @Produces("application/json")
     @Operation(
-            operationId = "Register new user",
-            description = "Registers new user from given repository.data",
-            summary = "Register new user"
+        operationId = "Register new user",
+        description = "Registers new user from given repository.data",
+        summary = "Register new user"
     )
-    public Response post(UserDto dto) {
-        try {
-            var email = adapter.registerCommand(dto);
-            var resourceLink = context.getAbsolutePathBuilder().path(email).build();
-            return Response.created(resourceLink).entity(dto).build();
-        } catch (DuplicatedEmailException e) {
-            return ErrorExtensionsKt.conflict(e.getError());
-        }
+    fun post(dto: UserDto?, @Context context: UriInfo): Response = try {
+        adapter.registerCommand(dto)
+        val resourceLink: URI = context.absolutePathBuilder.path(dto!!.email).build()
+        Response.created(resourceLink).entity(dto).build()
+    } catch (e: DuplicatedEmailException) {
+        e.error.conflict()
     }
-
-//    // update user
-//    // by admin
-//    // password is ignored
-//    @PUT
-//    public Response put(UserDto rest.api.dto) {
-//        return Response.ok().build();
-//    }
 }

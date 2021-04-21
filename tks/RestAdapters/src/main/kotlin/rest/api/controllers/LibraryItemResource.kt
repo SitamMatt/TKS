@@ -1,58 +1,44 @@
-package rest.api.controllers;
+package rest.api.controllers
 
-import rest.api.adapters.LibraryItemResourceAdapter;
-import rest.api.dto.LibraryItemDto;
-import domain.exceptions.ResourceNotFoundException;
-import domain.exceptions.TypeValidationFailedException;
-import domain.exceptions.UnknownResourceException;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
-
-import static rest.api.ErrorHelper.badRequest;
-import static rest.api.ErrorHelper.notFound;
+import application.helpers.badRequest
+import application.helpers.notFound
+import domain.exceptions.ResourceNotFoundException
+import domain.exceptions.TypeValidationFailedException
+import domain.exceptions.UnknownResourceException
+import rest.api.ErrorHelper
+import rest.api.adapters.LibraryItemResourceAdapter
+import rest.api.dto.LibraryItemDto
+import java.net.URI
+import javax.ws.rs.GET
+import javax.ws.rs.POST
+import javax.ws.rs.Path
+import javax.ws.rs.PathParam
+import javax.ws.rs.core.Context
+import javax.ws.rs.core.Response
+import javax.ws.rs.core.UriInfo
 
 @Path("library/item")
-public class LibraryItemResource {
-
-    @Context private UriInfo context;
-
-    @Inject private LibraryItemResourceAdapter adapter;
+class LibraryItemResource(
+    private val adapter: LibraryItemResourceAdapter
+) {
 
     @GET
     @Path("{id}")
-    public Response get(@PathParam("id") String id){
-        try{
-            var dto = adapter.query(id);
-            return Response.ok(dto).build();
-        } catch (TypeValidationFailedException e) {
-            return badRequest(1, "Invalid resource format");
-        } catch (ResourceNotFoundException e) {
-            return notFound(1, "Resource not found");
-        }
+    operator fun get(@PathParam("id") id: String?): Response = try {
+        val dto = adapter.query(id)
+        Response.ok(dto).build()
+    } catch (e: TypeValidationFailedException) {
+        e.error.badRequest()
+    } catch (e: ResourceNotFoundException) {
+        e.error.notFound()
     }
 
     @POST
-    public Response post(LibraryItemDto dto){
-        try{
-            var an = adapter.add(dto);
-            var resourceLink = context.getAbsolutePathBuilder().path(an.getValue()).build();
-            return Response.created(resourceLink).entity(dto).build();
-        }catch (UnknownResourceException e){
-            return badRequest(1, "Unknown resource type");
-        }
+    fun post(dto: LibraryItemDto?, @Context context: UriInfo): Response = try {
+        val id = adapter.add(dto)
+        val resourceLink: URI = context.absolutePathBuilder.path(id).build()
+        Response.created(resourceLink).entity(dto).build()
+    } catch (e: UnknownResourceException) {
+        e.error.badRequest()
     }
-//
-//    @PUT
-//    public Response put(LibraryItemDto rest.api.dto){
-//
-//    }
-//
-//    @DELETE
-//    public Response delete(LibraryItemDto rest.api.dto){
-//
-//    }
 }

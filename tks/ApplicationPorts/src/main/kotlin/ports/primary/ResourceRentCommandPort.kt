@@ -3,6 +3,7 @@ package ports.primary
 import domain.exceptions.*
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
+import java.util.*
 
 interface ResourceRentCommandPort {
     @Throws(
@@ -11,7 +12,7 @@ interface ResourceRentCommandPort {
         UserNotActiveException::class,
         ResourceAlreadyRentException::class
     )
-    fun rent(email: Email, resourceId: AccessionNumber)
+    fun rent(email: Email, resourceId: AccessionNumber): UUID
 
     @Throws(
         UserNotFoundException::class,

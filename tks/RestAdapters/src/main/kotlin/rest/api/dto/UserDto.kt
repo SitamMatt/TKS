@@ -1,22 +1,18 @@
-package rest.api.dto;
+package rest.api.dto
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.json.bind.annotation.JsonbTransient
 
-import javax.json.bind.annotation.JsonbTransient;
+class UserDto(){
+    var email: String? = null
+    @get:JsonbTransient
+    var password: String? = null
+    var active: Boolean? = null
+    var role: String? = null
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class UserDto {
-    private String email;
-    private String password;
-    private boolean active;
-    private String role;
-
-    @JsonbTransient
-    public String getPassword() {
-        return password;
+    constructor(email: String?, password: String?, active: Boolean?, role: String?) : this() {
+        this.email = email
+        this.password = password
+        this.active = active
+        this.role = role
     }
 }

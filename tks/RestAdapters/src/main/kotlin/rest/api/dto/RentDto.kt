@@ -1,8 +1,9 @@
-package rest.api.dto;
+package rest.api.dto
 
-import lombok.Data;
+import java.util.*
 
-@Data
-public class RentDto {
-
+class RentDto{
+    var id: UUID? = null
+    var startDate: Date? = null
+    var endDate: Date? = null
 }

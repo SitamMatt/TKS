@@ -1,20 +1,17 @@
-package rest.api.dto;
+package rest.api.dto
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+class LibraryItemDto() {
+    var accessionNumber: String? = null
+    var title: String? = null
+    var author: String? = null
+    var publisher: String? = null
+    var type: String? = null
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class LibraryItemDto {
-    private String accessionNumber;
-    private String title;
-    private String author;
-    private String publisher;
-    private String type;
-
-    public String getType() {
-        return type;
+    constructor(accessionNumber: String?, title: String?, author: String?, publisher: String?, type: String?) : this() {
+        this.accessionNumber = accessionNumber
+        this.title = title
+        this.author = author
+        this.publisher = publisher
+        this.type = type
     }
 }

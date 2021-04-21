@@ -1,60 +1,58 @@
-package rest.api.controllers;
+package rest.api.controllers
 
-import rest.api.adapters.RentResourceAdapter;
-import domain.exceptions.*;
-
-import javax.inject.Inject;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Response;
-
-import static rest.api.ErrorHelper.*;
+import application.helpers.badRequest
+import application.helpers.conflict
+import application.helpers.notFound
+import domain.exceptions.*
+import rest.api.ErrorHelper
+import rest.api.adapters.RentResourceAdapter
+import java.net.URI
+import javax.inject.Inject
+import javax.ws.rs.*
+import javax.ws.rs.core.Context
+import javax.ws.rs.core.Response
+import javax.ws.rs.core.UriInfo
 
 @Path("library/item/{id}/rent")
-public class RentResource {
-
-    String email = "mszewc@edu.pl";
-
-    @Inject
-    private RentResourceAdapter adapter;
+class RentResource @Inject constructor(
+    private val adapter: RentResourceAdapter,
+){
+    var email = "mszewc@edu.pl"
 
     // get info
-    @GET
-    @Path("{id}")
-    public Response get(){
-        return Response.ok().build();
-    }
+//    @GET
+//    @Path("{id}")
+//    fun get(@PathParam("id") id: String?): Response {
+////        adapter.
+//        return Response.ok().build()
+//    }
 
-    // create rent
     @POST
-    public Response rent(@PathParam("id") String id){
-        try{
-            adapter.rent(email, id);
-            return Response.ok().build();
-        } catch (ResourceAlreadyRentException e) {
-            return conflict(1, "Resource already rent");
-        } catch (ResourceNotFoundException e) {
-            return notFound(1, "Resource not found");
-        } catch (UserNotFoundException e) {
-            return notFound(1, "User not found");
-        } catch (UserNotActiveException e) {
-            return badRequest(1, "User not active");
-        }
+    fun rent(@PathParam("id") resourceId: String?, @Context context: UriInfo): Response = try {
+        val id = adapter.rent(email, resourceId!!)
+        val resourceLink: URI = context.absolutePathBuilder.path(id.toString()).build()
+        Response.created(resourceLink).build()
+    } catch (e: ResourceAlreadyRentException) {
+        e.error.conflict()
+    } catch (e: ResourceNotFoundException) {
+        e.error.notFound()
+    } catch (e: UserNotFoundException) {
+        e.error.notFound()
+    } catch (e: UserNotActiveException) {
+        e.error.badRequest()
     }
 
-    // return book
     @DELETE
-    public Response returnItem(@PathParam("id") String id){
-        try{
-            adapter.returnItem(email, id);
-            return Response.ok().build();
-        } catch (ResourceNotFoundException e) {
-            return notFound(1, "Resource not found");
-        } catch (UserNotFoundException e) {
-            return notFound(1, "User not found");
-        } catch (ResourceNotRentException e) {
-            return badRequest(1, "Resource not rent");
-        } catch (InvalidUserException e) {
-            return badRequest(1, "Invalid user");
-        }
+    fun returnItem(@PathParam("id") resourceId: String?): Response = try {
+        adapter.returnItem(email, resourceId!!)
+        Response.ok().build()
+    } catch (e: ResourceNotFoundException) {
+        e.error.notFound()
+    } catch (e: UserNotFoundException) {
+        e.error.notFound()
+    } catch (e: ResourceNotRentException) {
+        e.error.badRequest()
+    } catch (e: InvalidUserException) {
+        e.error.badRequest()
     }
 }
