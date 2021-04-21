@@ -86,8 +86,8 @@ class UserResourceTest {
 
     @Test
     fun `Given user with duplicated email, post should return CONFLICT`() {
-        val model1 = UserDto("matzab@edu.pl", "password", true, "CLIENT")
-        val model2 = UserDto("matzab@edu.pl", "password", true, "CLIENT")
+        val model1 = UserDto("mati@edu.pl", "password", true, "CLIENT")
+        val model2 = UserDto("mati@edu.pl", "password", true, "CLIENT")
         val expected = ErrorDto("Email is taken", 13)
 
         RestAssured.given()
@@ -98,7 +98,7 @@ class UserResourceTest {
             .post()
             .then()
             .statusCode(201)
-            .header("Location", StringContains.containsString("/user/matzab@edu.pl"))
+            .header("Location", StringContains.containsString("/user/mati@edu.pl"))
             .assertThat()
             .body("$", Matchers.not(Matchers.hasKey("password")))
             .body("active", Is.`is`(true))
