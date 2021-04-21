@@ -32,11 +32,14 @@ class Producer {
     init {
         val guid = UUID.fromString("7b4399fe-5f73-40fe-90a4-1163f3dfc221")
         val user = UserEntity(UUID.randomUUID(), "mszewc@edu.pl", "ADMIN", "password", true)
+        val user2 = UserEntity(UUID.randomUUID(), "marcin@edu.pl", "CLIENT", "password", false)
         val book = BookEntity(UUID.randomUUID(), "EEEE-254", "Diuna", "Frank Herbert")
+        val book2 = BookEntity(UUID.randomUUID(), "EEEE-154", "Elantris", "Brandon Sanderson")
+        val book3 = BookEntity(UUID.randomUUID(), "EEEE-303", "Mr. Mercedes", "Stephen King")
         val rent = RentEntity(UUID.randomUUID(), guid, Date(), null, user, book)
         rents = mutableListOf(rent)
-        users = mutableListOf(user)
-        resources = mutableListOf(book)
+        users = mutableListOf(user, user2)
+        resources = mutableListOf(book, book2, book3)
     }
 
     @Produces
