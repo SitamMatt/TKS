@@ -13,12 +13,10 @@ import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
 import javax.ws.rs.core.UriInfo
 
-@Path("library/item/{id}/rent")
+@Path("library/item/{resourceId}/rent/by/{email}")
 class RentResource @Inject constructor(
     private val adapter: RentResourceAdapter,
 ){
-    var email = "mszewc@edu.pl"
-
     // get info
 //    @GET
 //    @Path("{id}")
@@ -28,8 +26,8 @@ class RentResource @Inject constructor(
 //    }
 
     @POST
-    fun rent(@PathParam("id") resourceId: String?, @Context context: UriInfo): Response = try {
-        val id = adapter.rent(email, resourceId!!)
+    fun rent(@PathParam("resourceId") resourceId: String?, @PathParam("email") email: String?, @Context context: UriInfo): Response = try {
+        val id = adapter.rent(email!!, resourceId!!)
         val resourceLink: URI = context.absolutePathBuilder.path(id.toString()).build()
         Response.created(resourceLink).build()
     } catch (e: ResourceAlreadyRentException) {
@@ -40,11 +38,13 @@ class RentResource @Inject constructor(
         e.error.notFound()
     } catch (e: UserNotActiveException) {
         e.error.badRequest()
+    } catch (e: TypeValidationFailedException){
+        e.error.badRequest()
     }
 
     @DELETE
-    fun returnItem(@PathParam("id") resourceId: String?): Response = try {
-        adapter.returnItem(email, resourceId!!)
+    fun returnItem(@PathParam("resourceId") resourceId: String?, @PathParam("email") email: String?): Response = try {
+        adapter.returnItem(email!!, resourceId!!)
         Response.ok().build()
     } catch (e: ResourceNotFoundException) {
         e.error.notFound()
@@ -53,6 +53,8 @@ class RentResource @Inject constructor(
     } catch (e: ResourceNotRentException) {
         e.error.badRequest()
     } catch (e: InvalidUserException) {
+        e.error.badRequest()
+    } catch (e: TypeValidationFailedException){
         e.error.badRequest()
     }
 }

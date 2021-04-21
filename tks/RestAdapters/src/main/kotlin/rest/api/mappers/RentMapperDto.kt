@@ -9,5 +9,7 @@ class RentMapperDto {
         id = src.id
         startDate = src.startDate
         endDate = src.endDate
+        resourceAccessionNumber = src.resourceId.value
+        userEmail = src.userEmail.value
     }
 }

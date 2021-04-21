@@ -9,6 +9,7 @@ import rest.api.ErrorHelper
 import rest.api.adapters.LibraryItemResourceAdapter
 import rest.api.dto.LibraryItemDto
 import java.net.URI
+import javax.inject.Inject
 import javax.ws.rs.GET
 import javax.ws.rs.POST
 import javax.ws.rs.Path
@@ -18,7 +19,7 @@ import javax.ws.rs.core.Response
 import javax.ws.rs.core.UriInfo
 
 @Path("library/item")
-class LibraryItemResource(
+open class LibraryItemResource @Inject constructor(
     private val adapter: LibraryItemResourceAdapter
 ) {
 
