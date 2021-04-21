@@ -35,7 +35,7 @@ class LibraryItemResourceTest {
         val response = RestAssured.given()
                 .port(8080)
                 .baseUri("http://localhost/tks/api/library/item")
-                .get("/EEE-943")
+                .get("/EEEE-943")
 
         response.then().statusCode(404)
         val body = response.body.`as`<ErrorDto>(ErrorDto::class.java)
@@ -49,7 +49,7 @@ class LibraryItemResourceTest {
         val response = RestAssured.given()
                 .port(8080)
                 .baseUri("http://localhost/tks/api/library/item")
-                .get("/EE43")
+                .get("/EEE43")
 
         response.then().statusCode(400)
         val body = response.body.`as`<ErrorDto>(ErrorDto::class.java)
@@ -58,8 +58,8 @@ class LibraryItemResourceTest {
 
     @Test
     fun `Given valid item resource, post should create new library item resource`(){
-        val model = LibraryItemDto("EEE-154", "Elantris", "Brandon Sanderson", "MAG")
-        val expected = LibraryItemDto("EEE-154", "Elantris", "Brandon Sanderson", "MAG")
+        val model = LibraryItemDto("EEEE-154", "Elantris", "Brandon Sanderson", "MAG")
+        val expected = LibraryItemDto("EEEE-154", "Elantris", "Brandon Sanderson", "MAG")
 
         RestAssured.given()
                 .port(8080)
@@ -74,7 +74,7 @@ class LibraryItemResourceTest {
                 .port(8080)
                 .baseUri("http://localhost/tks/api/library/item")
                 .contentType(ContentType.JSON)
-                .get("/EEE-154")
+                .get("/EEEE-154")
 
         response.then().statusCode(200)
         val body = response.body.`as`<LibraryItemDto>(LibraryItemDto::class.java)
