@@ -17,13 +17,6 @@ import javax.ws.rs.core.UriInfo
 class RentResource @Inject constructor(
     private val adapter: RentResourceAdapter,
 ){
-    // get info
-//    @GET
-//    @Path("{id}")
-//    fun get(@PathParam("id") id: String?): Response {
-////        adapter.
-//        return Response.ok().build()
-//    }
 
     @POST
     fun rent(@PathParam("resourceId") resourceId: String?, @PathParam("email") email: String?, @Context context: UriInfo): Response = try {
