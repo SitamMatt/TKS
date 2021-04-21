@@ -1,6 +1,6 @@
 package rest.api.dto
 
 data class ErrorDto (
-    val message: String,
-    val code: Int
+    var message: String? = null,
+    var code: Int? = null
 )
