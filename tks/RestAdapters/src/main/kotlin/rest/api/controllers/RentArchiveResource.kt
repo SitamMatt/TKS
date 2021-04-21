@@ -9,7 +9,7 @@ import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.core.Response
 
-@Path("rent/{id}")
+@Path("rent")
 open class RentArchiveResource @Inject constructor(
     private val adapter: RentResourceAdapter,
 ) {
