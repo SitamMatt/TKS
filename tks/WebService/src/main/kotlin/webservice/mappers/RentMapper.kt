@@ -1,6 +1,6 @@
 package webservice.mappers
 
-import domain.model.Rent
+import domain.model.context.rents.Rent
 import webservice.dto.RentSoapDto
 
 class RentMapper {

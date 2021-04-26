@@ -1,9 +1,9 @@
 package repository.mappers
 
-import repository.data.UserEntity
 import domain.model.User
 import domain.model.UserRole
 import domain.model.values.Email
+import repository.data.UserEntity
 
 class UserMapper {
     fun mapEntityToDomainObject(src: UserEntity?): User? = if(src == null) null else User(

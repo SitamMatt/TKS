@@ -1,6 +1,6 @@
 package ports.secondary
 
-import domain.model.Rent
+import domain.model.context.rents.Rent
 import domain.model.values.AccessionNumber
 import java.util.*
 

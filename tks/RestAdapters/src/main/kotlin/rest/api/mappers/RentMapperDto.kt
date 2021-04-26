@@ -1,6 +1,6 @@
 package rest.api.mappers
 
-import domain.model.Rent
+import domain.model.context.rents.Rent
 import rest.api.dto.RentDto
 
 class RentMapperDto {

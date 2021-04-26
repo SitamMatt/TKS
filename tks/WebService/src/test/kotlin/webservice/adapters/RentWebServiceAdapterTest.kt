@@ -1,7 +1,6 @@
 package webservice.adapters
 
-import domain.model.Book
-import domain.model.Rent
+import domain.model.context.rents.Rent
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
 import io.mockk.every
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import ports.primary.combined.IRentService
 import webservice.mappers.RentMapper
-import webservice.mappers.ResourceMapper
 import java.util.*
 
 @ExtendWith(MockKExtension::class)

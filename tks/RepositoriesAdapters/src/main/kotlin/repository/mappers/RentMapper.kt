@@ -1,6 +1,6 @@
 package repository.mappers
 
-import domain.model.Rent
+import domain.model.context.rents.Rent
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
 import repository.data.RentEntity

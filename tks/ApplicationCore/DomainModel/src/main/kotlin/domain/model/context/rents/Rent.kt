@@ -1,4 +1,4 @@
-package domain.model
+package domain.model.context.rents
 
 import domain.model.values.AccessionNumber
 import domain.model.values.Email

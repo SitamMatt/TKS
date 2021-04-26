@@ -7,7 +7,7 @@ import domain.exceptions.ResourceNotFoundException
 import domain.exceptions.UnknownResourceException
 import domain.model.Book
 import domain.model.Magazine
-import domain.model.Rent
+import domain.model.context.rents.Rent
 import domain.model.traits.Resource
 import domain.model.values.AccessionNumber
 import domain.model.values.Email

@@ -24,7 +24,6 @@ import javax.inject.Singleton
 @ApplicationScoped
 class Producer {
 
-
     private var resources: MutableList<AbstractResourceEntity>
     private var users: MutableList<UserEntity>
     private var rents: MutableList<RentEntity>
