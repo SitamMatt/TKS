@@ -1,8 +1,8 @@
 package webservice.mappers
 
-import domain.model.Book
-import domain.model.Magazine
-import domain.model.traits.Resource
+import domain.model.context.library.Book
+import domain.model.context.library.Magazine
+import domain.model.context.library.Resource
 import webservice.dto.LibraryItemSoapDto
 
 class ResourceMapper {

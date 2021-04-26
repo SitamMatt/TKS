@@ -1,10 +1,8 @@
 package repository.adapters
 
-import domain.model.User
+import domain.model.context.users.User
 import domain.model.values.Email
-import ports.secondary.UserPersistencePort
-import ports.secondary.UserSearchPort
-import ports.secondary.combined.IUserRepositoryAdapter
+import ports.secondary.IUserRepositoryAdapter
 import repository.data.UserEntity
 import repository.mappers.UserMapper
 import repository.repositories.IRepository

@@ -1,6 +1,6 @@
 package webservice.adapters
 
-import domain.model.Book
+import domain.model.context.library.Book
 import domain.model.values.AccessionNumber
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK

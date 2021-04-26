@@ -1,9 +1,9 @@
 package it.p.lodz.pl.service.rents.mappers
 
 import domain.exceptions.UnknownResourceException
-import domain.model.Book
-import domain.model.Magazine
-import domain.model.traits.Resource
+import domain.model.context.library.Book
+import domain.model.context.library.Magazine
+import domain.model.context.library.Resource
 import domain.model.values.AccessionNumber
 import it.p.lodz.pl.service.rents.dto.LibraryItemDto
 
@@ -18,11 +18,13 @@ class LibraryItemMapper {
     fun toBook(src: LibraryItemDto): Book = Book(
         if (src.accessionNumber == null) null else AccessionNumber(src.accessionNumber!!),
         src.title!!,
+        false,
         src.author!!
     )
     fun toMagazine(src: LibraryItemDto): Magazine = Magazine(
         if (src.accessionNumber == null) null else AccessionNumber(src.accessionNumber!!),
         src.title!!,
+        false,
         src.publisher!!
     )
 

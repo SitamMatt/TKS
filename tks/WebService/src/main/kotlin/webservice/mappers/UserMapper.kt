@@ -1,6 +1,6 @@
 package webservice.mappers
 
-import domain.model.User
+import domain.model.context.users.User
 import webservice.dto.UserSoapDto
 
 class UserMapper {

@@ -1,8 +1,6 @@
 package webservice.mappers
 
-import domain.model.Book
 import domain.model.Rent
-import domain.model.traits.Resource
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
 import org.junit.jupiter.api.Assertions.*

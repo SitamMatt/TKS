@@ -1,7 +1,7 @@
 package ports.primary
 
 import domain.exceptions.UnknownResourceException
-import domain.model.traits.Resource
+import domain.model.context.library.Resource
 import domain.model.values.AccessionNumber
 
 interface ResourceManageCommandPort {

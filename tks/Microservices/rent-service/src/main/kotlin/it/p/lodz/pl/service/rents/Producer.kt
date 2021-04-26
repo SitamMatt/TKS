@@ -1,15 +1,17 @@
 package it.p.lodz.pl.service.rents
 
 import application.services.RentService
-import application.services.ResourcesService
-import application.services.UserService
 import ports.secondary.ClientSearchPort
 import ports.secondary.ProductSearchPort
-import ports.secondary.combined.IResourceRepositoryAdapter
-import ports.secondary.combined.IUserRepositoryAdapter
-import repository.adapters.*
-import repository.data.*
-import repository.mappers.*
+import repository.adapters.ClientRepositoryAdapter
+import repository.adapters.ProductRepositoryAdapter
+import repository.adapters.RentRepositoryAdapter
+import repository.data.ClientEntity
+import repository.data.ProductEntity
+import repository.data.RentEntity
+import repository.mappers.ClientMapper
+import repository.mappers.ProductMapper
+import repository.mappers.RentMapper
 import repository.repositories.RepositoryBase
 import java.util.*
 import javax.enterprise.context.ApplicationScoped
@@ -27,24 +29,15 @@ class Producer {
     init {
         val guid = UUID.fromString("7b4399fe-5f73-40fe-90a4-1163f3dfc221")
         val user = ClientEntity(UUID.randomUUID(), "mszewc@edu.pl", true)
-        val user2 = ClientEntity(UUID.randomUUID(), "marcin@edu.pl",  false)
-        val book = ProductEntity(UUID.randomUUID(), "EEEE-254",)
-        val book2 = ProductEntity(UUID.randomUUID(), "EEEE-154", )
-        val book3 = ProductEntity(UUID.randomUUID(), "EEEE-303",)
+        val user2 = ClientEntity(UUID.randomUUID(), "marcin@edu.pl", false)
+        val book = ProductEntity(UUID.randomUUID(), "EEEE-254")
+        val book2 = ProductEntity(UUID.randomUUID(), "EEEE-154")
+        val book3 = ProductEntity(UUID.randomUUID(), "EEEE-303")
         val rent = RentEntity(UUID.randomUUID(), guid, Date(), null, user, book)
         rents = mutableListOf(rent)
         users = mutableListOf(user, user2)
         resources = mutableListOf(book, book2, book3)
     }
-
-    @Produces
-    fun produceUserService(adapter: IUserRepositoryAdapter): UserService = UserService(adapter, adapter)
-
-    @Produces
-    fun produceResourceService(
-        resourceAdapter: IResourceRepositoryAdapter,
-        rentRepositoryAdapter: RentRepositoryAdapter
-    ): ResourcesService = ResourcesService(resourceAdapter, resourceAdapter, rentRepositoryAdapter)
 
     @Produces
     fun produceRentService(

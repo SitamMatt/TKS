@@ -2,8 +2,7 @@ package repository.adapters
 
 import domain.model.context.rents.Rent
 import domain.model.values.AccessionNumber
-import ports.secondary.combined.IRentRepositoryAdapter
-import repository.data.AbstractResourceEntity
+import ports.secondary.IRentRepositoryAdapter
 import repository.data.RentEntity
 import repository.data.ClientEntity
 import repository.data.ProductEntity

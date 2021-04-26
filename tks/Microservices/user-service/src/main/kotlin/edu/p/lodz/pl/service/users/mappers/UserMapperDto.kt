@@ -1,6 +1,6 @@
 package edu.p.lodz.pl.service.users.mappers
 
-import domain.model.User
+import domain.model.context.users.User
 import domain.model.UserRole
 import domain.model.values.Email
 import edu.p.lodz.pl.service.users.dto.UserDto

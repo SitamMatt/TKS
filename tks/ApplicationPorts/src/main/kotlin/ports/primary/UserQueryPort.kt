@@ -1,7 +1,7 @@
 package ports.primary
 
 import domain.exceptions.UserNotFoundException
-import domain.model.User
+import domain.model.context.users.User
 import domain.model.values.Email
 
 interface UserQueryPort {

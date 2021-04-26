@@ -9,4 +9,4 @@ import javax.ws.rs.core.Application
  */
 @ApplicationPath("/data")
 @ApplicationScoped
-class RentServiceRestApplication : Application()
+open class RentServiceRestApplication : Application()

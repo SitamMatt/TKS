@@ -2,11 +2,11 @@
 //
 //import application.helpers.AccessionNumberHelper
 //import domain.exceptions.*
-//import domain.model.Book
+//import domain.model.context.library.Book
 //import domain.model.context.rents.Rent
-//import domain.model.User
+//import domain.model.context.users.User
 //import domain.model.UserRole
-//import domain.model.traits.Resource
+//import domain.model.context.library.Resource
 //import domain.model.values.AccessionNumber
 //import domain.model.values.Email
 //import io.mockk.every

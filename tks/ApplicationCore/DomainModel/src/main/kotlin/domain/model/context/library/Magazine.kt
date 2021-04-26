@@ -1,10 +1,10 @@
-package domain.model
+package domain.model.context.library
 
-import domain.model.traits.Resource
 import domain.model.values.AccessionNumber
 
-data class Book(
+data class Magazine(
     override var accessionNumber: AccessionNumber?,
     override var title: String,
-    var author: String
+    override var isRent: Boolean,
+    var publisher: String,
 ) : Resource

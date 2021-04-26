@@ -1,8 +1,8 @@
 package repository.mappers
 
-import domain.model.Book
-import domain.model.Magazine
-import domain.model.traits.Resource
+import domain.model.context.library.Book
+import domain.model.context.library.Magazine
+import domain.model.context.library.Resource
 import domain.model.values.AccessionNumber
 import repository.data.AbstractResourceEntity
 import repository.data.BookEntity
@@ -30,6 +30,7 @@ class ResourceMapper {
     fun mapEntityToDomainObject(src: BookEntity?): Book? = if (src == null) null else Book(
         AccessionNumber(src.accessionNumber!!),
         src.title,
+        false,
         src.author
     )
 
@@ -37,6 +38,7 @@ class ResourceMapper {
         null,
         src.accessionNumber?.value,
         src.title,
+        src.isRent,
         src.author
     )
 
@@ -45,6 +47,7 @@ class ResourceMapper {
         if (src is Book) target.apply {
             accessionNumber = src.accessionNumber?.value
             author = src.author
+            isRent = src.isRent
             title = src.title
         } else throw Exception() // todo specify exact name
     }
@@ -52,6 +55,7 @@ class ResourceMapper {
     fun mapEntityToDomainObject(src: MagazineEntity?): Magazine? = if (src == null) null else Magazine(
         AccessionNumber(src.accessionNumber!!),
         src.title,
+        src.isRent,
         src.publisher
     )
 
@@ -59,6 +63,7 @@ class ResourceMapper {
         null,
         src.accessionNumber?.value,
         src.title,
+        src.isRent,
         src.publisher
     )
 
@@ -67,6 +72,7 @@ class ResourceMapper {
         if (src is Magazine) target.apply {
             accessionNumber = src.accessionNumber?.value
             title = src.title
+            isRent = src.isRent
             publisher = src.publisher
         } else throw Exception() // todo specify exact name
     }

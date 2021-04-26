@@ -9,4 +9,4 @@ import javax.ws.rs.core.Application
  */
 @ApplicationPath("/data")
 @ApplicationScoped
-class UserServiceRestApplication : Application()
+open class UserServiceRestApplication : Application()

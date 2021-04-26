@@ -2,9 +2,9 @@ package rest.api.mappers
 
 import domain.exceptions.UnknownResourceException
 import rest.api.dto.LibraryItemDto
-import domain.model.Book
-import domain.model.Magazine
-import domain.model.traits.Resource
+import domain.model.context.library.Book
+import domain.model.context.library.Magazine
+import domain.model.context.library.Resource
 import domain.model.values.AccessionNumber
 
 class LibraryItemMapper {

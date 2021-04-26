@@ -1,7 +1,7 @@
 package webservice.mappers
 
-import domain.model.Book
-import domain.model.traits.Resource
+import domain.model.context.library.Book
+import domain.model.context.library.Resource
 import domain.model.values.AccessionNumber
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach

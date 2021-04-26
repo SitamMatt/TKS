@@ -1,6 +1,6 @@
 package webservice.adapters
 
-import domain.model.User
+import domain.model.context.users.User
 import domain.model.UserRole
 import domain.model.values.Email
 import io.mockk.every

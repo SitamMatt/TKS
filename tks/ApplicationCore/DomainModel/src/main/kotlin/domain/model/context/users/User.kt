@@ -1,5 +1,6 @@
-package domain.model
+package domain.model.context.users
 
+import domain.model.UserRole
 import domain.model.values.Email
 
 data class User(
