@@ -14,6 +14,7 @@
         <module>ApplicationCore</module>
         <module>RestAdapters</module>
         <module>WebService</module>
+        <module>Microservices</module>
     </modules>
 
     <properties>
