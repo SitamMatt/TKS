@@ -7,6 +7,6 @@ import javax.ws.rs.core.Application
 /**
  *
  */
-@ApplicationPath("/data")
+@ApplicationPath("/app")
 @ApplicationScoped
 open class UserServiceRestApplication : Application()

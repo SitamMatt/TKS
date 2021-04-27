@@ -41,7 +41,7 @@ open class ResourcesService(
 
     override fun remove(accessionNumber: AccessionNumber) {
         val resource = resourceSearchPort.findByAccessionNumber(accessionNumber) ?: throw ResourceNotFoundException()
-        if (resource.isRent) throw ResourceBlockedByRentException()
+        if (resource.locked) throw ResourceBlockedByRentException()
         resourcePersistencePort.remove(resource)
     }
 

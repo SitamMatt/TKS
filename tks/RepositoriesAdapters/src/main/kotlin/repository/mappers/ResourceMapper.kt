@@ -38,7 +38,7 @@ class ResourceMapper {
         null,
         src.accessionNumber?.value,
         src.title,
-        src.isRent,
+        src.locked,
         src.author
     )
 
@@ -47,7 +47,7 @@ class ResourceMapper {
         if (src is Book) target.apply {
             accessionNumber = src.accessionNumber?.value
             author = src.author
-            isRent = src.isRent
+            isRent = src.locked
             title = src.title
         } else throw Exception() // todo specify exact name
     }
@@ -63,7 +63,7 @@ class ResourceMapper {
         null,
         src.accessionNumber?.value,
         src.title,
-        src.isRent,
+        src.locked,
         src.publisher
     )
 
@@ -72,7 +72,7 @@ class ResourceMapper {
         if (src is Magazine) target.apply {
             accessionNumber = src.accessionNumber?.value
             title = src.title
-            isRent = src.isRent
+            isRent = src.locked
             publisher = src.publisher
         } else throw Exception() // todo specify exact name
     }

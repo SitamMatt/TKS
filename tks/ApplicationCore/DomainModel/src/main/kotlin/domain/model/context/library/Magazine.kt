@@ -5,6 +5,6 @@ import domain.model.values.AccessionNumber
 data class Magazine(
     override var accessionNumber: AccessionNumber?,
     override var title: String,
-    override var isRent: Boolean,
+    override var locked: Boolean,
     var publisher: String,
 ) : Resource
