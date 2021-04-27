@@ -30,7 +30,7 @@ class ResourceMapper {
     fun mapEntityToDomainObject(src: BookEntity?): Book? = if (src == null) null else Book(
         AccessionNumber(src.accessionNumber!!),
         src.title,
-        false,
+        src.locked,
         src.author
     )
 
@@ -47,7 +47,7 @@ class ResourceMapper {
         if (src is Book) target.apply {
             accessionNumber = src.accessionNumber?.value
             author = src.author
-            isRent = src.locked
+            locked = src.locked
             title = src.title
         } else throw Exception() // todo specify exact name
     }
@@ -55,7 +55,7 @@ class ResourceMapper {
     fun mapEntityToDomainObject(src: MagazineEntity?): Magazine? = if (src == null) null else Magazine(
         AccessionNumber(src.accessionNumber!!),
         src.title,
-        src.isRent,
+        src.locked,
         src.publisher
     )
 
@@ -72,7 +72,7 @@ class ResourceMapper {
         if (src is Magazine) target.apply {
             accessionNumber = src.accessionNumber?.value
             title = src.title
-            isRent = src.locked
+            locked = src.locked
             publisher = src.publisher
         } else throw Exception() // todo specify exact name
     }

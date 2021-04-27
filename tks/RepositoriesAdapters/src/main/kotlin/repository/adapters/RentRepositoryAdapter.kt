@@ -12,8 +12,8 @@ import java.util.*
 
 class RentRepositoryAdapter(
     private val repository: IRepository<RentEntity>,
-    private val resourceRepository: IRepository<ProductEntity>,
-    private val userRepository: IRepository<ClientEntity>,
+    private val productRepository: IRepository<ProductEntity>,
+    private val clientRepository: IRepository<ClientEntity>,
     private val mapper: RentMapper
 ) : IRentRepositoryAdapter {
 
@@ -21,8 +21,8 @@ class RentRepositoryAdapter(
         var entity = repository.find { x: RentEntity -> x.id == rent.id }
         if (entity == null) {
             entity = mapper.mapDomainObjectToEntity(rent)!!
-            val resource = resourceRepository.find { x: ProductEntity -> x.accessionNumber == rent.resourceId.value }
-            val user = userRepository.find { (_, email) -> email == rent.userEmail.value }
+            val resource = productRepository.find { x: ProductEntity -> x.accessionNumber == rent.resourceId.value }
+            val user = clientRepository.find { (_, email) -> email == rent.userEmail.value }
             entity.resource = resource
             entity.user = user
             repository.add(entity)
