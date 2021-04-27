@@ -21,7 +21,7 @@ import javax.ws.rs.core.UriInfo
 
 @Path("library/item")
 @Produces(MediaType.APPLICATION_JSON)
-@RolesAllowed("librarian")
+//@RolesAllowed("librarian")
 open class LibraryItemResource @Inject constructor(
     private val adapter: LibraryItemResourceAdapter
 ) {
@@ -31,7 +31,7 @@ open class LibraryItemResource @Inject constructor(
 
     @GET
     @Path("{id}")
-    @RolesAllowed("mysimplerole")
+    //@RolesAllowed("mysimplerole")
     operator fun get(@PathParam("id") id: String?): Response = try {
         val principal: Principal = principalInstance?.get()!!
         val username = principal.name
