@@ -23,6 +23,8 @@
         <lombok.version>1.18.20</lombok.version>
         <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
         <maven.war.plugin.version>3.3.0</maven.war.plugin.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>

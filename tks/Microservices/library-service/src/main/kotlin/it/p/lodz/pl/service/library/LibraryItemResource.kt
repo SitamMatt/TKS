@@ -21,20 +21,13 @@ import javax.ws.rs.core.UriInfo
 
 @Path("library/item")
 @Produces(MediaType.APPLICATION_JSON)
-//@RolesAllowed("librarian")
 open class LibraryItemResource @Inject constructor(
     private val adapter: LibraryItemResourceAdapter
 ) {
 
-    @Inject
-    private var principalInstance: Instance<Principal>? = null
-
     @GET
     @Path("{id}")
-    //@RolesAllowed("mysimplerole")
     operator fun get(@PathParam("id") id: String?): Response = try {
-        val principal: Principal = principalInstance?.get()!!
-        val username = principal.name
         val dto = adapter.query(id)
         Response.ok(dto).build()
     } catch (e: TypeValidationFailedException) {
