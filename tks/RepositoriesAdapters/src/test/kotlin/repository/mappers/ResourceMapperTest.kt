@@ -77,7 +77,7 @@ class ResourceMapperTest {
     }
 
     @Test
-    fun BookToExistingMagazineTest() {
+    fun bookToExistingMagazineTest() {
         val book: Resource = Book(AccessionNumber("EEEE-456"), "Diuna", true, "Frank Herbert")
         val entity: AbstractResourceEntity = MagazineEntity(null, "EEEE-456", "Nature", true, "Nature Publishing Group")
         assertThrows<Exception> { mapper.mapDomainObjectToEntity(book, entity) }

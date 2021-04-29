@@ -19,9 +19,9 @@ import java.util.*
 @ExtendWith(MockKExtension::class)
 class UserRepositoryAdapterTest {
 
-    lateinit var adapter: UserRepositoryAdapter
+    private lateinit var adapter: UserRepositoryAdapter
 
-    var mapper: UserMapper = UserMapper.INSTANCE
+    private var mapper: UserMapper = UserMapper.INSTANCE
 
     @RelaxedMockK
     lateinit var repository: IRepository<UserEntity>

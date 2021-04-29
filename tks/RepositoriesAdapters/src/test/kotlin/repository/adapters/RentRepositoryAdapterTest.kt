@@ -20,9 +20,9 @@ import java.util.*
 @ExtendWith(MockKExtension::class)
 class RentRepositoryAdapterTest {
 
-    lateinit var adapter: RentRepositoryAdapter
+    private lateinit var adapter: RentRepositoryAdapter
 
-    var mapper: RentMapper = RentMapper.INSTANCE
+    private var mapper: RentMapper = RentMapper.INSTANCE
 
     private val sampleAccessionNumber = AccessionNumber("EEEE-254")
     private val sampleEmail = Email("mszewc@edu.pl")

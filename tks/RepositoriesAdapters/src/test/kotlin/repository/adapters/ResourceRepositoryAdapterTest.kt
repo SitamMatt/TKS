@@ -20,9 +20,9 @@ import java.util.*
 @ExtendWith(MockKExtension::class)
 class ResourceRepositoryAdapterTest {
 
-    lateinit var adapter: ResourceRepositoryAdapter
+    private lateinit var adapter: ResourceRepositoryAdapter
 
-    var mapper: ResourceMapper = ResourceMapper.INSTANCE
+    private var mapper: ResourceMapper = ResourceMapper.INSTANCE
 
     @RelaxedMockK
     lateinit var repository: IRepository<AbstractResourceEntity>
