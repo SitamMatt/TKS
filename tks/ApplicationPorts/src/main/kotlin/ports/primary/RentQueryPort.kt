@@ -1,7 +1,7 @@
 package ports.primary
 
 import domain.exceptions.RentNotFoundException
-import domain.model.Rent
+import domain.model.context.rents.Rent
 import java.util.*
 
 interface RentQueryPort {

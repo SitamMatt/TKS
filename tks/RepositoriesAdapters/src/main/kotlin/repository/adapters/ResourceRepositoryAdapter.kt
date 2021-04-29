@@ -1,10 +1,8 @@
 package repository.adapters
 
-import domain.model.traits.Resource
+import domain.model.context.library.Resource
 import domain.model.values.AccessionNumber
-import ports.secondary.ResourcePersistencePort
-import ports.secondary.ResourceSearchPort
-import ports.secondary.combined.IResourceRepositoryAdapter
+import ports.secondary.IResourceRepositoryAdapter
 import repository.data.AbstractResourceEntity
 import repository.mappers.ResourceMapper
 import repository.repositories.IRepository

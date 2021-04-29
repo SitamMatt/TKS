@@ -2,11 +2,13 @@ package application.services
 
 import application.helpers.AccessionNumberHelper
 import domain.exceptions.*
-import domain.model.Book
-import domain.model.Rent
-import domain.model.User
+import domain.model.context.library.Book
+import domain.model.context.rents.Rent
+import domain.model.context.users.User
 import domain.model.UserRole
-import domain.model.traits.Resource
+import domain.model.context.library.Resource
+import domain.model.context.rents.Client
+import domain.model.context.rents.Product
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
 import io.mockk.every
@@ -17,17 +19,14 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import ports.secondary.RentPersistencePort
-import ports.secondary.RentSearchPort
-import ports.secondary.ResourceSearchPort
-import ports.secondary.UserSearchPort
+import ports.secondary.*
 import java.util.*
 
 @ExtendWith(MockKExtension::class)
 internal class RentServiceTest {
     private lateinit var rentService: RentService
-    private lateinit var sampleResource: Resource
-    private lateinit var sampleUser: User
+    private lateinit var sampleResource: Product
+    private lateinit var sampleUser: Client
     private lateinit var sampleRent: Rent
     private val sampleEmail: Email = Email("mszewc@edu.pl")
     private val sampleEmail2: Email = Email("mzab@edu.pl")
@@ -35,10 +34,10 @@ internal class RentServiceTest {
     private val sampleRentId: UUID = UUID.randomUUID()
 
     @RelaxedMockK
-    lateinit var resourceSearchPort: ResourceSearchPort
+    lateinit var resourceSearchPort: ProductSearchPort
 
     @RelaxedMockK
-    lateinit var userSearchPort: UserSearchPort
+    lateinit var userSearchPort: ClientSearchPort
 
     @RelaxedMockK
     lateinit var rentSearchPort: RentSearchPort
@@ -48,8 +47,8 @@ internal class RentServiceTest {
 
     @BeforeEach
     fun init() {
-        sampleUser = User(sampleEmail, UserRole.CLIENT, "####", true)
-        sampleResource = Book(sampleResId, "Diuna", "Frank Herbert")
+        sampleUser = Client(sampleEmail, true)
+        sampleResource = Product(sampleResId)
         sampleRent = Rent(sampleRentId, Date(), null, sampleEmail2, sampleResId)
         rentService = RentService(rentPersistencePort, rentSearchPort, userSearchPort, resourceSearchPort)
     }

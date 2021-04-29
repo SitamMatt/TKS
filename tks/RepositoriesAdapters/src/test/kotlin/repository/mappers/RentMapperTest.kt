@@ -1,13 +1,11 @@
 package repository.mappers
 
-import domain.model.Rent
+import domain.model.context.rents.Rent
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import repository.data.BookEntity
-import repository.data.RentEntity
-import repository.data.UserEntity
+import repository.data.*
 import java.util.*
 
 class RentMapperTest{
@@ -34,8 +32,8 @@ class RentMapperTest{
 
     @Test
     fun entityToRentTest(){
-        val userEntity = UserEntity(UUID.randomUUID(), "mszewc@edu.pl", "ADMIN", "password", true)
-        val resourceEntity = BookEntity(UUID.randomUUID(), "EEEE-345", "Diuna", "Frank Her")
+        val userEntity = ClientEntity(UUID.randomUUID(), "mszewc@edu.pl", true)
+        val resourceEntity = ProductEntity(UUID.randomUUID(), "EEEE-345")
         val entity = RentEntity(UUID.randomUUID(), UUID.randomUUID(), Date(), null, userEntity, resourceEntity)
         val rent = mapper.mapEntityToDomainObject(entity)
         assertNotNull(rent!!)
@@ -54,8 +52,8 @@ class RentMapperTest{
 
     @Test
     fun rentToExistingEntityTest(){
-        val userEntity = UserEntity(UUID.randomUUID(), "mszewc@edu.pl", "ADMIN", "password", true)
-        val resourceEntity = BookEntity(UUID.randomUUID(), "EEEE-345", "Diuna", "Frank Her")
+        val userEntity = ClientEntity(UUID.randomUUID(), "mszewc@edu.pl", true)
+        val resourceEntity = ProductEntity(UUID.randomUUID(), "EEEE-345")
         val entity = RentEntity(UUID.randomUUID(), UUID.randomUUID(), Date(), null, userEntity, resourceEntity)
         val rent = Rent(UUID.randomUUID(), Date(), Date(), Email("matzab@edu.pl"), AccessionNumber("AAAA-789"))
         mapper.mapDomainObjectToEntity(rent, entity)
@@ -71,8 +69,8 @@ class RentMapperTest{
         val guid = UUID.randomUUID()
         val startDate = Date()
         val endDate = Date()
-        val userEntity = UserEntity(UUID.randomUUID(), "mszewc@edu.pl", "ADMIN", "password", true)
-        val resourceEntity = BookEntity(UUID.randomUUID(), "EEEE-345", "Diuna", "Frank Her")
+        val userEntity = ClientEntity(UUID.randomUUID(), "mszewc@edu.pl",true)
+        val resourceEntity = ProductEntity(UUID.randomUUID(), "EEEE-345")
         val entity = RentEntity(UUID.randomUUID(), guid, startDate, endDate, userEntity, resourceEntity)
         mapper.mapDomainObjectToEntity(null, entity)
         assertEquals(guid, entity.id)

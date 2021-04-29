@@ -1,6 +1,6 @@
 package repository.adapters
 
-import domain.model.User
+import domain.model.context.users.User
 import domain.model.UserRole
 import domain.model.values.Email
 import io.mockk.every
@@ -19,9 +19,9 @@ import java.util.*
 @ExtendWith(MockKExtension::class)
 class UserRepositoryAdapterTest {
 
-    lateinit var adapter: UserRepositoryAdapter
+    private lateinit var adapter: UserRepositoryAdapter
 
-    var mapper: UserMapper = UserMapper.INSTANCE
+    private var mapper: UserMapper = UserMapper.INSTANCE
 
     @RelaxedMockK
     lateinit var repository: IRepository<UserEntity>

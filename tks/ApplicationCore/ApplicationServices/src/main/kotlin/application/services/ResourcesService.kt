@@ -1,30 +1,28 @@
 package application.services
 
+import application.helpers.AccessionNumberHelper
 import domain.exceptions.IncompatibleResourceFormatException
 import domain.exceptions.ResourceBlockedByRentException
 import domain.exceptions.ResourceNotFoundException
 import domain.exceptions.UnknownResourceException
-import ports.secondary.RentSearchPort
-import application.helpers.AccessionNumberHelper
-import ports.secondary.ResourcePersistencePort
-import ports.secondary.ResourceSearchPort
-import domain.model.Book
-import domain.model.Magazine
-import domain.model.traits.Resource
+import domain.model.context.library.Book
+import domain.model.context.library.Magazine
+import domain.model.context.library.Resource
 import domain.model.values.AccessionNumber
 import ports.primary.combined.IResourceService
+import ports.secondary.ResourcePersistencePort
+import ports.secondary.ResourceSearchPort
 
 open class ResourcesService(
     private val resourcePersistencePort: ResourcePersistencePort,
     private val resourceSearchPort: ResourceSearchPort,
-    private val rentSearchPort: RentSearchPort
 ) : IResourceService {
 
 
     @Throws(UnknownResourceException::class)
     override fun create(resource: Resource) {
-        if(resource.accessionNumber != null) throw UnknownResourceException()
-        when(resource){
+        if (resource.accessionNumber != null) throw UnknownResourceException()
+        when (resource) {
             is Book, is Magazine -> {
                 resource.accessionNumber = AccessionNumberHelper.generate()
                 resourcePersistencePort.save(resource)
@@ -33,17 +31,17 @@ open class ResourcesService(
         }
     }
 
-    override fun update(resource: Resource){
-        if(resource.accessionNumber == null) throw ResourceNotFoundException()
-        val original = resourceSearchPort.findByAccessionNumber(resource.accessionNumber!!) ?: throw ResourceNotFoundException()
-        if(resource::class != original::class) throw IncompatibleResourceFormatException()
+    override fun update(resource: Resource) {
+        if (resource.accessionNumber == null) throw ResourceNotFoundException()
+        val original =
+            resourceSearchPort.findByAccessionNumber(resource.accessionNumber!!) ?: throw ResourceNotFoundException()
+        if (resource::class != original::class) throw IncompatibleResourceFormatException()
         resourcePersistencePort.save(resource)
     }
 
-    override fun remove(accessionNumber: AccessionNumber){
+    override fun remove(accessionNumber: AccessionNumber) {
         val resource = resourceSearchPort.findByAccessionNumber(accessionNumber) ?: throw ResourceNotFoundException()
-        val rent = rentSearchPort.findActiveByResourceId(accessionNumber)
-        if(rent != null) throw ResourceBlockedByRentException()
+        if (resource.locked) throw ResourceBlockedByRentException()
         resourcePersistencePort.remove(resource)
     }
 

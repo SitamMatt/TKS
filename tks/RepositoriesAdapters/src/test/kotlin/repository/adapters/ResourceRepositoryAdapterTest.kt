@@ -1,8 +1,7 @@
 package repository.adapters
 
-import domain.model.Book
+import domain.model.context.library.Book
 import domain.model.values.AccessionNumber
-import domain.model.values.Email
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.junit5.MockKExtension
@@ -21,9 +20,9 @@ import java.util.*
 @ExtendWith(MockKExtension::class)
 class ResourceRepositoryAdapterTest {
 
-    lateinit var adapter: ResourceRepositoryAdapter
+    private lateinit var adapter: ResourceRepositoryAdapter
 
-    var mapper: ResourceMapper = ResourceMapper.INSTANCE
+    private var mapper: ResourceMapper = ResourceMapper.INSTANCE
 
     @RelaxedMockK
     lateinit var repository: IRepository<AbstractResourceEntity>
@@ -39,6 +38,7 @@ class ResourceRepositoryAdapterTest {
             UUID.randomUUID(),
             "EEEE-254",
             "Diuna",
+            false,
             "Frank Herbert"
         )
         val resource = adapter.findByAccessionNumber(AccessionNumber("EEEE-254"))
@@ -56,11 +56,12 @@ class ResourceRepositoryAdapterTest {
 
     @Test
     fun `Given existing Resource, adapter should remove it from repository`() {
-        val resource = Book(AccessionNumber("EEEE-254"), "Diuna", "Frank Herbert")
+        val resource = Book(AccessionNumber("EEEE-254"), "Diuna", false, "Frank Herbert")
         val entity = BookEntity(
             UUID.randomUUID(),
             "EEEE-254",
             "Diuna",
+            false,
             "Frank Herbert"
         )
         every { repository.find(any()) } returns entity
@@ -71,7 +72,7 @@ class ResourceRepositoryAdapterTest {
 
     @Test
     fun `Given new Resource, adapter should throw when called remove`() {
-        val resource = Book(AccessionNumber("EEEE-254"), "Diuna", "Frank Herbert")
+        val resource = Book(AccessionNumber("EEEE-254"), "Diuna", false, "Frank Herbert")
         every { repository.find(any()) } returns null
         assertThrows<Exception> { adapter.remove(resource) }
         verify(exactly = 1) { repository.find(any()) }
@@ -80,7 +81,7 @@ class ResourceRepositoryAdapterTest {
 
     @Test
     fun `Given valid new Resource, adapter should persist new Resource in repository`() {
-        val resource = Book(AccessionNumber("EEEE-254"), "Diuna", "Frank Herbert")
+        val resource = Book(AccessionNumber("EEEE-254"), "Diuna", false, "Frank Herbert")
         every { repository.find(any()) } returns null
         adapter.save(resource)
         verify(exactly = 1) { repository.find(any()) }
@@ -90,11 +91,12 @@ class ResourceRepositoryAdapterTest {
 
     @Test
     fun `Given valid existing Resource, adapter should update Resource in repository`() {
-        val resource = Book(AccessionNumber("EEEE-254"), "Diuna", "Frank Herbert")
+        val resource = Book(AccessionNumber("EEEE-254"), "Diuna", false, "Frank Herbert")
         val entity = BookEntity(
             UUID.randomUUID(),
             "EEEE-254",
             "Hyperion",
+            false,
             "Dan Simmons"
         )
         every { repository.find(any()) } returns entity

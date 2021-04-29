@@ -7,6 +7,6 @@ class RentEntity(
     var id: UUID?,
     var startDate: Date,
     var endDate: Date?,
-    var user: UserEntity?,
-    var resource: AbstractResourceEntity?,
+    var user: ClientEntity?,
+    var resource: ProductEntity?,
 ) : EntityBase();

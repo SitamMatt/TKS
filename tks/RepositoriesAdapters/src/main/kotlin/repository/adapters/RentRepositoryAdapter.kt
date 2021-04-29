@@ -1,21 +1,19 @@
 package repository.adapters
 
-import domain.model.Rent
+import domain.model.context.rents.Rent
 import domain.model.values.AccessionNumber
-import ports.secondary.RentPersistencePort
-import ports.secondary.RentSearchPort
-import ports.secondary.combined.IRentRepositoryAdapter
-import repository.data.AbstractResourceEntity
+import ports.secondary.IRentRepositoryAdapter
 import repository.data.RentEntity
-import repository.data.UserEntity
+import repository.data.ClientEntity
+import repository.data.ProductEntity
 import repository.mappers.RentMapper
 import repository.repositories.IRepository
 import java.util.*
 
 class RentRepositoryAdapter(
     private val repository: IRepository<RentEntity>,
-    private val resourceRepository: IRepository<AbstractResourceEntity>,
-    private val userRepository: IRepository<UserEntity>,
+    private val productRepository: IRepository<ProductEntity>,
+    private val clientRepository: IRepository<ClientEntity>,
     private val mapper: RentMapper
 ) : IRentRepositoryAdapter {
 
@@ -23,8 +21,8 @@ class RentRepositoryAdapter(
         var entity = repository.find { x: RentEntity -> x.id == rent.id }
         if (entity == null) {
             entity = mapper.mapDomainObjectToEntity(rent)!!
-            val resource = resourceRepository.find { x: AbstractResourceEntity -> x.accessionNumber == rent.resourceId.value }
-            val user = userRepository.find { (_, email) -> email == rent.userEmail.value }
+            val resource = productRepository.find { x: ProductEntity -> x.accessionNumber == rent.resourceId.value }
+            val user = clientRepository.find { (_, email) -> email == rent.userEmail.value }
             entity.resource = resource
             entity.user = user
             repository.add(entity)

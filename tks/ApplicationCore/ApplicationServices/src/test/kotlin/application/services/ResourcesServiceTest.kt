@@ -5,10 +5,10 @@ import domain.exceptions.IncompatibleResourceFormatException
 import domain.exceptions.ResourceBlockedByRentException
 import domain.exceptions.ResourceNotFoundException
 import domain.exceptions.UnknownResourceException
-import domain.model.Book
-import domain.model.Magazine
-import domain.model.Rent
-import domain.model.traits.Resource
+import domain.model.context.library.Book
+import domain.model.context.library.Magazine
+import domain.model.context.rents.Rent
+import domain.model.context.library.Resource
 import domain.model.values.AccessionNumber
 import domain.model.values.Email
 import io.mockk.every
@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import ports.secondary.RentSearchPort
 import ports.secondary.ResourcePersistencePort
 import ports.secondary.ResourceSearchPort
 import java.util.*
@@ -29,7 +28,8 @@ class ResourcesServiceTest {
 
     data class InvalidResource(
         override var accessionNumber: AccessionNumber?,
-        override var title: String
+        override var title: String,
+        override var locked: Boolean
     ) : Resource
 
     private lateinit var resourcesService: ResourcesService
@@ -44,15 +44,12 @@ class ResourcesServiceTest {
     @RelaxedMockK
     lateinit var resourceSearchPort: ResourceSearchPort
 
-    @RelaxedMockK
-    lateinit var rentSearchPort: RentSearchPort
-
     @BeforeEach
     fun init() {
-        resourcesService = ResourcesService(resourcePersistencePort, resourceSearchPort, rentSearchPort)
-        sampleBook = Book(null, "Diuna", "Frank Herbert")
-        sampleMagazine = Magazine(null, "Świerszczyk", "Nowa era")
-        invalidResource = InvalidResource(null, "invalid")
+        resourcesService = ResourcesService(resourcePersistencePort, resourceSearchPort)
+        sampleBook = Book(null, "Diuna", false, "Frank Herbert")
+        sampleMagazine = Magazine(null, "Świerszczyk",false,  "Nowa era")
+        invalidResource = InvalidResource(null, "invalid", false)
     }
 
     @Test
@@ -114,7 +111,6 @@ class ResourcesServiceTest {
     fun `Given valid resource rd then remove should success`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
         every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns sampleMagazine
-        every { rentSearchPort.findActiveByResourceId(sampleAccessionNumber) } returns null
         resourcesService.remove(sampleAccessionNumber)
         verify(exactly = 1) { resourcePersistencePort.remove(sampleMagazine) }
     }
@@ -129,16 +125,10 @@ class ResourcesServiceTest {
     }
 
     @Test
-    fun `Given rent resource id then remove should fail`() {
+    fun `Given locked resource id then remove should fail`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
+        sampleMagazine.locked = true
         every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns sampleMagazine
-        every { rentSearchPort.findActiveByResourceId(sampleAccessionNumber) } returns Rent(
-            UUID.randomUUID(),
-            Date(),
-            null,
-            Email("mszewc@edu.pl"),
-            sampleAccessionNumber
-        )
         Assertions.assertThrows(ResourceBlockedByRentException::class.java) {
             resourcesService.remove(sampleAccessionNumber)
         }

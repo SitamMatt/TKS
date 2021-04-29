@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection")
+
 package domain.model.values
 
 import domain.exceptions.TypeValidationFailedException
