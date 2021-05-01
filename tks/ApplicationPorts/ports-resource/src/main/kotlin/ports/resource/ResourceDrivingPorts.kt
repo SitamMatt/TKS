@@ -1,9 +1,9 @@
 package ports.resource
 
-import domain.exceptions.ResourceNotFoundException
-import domain.exceptions.UnknownResourceException
-import domain.model.context.library.Resource
-import domain.model.values.AccessionNumber
+import domain.common.exceptions.ResourceNotFoundException
+import domain.common.exceptions.UnknownResourceException
+import domain.common.valueobjects.AccessionNumber
+import domain.resource.Resource
 
 interface ResourceQueryPort {
     @Throws(ResourceNotFoundException::class)

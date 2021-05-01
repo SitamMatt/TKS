@@ -1,7 +1,7 @@
 package ports.resource
 
-import domain.model.context.library.Resource
-import domain.model.values.AccessionNumber
+import domain.common.valueobjects.AccessionNumber
+import domain.resource.Resource
 
 interface ResourcePersistencePort {
     fun save(resource: Resource)

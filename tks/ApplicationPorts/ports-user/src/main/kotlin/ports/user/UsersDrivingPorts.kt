@@ -1,9 +1,9 @@
 package ports.user
 
-import domain.exceptions.DuplicatedEmailException
-import domain.exceptions.UserNotFoundException
-import domain.model.context.users.User
-import domain.model.values.Email
+import domain.common.exceptions.DuplicatedEmailException
+import domain.common.exceptions.UserNotFoundException
+import domain.common.valueobjects.Email
+import domain.user.User
 
 interface UserQueryPort {
     @Throws(UserNotFoundException::class)

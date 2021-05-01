@@ -1,10 +1,10 @@
 package ports.rent
 
-import domain.model.context.rents.Client
-import domain.model.context.rents.Product
-import domain.model.context.rents.Rent
-import domain.model.values.AccessionNumber
-import domain.model.values.Email
+import domain.common.valueobjects.AccessionNumber
+import domain.common.valueobjects.Email
+import domain.rent.Client
+import domain.rent.Product
+import domain.rent.Rent
 import java.util.*
 
 interface ClientSearchPort {

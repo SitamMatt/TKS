@@ -1,9 +1,9 @@
 package ports.rent
 
-import domain.exceptions.*
-import domain.model.context.rents.Rent
-import domain.model.values.AccessionNumber
-import domain.model.values.Email
+import domain.common.exceptions.*
+import domain.common.valueobjects.AccessionNumber
+import domain.common.valueobjects.Email
+import domain.rent.Rent
 import java.util.*
 
 interface RentQueryPort {
