@@ -10,6 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ApplicationPorts</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>ports-user</module>
+        <module>ports-rent</module>
+        <module>ports-resource</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>edu.p.lodz.pl</groupId>
