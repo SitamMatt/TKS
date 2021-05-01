@@ -3,19 +3,26 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>DomainModel</artifactId>
+        <artifactId>ApplicationCore</artifactId>
         <groupId>edu.p.lodz.pl</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>domain-user</artifactId>
+    <artifactId>domain-model</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>domain-user</module>
+        <module>domain-common</module>
+        <module>domain-resource</module>
+        <module>domain-rent</module>
+    </modules>
     <dependencies>
         <dependency>
-            <groupId>edu.p.lodz.pl</groupId>
-            <artifactId>domain-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.7</version>
         </dependency>
     </dependencies>
+
 </project>

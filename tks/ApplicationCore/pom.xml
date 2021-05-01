@@ -13,7 +13,7 @@
     <artifactId>ApplicationCore</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>DomainModel</module>
+        <module>domain-model</module>
         <module>ApplicationServices</module>
     </modules>
 

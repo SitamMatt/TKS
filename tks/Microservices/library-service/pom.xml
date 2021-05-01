@@ -27,7 +27,7 @@
     </dependency>
       <dependency>
           <groupId>edu.p.lodz.pl</groupId>
-          <artifactId>DomainModel</artifactId>
+          <artifactId>domain-model</artifactId>
           <version>1.0-SNAPSHOT</version>
           <scope>compile</scope>
       </dependency>
