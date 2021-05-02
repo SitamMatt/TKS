@@ -1,4 +1,4 @@
-package service.users.management
+package core.services.users.management
 
 import domain.common.UserRole
 import domain.common.exceptions.DuplicatedEmailException

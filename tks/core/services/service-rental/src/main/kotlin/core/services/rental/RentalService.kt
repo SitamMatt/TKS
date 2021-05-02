@@ -1,4 +1,4 @@
-package service.rental
+package core.services.rental
 
 import domain.common.exceptions.*
 import domain.common.valueobjects.AccessionNumber

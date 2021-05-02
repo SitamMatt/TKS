@@ -1,4 +1,4 @@
-package service.resources.management
+package core.services.resources.management
 
 import domain.common.exceptions.IncompatibleResourceFormatException
 import domain.common.exceptions.ResourceBlockedByRentException
