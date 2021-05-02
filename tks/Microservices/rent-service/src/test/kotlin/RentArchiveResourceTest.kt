@@ -1,4 +1,4 @@
-import common.error.ErrorDto
+import microservices.common.error.ErrorDto
 import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import org.hamcrest.Matchers.containsString

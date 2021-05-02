@@ -1,4 +1,4 @@
-import common.error.ErrorDto
+import microservices.common.error.ErrorDto
 import edu.p.lodz.pl.service.users.dto.UserDto
 import io.restassured.RestAssured
 import io.restassured.http.ContentType

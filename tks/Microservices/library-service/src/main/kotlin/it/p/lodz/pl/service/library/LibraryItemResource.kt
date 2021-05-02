@@ -1,7 +1,7 @@
 package it.p.lodz.pl.service.library
 
-import common.error.badRequest
-import common.error.notFound
+import microservices.common.error.badRequest
+import microservices.common.error.notFound
 import domain.exceptions.ResourceNotFoundException
 import domain.exceptions.TypeValidationFailedException
 import domain.exceptions.UnknownResourceException
