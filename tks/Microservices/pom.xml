@@ -20,7 +20,7 @@
         <module>user-service</module>
         <module>microservices-common</module>
         <module>library-service</module>
-        <module>rent-service</module>
+        <module>microservices-rental</module>
     </modules>
 
 </project>
