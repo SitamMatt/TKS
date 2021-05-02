@@ -14,7 +14,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>domain-model</module>
-        <module>ApplicationServices</module>
+        <module>services</module>
     </modules>
 
 </project>
