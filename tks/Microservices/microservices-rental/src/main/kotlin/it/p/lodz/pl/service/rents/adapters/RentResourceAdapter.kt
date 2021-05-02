@@ -11,8 +11,8 @@ import javax.inject.Inject
 import kotlin.jvm.Throws
 
 class RentResourceAdapter @Inject constructor(
-    private val adapter: IRentService,
-    private val mapper: RentMapperDto
+//    private val adapter: IRentService,
+//    private val mapper: RentMapperDto
 ) {
 
     @Throws(
@@ -25,7 +25,8 @@ class RentResourceAdapter @Inject constructor(
     fun rent(userId: String, resource: String): UUID {
         val email = Email(userId)
         val accessionNumber = AccessionNumber(resource)
-        return adapter.rent(email, accessionNumber);
+//        return adapter.rent(email, accessionNumber);
+        return UUID.randomUUID()
     }
 
     @Throws(
@@ -37,13 +38,14 @@ class RentResourceAdapter @Inject constructor(
     fun returnItem(userId: String, resource: String){
         val email = Email(userId)
         val accessionNumber = AccessionNumber(resource)
-        adapter.returnResource(email, accessionNumber)
+//        adapter.returnResource(email, accessionNumber)
     }
 
     @Throws(RentNotFoundException::class)
     fun queryCommand(rentId: String): RentDto {
         val guid = UUID.fromString(rentId)
-        val rent = adapter.getDetails(guid)
-        return mapper.toDto(rent)!!
+//        val rent = adapter.getDetails(guid)
+//        return mapper.toDto(rent)!!
+        return RentDto(null,null, null,null, null)
     }
 }
