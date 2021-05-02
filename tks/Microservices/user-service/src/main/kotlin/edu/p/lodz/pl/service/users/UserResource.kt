@@ -1,8 +1,8 @@
 package edu.p.lodz.pl.service.users
 
-import common.error.badRequest
-import common.error.conflict
-import common.error.notFound
+import microservices.common.error.badRequest
+import microservices.common.error.conflict
+import microservices.common.error.notFound
 import domain.exceptions.DuplicatedEmailException
 import domain.exceptions.TypeValidationFailedException
 import domain.exceptions.UserNotFoundException

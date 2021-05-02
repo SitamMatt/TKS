@@ -18,7 +18,7 @@
 
     <modules>
         <module>user-service</module>
-        <module>common</module>
+        <module>microservices-common</module>
         <module>library-service</module>
         <module>rent-service</module>
     </modules>

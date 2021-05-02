@@ -1,4 +1,4 @@
-import common.error.ErrorDto
+import microservices.common.error.ErrorDto
 import io.restassured.RestAssured
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

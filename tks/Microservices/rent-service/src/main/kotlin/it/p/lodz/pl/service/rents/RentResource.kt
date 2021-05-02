@@ -1,8 +1,8 @@
 package it.p.lodz.pl.service.rents
 
-import common.error.badRequest
-import common.error.conflict
-import common.error.notFound
+import microservices.common.error.badRequest
+import microservices.common.error.conflict
+import microservices.common.error.notFound
 import domain.exceptions.*
 import it.p.lodz.pl.service.rents.adapters.RentResourceAdapter
 import java.net.URI

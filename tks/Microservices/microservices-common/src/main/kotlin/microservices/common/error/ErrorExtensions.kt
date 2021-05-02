@@ -1,4 +1,4 @@
-package common.error
+package microservices.common.error
 
 import domain.model.ErrorCode
 import javax.ws.rs.core.Response

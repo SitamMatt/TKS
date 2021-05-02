@@ -33,7 +33,7 @@
     </dependency>
     <dependency>
       <groupId>edu.p.lodz.pl</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>microservices-common</artifactId>
       <version>1.0-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>

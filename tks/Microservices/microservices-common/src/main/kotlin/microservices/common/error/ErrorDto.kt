@@ -1,4 +1,4 @@
-package common.error
+package microservices.common.error
 
 data class ErrorDto (
     var message: String? = null,

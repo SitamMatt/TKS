@@ -1,6 +1,6 @@
 package it.p.lodz.pl.service.rents
 
-import common.error.notFound
+import microservices.common.error.notFound
 import domain.exceptions.RentNotFoundException
 import it.p.lodz.pl.service.rents.adapters.RentResourceAdapter
 import javax.inject.Inject
