@@ -1,14 +1,14 @@
 package core.services.resources.management
 
-import domain.common.exceptions.IncompatibleResourceFormatException
-import domain.common.exceptions.ResourceBlockedByRentException
-import domain.common.exceptions.ResourceNotFoundException
-import domain.common.exceptions.UnknownResourceException
-import domain.common.helpers.AccessionNumberHelper
-import domain.common.valueobjects.AccessionNumber
-import domain.resource.Book
-import domain.resource.Magazine
-import domain.resource.Resource
+import core.domain.common.exceptions.IncompatibleResourceFormatException
+import core.domain.common.exceptions.ResourceBlockedByRentException
+import core.domain.common.exceptions.ResourceNotFoundException
+import core.domain.common.exceptions.UnknownResourceException
+import core.domain.common.helpers.AccessionNumberHelper
+import core.domain.common.valueobjects.AccessionNumber
+import core.domain.resource.Book
+import core.domain.resource.Magazine
+import core.domain.resource.Resource
 import ports.resource.IResourceService
 import ports.resource.ResourcePersistencePort
 import ports.resource.ResourceSearchPort
@@ -19,34 +19,34 @@ open class ResourcesManagementService(
 ) : IResourceService {
 
 
-    @Throws(UnknownResourceException::class)
+    @Throws(core.domain.common.exceptions.UnknownResourceException::class)
     override fun create(resource: Resource) {
-        if (resource.accessionNumber != null) throw UnknownResourceException()
+        if (resource.accessionNumber != null) throw core.domain.common.exceptions.UnknownResourceException()
         when (resource) {
             is Book, is Magazine -> {
-                resource.accessionNumber = AccessionNumberHelper.generate()
+                resource.accessionNumber = core.domain.common.helpers.AccessionNumberHelper.generate()
                 resourcePersistencePort.save(resource)
             }
-            else -> throw UnknownResourceException()
+            else -> throw core.domain.common.exceptions.UnknownResourceException()
         }
     }
 
     override fun update(resource: Resource) {
-        if (resource.accessionNumber == null) throw ResourceNotFoundException()
+        if (resource.accessionNumber == null) throw core.domain.common.exceptions.ResourceNotFoundException()
         val original =
-            resourceSearchPort.findByAccessionNumber(resource.accessionNumber!!) ?: throw ResourceNotFoundException()
-        if (resource::class != original::class) throw IncompatibleResourceFormatException()
+            resourceSearchPort.findByAccessionNumber(resource.accessionNumber!!) ?: throw core.domain.common.exceptions.ResourceNotFoundException()
+        if (resource::class != original::class) throw core.domain.common.exceptions.IncompatibleResourceFormatException()
         resourcePersistencePort.save(resource)
     }
 
-    override fun remove(accessionNumber: AccessionNumber) {
-        val resource = resourceSearchPort.findByAccessionNumber(accessionNumber) ?: throw ResourceNotFoundException()
-        if (resource.locked) throw ResourceBlockedByRentException()
+    override fun remove(accessionNumber: core.domain.common.valueobjects.AccessionNumber) {
+        val resource = resourceSearchPort.findByAccessionNumber(accessionNumber) ?: throw core.domain.common.exceptions.ResourceNotFoundException()
+        if (resource.locked) throw core.domain.common.exceptions.ResourceBlockedByRentException()
         resourcePersistencePort.remove(resource)
     }
 
-    @Throws(ResourceNotFoundException::class)
-    override fun getDetails(accessionNumber: AccessionNumber): Resource {
-        return resourceSearchPort.findByAccessionNumber(accessionNumber) ?: throw ResourceNotFoundException()
+    @Throws(core.domain.common.exceptions.ResourceNotFoundException::class)
+    override fun getDetails(accessionNumber: core.domain.common.valueobjects.AccessionNumber): Resource {
+        return resourceSearchPort.findByAccessionNumber(accessionNumber) ?: throw core.domain.common.exceptions.ResourceNotFoundException()
     }
 }

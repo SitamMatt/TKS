@@ -1,17 +1,17 @@
 package ports.user
 
-import domain.common.exceptions.DuplicatedEmailException
-import domain.common.exceptions.UserNotFoundException
+import core.domain.common.exceptions.DuplicatedEmailException
+import core.domain.common.exceptions.UserNotFoundException
 import domain.common.valueobjects.Email
-import domain.user.User
+import core.domain.user.User
 
 interface UserQueryPort {
-    @Throws(UserNotFoundException::class)
+    @Throws(core.domain.common.exceptions.UserNotFoundException::class)
     fun getDetails(email: Email): User?
 }
 
 interface UserRegisterCommandPort {
-    @Throws(DuplicatedEmailException::class)
+    @Throws(core.domain.common.exceptions.DuplicatedEmailException::class)
     fun register(user: User)
 }
 

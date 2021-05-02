@@ -1,12 +1,12 @@
 package core.services.rental
 
 import domain.common.exceptions.*
-import domain.common.helpers.AccessionNumberHelper
-import domain.common.valueobjects.AccessionNumber
+import core.domain.common.helpers.AccessionNumberHelper
+import core.domain.common.valueobjects.AccessionNumber
 import domain.common.valueobjects.Email
-import domain.rent.Client
-import domain.rent.Product
-import domain.rent.Rent
+import core.domain.rent.Client
+import core.domain.rent.Product
+import core.domain.rent.Rent
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.junit5.MockKExtension
@@ -29,7 +29,7 @@ internal class RentalServiceTest {
     private lateinit var sampleRent: Rent
     private val sampleEmail: Email = Email("mszewc@edu.pl")
     private val sampleEmail2: Email = Email("mzab@edu.pl")
-    private val sampleResId: AccessionNumber = AccessionNumberHelper.generate()
+    private val sampleResId: core.domain.common.valueobjects.AccessionNumber = core.domain.common.helpers.AccessionNumberHelper.generate()
     private val sampleRentId: UUID = UUID.randomUUID()
 
     @RelaxedMockK
@@ -55,7 +55,7 @@ internal class RentalServiceTest {
     @Test
     fun `Given invalid user id then rent should fail`() {
         every { userSearchPort.findByEmail(sampleUser.email) } returns null
-        Assertions.assertThrows(UserNotFoundException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.UserNotFoundException::class.java) {
             rentService.rent(
                 sampleUser.email, sampleResource.accessionNumber!!
             )
@@ -67,7 +67,7 @@ internal class RentalServiceTest {
     fun `Given invalid resource id then rent should fail`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
         every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns null
-        Assertions.assertThrows(ResourceNotFoundException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.ResourceNotFoundException::class.java) {
             rentService.rent(
                 sampleUser.email, sampleResource.accessionNumber!!
             )
@@ -80,7 +80,7 @@ internal class RentalServiceTest {
         sampleUser.active = false
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
         every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns sampleResource
-        Assertions.assertThrows(UserNotActiveException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.UserNotActiveException::class.java) {
             rentService.rent(
                 sampleUser.email, sampleResource.accessionNumber!!
             )
@@ -93,7 +93,7 @@ internal class RentalServiceTest {
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
         every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns sampleResource
         every { rentSearchPort.findActiveByResourceId(sampleResId) } returns sampleRent
-        Assertions.assertThrows(ResourceAlreadyRentException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.ResourceAlreadyRentException::class.java) {
             rentService.rent(
                 sampleUser.email, sampleResource.accessionNumber!!
             )
@@ -104,7 +104,7 @@ internal class RentalServiceTest {
     @Test
     fun `Given invalid user id then returnResource should fail`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns null
-        Assertions.assertThrows(UserNotFoundException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.UserNotFoundException::class.java) {
             rentService.returnResource(
                 sampleEmail,
                 sampleResId
@@ -116,7 +116,7 @@ internal class RentalServiceTest {
     fun `Given invalid resource id then returnResource should fail`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
         every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns null
-        Assertions.assertThrows(ResourceNotFoundException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.ResourceNotFoundException::class.java) {
             rentService.returnResource(
                 sampleEmail,
                 sampleResId
@@ -129,7 +129,7 @@ internal class RentalServiceTest {
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
         every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns sampleResource
         every { rentSearchPort.findActiveByResourceId(sampleResId) } returns null
-        Assertions.assertThrows(ResourceNotRentException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.ResourceNotRentException::class.java) {
             rentService.returnResource(
                 sampleEmail,
                 sampleResId
@@ -143,7 +143,7 @@ internal class RentalServiceTest {
         every { resourceSearchPort.findByAccessionNumber((sampleResId)) } returns sampleResource
         sampleRent = Rent(sampleRentId, Date(), null, sampleEmail2, sampleResId)
         every { rentSearchPort.findActiveByResourceId(sampleResId) } returns sampleRent
-        Assertions.assertThrows(InvalidUserException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.InvalidUserException::class.java) {
             rentService.returnResource(
                 sampleEmail,
                 sampleResId
@@ -162,6 +162,6 @@ internal class RentalServiceTest {
     @Test
     fun `Given invalid id then getDetails should fail`() {
         every { rentSearchPort.getById(sampleRentId) } returns null
-        Assertions.assertThrows(RentNotFoundException::class.java) { rentService.getDetails(sampleRentId) }
+        Assertions.assertThrows(core.domain.common.exceptions.RentNotFoundException::class.java) { rentService.getDetails(sampleRentId) }
     }
 }

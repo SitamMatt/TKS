@@ -1,14 +1,14 @@
 package core.services.resources.management
 
-import domain.common.exceptions.IncompatibleResourceFormatException
-import domain.common.exceptions.ResourceBlockedByRentException
-import domain.common.exceptions.ResourceNotFoundException
-import domain.common.exceptions.UnknownResourceException
-import domain.common.helpers.AccessionNumberHelper
-import domain.common.valueobjects.AccessionNumber
-import domain.resource.Book
-import domain.resource.Magazine
-import domain.resource.Resource
+import core.domain.common.exceptions.IncompatibleResourceFormatException
+import core.domain.common.exceptions.ResourceBlockedByRentException
+import core.domain.common.exceptions.ResourceNotFoundException
+import core.domain.common.exceptions.UnknownResourceException
+import core.domain.common.helpers.AccessionNumberHelper
+import core.domain.common.valueobjects.AccessionNumber
+import core.domain.resource.Book
+import core.domain.resource.Magazine
+import core.domain.resource.Resource
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
 import io.mockk.junit5.MockKExtension
@@ -24,7 +24,7 @@ import ports.resource.ResourceSearchPort
 class ResourcesManagementServiceTest {
 
     data class InvalidResource(
-        override var accessionNumber: AccessionNumber?,
+        override var accessionNumber: core.domain.common.valueobjects.AccessionNumber?,
         override var title: String,
         override var locked: Boolean
     ) : Resource
@@ -33,7 +33,7 @@ class ResourcesManagementServiceTest {
     private lateinit var sampleBook: Resource
     private lateinit var sampleMagazine: Resource
     private lateinit var invalidResource: Resource
-    private val sampleAccessionNumber: AccessionNumber = AccessionNumberHelper.generate()
+    private val sampleAccessionNumber: core.domain.common.valueobjects.AccessionNumber = core.domain.common.helpers.AccessionNumberHelper.generate()
 
     @RelaxedMockK
     lateinit var resourcePersistencePort: ResourcePersistencePort
@@ -58,7 +58,7 @@ class ResourcesManagementServiceTest {
 
     @Test
     fun `Given resource of invalid type then create should fail`() {
-        Assertions.assertThrows(UnknownResourceException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.UnknownResourceException::class.java) {
             resourcesService.create(
                 invalidResource
             )
@@ -69,7 +69,7 @@ class ResourcesManagementServiceTest {
     @Test
     fun `Given resource with not null id then create should fail`() {
         sampleBook.accessionNumber = sampleAccessionNumber
-        Assertions.assertThrows(UnknownResourceException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.UnknownResourceException::class.java) {
             resourcesService.create(sampleBook)
         }
         verify(exactly = 0) { resourcePersistencePort.save(any()) }
@@ -87,7 +87,7 @@ class ResourcesManagementServiceTest {
     fun `Given non existing resource then update should fail`() {
         sampleMagazine.accessionNumber = sampleAccessionNumber
         every { resourceSearchPort.findByAccessionNumber(sampleMagazine.accessionNumber!!) } returns null
-        Assertions.assertThrows(ResourceNotFoundException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.ResourceNotFoundException::class.java) {
             resourcesService.update(sampleMagazine)
         }
         verify(exactly = 0) { resourcePersistencePort.save(any()) }
@@ -99,7 +99,7 @@ class ResourcesManagementServiceTest {
         sampleBook.accessionNumber = sampleAccessionNumber
         every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns sampleMagazine
         Assertions.assertThrows(
-            IncompatibleResourceFormatException::class.java
+            core.domain.common.exceptions.IncompatibleResourceFormatException::class.java
         ) { resourcesService.update(sampleBook) }
         verify(exactly = 0) { resourcePersistencePort.save(any()) }
     }
@@ -115,7 +115,7 @@ class ResourcesManagementServiceTest {
     @Test
     fun `Given invalid resource id then remove should fail`() {
         every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns null
-        Assertions.assertThrows(ResourceNotFoundException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.ResourceNotFoundException::class.java) {
             resourcesService.remove(sampleAccessionNumber)
         }
         verify(exactly = 0) { resourcePersistencePort.remove(any()) }
@@ -126,7 +126,7 @@ class ResourcesManagementServiceTest {
         sampleMagazine.accessionNumber = sampleAccessionNumber
         sampleMagazine.locked = true
         every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns sampleMagazine
-        Assertions.assertThrows(ResourceBlockedByRentException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.ResourceBlockedByRentException::class.java) {
             resourcesService.remove(sampleAccessionNumber)
         }
         verify(exactly = 0) { resourcePersistencePort.remove(any()) }
@@ -146,7 +146,7 @@ class ResourcesManagementServiceTest {
     @Test
     fun `Given invalid resource id then getDetails should fail`() {
         every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns null
-        Assertions.assertThrows(ResourceNotFoundException::class.java) {
+        Assertions.assertThrows(core.domain.common.exceptions.ResourceNotFoundException::class.java) {
             resourcesService.getDetails(sampleAccessionNumber)
         }
     }

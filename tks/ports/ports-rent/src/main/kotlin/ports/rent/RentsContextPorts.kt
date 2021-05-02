@@ -1,10 +1,10 @@
 package ports.rent
 
-import domain.common.valueobjects.AccessionNumber
+import core.domain.common.valueobjects.AccessionNumber
 import domain.common.valueobjects.Email
-import domain.rent.Client
-import domain.rent.Product
-import domain.rent.Rent
+import core.domain.rent.Client
+import core.domain.rent.Product
+import core.domain.rent.Rent
 import java.util.*
 
 interface ClientSearchPort {
@@ -12,7 +12,7 @@ interface ClientSearchPort {
 }
 
 interface ProductSearchPort {
-    fun findByAccessionNumber(accessionNumber: AccessionNumber): Product?
+    fun findByAccessionNumber(accessionNumber: core.domain.common.valueobjects.AccessionNumber): Product?
 }
 
 interface RentPersistencePort {
@@ -20,7 +20,7 @@ interface RentPersistencePort {
 }
 
 interface RentSearchPort {
-    fun findActiveByResourceId(accessionNumber: AccessionNumber): Rent?
+    fun findActiveByResourceId(accessionNumber: core.domain.common.valueobjects.AccessionNumber): Rent?
     fun getById(id: UUID): Rent?
 }
 

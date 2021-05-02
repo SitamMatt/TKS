@@ -1,32 +1,32 @@
 package ports.rent
 
 import domain.common.exceptions.*
-import domain.common.valueobjects.AccessionNumber
+import core.domain.common.valueobjects.AccessionNumber
 import domain.common.valueobjects.Email
-import domain.rent.Rent
+import core.domain.rent.Rent
 import java.util.*
 
 interface RentQueryPort {
-    @Throws(RentNotFoundException::class)
+    @Throws(core.domain.common.exceptions.RentNotFoundException::class)
     fun getDetails(id: UUID): Rent
 }
 
 interface ResourceRentCommandPort {
     @Throws(
-        UserNotFoundException::class,
-        ResourceNotFoundException::class,
-        UserNotActiveException::class,
-        ResourceAlreadyRentException::class
+        core.domain.common.exceptions.UserNotFoundException::class,
+        core.domain.common.exceptions.ResourceNotFoundException::class,
+        core.domain.common.exceptions.UserNotActiveException::class,
+        core.domain.common.exceptions.ResourceAlreadyRentException::class
     )
-    fun rent(email: Email, resourceId: AccessionNumber): UUID
+    fun rent(email: Email, resourceId: core.domain.common.valueobjects.AccessionNumber): UUID
 
     @Throws(
-        UserNotFoundException::class,
-        ResourceNotFoundException::class,
-        ResourceNotRentException::class,
-        InvalidUserException::class
+        core.domain.common.exceptions.UserNotFoundException::class,
+        core.domain.common.exceptions.ResourceNotFoundException::class,
+        core.domain.common.exceptions.ResourceNotRentException::class,
+        core.domain.common.exceptions.InvalidUserException::class
     )
-    fun returnResource(email: Email, resourceId: AccessionNumber)
+    fun returnResource(email: Email, resourceId: core.domain.common.valueobjects.AccessionNumber)
 }
 
 interface IRentService : RentQueryPort, ResourceRentCommandPort

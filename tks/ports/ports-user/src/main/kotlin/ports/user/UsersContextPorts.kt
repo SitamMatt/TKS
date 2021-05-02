@@ -1,7 +1,7 @@
 package ports.user
 
 import domain.common.valueobjects.Email
-import domain.user.User
+import core.domain.user.User
 
 interface UserPersistencePort {
     fun save(user: User)

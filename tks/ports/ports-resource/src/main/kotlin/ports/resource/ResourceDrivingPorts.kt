@@ -1,20 +1,20 @@
 package ports.resource
 
-import domain.common.exceptions.ResourceNotFoundException
-import domain.common.exceptions.UnknownResourceException
-import domain.common.valueobjects.AccessionNumber
-import domain.resource.Resource
+import core.domain.common.exceptions.ResourceNotFoundException
+import core.domain.common.exceptions.UnknownResourceException
+import core.domain.common.valueobjects.AccessionNumber
+import core.domain.resource.Resource
 
 interface ResourceQueryPort {
-    @Throws(ResourceNotFoundException::class)
-    fun getDetails(accessionNumber: AccessionNumber): Resource?
+    @Throws(core.domain.common.exceptions.ResourceNotFoundException::class)
+    fun getDetails(accessionNumber: core.domain.common.valueobjects.AccessionNumber): Resource?
 }
 
 interface ResourceManageCommandPort {
-    @Throws(UnknownResourceException::class)
+    @Throws(core.domain.common.exceptions.UnknownResourceException::class)
     fun create(resource: Resource)
     fun update(resource: Resource)
-    fun remove(accessionNumber: AccessionNumber)
+    fun remove(accessionNumber: core.domain.common.valueobjects.AccessionNumber)
 }
 
 interface IResourceService : ResourceQueryPort, ResourceManageCommandPort

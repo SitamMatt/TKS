@@ -1,7 +1,7 @@
 package ports.resource
 
-import domain.common.valueobjects.AccessionNumber
-import domain.resource.Resource
+import core.domain.common.valueobjects.AccessionNumber
+import core.domain.resource.Resource
 
 interface ResourcePersistencePort {
     fun save(resource: Resource)
@@ -9,7 +9,7 @@ interface ResourcePersistencePort {
 }
 
 interface ResourceSearchPort {
-    fun findByAccessionNumber(accessionNumber: AccessionNumber): Resource?
+    fun findByAccessionNumber(accessionNumber: core.domain.common.valueobjects.AccessionNumber): Resource?
 }
 
 interface IResourceRepositoryAdapter : ResourcePersistencePort, ResourceSearchPort
