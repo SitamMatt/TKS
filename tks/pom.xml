@@ -10,7 +10,7 @@
 
     <modules>
         <module>RepositoriesAdapters</module>
-        <module>ApplicationPorts</module>
+        <module>ports</module>
         <module>core</module>
         <module>Microservices</module>
     </modules>
