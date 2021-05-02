@@ -9,7 +9,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>service-user-management</artifactId>
+    <artifactId>service-users-management</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>edu.p.lodz.pl</groupId>
+            <artifactId>ports-user</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
