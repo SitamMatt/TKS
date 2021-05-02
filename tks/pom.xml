@@ -11,7 +11,7 @@
     <modules>
         <module>RepositoriesAdapters</module>
         <module>ApplicationPorts</module>
-        <module>ApplicationCore</module>
+        <module>core</module>
         <module>Microservices</module>
     </modules>
 
