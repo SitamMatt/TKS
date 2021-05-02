@@ -1,15 +1,15 @@
 package it.p.lodz.pl.service.rents.mappers
 
-import domain.exceptions.UnknownResourceException
-import domain.model.context.library.Book
-import domain.model.context.library.Magazine
-import domain.model.context.library.Resource
-import domain.model.values.AccessionNumber
+import core.domain.common.exceptions.UnknownResourceException
+import core.domain.common.valueobjects.AccessionNumber
+import core.domain.resource.Book
+import core.domain.resource.Magazine
+import core.domain.resource.Resource
 import it.p.lodz.pl.service.rents.dto.LibraryItemDto
 
 class LibraryItemMapper {
 
-    fun toDomainObject(src: LibraryItemDto?): Resource = when(src?.type){
+    fun toDomainObject(src: LibraryItemDto?): Resource = when (src?.type) {
         "BOOK" -> toBook(src)
         "MAGAZINE" -> toMagazine(src)
         else -> throw UnknownResourceException() // todo specify exact name
@@ -21,6 +21,7 @@ class LibraryItemMapper {
         false,
         src.author!!
     )
+
     fun toMagazine(src: LibraryItemDto): Magazine = Magazine(
         if (src.accessionNumber == null) null else AccessionNumber(src.accessionNumber!!),
         src.title!!,
@@ -28,7 +29,7 @@ class LibraryItemMapper {
         src.publisher!!
     )
 
-    fun toDto(source: Resource): LibraryItemDto = when(source){
+    fun toDto(source: Resource): LibraryItemDto = when (source) {
         is Book -> toDto(source)
         is Magazine -> toDto(source)
         else -> throw UnknownResourceException() // todo specify exact name
@@ -41,6 +42,7 @@ class LibraryItemMapper {
         null,
         "BOOK"
     )
+
     fun toDto(src: Magazine): LibraryItemDto = LibraryItemDto(
         src.accessionNumber?.value,
         src.title,
@@ -49,7 +51,7 @@ class LibraryItemMapper {
         "MAGAZINE"
     )
 
-    companion object{
+    companion object {
         val INSTANCE: LibraryItemMapper = LibraryItemMapper()
     }
 

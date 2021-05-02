@@ -1,11 +1,11 @@
 package it.p.lodz.pl.service.rents.adapters
 
-import domain.exceptions.*
-import domain.model.values.AccessionNumber
-import domain.model.values.Email
+import core.domain.common.exceptions.*
+import core.domain.common.valueobjects.AccessionNumber
+import core.domain.common.valueobjects.Email
 import it.p.lodz.pl.service.rents.dto.RentDto
 import it.p.lodz.pl.service.rents.mappers.RentMapperDto
-import ports.primary.combined.IRentService
+import ports.rent.IRentService
 import java.util.*
 import javax.inject.Inject
 import kotlin.jvm.Throws

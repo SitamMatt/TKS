@@ -1,6 +1,6 @@
 package it.p.lodz.pl.service.rents.mappers
 
-import domain.model.context.rents.Rent
+import core.domain.rent.Rent
 import it.p.lodz.pl.service.rents.dto.RentDto
 
 class RentMapperDto {
