@@ -9,6 +9,6 @@ value class AccessionNumber(val value: String) {
     }
 
     init {
-        if (!value.matches(core.domain.common.valueobjects.AccessionNumber.Companion.format)) throw core.domain.common.exceptions.TypeValidationFailedException()
+        if (!value.matches(format)) throw TypeValidationFailedException()
     }
 }

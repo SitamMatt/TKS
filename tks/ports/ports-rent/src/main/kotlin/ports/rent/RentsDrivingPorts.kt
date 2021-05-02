@@ -1,8 +1,7 @@
 package ports.rent
 
-import domain.common.exceptions.*
 import core.domain.common.valueobjects.AccessionNumber
-import domain.common.valueobjects.Email
+import core.domain.common.valueobjects.Email
 import core.domain.rent.Rent
 import java.util.*
 
@@ -18,7 +17,7 @@ interface ResourceRentCommandPort {
         core.domain.common.exceptions.UserNotActiveException::class,
         core.domain.common.exceptions.ResourceAlreadyRentException::class
     )
-    fun rent(email: Email, resourceId: core.domain.common.valueobjects.AccessionNumber): UUID
+    fun rent(email: Email, resourceId: AccessionNumber): UUID
 
     @Throws(
         core.domain.common.exceptions.UserNotFoundException::class,
@@ -26,7 +25,7 @@ interface ResourceRentCommandPort {
         core.domain.common.exceptions.ResourceNotRentException::class,
         core.domain.common.exceptions.InvalidUserException::class
     )
-    fun returnResource(email: Email, resourceId: core.domain.common.valueobjects.AccessionNumber)
+    fun returnResource(email: Email, resourceId: AccessionNumber)
 }
 
 interface IRentService : RentQueryPort, ResourceRentCommandPort

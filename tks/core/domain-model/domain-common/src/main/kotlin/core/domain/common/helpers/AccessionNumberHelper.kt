@@ -6,7 +6,7 @@ import java.util.*
 object AccessionNumberHelper {
 
     @JvmStatic
-    fun generate(): core.domain.common.valueobjects.AccessionNumber {
+    fun generate(): AccessionNumber {
         val leftLimit = 65 // letter 'A'
         val rightLimit = 90 // letter 'Z'
         val targetStringLength = 8
@@ -19,6 +19,6 @@ object AccessionNumberHelper {
         buffer.append('-')
         buffer.append(random.nextInt(900) + 100)
         val generatedString = buffer.toString()
-        return core.domain.common.valueobjects.AccessionNumber(generatedString)
+        return AccessionNumber(generatedString)
     }
 }

@@ -3,5 +3,5 @@ package core.domain.rent
 import core.domain.common.valueobjects.AccessionNumber
 
 data class Product(
-    var accessionNumber: core.domain.common.valueobjects.AccessionNumber?
+    var accessionNumber: AccessionNumber?
 )

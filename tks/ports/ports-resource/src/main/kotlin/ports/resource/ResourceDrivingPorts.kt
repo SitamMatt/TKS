@@ -6,15 +6,15 @@ import core.domain.common.valueobjects.AccessionNumber
 import core.domain.resource.Resource
 
 interface ResourceQueryPort {
-    @Throws(core.domain.common.exceptions.ResourceNotFoundException::class)
-    fun getDetails(accessionNumber: core.domain.common.valueobjects.AccessionNumber): Resource?
+    @Throws(ResourceNotFoundException::class)
+    fun getDetails(accessionNumber: AccessionNumber): Resource?
 }
 
 interface ResourceManageCommandPort {
-    @Throws(core.domain.common.exceptions.UnknownResourceException::class)
+    @Throws(UnknownResourceException::class)
     fun create(resource: Resource)
     fun update(resource: Resource)
-    fun remove(accessionNumber: core.domain.common.valueobjects.AccessionNumber)
+    fun remove(accessionNumber: AccessionNumber)
 }
 
 interface IResourceService : ResourceQueryPort, ResourceManageCommandPort

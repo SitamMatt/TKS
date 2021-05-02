@@ -1,7 +1,6 @@
 package core.domain.user
 
-import core.domain.common.UserRole
-import domain.common.valueobjects.Email
+import core.domain.common.valueobjects.Email
 
 data class User(
     var email: Email,

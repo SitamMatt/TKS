@@ -1,9 +1,6 @@
 package core.services.rental
 
-import domain.common.exceptions.*
-import core.domain.common.helpers.AccessionNumberHelper
-import core.domain.common.valueobjects.AccessionNumber
-import domain.common.valueobjects.Email
+import core.domain.common.valueobjects.Email
 import core.domain.rent.Client
 import core.domain.rent.Product
 import core.domain.rent.Rent
@@ -29,7 +26,8 @@ internal class RentalServiceTest {
     private lateinit var sampleRent: Rent
     private val sampleEmail: Email = Email("mszewc@edu.pl")
     private val sampleEmail2: Email = Email("mzab@edu.pl")
-    private val sampleResId: core.domain.common.valueobjects.AccessionNumber = core.domain.common.helpers.AccessionNumberHelper.generate()
+    private val sampleResId: core.domain.common.valueobjects.AccessionNumber =
+        core.domain.common.helpers.AccessionNumberHelper.generate()
     private val sampleRentId: UUID = UUID.randomUUID()
 
     @RelaxedMockK
@@ -162,6 +160,10 @@ internal class RentalServiceTest {
     @Test
     fun `Given invalid id then getDetails should fail`() {
         every { rentSearchPort.getById(sampleRentId) } returns null
-        Assertions.assertThrows(core.domain.common.exceptions.RentNotFoundException::class.java) { rentService.getDetails(sampleRentId) }
+        Assertions.assertThrows(core.domain.common.exceptions.RentNotFoundException::class.java) {
+            rentService.getDetails(
+                sampleRentId
+            )
+        }
     }
 }

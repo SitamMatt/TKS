@@ -1,6 +1,7 @@
 package core.domain.rent
 
-import domain.common.valueobjects.Email
+import core.domain.common.valueobjects.Email
+
 
 data class Client(
     var email: Email,

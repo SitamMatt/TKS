@@ -3,7 +3,7 @@ package core.services.users.management
 import core.domain.common.UserRole
 import core.domain.common.exceptions.DuplicatedEmailException
 import core.domain.common.exceptions.UserNotFoundException
-import domain.common.valueobjects.Email
+import core.domain.common.valueobjects.Email
 import core.domain.user.User
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
@@ -46,7 +46,7 @@ class UsersManagementServiceTest {
     fun `Given user with duplicated email then registration should fail`() {
         val duplicatedUser = User(sampleEmail, UserRole.CLIENT, "password", true)
         every { userSearchPort.findByEmail(sampleEmail) } returns duplicatedUser
-        assertThrows(core.domain.common.exceptions.DuplicatedEmailException::class.java) { userService.register(sampleUser) }
+        assertThrows(DuplicatedEmailException::class.java) { userService.register(sampleUser) }
         verify(exactly = 0) { userPersistencePort.save(any()) }
     }
 
@@ -54,9 +54,9 @@ class UsersManagementServiceTest {
     fun `Given valid email and new role then changeRole should success`() {
         val user = User(sampleEmail, UserRole.CLIENT, "password", true)
         every { userSearchPort.findByEmail(sampleEmail) } returns user
-        userService.changeRole(sampleEmail, core.domain.common.UserRole.ADMIN)
+        userService.changeRole(sampleEmail, UserRole.ADMIN)
         verify(exactly = 1) { userPersistencePort.save(user) }
-        Assertions.assertEquals(core.domain.common.UserRole.ADMIN, user.role)
+        Assertions.assertEquals(UserRole.ADMIN, user.role)
     }
 
     @Test

@@ -9,7 +9,7 @@ interface ResourcePersistencePort {
 }
 
 interface ResourceSearchPort {
-    fun findByAccessionNumber(accessionNumber: core.domain.common.valueobjects.AccessionNumber): Resource?
+    fun findByAccessionNumber(accessionNumber: AccessionNumber): Resource?
 }
 
 interface IResourceRepositoryAdapter : ResourcePersistencePort, ResourceSearchPort

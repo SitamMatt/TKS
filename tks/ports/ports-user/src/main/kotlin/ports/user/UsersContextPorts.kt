@@ -1,6 +1,6 @@
 package ports.user
 
-import domain.common.valueobjects.Email
+import core.domain.common.valueobjects.Email
 import core.domain.user.User
 
 interface UserPersistencePort {

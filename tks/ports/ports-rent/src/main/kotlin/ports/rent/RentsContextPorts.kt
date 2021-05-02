@@ -1,7 +1,7 @@
 package ports.rent
 
 import core.domain.common.valueobjects.AccessionNumber
-import domain.common.valueobjects.Email
+import core.domain.common.valueobjects.Email
 import core.domain.rent.Client
 import core.domain.rent.Product
 import core.domain.rent.Rent
@@ -12,7 +12,7 @@ interface ClientSearchPort {
 }
 
 interface ProductSearchPort {
-    fun findByAccessionNumber(accessionNumber: core.domain.common.valueobjects.AccessionNumber): Product?
+    fun findByAccessionNumber(accessionNumber: AccessionNumber): Product?
 }
 
 interface RentPersistencePort {
@@ -20,7 +20,7 @@ interface RentPersistencePort {
 }
 
 interface RentSearchPort {
-    fun findActiveByResourceId(accessionNumber: core.domain.common.valueobjects.AccessionNumber): Rent?
+    fun findActiveByResourceId(accessionNumber: AccessionNumber): Rent?
     fun getById(id: UUID): Rent?
 }
 
