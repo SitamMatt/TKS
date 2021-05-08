@@ -1,9 +1,6 @@
 package core.services.rental
 
-import core.domain.common.exceptions.ResourceAlreadyRentException
-import core.domain.common.exceptions.ResourceNotFoundException
-import core.domain.common.exceptions.UserNotActiveException
-import core.domain.common.exceptions.UserNotFoundException
+import core.domain.common.exceptions.*
 import core.domain.common.valueobjects.AccessionNumber
 import core.domain.common.valueobjects.Email
 import core.domain.rent.Rent
@@ -11,11 +8,11 @@ import ports.rent.*
 import java.util.*
 
 open class RentalService(
-    private val rentPersistencePort: RentPersistencePort,
-    private val rentSearchPort: RentSearchPort,
-    private val clientSearchPort: ClientSearchPort,
-    private val productSearchPort: ProductSearchPort
-) : IRentService {
+    private val rentPersistencePort: RentPersistencePort?,
+    private val rentSearchPort: RentSearchPort?,
+    private val clientSearchPort: ClientSearchPort?,
+    private val productSearchPort: ProductSearchPort?
+) : IRentalService {
 
     @Throws(
         UserNotFoundException::class,
@@ -23,39 +20,37 @@ open class RentalService(
         UserNotActiveException::class,
         ResourceAlreadyRentException::class
     )
-    override fun rent(email: Email, resourceId: AccessionNumber): UUID {
-        val (userEmail, active) = clientSearchPort.findByEmail(email)
+    override fun rent(email: Email, resourceId: AccessionNumber): Rent {
+        val (userEmail, active) = clientSearchPort!!.findByEmail(email)
             ?: throw UserNotFoundException()
-        productSearchPort.findByAccessionNumber(resourceId)
+        productSearchPort!!.findByAccessionNumber(resourceId)
             ?: throw ResourceNotFoundException()
         if (!active) throw UserNotActiveException()
-        val existingRent = rentSearchPort.findActiveByResourceId(resourceId)
+        val existingRent = rentSearchPort!!.findActiveByResourceId(resourceId)
         if (existingRent != null) throw ResourceAlreadyRentException()
         val rent = Rent(UUID.randomUUID(), Date(), null, userEmail, resourceId)
-        rentPersistencePort.save(rent)
-        return rent.id!!
+        rentPersistencePort!!.save(rent)
+        return rent
     }
 
     @Throws(
         UserNotFoundException::class,
         ResourceNotFoundException::class,
-        core.domain.common.exceptions.ResourceNotRentException::class,
-        core.domain.common.exceptions.InvalidUserException::class
+        ResourceNotRentException::class,
+        InvalidUserException::class
     )
-    override fun returnResource(email: Email, resourceId: AccessionNumber) {
-        val (userEmail) = clientSearchPort.findByEmail(email)
+    override fun returnResource(email: Email, rentId: UUID): Rent {
+        val (userEmail) = clientSearchPort!!.findByEmail(email)
             ?: throw UserNotFoundException()
-        productSearchPort.findByAccessionNumber(resourceId)
-            ?: throw ResourceNotFoundException()
-        val rent = rentSearchPort.findActiveByResourceId(resourceId)
-            ?: throw core.domain.common.exceptions.ResourceNotRentException()
-        if (rent.userEmail != userEmail) throw core.domain.common.exceptions.InvalidUserException()
+        val rent = rentSearchPort!!.getById(rentId)
+            ?: throw RentNotFoundException()
+        if (rent.userEmail != userEmail) throw InvalidUserException()
         rent.endDate = Date()
-        rentPersistencePort.save(rent)
+        rentPersistencePort!!.save(rent)
+        return rent
     }
 
-    @Throws(core.domain.common.exceptions.RentNotFoundException::class)
-    override fun getDetails(id: UUID): Rent {
-        return rentSearchPort.getById(id) ?: throw core.domain.common.exceptions.RentNotFoundException()
+    override fun getDetails(id: UUID): Rent? {
+        return rentSearchPort!!.getById(id)
     }
 }

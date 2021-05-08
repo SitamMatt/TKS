@@ -5,22 +5,40 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "rents")
-class RentEntity {
+@NamedQueries(
+    NamedQuery(name = "RentEntity.findByIdentifier", query = "SELECT r FROM RentEntity r WHERE r.identifier = :id"),
+    NamedQuery(name = "RentEntity.findByProductAccessionNumber", query = "SELECT r FROM RentEntity r WHERE r.product.accessionNumber = :id")
+)
+open class RentEntity() {
 
     @Id
-    @GeneratedValue
-    var id: Long = 0
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    open var id: Long? = null
 
     @Column(unique = true, nullable = false)
-    lateinit var identifier: UUID
+    open lateinit var identifier: UUID
 
-    lateinit var startDate: Date
+    open lateinit var startDate: Date
 
-    var endDate: Date? = null
+    open var endDate: Date? = null
 
-    @ManyToOne
-    lateinit var user: ClientEntity
+    @ManyToOne(cascade = [CascadeType.ALL])
+    open lateinit var client: ClientEntity
 
-    @ManyToOne
-    lateinit var resource: ProductEntity
+    @ManyToOne(cascade = [CascadeType.ALL])
+    open lateinit var product: ProductEntity
+
+    constructor(
+        identifier: UUID,
+        startDate: Date,
+        endDate: Date?,
+        client: ClientEntity,
+        product: ProductEntity,
+    ) : this() {
+        this.identifier = identifier
+        this.startDate = startDate
+        this.endDate = endDate
+        this.client = client
+        this.product = product
+    }
 }

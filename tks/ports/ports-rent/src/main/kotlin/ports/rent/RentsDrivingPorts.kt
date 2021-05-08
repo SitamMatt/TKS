@@ -7,7 +7,7 @@ import java.util.*
 
 interface RentQueryPort {
     @Throws(core.domain.common.exceptions.RentNotFoundException::class)
-    fun getDetails(id: UUID): Rent
+    fun getDetails(id: UUID): Rent?
 }
 
 interface ResourceRentCommandPort {
@@ -17,7 +17,7 @@ interface ResourceRentCommandPort {
         core.domain.common.exceptions.UserNotActiveException::class,
         core.domain.common.exceptions.ResourceAlreadyRentException::class
     )
-    fun rent(email: Email, resourceId: AccessionNumber): UUID
+    fun rent(email: Email, resourceId: AccessionNumber): Rent
 
     @Throws(
         core.domain.common.exceptions.UserNotFoundException::class,
@@ -25,7 +25,7 @@ interface ResourceRentCommandPort {
         core.domain.common.exceptions.ResourceNotRentException::class,
         core.domain.common.exceptions.InvalidUserException::class
     )
-    fun returnResource(email: Email, resourceId: AccessionNumber)
+    fun returnResource(email: Email, rentId: UUID): Rent
 }
 
-interface IRentService : RentQueryPort, ResourceRentCommandPort
+interface IRentalService : RentQueryPort, ResourceRentCommandPort
