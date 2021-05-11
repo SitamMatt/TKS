@@ -3,10 +3,10 @@ package repositories.library.repositories
 import io.micronaut.context.annotation.Executable
 import io.micronaut.data.annotation.Repository
 import io.micronaut.data.repository.CrudRepository
-import repositories.library.entities.Book
+import repositories.library.entities.ResourceEntityTrait
 
 @Repository
-interface ResourceRepository : CrudRepository<Book, Long> {
+interface ResourceRepository : CrudRepository<ResourceEntityTrait, Long> {
     @Executable
-    fun find(title: String): Book
+    fun find(accessionNumber: String): ResourceEntityTrait
 }

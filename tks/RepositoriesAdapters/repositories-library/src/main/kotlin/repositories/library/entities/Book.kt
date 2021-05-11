@@ -1,13 +1,10 @@
 package repositories.library.entities
 
+import javax.persistence.DiscriminatorValue
 import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
 
 @Entity
-data class Book(@Id
-                @GeneratedValue(strategy = GenerationType.IDENTITY)
-                var id: Long,
-                var title: String,
-                var pages: Int = 0)
+@DiscriminatorValue("BOOK")
+open class Book : ResourceEntityTrait() {
+    open lateinit var author: String
+}
