@@ -2,8 +2,8 @@
 <project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>microservices.library</groupId>
-    <artifactId>microservices-library</artifactId>
+    <groupId>repositories.library</groupId>
+    <artifactId>repositories-library</artifactId>
     <version>0.1</version>
     <packaging>${packaging}</packaging>
 
@@ -18,8 +18,8 @@
         <jdk.version>11</jdk.version>
         <release.version>11</release.version>
         <micronaut.version>2.5.1</micronaut.version>
-        <exec.mainClass>microservices.library.ApplicationKt</exec.mainClass>
         <micronaut.data.version>2.4.2</micronaut.data.version>
+        <exec.mainClass>repositories.library.ApplicationKt</exec.mainClass>
         <kotlinVersion>1.5.0</kotlinVersion>
         <micronaut.runtime>netty</micronaut.runtime>
     </properties>
@@ -91,11 +91,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>io.micronaut.jaxrs</groupId>
-            <artifactId>micronaut-jaxrs-server</artifactId>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>io.micronaut.kotlin</groupId>
             <artifactId>micronaut-kotlin-runtime</artifactId>
             <scope>compile</scope>
@@ -136,12 +131,6 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <artifactId>repositories-library</artifactId>
-            <groupId>repositories.library</groupId>
-            <version>0.1</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -210,16 +199,11 @@
                                     <artifactId>micronaut-data-processor</artifactId>
                                     <version>${micronaut.data.version}</version>
                                 </annotationProcessorPath>
-                                <annotationProcessorPath>
-                                    <groupId>io.micronaut.jaxrs</groupId>
-                                    <artifactId>micronaut-jaxrs-processor</artifactId>
-                                    <version>${micronaut.jaxrs.version}</version>
-                                </annotationProcessorPath>
                             </annotationProcessorPaths>
                             <annotationProcessorArgs>
-                                <annotationProcessorArg>micronaut.processing.group=microservices.library
+                                <annotationProcessorArg>micronaut.processing.group=repositories.library
                                 </annotationProcessorArg>
-                                <annotationProcessorArg>micronaut.processing.module=microservicesLibrary
+                                <annotationProcessorArg>micronaut.processing.module=repositoriesLibrary
                                 </annotationProcessorArg>
                             </annotationProcessorArgs>
                         </configuration>
@@ -255,11 +239,6 @@
                                     <artifactId>micronaut-validation</artifactId>
                                     <version>${micronaut.version}</version>
                                 </annotationProcessorPath>
-                                <annotationProcessorPath>
-                                    <groupId>io.micronaut.jaxrs</groupId>
-                                    <artifactId>micronaut-jaxrs-processor</artifactId>
-                                    <version>${micronaut.jaxrs.version}</version>
-                                </annotationProcessorPath>
                             </annotationProcessorPaths>
                         </configuration>
                     </execution>
@@ -287,6 +266,7 @@
                         <artifactId>kotlin-maven-noarg</artifactId>
                         <version>${kotlinVersion}</version>
                     </dependency>
+
                 </dependencies>
             </plugin>
             <plugin>
