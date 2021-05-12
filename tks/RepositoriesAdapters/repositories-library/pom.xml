@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>repositories.library</groupId>
     <artifactId>repositories-library</artifactId>
@@ -8,9 +8,9 @@
     <packaging>${packaging}</packaging>
 
     <parent>
-        <groupId>io.micronaut</groupId>
-        <artifactId>micronaut-parent</artifactId>
-        <version>2.5.1</version>
+        <artifactId>tks</artifactId>
+        <groupId>edu.p.lodz.pl</groupId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
     <properties>
@@ -35,16 +35,19 @@
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-inject</artifactId>
+            <version>${micronaut.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-validation</artifactId>
+            <version>${micronaut.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
+            <version>2.12.2</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -56,6 +59,7 @@
         <dependency>
             <groupId>io.micronaut.test</groupId>
             <artifactId>micronaut-test-kotest</artifactId>
+            <version>2.3.3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -73,41 +77,49 @@
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-http-client</artifactId>
+            <version>${micronaut.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-http-server-netty</artifactId>
+            <version>${micronaut.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.micronaut</groupId>
             <artifactId>micronaut-runtime</artifactId>
+            <version>${micronaut.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.micronaut.data</groupId>
             <artifactId>micronaut-data-hibernate-jpa</artifactId>
+            <version>${micronaut.data.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.micronaut.kotlin</groupId>
             <artifactId>micronaut-kotlin-runtime</artifactId>
+            <version>2.3.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.micronaut.sql</groupId>
             <artifactId>micronaut-hibernate-jpa</artifactId>
+            <version>3.4.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.micronaut.sql</groupId>
             <artifactId>micronaut-jdbc-hikari</artifactId>
+            <version>3.4.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -125,11 +137,13 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <version>1.4.200</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -150,10 +164,12 @@
             <plugin>
                 <groupId>io.micronaut.build</groupId>
                 <artifactId>micronaut-maven-plugin</artifactId>
+                <version>2.0.0</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
                 <configuration>
                     <includes>
                         <include>**/*Spec.*</include>
@@ -164,7 +180,7 @@
                     <dependency>
                         <groupId>org.junit.jupiter</groupId>
                         <artifactId>junit-jupiter-engine</artifactId>
-                        <version>${junit5.version}</version>
+                        <version>5.7.1</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -177,7 +193,7 @@
                     <args>
                         <arg>-Xjvm-default=all</arg>
                     </args>
-                    <jvmTarget>${jdk.version}</jvmTarget>
+                    <jvmTarget>${kotlin.compiler.jvmTarget}</jvmTarget>
                     <compilerPlugins>
                         <plugin>jpa</plugin>
                         <plugin>all-open</plugin>
@@ -213,11 +229,11 @@
                                     <artifactId>micronaut-data-processor</artifactId>
                                     <version>${micronaut.data.version}</version>
                                 </annotationProcessorPath>
-                                <annotationProcessorPath>
-                                    <groupId>org.mapstruct</groupId>
-                                    <artifactId>mapstruct-processor</artifactId>
-                                    <version>1.4.2.Final</version>
-                                </annotationProcessorPath>
+<!--                                <annotationProcessorPath>-->
+<!--                                    <groupId>org.mapstruct</groupId>-->
+<!--                                    <artifactId>mapstruct-processor</artifactId>-->
+<!--                                    <version>1.4.2.Final</version>-->
+<!--                                </annotationProcessorPath>-->
                             </annotationProcessorPaths>
                             <annotationProcessorArgs>
                                 <annotationProcessorArg>micronaut.processing.group=repositories.library
@@ -291,6 +307,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
                     <proc>none</proc>
                     <source>${jdk.version}</source>

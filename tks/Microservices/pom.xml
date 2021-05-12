@@ -13,9 +13,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>user-service</module>
         <module>microservices-common</module>
-        <module>library-service</module>
         <module>microservices-rental</module>
         <module>microservices-library</module>
     </modules>
