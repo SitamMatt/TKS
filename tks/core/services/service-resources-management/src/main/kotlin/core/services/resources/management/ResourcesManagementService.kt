@@ -20,23 +20,25 @@ open class ResourcesManagementService(
 
 
     @Throws(UnknownResourceException::class)
-    override fun create(resource: Resource) {
+    override fun create(resource: Resource): Resource {
         if (resource.accessionNumber != null) throw UnknownResourceException()
         when (resource) {
             is Book, is Magazine -> {
                 resource.accessionNumber = AccessionNumberHelper.generate()
                 resourcePersistencePort.save(resource)
+                return resource
             }
             else -> throw UnknownResourceException()
         }
     }
 
-    override fun update(resource: Resource) {
+    override fun update(resource: Resource): Resource {
         if (resource.accessionNumber == null) throw ResourceNotFoundException()
         val original =
             resourceSearchPort.findByAccessionNumber(resource.accessionNumber!!) ?: throw ResourceNotFoundException()
         if (resource::class != original::class) throw IncompatibleResourceFormatException()
         resourcePersistencePort.save(resource)
+        return resource
     }
 
     override fun remove(accessionNumber: AccessionNumber) {
@@ -46,7 +48,7 @@ open class ResourcesManagementService(
     }
 
     @Throws(ResourceNotFoundException::class)
-    override fun getDetails(accessionNumber: AccessionNumber): Resource {
-        return resourceSearchPort.findByAccessionNumber(accessionNumber) ?: throw ResourceNotFoundException()
+    override fun getDetails(accessionNumber: AccessionNumber): Resource? {
+        return resourceSearchPort.findByAccessionNumber(accessionNumber)
     }
 }

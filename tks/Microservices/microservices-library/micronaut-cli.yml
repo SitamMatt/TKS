@@ -8,7 +8,7 @@ features: [ annotation-api, app-name, data, data-jpa, h2, hibernate-jpa, http-cl
 
 datasources:
   default:
-    url: jdbc:h2:mem:devDb;MVCC=TRUE
+    url: jdbc:h2:mem:devDb
     driverClassName: org.h2.Driver
     username: sa
     password: ''

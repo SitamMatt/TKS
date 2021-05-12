@@ -4,7 +4,7 @@ import core.domain.common.valueobjects.AccessionNumber
 
 
 interface Resource {
-    var accessionNumber: core.domain.common.valueobjects.AccessionNumber?
+    var accessionNumber: AccessionNumber?
     var title: String
     var locked: Boolean
 }

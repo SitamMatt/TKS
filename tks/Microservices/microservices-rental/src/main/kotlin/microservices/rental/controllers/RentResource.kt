@@ -1,8 +1,8 @@
 package microservices.rental.controllers
 
 import microservices.rental.adapters.RentalServiceAdapter
-import microservices.rental.errors.ConflictException
-import microservices.rental.errors.ResourceNotFoundException
+import microservices.common.error.ConflictException
+import microservices.common.error.ResourceNotFoundException
 import microservices.rental.helpers.conflict
 import microservices.rental.helpers.notFound
 import microservices.rental.links.LinksResolver

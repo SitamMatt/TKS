@@ -1,4 +1,4 @@
-package microservices.rental.errors
+package microservices.common.error
 
 import microservices.common.error.Status
 

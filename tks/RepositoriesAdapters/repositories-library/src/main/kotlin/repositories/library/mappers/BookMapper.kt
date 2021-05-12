@@ -14,13 +14,14 @@ fun ResourceEntityTrait.toDomain() = when (this) {
     else -> null
 }
 
-fun Resource.toEntity() = when(this){
+fun Resource.toEntity(): ResourceEntityTrait = when(this){
     is Book -> BookEntity().let {
         it.id = 0
         it.accessionNumber = this.accessionNumber!!.value
         it.author = this.author
         it.locked = this.locked
         it.title = this.title
+        return it
     }
     is Magazine -> MagazineEntity().let {
         it.id = 0
@@ -28,8 +29,9 @@ fun Resource.toEntity() = when(this){
         it.publisher = this.publisher
         it.locked = this.locked
         it.title = this.title
+        return it
     }
-    else -> null
+    else -> throw Exception()
 }
 
 

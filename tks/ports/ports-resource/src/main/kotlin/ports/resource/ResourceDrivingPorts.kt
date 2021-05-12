@@ -12,8 +12,8 @@ interface ResourceQueryPort {
 
 interface ResourceManageCommandPort {
     @Throws(UnknownResourceException::class)
-    fun create(resource: Resource)
-    fun update(resource: Resource)
+    fun create(resource: Resource) : Resource
+    fun update(resource: Resource) : Resource
     fun remove(accessionNumber: AccessionNumber)
 }
 

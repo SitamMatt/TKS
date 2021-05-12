@@ -8,8 +8,8 @@ import core.domain.common.valueobjects.AccessionNumber
 import core.domain.common.valueobjects.Email
 import microservices.common.error.Status
 import microservices.rental.dto.RentDto
-import microservices.rental.errors.ConflictException
-import microservices.rental.errors.ResourceNotFoundException
+import microservices.common.error.ConflictException
+import microservices.common.error.ResourceNotFoundException
 import microservices.rental.mappers.toDto
 import ports.rent.IRentalService
 import java.util.*
