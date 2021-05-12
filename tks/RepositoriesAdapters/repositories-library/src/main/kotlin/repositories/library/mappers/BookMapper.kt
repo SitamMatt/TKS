@@ -8,7 +8,6 @@ import repositories.library.entities.BookEntity
 import repositories.library.entities.MagazineEntity
 import repositories.library.entities.ResourceEntityTrait
 
-
 fun ResourceEntityTrait.toDomain() = when (this) {
     is BookEntity -> Book(AccessionNumber(accessionNumber), title, locked, author)
     is MagazineEntity -> Magazine(AccessionNumber(accessionNumber), title, locked, publisher)
