@@ -5,6 +5,7 @@ import javax.persistence.Entity
 
 @Entity
 @DiscriminatorValue("BOOK")
-open class Book : ResourceEntityTrait() {
+open class BookEntity : ResourceEntityTrait() {
     open lateinit var author: String
+
 }

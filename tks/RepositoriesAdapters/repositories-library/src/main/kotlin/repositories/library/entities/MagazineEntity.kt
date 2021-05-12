@@ -4,6 +4,6 @@ import javax.persistence.*
 
 @Entity
 @DiscriminatorValue("MAGAZINE")
-open class Magazine : ResourceEntityTrait(){
+open class MagazineEntity : ResourceEntityTrait(){
     open lateinit var publisher: String
 }
