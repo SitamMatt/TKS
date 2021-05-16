@@ -6,6 +6,7 @@ import microservices.common.error.ResourceNotFoundException
 import microservices.library.dto.LibraryResourceDto
 import microservices.library.mappers.toDomain
 import microservices.library.mappers.toDto
+import microservices.library.messaging.TestingKafkaClient
 import ports.resource.IResourceService
 import javax.inject.Inject
 
@@ -14,7 +15,11 @@ class LibraryControllerAdapter {
     @Inject
     lateinit var service: IResourceService
 
+    @Inject
+    lateinit var sender: TestingKafkaClient
+
     fun query(id: String): Result<LibraryResourceDto> {
+        sender.sendMessage("Hello", "World")
         val accessionNumber = AccessionNumber(id)
         val resource = service.getDetails(accessionNumber)
             ?: return Result.failure(ResourceNotFoundException())

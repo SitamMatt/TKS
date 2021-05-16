@@ -3,8 +3,11 @@ defaultPackage: microservices.library
 testFramework: kotest
 sourceLanguage: kotlin
 buildTool: maven
-features: [ annotation-api, app-name, data, data-jpa, h2, hibernate-jpa, http-client, jax-rs, jdbc-hikari, kotest, kotlin, kotlin-application, logback, maven, netty-server, readme, shade, yaml ]
+features: [ annotation-api, app-name, data, data-jpa, h2, hibernate-jpa, http-client, jax-rs, jdbc-hikari, kotest, kotlin, kotlin-application, logback, maven, netty-server, readme, shade, yaml, kafka ]
 
+kafka:
+  bootstrap:
+    servers: localhost:29092
 
 datasources:
   default:
