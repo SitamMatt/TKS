@@ -20,7 +20,7 @@ class RentResourceTest {
 
     @BeforeEach
     fun init() {
-        RestAssured.baseURI = "http://localhost/rent-service/api"
+        RestAssured.baseURI = "http://localhost/api/"
         RestAssured.port = 8080
         RestAssured.config = config().logConfig(LogConfig.logConfig().enablePrettyPrinting(true))
         id = "0b41fc23-83bb-46d9-a1a1-70eb750482cf"
