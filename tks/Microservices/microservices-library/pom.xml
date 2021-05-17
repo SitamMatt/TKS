@@ -172,12 +172,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>edu.p.lodz.pl</groupId>
-            <artifactId>microservices-common</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>io.micronaut.kafka</groupId>
             <artifactId>micronaut-kafka</artifactId>
             <version>3.3.2</version>
