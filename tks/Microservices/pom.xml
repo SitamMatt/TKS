@@ -16,6 +16,7 @@
         <module>microservices-common</module>
         <module>microservices-rental</module>
         <module>microservices-library</module>
+        <module>microservices-user-management</module>
         <module>webservice-user</module>
     </modules>
 

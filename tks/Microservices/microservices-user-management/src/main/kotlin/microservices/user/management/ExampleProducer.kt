@@ -12,8 +12,8 @@ class ExampleProducer {
 //        send()
 //    }
 
-    @Outgoing("prices-out")
-    fun send(): String {
-        return "Hello from Quarkus"
-    }
+//    @Outgoing("prices-out")
+//    fun send(): String {
+//        return "Hello from Quarkus"
+//    }
 }
