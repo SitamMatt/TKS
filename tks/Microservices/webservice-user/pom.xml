@@ -91,7 +91,7 @@
                             <goal>wsgen</goal>
                         </goals>
                         <configuration>
-                            <sei>webservices.UserWebserviceImpl</sei>
+                            <sei>webservices.UserWebServiceImpl</sei>
                             <genWsdl>true</genWsdl> <!-- for demo purpose only, the wepapp does not need those the generated wsdl files-->
                             <keep>true</keep>
                         </configuration>
@@ -104,7 +104,7 @@
                         <configuration>
                             <packageName>webservices.client</packageName>
                             <wsdlFiles>
-                                <wsdlFile>${project.build.directory}/generated-sources/wsdl/UserWebserviceImplService.wsdl</wsdlFile>
+                                <wsdlFile>${project.build.directory}/generated-sources/wsdl/UserWebServiceImplService.wsdl</wsdlFile>
                             </wsdlFiles>
                             <xnocompile>false</xnocompile>
                         </configuration>
