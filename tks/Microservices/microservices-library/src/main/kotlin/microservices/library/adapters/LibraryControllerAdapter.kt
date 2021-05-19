@@ -19,7 +19,7 @@ class LibraryControllerAdapter {
     lateinit var sender: TestingKafkaClient
 
     fun query(id: String): Result<LibraryResourceDto> {
-        sender.sendMessage("Hello", "World")
+//        sender.sendMessage("Hello", "World")
         val accessionNumber = AccessionNumber(id)
         val resource = service.getDetails(accessionNumber)
             ?: return Result.failure(ResourceNotFoundException())

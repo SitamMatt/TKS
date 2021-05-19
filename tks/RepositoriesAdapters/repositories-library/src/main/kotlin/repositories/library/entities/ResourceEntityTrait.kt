@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "type")
+//@DiscriminatorColumn(name = "type")
 abstract class ResourceEntityTrait {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
