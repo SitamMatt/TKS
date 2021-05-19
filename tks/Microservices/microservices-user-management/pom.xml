@@ -83,6 +83,26 @@
             <artifactId>quarkus-scheduler</artifactId>
             <version>1.13.3.Final</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>edu.p.lodz.pl</groupId>-->
+<!--            <artifactId>ports-user</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>edu.p.lodz.pl</groupId>-->
+<!--            <artifactId>service-users-management</artifactId>-->
+<!--            <version>1.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>2.3.4</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>jakarta.xml.ws</groupId>-->
+<!--            <artifactId>jakarta.xml.ws-api</artifactId>-->
+<!--            <version>3.0.0</version>-->
+<!--        </dependency>-->
     </dependencies>
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
@@ -157,6 +177,38 @@
                         <option>all-open:annotation=io.quarkus.test.junit.QuarkusTest</option>
                     </pluginOptions>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>2.3.4</version>
+                <executions>
+                    <execution>
+                        <id>wsdl-generation</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>wsgen</goal>
+                        </goals>
+                        <configuration>
+                            <sei>microservices.user.management.webservices.UserWebserviceImpl</sei>
+                            <genWsdl>true</genWsdl> <!-- for demo purpose only, the wepapp does not need those the generated wsdl files-->
+                            <keep>true</keep>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <packageName>webservices.client</packageName>
+                            <wsdlFiles>
+                                <wsdlFile>${project.build.directory}/generated-sources/wsdl/UserWebservice.wsdl</wsdlFile>
+                            </wsdlFiles>
+                            <xnocompile>false</xnocompile>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
