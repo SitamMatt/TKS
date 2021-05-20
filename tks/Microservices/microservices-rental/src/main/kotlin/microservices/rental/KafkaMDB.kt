@@ -6,6 +6,10 @@ import org.apache.kafka.clients.consumer.ConsumerRecord
 import javax.ejb.ActivationConfigProperty
 import javax.ejb.MessageDriven
 
+class Mess{
+    var a = "Hello"
+    var b ="World"
+}
 
 @MessageDriven(
     activationConfig = [ActivationConfigProperty(
@@ -33,7 +37,7 @@ import javax.ejb.MessageDriven
 )
 open class KafkaMDB : KafkaListener {
     @OnRecord(topics = ["testing"])
-    open fun getMessageTest(record: ConsumerRecord<*, *>) {
+    open fun getMessageTest(record: ConsumerRecord<String, Mess>) {
         println("Got record on topic testing $record")
     }
 }

@@ -39,8 +39,7 @@ open class UsersManagementService(
         }
     }
 
-    @Throws(UserNotFoundException::class)
-    override fun getDetails(email: Email): User {
-        return userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
+    override fun getDetails(email: Email): User? {
+        return userSearchPort.findByEmail(email)
     }
 }

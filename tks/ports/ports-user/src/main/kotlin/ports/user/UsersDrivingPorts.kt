@@ -6,7 +6,6 @@ import core.domain.common.valueobjects.Email
 import core.domain.user.User
 
 interface UserQueryPort {
-    @Throws(UserNotFoundException::class)
     fun getDetails(email: Email): User?
 }
 

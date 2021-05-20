@@ -119,6 +119,18 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-spring-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>edu.p.lodz.pl</groupId>
+            <artifactId>ports-user</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>edu.p.lodz.pl</groupId>
+            <artifactId>service-users-management</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>

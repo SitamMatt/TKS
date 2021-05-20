@@ -25,7 +25,7 @@ import javax.resource.spi.TransactionSupport
 open class KafkaMessenger {
     @Resource(lookup = "java:module/env/KafkaConnectionFactory")
     open var factory: KafkaConnectionFactory? = null
-    @Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
+//    @Schedule(hour = "*", minute = "*", second = "*/5", persistent = false)
     open fun sendMessage() {
         try {
             factory!!.createConnection().use { conn ->

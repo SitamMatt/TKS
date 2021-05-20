@@ -8,7 +8,7 @@ import javax.enterprise.context.ApplicationScoped
 @Startup
 @ApplicationScoped
 open class StartupBean(
-    private val repo: UserRepository
+    repo: UserRepository
 ) {
 
     init{

@@ -1,5 +1,6 @@
 package microservices.user.management.webservices
 
+import microservices.user.management.dto.UserDto
 import javax.jws.WebMethod
 import javax.jws.WebParam
 import javax.jws.WebService
@@ -8,5 +9,5 @@ import javax.jws.WebService
 interface UserService {
 
     @WebMethod
-    fun reply(@WebParam(name = "msg") msg: String): String
+    fun reply(@WebParam(name = "msg") msg: String): UserDto
 }

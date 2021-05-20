@@ -12,7 +12,7 @@ internal class UserServiceImplTest{
     fun test(){
         val service  = UserServiceService(URL("http://localhost:8080/soap/userservice?wsdl"))
         val port = service.userServicePort
-        val response = port.reply("Hello")
+        val response = port.reply("mszewc@edu.pl")
         println(response)
     }
 }
