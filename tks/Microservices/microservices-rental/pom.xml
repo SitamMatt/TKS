@@ -126,39 +126,39 @@
             <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.ext/jersey-declarative-linking -->
-<!--        <dependency>-->
-<!--            <groupId>org.glassfish.jersey.ext</groupId>-->
-<!--            <artifactId>jersey-declarative-linking</artifactId>-->
-<!--            <version>3.0.2</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.glassfish.jersey.containers</groupId>-->
-<!--            <artifactId>jersey-container-servlet</artifactId>-->
-<!--            <version>2.21</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.glassfish.jersey.ext</groupId>-->
+        <!--            <artifactId>jersey-declarative-linking</artifactId>-->
+        <!--            <version>3.0.2</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.glassfish.jersey.containers</groupId>-->
+        <!--            <artifactId>jersey-container-servlet</artifactId>-->
+        <!--            <version>2.21</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>edu.p.lodz.pl</groupId>
             <artifactId>service-rental</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>fish.payara.cloud.connectors.kafka</groupId>-->
-<!--            <artifactId>kafka-rar</artifactId>-->
-<!--            <version>0.5.0</version>-->
-<!--            <type>rar</type>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>fish.payara.cloud.connectors.kafka</groupId>-->
-<!--            <artifactId>kafka-jca-api</artifactId>-->
-<!--            <version>0.5.0</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>javax</groupId>-->
-<!--            <artifactId>javaee-api</artifactId>-->
-<!--            <version>8.0.1</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>fish.payara.cloud.connectors.kafka</groupId>
+            <artifactId>kafka-rar</artifactId>
+            <version>0.5.0</version>
+            <type>rar</type>
+        </dependency>
+        <dependency>
+            <groupId>fish.payara.cloud.connectors.kafka</groupId>
+            <artifactId>kafka-jca-api</artifactId>
+            <version>0.5.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>javax</groupId>-->
+        <!--            <artifactId>javaee-api</artifactId>-->
+        <!--            <version>8.0.1</version>-->
+        <!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -201,6 +201,20 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>fish.payara.maven.plugins</groupId>
                 <artifactId>payara-micro-maven-plugin</artifactId>
                 <version>1.3.0</version>
@@ -208,27 +222,32 @@
                     <payaraVersion>${version.payara}</payaraVersion>
                     <deployWar>true</deployWar>
                     <contextRoot>/</contextRoot>
+<!--                    <deployArtifacts>-->
+<!--                        <artifactItem>-->
+<!--                            <groupId>fish.payara.cloud.connectors.kafka</groupId>-->
+<!--                            <artifactId>kafka-rar</artifactId>-->
+<!--                            <version>0.5.0</version>-->
+<!--                            <type>rar</type>-->
+<!--                        </artifactItem>-->
+<!--                    </deployArtifacts>-->
+                    <commandLineOptions>
+                        <option>
+                            <key>--deploy</key>
+                            <value>${project.build.directory}/dependency/kafka-rar-0.5.0.rar</value>
+                        </option>
+                        <option>
+                            <key>--deploy</key>
+                            <value>${project.build.directory}/rent-service.war</value>
+                        </option>
+                    </commandLineOptions>
                 </configuration>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-war-plugin</artifactId>-->
-<!--                <version>3.3.1</version>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-dependency-plugin</artifactId>-->
-<!--                <version>3.1.0</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>copy-dependencies</id>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>copy-dependencies</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.apache.maven.plugins</groupId>-->
+            <!--                <artifactId>maven-war-plugin</artifactId>-->
+            <!--                <version>3.3.1</version>-->
+            <!--            </plugin>-->
+
         </plugins>
     </build>
 
