@@ -5,17 +5,17 @@ import ports.rent.ProductSearchPort
 import repositories.rental.adapters.ClientRepositoryAdapter
 import repositories.rental.adapters.ProductRepositoryAdapter
 import repositories.rental.adapters.RentRepositoryAdapter
+import repositories.rental.repositories.ProductRepository
 import javax.enterprise.context.RequestScoped
 import javax.enterprise.inject.Default
 import javax.enterprise.inject.Produces
 import javax.inject.Singleton
 import javax.persistence.EntityManager
 import javax.persistence.EntityManagerFactory
-import javax.persistence.PersistenceContext
 import javax.persistence.PersistenceUnit
 
 @Singleton
-open class Producer() {
+open class Producer {
 
 //    @Produces
 //    @PersistenceContext(unitName = "rentalPU")
@@ -34,7 +34,8 @@ open class Producer() {
         clientRepositoryAdapter: ClientSearchPort,
         productRepositoryAdapter: ProductSearchPort,
         rentRepositoryAdapter: RentRepositoryAdapter,
-    ): IRentalService = RentalService(rentRepositoryAdapter, rentRepositoryAdapter, clientRepositoryAdapter, productRepositoryAdapter)
+    ): IRentalService =
+        RentalService(rentRepositoryAdapter, rentRepositoryAdapter, clientRepositoryAdapter, productRepositoryAdapter)
 
     @Produces
     fun produceRentRepository(entityManager: EntityManager): RentRepositoryAdapter {
@@ -48,8 +49,9 @@ open class Producer() {
 
     @Produces
     fun produceProductRepository(
-        entityManager: EntityManager
-    ): ProductRepositoryAdapter = ProductRepositoryAdapter(entityManager)
+        entityManager: EntityManager,
+        productRepository: ProductRepository
+    ): ProductRepositoryAdapter = ProductRepositoryAdapter(entityManager, productRepository)
 }
 //
 //

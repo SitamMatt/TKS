@@ -1,5 +1,6 @@
 package microservices.library.adapters
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import core.domain.common.valueobjects.AccessionNumber
 import core.domain.resource.Resource
 import io.reactivex.Single
@@ -7,8 +8,7 @@ import microservices.common.error.ResourceNotFoundException
 import microservices.library.dto.LibraryResourceDto
 import microservices.library.mappers.toDomain
 import microservices.library.mappers.toDto
-import microservices.library.messaging.Mess
-import microservices.library.messaging.TestingKafkaClient
+import microservices.library.messaging.LibraryResourceKafkaProducer
 import ports.resource.IResourceService
 import javax.inject.Inject
 
@@ -18,10 +18,9 @@ class LibraryControllerAdapter {
     lateinit var service: IResourceService
 
     @Inject
-    lateinit var sender: TestingKafkaClient
+    lateinit var sender: LibraryResourceKafkaProducer
 
     fun query(id: String): Result<LibraryResourceDto> {
-        sender.sendMessage("Hello", Single.just(Mess()))
         val accessionNumber = AccessionNumber(id)
         val resource = service.getDetails(accessionNumber)
             ?: return Result.failure(ResourceNotFoundException())
@@ -32,6 +31,7 @@ class LibraryControllerAdapter {
         return try {
             val resource = model.toDomain()
             val result = service.create(resource)
+            sender.sendMessage(result.accessionNumber?.value!!, Single.just(result))
             Result.success(result)
         } catch (ex: Exception) {
             Result.failure(ex)

@@ -8,3 +8,4 @@ fun ClientEntity.toDomain() = Client(
     Email(email),
     active
 )
+
