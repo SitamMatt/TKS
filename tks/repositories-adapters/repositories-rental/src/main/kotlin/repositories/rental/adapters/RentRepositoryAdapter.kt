@@ -1,13 +1,9 @@
 package repositories.rental.adapters
 
 import core.domain.common.valueobjects.AccessionNumber
-import core.domain.common.valueobjects.Email
 import core.domain.rent.Rent
 import ports.rent.RentPersistencePort
 import ports.rent.RentSearchPort
-import repositories.rental.entities.ClientEntity
-import repositories.rental.entities.ProductEntity
-import repositories.rental.entities.RentEntity
 import repositories.rental.mappers.toDomain
 import repositories.rental.mappers.toEntity
 import repositories.rental.repositories.ClientRepository
@@ -21,13 +17,13 @@ class RentRepositoryAdapter(
     private val rentRepository: RentRepository,
     private val clientRepository: ClientRepository,
     private val productRepository: ProductRepository
-    ) : RentSearchPort, RentPersistencePort {
+) : RentSearchPort, RentPersistencePort {
 
 
     override fun findActiveByResourceId(accessionNumber: AccessionNumber): Rent? {
         return try {
             val result = rentRepository.findByProductAccessionNumber(accessionNumber.value)
-            if(result.isEmpty) return null
+            if (!result.isPresent) return null
             return result.get().toDomain()
 //            val query = entityManager.createNamedQuery("RentEntity.findByProductAccessionNumber", RentEntity::class.java)
 //            query.setParameter("id", accessionNumber.value)
@@ -41,7 +37,7 @@ class RentRepositoryAdapter(
     override fun getById(id: UUID): Rent? {
         return try {
             val result = rentRepository.findByIdentifier(id)
-            if(result.isEmpty) return null
+            if (!result.isPresent) return null
             return result.get().toDomain()
 //            val query = entityManager.createNamedQuery("RentEntity.findByIdentifier", RentEntity::class.java)
 //            query.setParameter("id", id)
@@ -53,15 +49,15 @@ class RentRepositoryAdapter(
     }
 
     override fun save(rent: Rent) {
-        try{
+        try {
             val rentResult = rentRepository.findByIdentifier(rent.id!!)
             val clientResult = clientRepository.findByEmail(rent.userEmail.value)
             val productResult = productRepository.findByAccessionNumber(rent.resourceId.value)
-            if(clientResult.isPresent and productResult.isPresent){
-                if(rentResult.isEmpty ){
+            if (clientResult.isPresent and productResult.isPresent) {
+                if (!rentResult.isPresent) {
                     val entity = rent.toEntity(clientResult.get(), productResult.get())
                     entityManager.persist(entity)
-                }else{
+                } else {
                     val entity = rentResult.get()
                     rent.toEntity(entity, clientResult.get(), productResult.get())
                     entityManager.merge(rentResult)
@@ -80,7 +76,7 @@ class RentRepositoryAdapter(
 //            }
 //            entityManager.transaction.commit()
 //            entityManager.clear()
-        }catch(ex: Exception){
+        } catch (ex: Exception) {
             throw ex
         }
     }

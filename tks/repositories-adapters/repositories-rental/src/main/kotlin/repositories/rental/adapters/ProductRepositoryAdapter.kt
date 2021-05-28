@@ -18,7 +18,7 @@ class ProductRepositoryAdapter(
     override fun findByAccessionNumber(accessionNumber: AccessionNumber): Product? {
         return try {
             val result = productRepository.findByAccessionNumber(accessionNumber.value)
-            if(result.isEmpty) return null
+            if(!result.isPresent) return null
             return result.get().toDomain()
 //            val query = entityManager.createNamedQuery("ProductEntity.findByAccessionNumber", ProductEntity::class.java)
 //            query.setParameter("id", accessionNumber.value)
@@ -33,7 +33,7 @@ class ProductRepositoryAdapter(
         try{
             entityManager.transaction.begin()
             val result = productRepository.findByAccessionNumber(product.accessionNumber!!.value)
-            if(result.isEmpty){
+            if(!result.isPresent){
                 val entity = product.toEntity()
                 productRepository.save(entity)
             }else{

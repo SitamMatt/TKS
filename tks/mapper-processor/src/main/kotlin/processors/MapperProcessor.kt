@@ -11,7 +11,7 @@ import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.*
 
-@SupportedSourceVersion(SourceVersion.RELEASE_11)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes("annotations.MapperAnnotation")
 @SupportedOptions(MapperProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 @AutoService(Processor::class)

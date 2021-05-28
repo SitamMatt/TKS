@@ -19,7 +19,7 @@ class ClientRepositoryAdapter(
     override fun findByEmail(email: Email): Client? {
         return try {
             val result = clientRepository.findByEmail(email.value)
-            if(result.isEmpty) return null
+            if(!result.isPresent) return null
             return result.get().toDomain()
 //            val query = entityManager.createNamedQuery("ClientEntity.findByEmail", ClientEntity::class.java)
 //            query.setParameter("email", email.value)

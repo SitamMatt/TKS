@@ -15,7 +15,7 @@ class ResourceRepositoryAdapter : IResourceRepositoryAdapter {
 
     override fun save(resource: Resource) {
         val existingEntity = resourceRepository.find(resource.accessionNumber!!.value)
-        if (existingEntity.isEmpty) {
+        if (!existingEntity.isPresent) {
             resourceRepository.save(resource.toEntity())
         } else {
             val entity = resource.toEntity()
@@ -26,13 +26,13 @@ class ResourceRepositoryAdapter : IResourceRepositoryAdapter {
 
     override fun remove(resource: Resource) {
         val existingEntity = resourceRepository.find(resource.accessionNumber!!.value)
-        if(existingEntity.isEmpty) throw Exception()
+        if(!existingEntity.isPresent) throw Exception()
         resourceRepository.delete(existingEntity.get())
     }
 
     override fun findByAccessionNumber(accessionNumber: AccessionNumber): Resource? {
         val entity = resourceRepository.find(accessionNumber.value)
-        if (entity.isEmpty) return null
+        if (!entity.isPresent) return null
         return entity.get().toDomain()
     }
 }
