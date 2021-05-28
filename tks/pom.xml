@@ -9,10 +9,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>RepositoriesAdapters</module>
+        <module>repositories-adapters</module>
         <module>ports</module>
         <module>core</module>
-        <module>Microservices</module>
+        <module>microservices</module>
         <module>mapper-processor</module>
     </modules>
 
