@@ -11,7 +11,7 @@ interface UserQueryPort {
 
 interface UserRegisterCommandPort {
     @Throws(DuplicatedEmailException::class)
-    fun register(user: User)
+    fun register(user: User) : User
 }
 
 interface IUserService : UserQueryPort, UserRegisterCommandPort

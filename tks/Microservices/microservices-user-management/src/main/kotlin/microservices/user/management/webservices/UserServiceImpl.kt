@@ -21,5 +21,9 @@ open class UserServiceImpl : UserService{
         return user
     }
 
+    override fun registerUser(model: UserDto): UserDto {
+        return adapter.registerUser(model)
+    }
+
 
 }

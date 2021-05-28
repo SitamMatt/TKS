@@ -1,23 +1,37 @@
 package microservices.user.management.adapters
 
-//import ports.user.IUserService
+import com.fasterxml.jackson.databind.ObjectMapper
 import core.domain.common.valueobjects.Email
+import core.domain.user.User
 import microservices.user.management.dto.UserDto
+import microservices.user.management.mappers.toDomain
 import microservices.user.management.mappers.toDto
+import org.eclipse.microprofile.reactive.messaging.Channel
+import org.eclipse.microprofile.reactive.messaging.Emitter
 import ports.user.IUserService
-import java.lang.Exception
 import javax.enterprise.context.RequestScoped
 import javax.inject.Inject
+
 @RequestScoped
 open class UserServiceAdapter @Inject constructor(
     private val userService: IUserService
 ) {
 
-    open fun registerUser(){
-        try{
+    @Inject
+    @Channel("prices-out")
+    private lateinit var userEmitter: Emitter<User>
 
-        }catch(ex: Exception){
 
+    open fun registerUser(user: UserDto): UserDto {
+        try {
+            val domain = user.toDomain()
+            val result = userService.register(domain)
+            val ObjectMapper = ObjectMapper()
+            userEmitter.send(result)
+            return result.toDto()
+        } catch (ex: Exception) {
+            println(ex)
+            throw ex
         }
     }
 

@@ -10,4 +10,7 @@ interface UserService {
 
     @WebMethod
     fun reply(@WebParam(name = "msg") msg: String): UserDto
+
+    @WebMethod
+    fun registerUser(@WebParam(name = "model") model: UserDto): UserDto
 }

@@ -15,10 +15,11 @@ open class UsersManagementService(
 ) : IUserService {
 
     @Throws(DuplicatedEmailException::class)
-    override fun register(user: User) {
+    override fun register(user: User): User {
         val duplicate = userSearchPort.findByEmail(user.email)
         if (duplicate != null) throw DuplicatedEmailException()
         userPersistencePort.save(user)
+        return user
     }
 
     @Throws(UserNotFoundException::class)
