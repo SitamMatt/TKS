@@ -1,9 +1,6 @@
 package microservices.rental.config
 
 import javax.annotation.sql.DataSourceDefinition
-import javax.enterprise.context.ApplicationScoped
-import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
 
 @DataSourceDefinition(
     name ="java:app/jdbc/rental",

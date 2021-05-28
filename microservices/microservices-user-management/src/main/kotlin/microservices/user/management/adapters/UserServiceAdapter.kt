@@ -1,6 +1,5 @@
 package microservices.user.management.adapters
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import core.domain.common.valueobjects.Email
 import core.domain.user.User
 import microservices.user.management.dto.UserDto

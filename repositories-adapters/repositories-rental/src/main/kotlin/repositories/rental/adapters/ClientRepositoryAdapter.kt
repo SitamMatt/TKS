@@ -2,13 +2,9 @@ package repositories.rental.adapters
 
 import core.domain.common.valueobjects.Email
 import core.domain.rent.Client
-import core.domain.rent.Rent
 import ports.rent.ClientSearchPort
-import repositories.rental.entities.ClientEntity
-import repositories.rental.entities.RentEntity
 import repositories.rental.mappers.toDomain
 import repositories.rental.repositories.ClientRepository
-import java.util.*
 import javax.persistence.EntityManager
 
 class ClientRepositoryAdapter(

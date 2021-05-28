@@ -15,11 +15,10 @@ fun User.toDto(): UserDto {
 }
 
 fun UserDto.toDomain(): User {
-    val domain = User(
+    return User(
         Email(email!!),
         UserRole.valueOf(role!!),
         password!!,
         active!!
     )
-    return domain
 }

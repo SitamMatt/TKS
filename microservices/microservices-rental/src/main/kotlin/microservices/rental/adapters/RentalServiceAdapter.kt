@@ -34,31 +34,31 @@ open class RentalServiceAdapter @Inject constructor(
     }
 
     open fun createRentByUser(productId: String): Result<RentDto> {
-        try {
+        return try {
             val email = Email(userEmail)
             val accessionNumber = AccessionNumber(productId)
             val rent = rentalService.rent(email, accessionNumber)
-            return Result.success(rent.toDto())
+            Result.success(rent.toDto())
         } catch (e: RentNotFoundException) {
-            return Result.failure(ResourceNotFoundException())
+            Result.failure(ResourceNotFoundException())
         } catch (e: ResourceAlreadyRentException) {
-            return Result.failure(ConflictException(Status.ProductLocked))
+            Result.failure(ConflictException(Status.ProductLocked))
         } catch (e: DomainException) {
-            return Result.failure(e)
+            Result.failure(e)
         }
     }
 
     open fun finalizeRentByUser(id: UUID): Result<RentDto> {
-        try {
+        return try {
             val email = Email(userEmail)
             val rent = rentalService.returnResource(email, id)
-            return Result.success(rent.toDto())
+            Result.success(rent.toDto())
         } catch (e: RentNotFoundException) {
-            return Result.failure(ResourceNotFoundException())
+            Result.failure(ResourceNotFoundException())
         } catch (e: InvalidUserException) {
-            return Result.failure(ResourceNotFoundException())
+            Result.failure(ResourceNotFoundException())
         } catch (e: DomainException) {
-            return Result.failure(e)
+            Result.failure(e)
         }
     }
 }

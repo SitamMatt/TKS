@@ -1,7 +1,5 @@
 package microservices.rental.mappers
 
-import javax.inject.Inject
-
 class ExampleClass(
     val example: ExampleClass2
 )

@@ -2,7 +2,6 @@ package microservices.user.management.webservices
 
 import microservices.user.management.adapters.UserServiceAdapter
 import microservices.user.management.dto.UserDto
-import ports.user.IUserRepositoryAdapter
 import javax.inject.Inject
 import javax.jws.WebService
 
@@ -15,10 +14,8 @@ open class UserServiceImpl : UserService{
     private lateinit var adapter: UserServiceAdapter
 
 
-
     override fun reply(msg: String): UserDto {
-        val user = adapter.queryUser(msg)
-        return user
+        return adapter.queryUser(msg)
     }
 
     override fun registerUser(model: UserDto): UserDto {

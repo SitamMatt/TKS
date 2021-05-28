@@ -3,7 +3,6 @@ package repositories.library
 import io.micronaut.discovery.event.ServiceReadyEvent
 import io.micronaut.runtime.event.annotation.EventListener
 import io.micronaut.scheduling.annotation.Async
-import io.reactivex.Flowable
 import repositories.library.entities.BookEntity
 import repositories.library.repositories.ResourceRepository
 import javax.inject.Singleton

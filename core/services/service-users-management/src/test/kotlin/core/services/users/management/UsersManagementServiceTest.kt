@@ -2,7 +2,6 @@ package core.services.users.management
 
 import core.domain.common.UserRole
 import core.domain.common.exceptions.DuplicatedEmailException
-import core.domain.common.exceptions.UserNotFoundException
 import core.domain.common.valueobjects.Email
 import core.domain.user.User
 import io.mockk.every

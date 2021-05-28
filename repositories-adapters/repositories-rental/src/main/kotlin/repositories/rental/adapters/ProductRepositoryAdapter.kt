@@ -3,10 +3,8 @@ package repositories.rental.adapters
 import core.domain.common.valueobjects.AccessionNumber
 import core.domain.rent.Product
 import ports.rent.ProductSearchPort
-import repositories.rental.entities.ProductEntity
 import repositories.rental.mappers.toDomain
 import repositories.rental.mappers.toEntity
-import repositories.rental.repositories.ClientRepository
 import repositories.rental.repositories.ProductRepository
 import javax.persistence.EntityManager
 

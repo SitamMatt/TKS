@@ -1,8 +1,6 @@
 package repositories.rental.entities
 
-import java.util.*
 import javax.persistence.*
-import kotlin.collections.HashSet
 
 @Entity
 @Table(name = "clients")

@@ -1,6 +1,5 @@
 package microservices.library.adapters
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import core.domain.common.valueobjects.AccessionNumber
 import core.domain.resource.Resource
 import io.reactivex.Single

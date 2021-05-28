@@ -1,6 +1,5 @@
 package core.domain.common.valueobjects
 
-import core.domain.common.exceptions.TypeValidationFailedException
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

@@ -1,7 +1,6 @@
 package ports.user
 
 import core.domain.common.exceptions.DuplicatedEmailException
-import core.domain.common.exceptions.UserNotFoundException
 import core.domain.common.valueobjects.Email
 import core.domain.user.User
 
