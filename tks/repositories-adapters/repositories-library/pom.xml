@@ -15,12 +15,10 @@
 
     <properties>
         <packaging>jar</packaging>
-        <jdk.version>11</jdk.version>
-        <release.version>11</release.version>
         <micronaut.version>2.5.1</micronaut.version>
         <micronaut.data.version>2.4.2</micronaut.data.version>
         <exec.mainClass>repositories.library.ApplicationKt</exec.mainClass>
-        <kotlinVersion>1.5.0</kotlinVersion>
+        <kotlinVersion>${kotlin.version}</kotlinVersion>
         <micronaut.runtime>netty</micronaut.runtime>
     </properties>
 
@@ -123,18 +121,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-reflect</artifactId>
-            <version>${kotlinVersion}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlinVersion}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.2.3</version>
@@ -200,8 +186,9 @@
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
-                <version>${kotlinVersion}</version>
+                <version>${kotlin.version}</version>
                 <configuration>
+                    <jvmTarget>${kotlin.compiler.jvmTarget}</jvmTarget>
                     <args>
                         <arg>-Xjvm-default=all</arg>
                     </args>
@@ -241,11 +228,6 @@
                                     <artifactId>micronaut-data-processor</artifactId>
                                     <version>${micronaut.data.version}</version>
                                 </annotationProcessorPath>
-<!--                                <annotationProcessorPath>-->
-<!--                                    <groupId>org.mapstruct</groupId>-->
-<!--                                    <artifactId>mapstruct-processor</artifactId>-->
-<!--                                    <version>1.4.2.Final</version>-->
-<!--                                </annotationProcessorPath>-->
                             </annotationProcessorPaths>
                             <annotationProcessorArgs>
                                 <annotationProcessorArg>micronaut.processing.group=repositories.library

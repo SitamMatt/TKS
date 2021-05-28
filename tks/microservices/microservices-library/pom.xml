@@ -16,12 +16,10 @@
 
     <properties>
         <packaging>jar</packaging>
-        <jdk.version>11</jdk.version>
-        <release.version>11</release.version>
         <micronaut.version>2.5.1</micronaut.version>
         <exec.mainClass>microservices.library.ApplicationKt</exec.mainClass>
         <micronaut.data.version>2.4.2</micronaut.data.version>
-        <kotlinVersion>1.5.0</kotlinVersion>
+        <kotlinVersion>${kotlin.version}</kotlinVersion>
         <micronaut.runtime>netty</micronaut.runtime>
     </properties>
 
@@ -131,14 +129,8 @@
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-reflect</artifactId>
-            <version>${kotlinVersion}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
-            <version>1.5.0</version>
+            <version>${kotlin.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -208,9 +200,9 @@
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
-                <version>${kotlinVersion}</version>
+                <version>${kotlin.version}</version>
                 <configuration>
-                    <jvmTarget>${jdk.version}</jvmTarget>
+                    <jvmTarget>${kotlin.compiler.jvmTarget}</jvmTarget>
                     <compilerPlugins>
                         <plugin>jpa</plugin>
                         <plugin>all-open</plugin>
