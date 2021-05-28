@@ -14,19 +14,15 @@ import javax.inject.Inject
 
 @RequestScoped
 open class UserServiceAdapter @Inject constructor(
-    private val userService: IUserService
-) {
-
-    @Inject
+    private val userService: IUserService,
     @Channel("prices-out")
-    private lateinit var userEmitter: Emitter<User>
-
+    private val userEmitter: Emitter<User>
+) {
 
     open fun registerUser(user: UserDto): UserDto {
         try {
             val domain = user.toDomain()
             val result = userService.register(domain)
-            val ObjectMapper = ObjectMapper()
             userEmitter.send(result)
             return result.toDto()
         } catch (ex: Exception) {
