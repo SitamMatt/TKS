@@ -6,6 +6,7 @@ import ports.rent.ProductSearchPort
 import repositories.rental.entities.ProductEntity
 import repositories.rental.mappers.toDomain
 import repositories.rental.mappers.toEntity
+import repositories.rental.repositories.ClientRepository
 import repositories.rental.repositories.ProductRepository
 import javax.persistence.EntityManager
 
@@ -16,10 +17,13 @@ class ProductRepositoryAdapter(
 
     override fun findByAccessionNumber(accessionNumber: AccessionNumber): Product? {
         return try {
-            val query = entityManager.createNamedQuery("ProductEntity.findByAccessionNumber", ProductEntity::class.java)
-            query.setParameter("id", accessionNumber.value)
-            val entity = query.singleResult
-            entity?.toDomain();
+            val result = productRepository.findByAccessionNumber(accessionNumber.value)
+            if(result.isEmpty) return null
+            return result.get().toDomain()
+//            val query = entityManager.createNamedQuery("ProductEntity.findByAccessionNumber", ProductEntity::class.java)
+//            query.setParameter("id", accessionNumber.value)
+//            val entity = query.singleResult
+//            entity?.toDomain();
         } catch (ex: Exception) {
             null
         }
@@ -44,14 +48,14 @@ class ProductRepositoryAdapter(
         }
     }
 
-    fun getProductEntityByAccessionNumber(accessionNumber: AccessionNumber): ProductEntity? {
-        return try {
-            val query = entityManager.createNamedQuery("ProductEntity.findByAccessionNumber", ProductEntity::class.java)
-            query.setParameter("id", accessionNumber.value)
-            val entity = query.singleResult
-            entity
-        } catch (ex: Exception) {
-            null
-        }
-    }
+//    fun getProductEntityByAccessionNumber(accessionNumber: AccessionNumber): ProductEntity? {
+//        return try {
+//            val query = entityManager.createNamedQuery("ProductEntity.findByAccessionNumber", ProductEntity::class.java)
+//            query.setParameter("id", accessionNumber.value)
+//            val entity = query.singleResult
+//            entity
+//        } catch (ex: Exception) {
+//            null
+//        }
+//    }
 }

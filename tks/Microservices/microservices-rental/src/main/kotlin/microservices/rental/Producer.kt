@@ -5,7 +5,9 @@ import ports.rent.ProductSearchPort
 import repositories.rental.adapters.ClientRepositoryAdapter
 import repositories.rental.adapters.ProductRepositoryAdapter
 import repositories.rental.adapters.RentRepositoryAdapter
+import repositories.rental.repositories.ClientRepository
 import repositories.rental.repositories.ProductRepository
+import repositories.rental.repositories.RentRepository
 import javax.enterprise.context.RequestScoped
 import javax.enterprise.inject.Default
 import javax.enterprise.inject.Produces
@@ -38,13 +40,21 @@ open class Producer {
         RentalService(rentRepositoryAdapter, rentRepositoryAdapter, clientRepositoryAdapter, productRepositoryAdapter)
 
     @Produces
-    fun produceRentRepository(entityManager: EntityManager): RentRepositoryAdapter {
-        return RentRepositoryAdapter(entityManager)
+    fun produceRentRepository(
+        entityManager: EntityManager,
+        clientRepository: ClientRepository,
+        productRepository: ProductRepository,
+        rentRepository: RentRepository
+    ): RentRepositoryAdapter {
+        return RentRepositoryAdapter(entityManager, rentRepository, clientRepository, productRepository)
     }
 
     @Produces
-    fun produceClientRepository(entityManager: EntityManager): ClientRepositoryAdapter {
-        return ClientRepositoryAdapter(entityManager)
+    fun produceClientRepository(
+        entityManager: EntityManager,
+        clientRepository: ClientRepository
+    ): ClientRepositoryAdapter {
+        return ClientRepositoryAdapter(entityManager, clientRepository)
     }
 
     @Produces
