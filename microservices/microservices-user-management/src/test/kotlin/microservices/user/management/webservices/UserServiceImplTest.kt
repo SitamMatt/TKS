@@ -19,7 +19,7 @@ internal class UserServiceImplTest{
 
     @Test
     fun createTest(){
-        val service  = UserServiceService(URL("http://localhost:8080/soap/userservice?wsdl"))
+        val service  = UserServiceService(URL("http://localhost:9090/soap/userservice?wsdl"))
         val port = service.userServicePort
         val dto = UserDto()
         dto.email = "mzab@edu.pl"

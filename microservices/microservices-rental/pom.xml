@@ -131,18 +131,18 @@
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>fish.payara.cloud.connectors.kafka</groupId>-->
-<!--            <artifactId>kafka-rar</artifactId>-->
-<!--            <version>0.5.0</version>-->
-<!--            <type>rar</type>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>fish.payara.cloud.connectors.kafka</groupId>-->
-<!--            <artifactId>kafka-jca-api</artifactId>-->
-<!--            <version>0.5.0</version>-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>fish.payara.cloud.connectors.kafka</groupId>
+            <artifactId>kafka-rar</artifactId>
+            <version>0.5.0</version>
+            <type>rar</type>
+        </dependency>
+        <dependency>
+            <groupId>fish.payara.cloud.connectors.kafka</groupId>
+            <artifactId>kafka-jca-api</artifactId>
+            <version>0.5.0</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
@@ -224,10 +224,10 @@
 <!--                        </artifactItem>-->
 <!--                    </deployArtifacts>-->
                     <commandLineOptions>
-<!--                        <option>-->
-<!--                            <key>&#45;&#45;deploy</key>-->
-<!--                            <value>${project.build.directory}/dependency/kafka-rar-0.5.0.rar</value>-->
-<!--                        </option>-->
+                        <option>
+                            <key>--deploy</key>
+                            <value>${project.build.directory}/dependency/kafka-rar-0.5.0.rar</value>
+                        </option>
                         <option>
                             <key>--deploy</key>
                             <value>${project.build.directory}/rent-service.war</value>

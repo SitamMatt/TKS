@@ -14,7 +14,7 @@ import javax.inject.Inject
 @RequestScoped
 open class UserServiceAdapter @Inject constructor(
     private val userService: IUserService,
-    @Channel("prices-out")
+    @Channel("clients-out")
     private val userEmitter: Emitter<User>
 ) {
 

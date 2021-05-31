@@ -14,9 +14,6 @@ import javax.servlet.annotation.WebListener
 @WebListener
 class CustomServletContextListener : ServletContextListener {
 
-    @Inject
-    private lateinit var em: EntityManager
-
     override fun contextInitialized(servletContextEvent: ServletContextEvent) {
         val emf = Persistence.createEntityManagerFactory("rentalPU")
         val em = emf.createEntityManager()

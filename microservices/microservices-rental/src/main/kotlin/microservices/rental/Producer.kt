@@ -41,27 +41,24 @@ open class Producer {
 
     @Produces
     fun produceRentRepository(
-        entityManager: EntityManager,
         clientRepository: ClientRepository,
         productRepository: ProductRepository,
         rentRepository: RentRepository
     ): RentRepositoryAdapter {
-        return RentRepositoryAdapter(entityManager, rentRepository, clientRepository, productRepository)
+        return RentRepositoryAdapter(rentRepository, clientRepository, productRepository)
     }
 
     @Produces
     fun produceClientRepository(
-        entityManager: EntityManager,
         clientRepository: ClientRepository
     ): ClientRepositoryAdapter {
-        return ClientRepositoryAdapter(entityManager, clientRepository)
+        return ClientRepositoryAdapter(clientRepository)
     }
 
     @Produces
     fun produceProductRepository(
-        entityManager: EntityManager,
         productRepository: ProductRepository
-    ): ProductRepositoryAdapter = ProductRepositoryAdapter(entityManager, productRepository)
+    ): ProductRepositoryAdapter = ProductRepositoryAdapter(productRepository)
 }
 //
 //
