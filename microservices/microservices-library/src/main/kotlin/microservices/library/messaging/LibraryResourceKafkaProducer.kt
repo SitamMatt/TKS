@@ -11,6 +11,6 @@ import io.reactivex.Single
 interface LibraryResourceKafkaProducer {
 
 //    @Topic("library-resource")
-    @Topic("testing")
+    @Topic("products")
     fun sendMessage(@KafkaKey key: String, msg: Single<Resource>)
 }

@@ -43,24 +43,12 @@ import javax.inject.Inject
 )
 open class KafkaMDB : KafkaListener {
 
-    @Inject
-    private lateinit var productRepositoryAdapter: ProductRepositoryAdapter
+
 
     @Inject
     private lateinit var clientRepositoryAdapter: ClientRepositoryAdapter
 
-    @OnRecord(topics = ["products"])
-    open fun onProductUpdate(record: ConsumerRecord<String, String>) {
-        try {
-//            println("Got record on topic testing $record")
-            val mapper = ObjectMapper()
-            val map = mapper.readValue(record.value(), Map::class.java)
-            val product = Product(AccessionNumber(map["accessionNumber"] as String))
-            productRepositoryAdapter.save(product)
-        }catch(e: Exception){
-            print(e)
-        }
-    }
+
 
     @OnRecord(topics = ["clients"])
     open fun onClientUpdate(record: ConsumerRecord<String, Client>) {
