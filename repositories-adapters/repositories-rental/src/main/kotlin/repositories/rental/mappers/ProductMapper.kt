@@ -9,8 +9,8 @@ fun ProductEntity.toDomain() = Product(
     AccessionNumber(accessionNumber)
 )
 
-fun Product.toEntity(): ProductEntity = ProductEntity(accessionNumber!!.value)
+fun Product.toEntity(): ProductEntity = ProductEntity(0, accessionNumber!!.value)
 
-fun Product.toEntity(dest: ProductEntity){
+fun Product.toEntity(dest: ProductEntity) {
     dest.accessionNumber = accessionNumber!!.value
 }

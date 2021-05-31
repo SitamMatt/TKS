@@ -16,6 +16,7 @@ fun RentEntity.toDomain(): Rent = Rent(
 )
 
 fun Rent.toEntity(clientEntity: ClientEntity, productEntity: ProductEntity): RentEntity = RentEntity(
+    0,
     id!!,
     startDate,
     endDate,

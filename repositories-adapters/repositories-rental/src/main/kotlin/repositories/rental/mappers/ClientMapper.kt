@@ -11,6 +11,7 @@ fun ClientEntity.toDomain() = Client(
 
 fun Client.toEntity(): ClientEntity {
     val entity = ClientEntity(
+        0,
         email.value,
         active
     )

@@ -5,21 +5,20 @@ import javax.persistence.*
 @Entity
 @Table(name = "products")
 @NamedQueries(
-    NamedQuery(name = "ProductEntity.findByAccessionNumber", query = "SELECT p FROM ProductEntity p WHERE p.accessionNumber = :id")
+    NamedQuery(
+        name = "ProductEntity.findByAccessionNumber",
+        query = "SELECT p FROM ProductEntity p WHERE p.accessionNumber = :id"
+    )
 )
-open class ProductEntity() {
+data class ProductEntity(
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    open var id: Long? = null
+    var id: Long,
 
     @Column(unique = true, nullable = false)
-    open var accessionNumber: String = ""
+    var accessionNumber: String,
 
     @OneToMany(cascade = [CascadeType.ALL], mappedBy = "product")
-    open var rents: MutableList<RentEntity> = mutableListOf()
-
-    constructor(accessionNumber: String) : this(){
-        this.accessionNumber = accessionNumber
-    }
-}
+    val rents: List<RentEntity>? = null
+)
