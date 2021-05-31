@@ -49,7 +49,6 @@
                         </goals>
                         <configuration>
                             <sourceDirs>
-                                <sourceDir>src/main/java</sourceDir>
                                 <sourceDir>src/main/kotlin</sourceDir>
                             </sourceDirs>
                         </configuration>
@@ -61,7 +60,6 @@
                         </goals>
                         <configuration>
                             <sourceDirs>
-                                <sourceDir>src/test/java</sourceDir>
                                 <sourceDir>src/test/kotlin</sourceDir>
                             </sourceDirs>
                         </configuration>

@@ -2,6 +2,7 @@ package repositories.rental.adapters
 
 import core.domain.common.valueobjects.AccessionNumber
 import core.domain.rent.Rent
+import ports.rent.IRentRepositoryAdapter
 import ports.rent.RentPersistencePort
 import ports.rent.RentSearchPort
 import repositories.rental.mappers.toDomain
@@ -17,7 +18,7 @@ class RentRepositoryAdapter(
     private val rentRepository: RentRepository,
     private val clientRepository: ClientRepository,
     private val productRepository: ProductRepository
-) : RentSearchPort, RentPersistencePort {
+) : IRentRepositoryAdapter {
 
 
     override fun findActiveByResourceId(accessionNumber: AccessionNumber): Rent? {

@@ -1,17 +1,13 @@
 package microservices.rental.controllers
 
-import microservices.rental.adapters.RentalServiceAdapter
 import microservices.common.error.ConflictException
 import microservices.common.error.ResourceNotFoundException
+import microservices.rental.adapters.RentalServiceAdapter
 import microservices.rental.helpers.conflict
 import microservices.rental.helpers.notFound
 import microservices.rental.links.LinksResolver
-import microservices.rental.mappers.ExampleClass
-import repositories.rental.ELO
 import java.util.*
 import javax.inject.Inject
-import javax.persistence.EntityManager
-import javax.persistence.PersistenceContext
 import javax.ws.rs.*
 import javax.ws.rs.core.Context
 import javax.ws.rs.core.Response
@@ -25,15 +21,6 @@ class RentResource @Inject constructor(
 
     @Context
     private lateinit var uriInfo: UriInfo
-
-    @Inject
-    private lateinit var elo: ELO
-
-    @Inject
-    private lateinit var example: ExampleClass
-
-    @PersistenceContext(name = "rentalPU")
-    private lateinit var em: EntityManager
 
     @GET
     @Path("{id}")

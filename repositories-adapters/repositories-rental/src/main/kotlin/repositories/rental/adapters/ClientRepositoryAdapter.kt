@@ -3,6 +3,7 @@ package repositories.rental.adapters
 import core.domain.common.valueobjects.Email
 import core.domain.rent.Client
 import ports.rent.ClientSearchPort
+import ports.rent.IClientRepositoryAdapter
 import repositories.rental.mappers.toDomain
 import repositories.rental.repositories.ClientRepository
 import javax.persistence.EntityManager
@@ -10,7 +11,7 @@ import javax.persistence.EntityManager
 class ClientRepositoryAdapter(
     private val entityManager: EntityManager,
     private val clientRepository: ClientRepository
-) : ClientSearchPort {
+) : IClientRepositoryAdapter {
 
     override fun findByEmail(email: Email): Client? {
         return try {

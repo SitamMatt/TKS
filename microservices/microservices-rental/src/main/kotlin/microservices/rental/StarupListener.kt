@@ -33,8 +33,4 @@ class CustomServletContextListener : ServletContextListener {
         em.transaction.commit()
         em.clear()
     }
-
-    override fun contextDestroyed(servletContextEvent: ServletContextEvent) {
-        // Context shutdown
-    }
 }

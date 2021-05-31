@@ -2,6 +2,7 @@ package repositories.rental.adapters
 
 import core.domain.common.valueobjects.AccessionNumber
 import core.domain.rent.Product
+import ports.rent.IProductRepositoryAdapter
 import ports.rent.ProductSearchPort
 import repositories.rental.mappers.toDomain
 import repositories.rental.mappers.toEntity
@@ -11,7 +12,7 @@ import javax.persistence.EntityManager
 class ProductRepositoryAdapter(
     private val entityManager: EntityManager,
     private val productRepository: ProductRepository
-) : ProductSearchPort {
+) : IProductRepositoryAdapter {
 
     override fun findByAccessionNumber(accessionNumber: AccessionNumber): Product? {
         return try {
