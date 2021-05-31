@@ -1,13 +1,10 @@
-package microservices.rental
+package microservices.rental.messaging
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import core.domain.common.valueobjects.AccessionNumber
 import core.domain.rent.Product
 import fish.payara.cloud.connectors.kafka.api.KafkaListener
 import fish.payara.cloud.connectors.kafka.api.OnRecord
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import repositories.rental.adapters.ProductRepositoryAdapter
-import java.lang.Exception
 import javax.ejb.ActivationConfigProperty
 import javax.ejb.MessageDriven
 import javax.inject.Inject
@@ -34,7 +31,7 @@ import javax.inject.Inject
             propertyValue = "org.apache.kafka.common.serialization.StringDeserializer"
         ), ActivationConfigProperty(
             propertyName = "valueDeserializer",
-            propertyValue = "microservices.rental.ProductDeserializer"
+            propertyValue = "microservices.rental.messaging.deserializers.ProductDeserializer"
         ), ActivationConfigProperty(propertyName = "pollInterval", propertyValue = "1000")]
 )
 open class ProductConsumer : KafkaListener {
@@ -46,7 +43,7 @@ open class ProductConsumer : KafkaListener {
     open fun onProductUpdate(record: ConsumerRecord<String, Product>) {
         try {
             productRepositoryAdapter.save(record.value())
-        }catch(e: Exception){
+        } catch (e: Exception) {
             print(e)
         }
     }

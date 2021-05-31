@@ -12,7 +12,7 @@ import javax.servlet.ServletContextListener
 import javax.servlet.annotation.WebListener
 
 @WebListener
-class CustomServletContextListener : ServletContextListener {
+class StarupListener : ServletContextListener {
 
     override fun contextInitialized(servletContextEvent: ServletContextEvent) {
         val emf = Persistence.createEntityManagerFactory("rentalPU")
