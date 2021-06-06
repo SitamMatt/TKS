@@ -1,0 +1,20 @@
+version: "3.9"
+   
+services:
+  db:
+    image: bitnami/postgresql:latest
+    environment:
+      - POSTGRESQL_DATABASE=libraryDB
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres
+    ports:
+    - "5432:5432"
+  web:
+    image: tksregistry.azurecr.io/library-service:dev
+    build: .
+    environment: 
+      - KAFKA_BROKER=host.docker.internal:9093
+    ports:
+      - "8083:8083"
+    depends_on:
+      - db

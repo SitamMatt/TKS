@@ -3,5 +3,13 @@
          xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          id="WebApp_ID" version="3.1">
-
+    <data-source>
+        <name>java:app/jdbc/rentalDS</name>
+        <class-name>org.postgresql.ds.PGSimpleDataSource</class-name>
+        <server-name>${db.server}</server-name>
+        <port-number>${db.port}</port-number>
+        <database-name>${db.database}</database-name>
+        <user>${db.username}</user>
+        <password>${db.password}</password>
+    </data-source>
 </web-app>

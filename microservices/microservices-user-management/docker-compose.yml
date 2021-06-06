@@ -1,0 +1,17 @@
+version: "3.9"
+   
+services:
+  db:
+    image: bitnami/postgresql:latest
+    environment:
+      - POSTGRESQL_DATABASE=userDB
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=postgres
+    ports:
+    - "5432:5432"
+  web:
+    image: tksregistry.azurecr.io/user:dev
+    ports:
+      - "9090:9090"
+    depends_on:
+      - db

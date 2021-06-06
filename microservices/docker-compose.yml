@@ -1,0 +1,15 @@
+version: "2"
+services:
+  rental:
+    image: tksregistry.azurecr.io/rental:dev
+    domainname: "tksmicro"
+    ports:
+      - "8090:8090"
+  user:
+    image: tksregistry.azurecr.io/user:dev
+    ports:
+      - "9090:9090"
+  library:
+    image: tksregistry.azurecr.io/library:dev
+    ports:
+      - "8083:8083"

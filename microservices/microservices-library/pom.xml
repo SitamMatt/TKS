@@ -9,18 +9,26 @@
     <packaging>${packaging}</packaging>
 
     <parent>
+        <groupId>io.micronaut</groupId>
+        <artifactId>micronaut-parent</artifactId>
+        <version>2.5.1</version>
+    </parent>
+
+    <!-- <parent>
         <artifactId>Microservices</artifactId>
         <groupId>edu.p.lodz.pl</groupId>
         <version>1.0-SNAPSHOT</version>
-    </parent>
+    </parent> -->
 
     <properties>
         <packaging>jar</packaging>
         <micronaut.version>2.5.1</micronaut.version>
         <exec.mainClass>microservices.library.ApplicationKt</exec.mainClass>
         <micronaut.data.version>2.4.2</micronaut.data.version>
-        <kotlinVersion>${kotlin.version}</kotlinVersion>
+        <kotlinVersion>1.5.0</kotlinVersion>
+        <kotlin.version>1.5.0</kotlin.version>
         <micronaut.runtime>netty</micronaut.runtime>
+        <kotlin.compiler.jvmTarget>11</kotlin.compiler.jvmTarget>
     </properties>
 
     <repositories>
@@ -146,6 +154,12 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.20</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <artifactId>repositories-library</artifactId>
             <groupId>repositories.library</groupId>
             <version>0.1</version>
@@ -167,6 +181,11 @@
             <groupId>io.micronaut.kafka</groupId>
             <artifactId>micronaut-kafka</artifactId>
             <version>3.3.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -192,7 +211,7 @@
                     <dependency>
                         <groupId>org.junit.jupiter</groupId>
                         <artifactId>junit-jupiter-engine</artifactId>
-                        <version>${junit.version}</version>
+                        <version>5.7.1</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -200,7 +219,7 @@
             <plugin>
                 <artifactId>kotlin-maven-plugin</artifactId>
                 <groupId>org.jetbrains.kotlin</groupId>
-                <version>${kotlin.version}</version>
+                <version>1.5.0</version>
                 <configuration>
                     <jvmTarget>${kotlin.compiler.jvmTarget}</jvmTarget>
                     <compilerPlugins>
@@ -232,6 +251,11 @@
                                     <groupId>io.micronaut</groupId>
                                     <artifactId>micronaut-validation</artifactId>
                                     <version>${micronaut.version}</version>
+                                </annotationProcessorPath>
+                                <annotationProcessorPath>
+                                    <groupId>io.micronaut.openapi</groupId>
+                                    <artifactId>micronaut-openapi</artifactId>
+                                    <version>2.5.0</version>
                                 </annotationProcessorPath>
                                 <annotationProcessorPath>
                                     <groupId>io.micronaut.data</groupId>
@@ -325,6 +349,10 @@
                     <proc>none</proc>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
+                    <fork>true</fork>
+                    <compilerArgs>
+                        <arg>-J-Dmicronaut.openapi.views.spec=rapidoc.enabled=true,swagger-ui.enabled=true,swagger-ui.theme=flattop</arg>
+                    </compilerArgs>
                 </configuration>
                 <executions>
                     <execution>

@@ -10,29 +10,23 @@ import javax.ejb.MessageDriven
 import javax.inject.Inject
 
 @MessageDriven(
-    activationConfig = [ActivationConfigProperty(
-        propertyName = "clientId",
-        propertyValue = "testClient"
-    ), ActivationConfigProperty(
-        propertyName = "groupIdConfig",
-        propertyValue = "test-consumer-group"
-    ), ActivationConfigProperty(
-        propertyName = "topics",
-        propertyValue = "products"
-    ), ActivationConfigProperty(
-        propertyName = "bootstrapServersConfig",
-        propertyValue = "localhost:29092"
-    ), ActivationConfigProperty(propertyName = "autoCommitInterval", propertyValue = "100"),
+    activationConfig = [
+        ActivationConfigProperty(propertyName = "clientId", propertyValue = "testClient"),
+        ActivationConfigProperty(propertyName = "groupIdConfig", propertyValue = "test-consumer-group"),
+        ActivationConfigProperty(propertyName = "topics", propertyValue = "products"),
+        ActivationConfigProperty(propertyName = "bootstrapServersConfig", propertyValue = "\${ENV=KAFKA_BROKER}"),
+        ActivationConfigProperty(propertyName = "autoCommitInterval", propertyValue = "100"),
+        ActivationConfigProperty(propertyName = "retryBackoff", propertyValue = "1000"),
         ActivationConfigProperty(
-            propertyName = "retryBackoff",
-            propertyValue = "1000"
-        ), ActivationConfigProperty(
             propertyName = "keyDeserializer",
             propertyValue = "org.apache.kafka.common.serialization.StringDeserializer"
-        ), ActivationConfigProperty(
+        ),
+        ActivationConfigProperty(
             propertyName = "valueDeserializer",
             propertyValue = "microservices.rental.messaging.deserializers.ProductDeserializer"
-        ), ActivationConfigProperty(propertyName = "pollInterval", propertyValue = "1000")]
+        ),
+        ActivationConfigProperty(propertyName = "pollInterval", propertyValue = "1000")
+    ]
 )
 open class ProductConsumer : KafkaListener {
 

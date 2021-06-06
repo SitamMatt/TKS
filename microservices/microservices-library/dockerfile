@@ -1,0 +1,4 @@
+FROM adoptopenjdk:latest
+EXPOSE 8083/tcp
+COPY target/microservices-library-0.1.jar MicronautGroovy.jar
+CMD java ${JAVA_OPTS} -jar MicronautGroovy.jar

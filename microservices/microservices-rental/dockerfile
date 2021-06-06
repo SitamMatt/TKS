@@ -1,0 +1,5 @@
+FROM payara/micro:jdk11
+COPY target/rent-service.war $DEPLOY_DIR
+COPY target/dependency/kafka-rar-0.5.0.rar $DEPLOY_DIR
+
+CMD ["--deploymentDir", "/opt/payara/deployments", "--port", "8090"]

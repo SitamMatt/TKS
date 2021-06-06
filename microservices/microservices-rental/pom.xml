@@ -15,7 +15,13 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <final.name>rent-service</final.name>
         <version.payara>5.2020.5</version.payara>
-
+        <db.port>5432</db.port>
+        <db.server>db</db.server>
+        <db.database>rentalDB</db.database>
+        <db.username>postgres</db.username>
+        <db.password>postgres</db.password>
+<!--        <kafka.server.url>localhost:29092</kafka.server.url>-->
+        <kafka.server.url>host.docker.internal:9093</kafka.server.url>
     </properties>
 
     <dependencyManagement>
@@ -154,6 +160,11 @@
             <version>1.1.4</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.2.20</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -195,6 +206,25 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>src/main/webapp</directory>
+                            <includes>
+                                <include>**/web.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
+                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>3.1.0</version>
                 <executions>
@@ -215,19 +245,11 @@
                     <payaraVersion>${version.payara}</payaraVersion>
                     <deployWar>true</deployWar>
                     <contextRoot>/</contextRoot>
-<!--                    <deployArtifacts>-->
-<!--                        <artifactItem>-->
-<!--                            <groupId>fish.payara.cloud.connectors.kafka</groupId>-->
-<!--                            <artifactId>kafka-rar</artifactId>-->
-<!--                            <version>0.5.0</version>-->
-<!--                            <type>rar</type>-->
-<!--                        </artifactItem>-->
-<!--                    </deployArtifacts>-->
                     <commandLineOptions>
-                        <option>
-                            <key>--deploy</key>
-                            <value>${project.build.directory}/dependency/kafka-rar-0.5.0.rar</value>
-                        </option>
+<!--                        <option>-->
+<!--                            <key>&#45;&#45;deploy</key>-->
+<!--                            <value>${project.build.directory}/dependency/kafka-rar-0.5.0.rar</value>-->
+<!--                        </option>-->
                         <option>
                             <key>--deploy</key>
                             <value>${project.build.directory}/rent-service.war</value>
@@ -235,14 +257,26 @@
                     </commandLineOptions>
                 </configuration>
             </plugin>
-            <!--            <plugin>-->
-            <!--                <groupId>org.apache.maven.plugins</groupId>-->
-            <!--                <artifactId>maven-war-plugin</artifactId>-->
-            <!--                <version>3.3.1</version>-->
-            <!--            </plugin>-->
-
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
+
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>default</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+<!--            <properties>-->
+<!--                <db.port>5432</db.port>-->
+<!--            </properties>-->
+<!--        </profile>-->
+<!--    </profiles>-->
 
     <repositories>
         <repository>
