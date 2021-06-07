@@ -1,11 +1,19 @@
 package microservices.user.management.webservices
 
+import io.quarkus.test.common.QuarkusTestResource
+import io.quarkus.test.junit.QuarkusTest
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import utils.KafkaResource
+import utils.PostgresResource
+import utils.WithKafka
 import webservices.client.UserDto
 import webservices.client.UserServiceService
 import java.net.URL
 
+@QuarkusTest
+@QuarkusTestResource(PostgresResource::class)
+@WithKafka
 internal class UserServiceImplTest{
 
 
@@ -28,5 +36,6 @@ internal class UserServiceImplTest{
         dto.role = "ADMIN"
         val response = port.registerUser(dto)
         println(response)
+        Thread.sleep(5000)
     }
 }
