@@ -85,9 +85,6 @@ class RentResourceMicroshedTest {
         rentLink shouldNotBe null
         rentProductId shouldBe productId
         rentId shouldNotBe null
-
-
-        // todo ...
     }
 
     @Test
@@ -101,12 +98,10 @@ class RentResourceMicroshedTest {
             statusCode(200)
         }
 
-        //val rentLink = response.extract().header("Location")
         val rentEndDate = response.extract().path<String>("endDate")
 
-        //rentLink shouldNotBe null
         rentEndDate shouldNotBe null
-
-        // todo ...
+        response.extract().path<String>("clientId") shouldBe "mszewc@edu.pl"
+        response.extract().path<String>("id") shouldBe id
     }
 }

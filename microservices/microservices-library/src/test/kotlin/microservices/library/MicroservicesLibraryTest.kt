@@ -75,8 +75,8 @@ class DemoTest {
 
     @Test
     fun postProperTest() {
-        val model = LibraryResourceDto("ERWE-211", false, "Elantris", "Brandon Sanderson", "MAG", LibraryResourceType.BOOK)
-        val response = Given{
+        val model = LibraryResourceDto(null, false, "Elantris", "Brandon Sanderson", "MAG", LibraryResourceType.BOOK)
+        val number: String = Given{
             filter(ResponseLoggingFilter.logResponseTo(System.out))
             contentType(ContentType.JSON)
             body(model)
@@ -84,11 +84,13 @@ class DemoTest {
             post("library")
         } Then {
             statusCode(201)
+        } Extract {
+            path<String>("accessionNumber")
         }
 
         val response2 = Given {
             filter(ResponseLoggingFilter.logResponseTo(System.out))
-            pathParam("id", "ERWE-211")
+            pathParam("id", number)
         } When {
             get("library/{id}")
         } Then {
