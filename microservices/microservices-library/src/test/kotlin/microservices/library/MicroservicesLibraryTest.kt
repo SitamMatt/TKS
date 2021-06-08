@@ -11,6 +11,7 @@ import io.restassured.RestAssured.config
 import io.restassured.config.LogConfig
 import io.restassured.filter.log.ResponseLoggingFilter
 import io.restassured.http.ContentType
+import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
