@@ -1,5 +1,7 @@
 package microservices.user.management.adapters
 
+import core.domain.common.UserRole
+import core.domain.common.exceptions.UserNotFoundException
 import core.domain.common.valueobjects.Email
 import core.domain.user.User
 import microservices.user.management.dto.UserDto
@@ -33,5 +35,23 @@ open class UserServiceAdapter @Inject constructor(
     open fun queryUser(email: String): UserDto {
         val user = userService.getDetails(Email(email)) ?: throw Exception()
         return user.toDto()
+    }
+
+    @Throws(UserNotFoundException::class)
+    fun changeState(email: String, state: Boolean) {
+        try {
+            userService.changeState(Email(email), state)
+        }catch (ex: Exception){
+            throw ex
+        }
+    }
+
+    @Throws(UserNotFoundException::class)
+    fun changeRole(email: String, role: String) {
+        try {
+            userService.changeRole(Email(email), UserRole.valueOf(role))
+        }catch (ex: Exception){
+            throw ex
+        }
     }
 }

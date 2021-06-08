@@ -21,7 +21,7 @@ internal class UserServiceImplTest{
     fun queryTest(){
         val service  = UserServiceService(URL("http://localhost:8080/soap/userservice?wsdl"))
         val port = service.userServicePort
-        val response = port.reply("mszewc@edu.pl")
+        val response = port.getUser("mszewc@edu.pl")
         println(response)
     }
 
