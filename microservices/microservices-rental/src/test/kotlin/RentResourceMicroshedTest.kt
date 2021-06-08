@@ -19,12 +19,12 @@ import java.time.Duration
 @MicroShedTest
 class RentResourceMicroshedTest {
 
-    class KGenericContainer(imageName: String) : PostgreSQLContainer<KGenericContainer>(imageName)
+    class PostgresContainer(imageName: String) : PostgreSQLContainer<PostgresContainer>(imageName)
 
 
     companion object{
         @Container
-        @JvmField val app = ApplicationContainer()
+        @JvmField val app: ApplicationContainer = ApplicationContainer()
             .withEnv("KAFKA_BROKER", "host.docker.internal:9093")
             .withReadinessPath("/health")
             .withHttpPort(8090)
@@ -32,7 +32,7 @@ class RentResourceMicroshedTest {
             .withStartupTimeout(Duration.ofMinutes(1))
 
         @Container
-        @JvmField val db = KGenericContainer("postgres:13")
+        @JvmField val db: PostgresContainer = PostgresContainer("postgres:13")
             .withUsername("postgres")
             .withDatabaseName("rentalDB")
             .withPassword("postgres")

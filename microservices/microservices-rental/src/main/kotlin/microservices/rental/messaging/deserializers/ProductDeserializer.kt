@@ -1,6 +1,6 @@
 package microservices.rental.messaging.deserializers
 
-import Producer
+import microservices.rental.Producer
 import core.domain.rent.Product
 import microservices.rental.dto.ProductDto
 import microservices.rental.mappers.toDomain
