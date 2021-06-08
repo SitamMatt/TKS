@@ -144,10 +144,9 @@ class ResourcesManagementServiceTest {
     }
 
     @Test
-    fun `Given invalid resource id then getDetails should fail`() {
+    fun `Given invalid resource id then getDetails should return null`() {
         every { resourceSearchPort.findByAccessionNumber(sampleAccessionNumber) } returns null
-        Assertions.assertThrows(ResourceNotFoundException::class.java) {
-            resourcesService.getDetails(sampleAccessionNumber)
-        }
+        val result = resourcesService.getDetails(sampleAccessionNumber)
+        Assertions.assertNull(result)
     }
 }

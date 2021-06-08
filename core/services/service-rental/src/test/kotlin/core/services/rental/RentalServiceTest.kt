@@ -1,5 +1,9 @@
 package core.services.rental
 
+import core.domain.common.exceptions.InvalidUserException
+import core.domain.common.exceptions.RentNotFoundException
+import core.domain.common.exceptions.ResourceNotFoundException
+import core.domain.common.exceptions.UserNotFoundException
 import core.domain.common.valueobjects.Email
 import core.domain.rent.Client
 import core.domain.rent.Product
@@ -101,52 +105,38 @@ internal class RentalServiceTest {
 
     @Test
     fun `Given invalid user id then returnResource should fail`() {
-//        every { userSearchPort.findByEmail(sampleEmail) } returns null
-//        Assertions.assertThrows(core.domain.common.exceptions.UserNotFoundException::class.java) {
-//            rentService.returnResource(
-//                sampleEmail,
-//                sampleResId
-//            )
-//        }
+        every { userSearchPort.findByEmail(sampleEmail) } returns null
+        Assertions.assertThrows(UserNotFoundException::class.java) {
+            rentService.returnResource(
+                sampleEmail,
+                sampleRentId
+            )
+        }
     }
 
     @Test
     fun `Given invalid resource id then returnResource should fail`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
-        every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns null
-//        Assertions.assertThrows(core.domain.common.exceptions.ResourceNotFoundException::class.java) {
-//            rentService.returnResource(
-//                sampleEmail,
-//                sampleResId
-//            )
-//        }
-    }
-
-    @Test
-    fun `Given not rent resource id returnResource should fail`() {
-        every { userSearchPort.findByEmail(sampleEmail) } returns sampleUser
-        every { resourceSearchPort.findByAccessionNumber(sampleResId) } returns sampleResource
-        every { rentSearchPort.findActiveByResourceId(sampleResId) } returns null
-//        Assertions.assertThrows(core.domain.common.exceptions.ResourceNotRentException::class.java) {
-//            rentService.returnResource(
-//                sampleEmail,
-//                sampleResId
-//            )
-//        }
+        every { rentSearchPort.getById(sampleRentId) } returns null
+        Assertions.assertThrows(RentNotFoundException::class.java) {
+            rentService.returnResource(
+                sampleEmail,
+                sampleRentId
+            )
+        }
     }
 
     @Test
     fun `Given resource rent by other user then returnResource should fail`() {
         every { userSearchPort.findByEmail((sampleEmail)) } returns sampleUser
-        every { resourceSearchPort.findByAccessionNumber((sampleResId)) } returns sampleResource
         sampleRent = Rent(sampleRentId, Date(), null, sampleEmail2, sampleResId)
-        every { rentSearchPort.findActiveByResourceId(sampleResId) } returns sampleRent
-//        Assertions.assertThrows(core.domain.common.exceptions.InvalidUserException::class.java) {
-//            rentService.returnResource(
-//                sampleEmail,
-//                sampleResId
-//            )
-//        }
+        every { rentSearchPort.getById(sampleRentId) } returns sampleRent
+        Assertions.assertThrows(InvalidUserException::class.java) {
+            rentService.returnResource(
+                sampleEmail,
+                sampleRentId
+            )
+        }
     }
 
     @Test
@@ -158,12 +148,9 @@ internal class RentalServiceTest {
     }
 
     @Test
-    fun `Given invalid id then getDetails should fail`() {
+    fun `Given invalid id then getDetails should return null`() {
         every { rentSearchPort.getById(sampleRentId) } returns null
-        Assertions.assertThrows(core.domain.common.exceptions.RentNotFoundException::class.java) {
-            rentService.getDetails(
-                sampleRentId
-            )
-        }
+        val result = rentService.getDetails(sampleRentId)
+        Assertions.assertNull(result)
     }
 }

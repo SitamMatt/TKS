@@ -7,7 +7,6 @@ Zabroń Mateusz 224464
 
 # Aplikacje
 
-- Serwis do zarządzania użytkownikami (SOAP - Payara)
-- Serwis do rejestrowania i pobierania info o userach (Vertx)
+- Serwis do rejestrowania i pobierania info o userach (Quarkus - SOAP)
 - Serwis do zarządzania zasobami (Micronaut)
 - Serwis do wypożyczeń (Microprofile)
