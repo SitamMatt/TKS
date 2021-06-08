@@ -11,6 +11,7 @@ import io.restassured.RestAssured
 import io.restassured.RestAssured.config
 import io.restassured.config.LogConfig
 import io.restassured.filter.log.ResponseLoggingFilter
+import io.restassured.http.ContentType
 import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
@@ -74,9 +75,11 @@ class DemoTest {
 
     @Test
     fun postProperTest() {
+        val model = LibraryResourceDto("ERWE-211", false, "Elantris", "Brandon Sanderson", "MAG", LibraryResourceType.BOOK)
         val response = Given{
             filter(ResponseLoggingFilter.logResponseTo(System.out))
-            body(LibraryResourceDto("ERWE-211", false, "Elantris", "Brandon Sanderson", "MAG", LibraryResourceType.BOOK))
+            contentType(ContentType.JSON)
+            body(model)
         } When {
             post("library")
         } Then {
