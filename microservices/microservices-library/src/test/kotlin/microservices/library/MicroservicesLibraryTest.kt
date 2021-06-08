@@ -26,7 +26,7 @@ import org.testcontainers.utility.DockerImageName
 import java.net.URI
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DemoTest {
+class MicroservicesLibraryTest {
 
 
     class KGenericContainer(imageName: String) : PostgreSQLContainer<KGenericContainer>(imageName)
