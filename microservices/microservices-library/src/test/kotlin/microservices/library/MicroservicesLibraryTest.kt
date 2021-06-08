@@ -11,6 +11,7 @@ import io.restassured.RestAssured.config
 import io.restassured.config.LogConfig
 import io.restassured.filter.log.ResponseLoggingFilter
 import io.restassured.http.ContentType
+import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
@@ -87,7 +88,7 @@ class DemoTest {
     @Test
     fun postProperTest() {
         val model = LibraryResourceDto(null, false, "Elantris", "Brandon Sanderson", "MAG", LibraryResourceType.BOOK)
-        val response = Given {
+        val number: String = Given{
             filter(ResponseLoggingFilter.logResponseTo(System.out))
             contentType(ContentType.JSON)
             body(model)
@@ -95,11 +96,13 @@ class DemoTest {
             post("library")
         } Then {
             statusCode(201)
+        } Extract {
+            path<String>("accessionNumber")
         }
 
         val response2 = Given {
             filter(ResponseLoggingFilter.logResponseTo(System.out))
-            pathParam("id", "ERWE-211")
+            pathParam("id", number)
         } When {
             get("library/{id}")
         } Then {
