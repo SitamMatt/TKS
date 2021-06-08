@@ -15,6 +15,9 @@ import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
+import io.restassured.specification.RequestSpecification
+import microservices.library.dto.LibraryResourceDto
+import microservices.library.dto.LibraryResourceType
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -52,20 +55,69 @@ class DemoTest {
     }
 
     @Test
-    fun testItWorks() {
-        val rentId: String = Given {
+    fun getProperTest() {
+        val response = Given {
             filter(ResponseLoggingFilter.logResponseTo(System.out))
             pathParam("id", "EEEE-254")
         } When {
             get("library/{id}")
         } Then {
             statusCode(200)
-        } Extract {
-            path("accessionNumber")
         }
 
-        rentId shouldNotBe null
-        rentId shouldBe "EEEE-254"
+        response.extract().path<String>("accessionNumber") shouldNotBe null
+        response.extract().path<String>("accessionNumber") shouldBe "EEEE-254"
+        response.extract().path<String>("title") shouldBe "Dune"
+        response.extract().path<String>("author") shouldBe "Frank Herbert"
+        response.extract().path<String>("type") shouldBe "BOOK"
+    }
+
+    @Test
+    fun postProperTest() {
+        val response = Given{
+            filter(ResponseLoggingFilter.logResponseTo(System.out))
+            body(LibraryResourceDto("ERWE-211", false, "Elantris", "Brandon Sanderson", "MAG", LibraryResourceType.BOOK))
+        } When {
+            post("library")
+        } Then {
+            statusCode(201)
+        }
+
+        val response2 = Given {
+            filter(ResponseLoggingFilter.logResponseTo(System.out))
+            pathParam("id", "ERWE-211")
+        } When {
+            get("library/{id}")
+        } Then {
+            statusCode(200)
+        }
+
+        response2.extract().path<String>("title") shouldBe "Elantris"
+        response2.extract().path<String>("author") shouldBe "Brandon Sanderson"
+        response2.extract().path<String>("type") shouldBe "BOOK"
+    }
+
+    @Test
+    fun deleteProperTest() {
+        val response = Given {
+            filter(ResponseLoggingFilter.logResponseTo(System.out))
+            pathParam("id", "EEEE-254")
+        } When{
+            delete("library/{id}")
+        } Then {
+            statusCode(200)
+        }
+
+        val response2 = Given {
+            filter(ResponseLoggingFilter.logResponseTo(System.out))
+            pathParam("id", "EEEE-254")
+        } When {
+            get("library/{id}")
+        } Then {
+            statusCode(404)
+        }
+
+        response2.extract().path<String>("message") shouldBe "Resource not found"
     }
 
 }
