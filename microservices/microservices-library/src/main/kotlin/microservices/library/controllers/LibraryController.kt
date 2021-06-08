@@ -31,7 +31,7 @@ class LibraryController {
     @Produces(MediaType.APPLICATION_JSON)
     fun post(@Body model: LibraryResourceDto): HttpResponse<Any> = adapter.add(model)
         .map {
-            return HttpResponse.ok(it)
+            return HttpResponse.created(it)
         }.getOrElse {
             return when (it) {
                 is ResourceNotFoundException -> HttpResponse.notFound<ErrorDto>().body(ErrorDto(it.status))
