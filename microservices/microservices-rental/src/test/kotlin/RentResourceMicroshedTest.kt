@@ -41,11 +41,13 @@ class RentResourceMicroshedTest {
     }
 
     private lateinit var id: String
+    private lateinit var productId: String
 
     @BeforeEach
     fun init() {
         RestAssured.config = RestAssuredConfig.config().logConfig(LogConfig.logConfig().enablePrettyPrinting(true))
         id = "0b41fc23-83bb-46d9-a1a1-70eb750482cf"
+        productId = "EEEE-254"
     }
 
     @Test
@@ -63,5 +65,48 @@ class RentResourceMicroshedTest {
 
         rentId shouldNotBe null
         rentId shouldBe id
+    }
+
+    @Test
+    fun `post(productId) should return 201 and header to created resource, when available product id is given`() {
+        val response = Given {
+            filter(ResponseLoggingFilter.logResponseTo(System.out))
+            pathParam("productId", productId)
+        } When {
+            post("rent/{productId}")
+        } Then {
+            statusCode(201)
+        }
+
+        val rentLink = response.extract().header("Location")
+        val rentProductId = response.extract().path<String>("productId")
+        val rentId = response.extract().path<String>("id")
+
+        rentLink shouldNotBe null
+        rentProductId shouldBe productId
+        rentId shouldNotBe null
+
+
+        // todo ...
+    }
+
+    @Test
+    fun `put(guid) should finish the rental, when active rent guid is given`(){
+        val response = Given{
+            filter(ResponseLoggingFilter.logResponseTo(System.out))
+            pathParam("id", id)
+        } When {
+            put("/rent/{id}/return")
+        } Then {
+            statusCode(200)
+        }
+
+        //val rentLink = response.extract().header("Location")
+        val rentEndDate = response.extract().path<String>("endDate")
+
+        //rentLink shouldNotBe null
+        rentEndDate shouldNotBe null
+
+        // todo ...
     }
 }
