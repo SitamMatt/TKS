@@ -13,7 +13,6 @@
         <module>ports</module>
         <module>core</module>
         <module>microservices</module>
-        <module>mapper-processor</module>
     </modules>
 
     <properties>
