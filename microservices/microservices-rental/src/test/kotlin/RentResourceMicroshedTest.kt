@@ -14,6 +14,7 @@ import org.microshed.testing.jupiter.MicroShedTest
 import org.microshed.testing.testcontainers.ApplicationContainer
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
+import java.time.Duration
 
 @MicroShedTest
 class RentResourceMicroshedTest {
@@ -28,6 +29,7 @@ class RentResourceMicroshedTest {
             .withReadinessPath("/health")
             .withHttpPort(8090)
             .withAppContextRoot("/rent-service/api")
+            .withStartupTimeout(Duration.ofMinutes(1))
 
         @Container
         @JvmField val db = KGenericContainer("postgres:13")
