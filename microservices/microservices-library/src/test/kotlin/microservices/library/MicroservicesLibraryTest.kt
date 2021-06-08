@@ -6,24 +6,23 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.env.PropertySource
 import io.micronaut.runtime.EmbeddedApplication
 import io.micronaut.runtime.server.EmbeddedServer
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import io.restassured.RestAssured
 import io.restassured.RestAssured.config
 import io.restassured.config.LogConfig
 import io.restassured.filter.log.ResponseLoggingFilter
 import io.restassured.http.ContentType
-import io.restassured.module.kotlin.extensions.Extract
 import io.restassured.module.kotlin.extensions.Given
 import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
-import io.restassured.specification.RequestSpecification
 import microservices.library.dto.LibraryResourceDto
 import microservices.library.dto.LibraryResourceType
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.testcontainers.containers.KafkaContainer
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.utility.DockerImageName
+import java.net.URI
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DemoTest {
@@ -35,10 +34,18 @@ class DemoTest {
 
     init {
         db.start()
+        kafka.start()
+        val url = URI(kafka.bootstrapServers)
+        val bootstrapServerUrl = "${url.host}:${url.port}"
         application =
             ApplicationContext.run(
                 EmbeddedServer::class.java,
-                PropertySource.of("test", mapOf("datasources.default.url" to db.jdbcUrl))
+                PropertySource.of(
+                    "test", mapOf(
+                        "datasources.default.url" to db.jdbcUrl,
+                        "kafka.bootstrap.servers" to bootstrapServerUrl
+                    )
+                )
             )
         RestAssured.baseURI = application.uri.toString()
         RestAssured.port = application.port
@@ -53,6 +60,10 @@ class DemoTest {
             .withDatabaseName("libraryDB")
             .withPassword("postgres")
             .withExposedPorts(5432)
+
+        @Container
+        @JvmField
+        val kafka = KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"))
     }
 
     @Test
@@ -107,7 +118,7 @@ class DemoTest {
         val response = Given {
             filter(ResponseLoggingFilter.logResponseTo(System.out))
             pathParam("id", "EEEE-254")
-        } When{
+        } When {
             delete("library/{id}")
         } Then {
             statusCode(200)
