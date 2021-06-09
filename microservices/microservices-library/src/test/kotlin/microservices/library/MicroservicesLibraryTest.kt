@@ -1,5 +1,6 @@
 package microservices.library
 
+import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.micronaut.context.ApplicationContext
@@ -17,13 +18,19 @@ import io.restassured.module.kotlin.extensions.Then
 import io.restassured.module.kotlin.extensions.When
 import microservices.library.dto.LibraryResourceDto
 import microservices.library.dto.LibraryResourceType
+import org.apache.kafka.clients.consumer.ConsumerConfig
+import org.apache.kafka.clients.consumer.KafkaConsumer
+import org.apache.kafka.common.serialization.StringDeserializer
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.testcontainers.containers.KafkaContainer
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
+import org.testcontainers.shaded.com.google.common.collect.ImmutableMap
 import org.testcontainers.utility.DockerImageName
 import java.net.URI
+import java.time.Duration
+import java.util.*
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MicroservicesLibraryTest {
@@ -37,7 +44,7 @@ class MicroservicesLibraryTest {
         db.start()
         kafka.start()
         val url = URI(kafka.bootstrapServers)
-        val bootstrapServerUrl = "${url.host}:${url.port}"
+        bootstrapServerUrl = "${url.host}:${url.port}"
         application =
             ApplicationContext.run(
                 EmbeddedServer::class.java,
@@ -65,6 +72,8 @@ class MicroservicesLibraryTest {
         @Container
         @JvmField
         val kafka = KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"))
+
+        var bootstrapServerUrl: String? = null
     }
 
     @Test
@@ -87,6 +96,16 @@ class MicroservicesLibraryTest {
 
     @Test
     fun postProperTest() {
+        val consumer: KafkaConsumer<String, String> = KafkaConsumer(
+            ImmutableMap.of(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServerUrl!!,
+                ConsumerConfig.GROUP_ID_CONFIG, "tc-" + UUID.randomUUID(),
+                ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"
+            ) as Map<String, Any>?,
+            StringDeserializer(),
+            StringDeserializer()
+        )
+        consumer.subscribe(Collections.singletonList("products"))
         val model = LibraryResourceDto(null, false, "Elantris", "Brandon Sanderson", "MAG", LibraryResourceType.BOOK)
         val number: String = Given{
             filter(ResponseLoggingFilter.logResponseTo(System.out))
@@ -97,8 +116,11 @@ class MicroservicesLibraryTest {
         } Then {
             statusCode(201)
         } Extract {
-            path<String>("accessionNumber")
+            path("accessionNumber")
         }
+        Thread.sleep(5000)
+        val records = consumer.poll(Duration.ofMillis(2000))
+        records.count() shouldBeGreaterThan 0
 
         val response2 = Given {
             filter(ResponseLoggingFilter.logResponseTo(System.out))
@@ -116,7 +138,7 @@ class MicroservicesLibraryTest {
 
     @Test
     fun deleteProperTest() {
-        val response = Given {
+        Given {
             filter(ResponseLoggingFilter.logResponseTo(System.out))
             pathParam("id", "EEEE-254")
         } When {

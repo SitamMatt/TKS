@@ -5,8 +5,11 @@ import core.domain.resource.Resource
 import io.reactivex.Single
 import microservices.common.error.ResourceNotFoundException
 import microservices.library.dto.LibraryResourceDto
+import microservices.library.dto.LibraryResourceMessageDto
+import microservices.library.dto.LibraryResourceType
 import microservices.library.mappers.toDomain
 import microservices.library.mappers.toDto
+import microservices.library.mappers.toMessage
 import microservices.library.messaging.LibraryResourceKafkaProducer
 import ports.resource.IResourceService
 import javax.inject.Inject
@@ -30,7 +33,7 @@ class LibraryControllerAdapter {
         return try {
             val resource = model.toDomain()
             val result = service.create(resource)
-            sender.sendMessage(result.accessionNumber?.value!!, Single.just(result))
+            sender.sendMessage(result.accessionNumber?.value!!, Single.just(result), false)
             Result.success(result)
         } catch (ex: Exception) {
             Result.failure(ex)
@@ -42,6 +45,7 @@ class LibraryControllerAdapter {
             model.accessionNumber = id
             val resource = model.toDomain()
             val result = service.update(resource)
+            sender.sendMessage(result.accessionNumber?.value!!, Single.just(result), false)
             Result.success(result)
         } catch (ex: Exception) {
             Result.failure(ex)
@@ -52,6 +56,7 @@ class LibraryControllerAdapter {
         return try {
             val accessionNumber = AccessionNumber(id)
             service.remove(accessionNumber)
+            sender.sendMessage(accessionNumber.value, Single.just(null), true)
             return Result.success(true)
         } catch (ex: Exception) {
             Result.failure(ex)

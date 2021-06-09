@@ -36,6 +36,7 @@ open class ProductConsumer : KafkaListener {
     @OnRecord(topics = ["products"])
     open fun onProductUpdate(record: ConsumerRecord<String, Product>) {
         try {
+//            if(record.headers().any { it -> it.key() == "IsDeleted" && it. })
             productRepositoryAdapter.save(record.value())
         } catch (e: Exception) {
             print(e)

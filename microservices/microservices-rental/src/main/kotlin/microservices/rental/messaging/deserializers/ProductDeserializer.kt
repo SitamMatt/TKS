@@ -14,13 +14,13 @@ class ProductDeserializer : Deserializer<Product> {
 
     override fun configure(p0: MutableMap<String, *>?, p1: Boolean) = Unit
 
-    override fun deserialize(p0: String?, p1: ByteArray?): Product {
+    override fun deserialize(p0: String?, p1: ByteArray?): Product? {
         try {
             val dto = mapper.readValue(p1, ProductDto::class.java)
             return dto.toDomain()
         } catch (e: Exception) {
             print(e)
-            throw e
+            return null
         }
     }
 }
