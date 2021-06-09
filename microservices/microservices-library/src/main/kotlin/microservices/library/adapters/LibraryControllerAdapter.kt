@@ -33,7 +33,8 @@ class LibraryControllerAdapter {
         return try {
             val resource = model.toDomain()
             val result = service.create(resource)
-            sender.sendMessage(result.accessionNumber?.value!!, Single.just(result), false)
+            val message = result.toMessage()
+            sender.sendMessage(result.accessionNumber?.value!!, Single.just(message))
             Result.success(result)
         } catch (ex: Exception) {
             Result.failure(ex)
@@ -45,7 +46,8 @@ class LibraryControllerAdapter {
             model.accessionNumber = id
             val resource = model.toDomain()
             val result = service.update(resource)
-            sender.sendMessage(result.accessionNumber?.value!!, Single.just(result), false)
+            val message = result.toMessage()
+            sender.sendMessage(result.accessionNumber?.value!!, Single.just(message))
             Result.success(result)
         } catch (ex: Exception) {
             Result.failure(ex)
@@ -56,7 +58,8 @@ class LibraryControllerAdapter {
         return try {
             val accessionNumber = AccessionNumber(id)
             service.remove(accessionNumber)
-            sender.sendMessage(accessionNumber.value, Single.just(null), true)
+            val message = LibraryResourceMessageDto(accessionNumber.value, null, null, null, null, LibraryResourceType.NONE, true)
+            sender.sendMessage(accessionNumber.value, Single.just(message))
             return Result.success(true)
         } catch (ex: Exception) {
             Result.failure(ex)

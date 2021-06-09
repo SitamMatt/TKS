@@ -205,11 +205,12 @@ class MicroservicesLibraryTest {
         val numberEdited: String = Given{
             filter(ResponseLoggingFilter.logResponseTo(System.out))
             contentType(ContentType.JSON)
-            body(model)
+            body(modelEdited)
+            pathParam("id", number)
         } When {
             put("library/{id}")
         } Then {
-            statusCode(201)
+            statusCode(200)
         } Extract {
             path("accessionNumber")
         }
@@ -223,9 +224,9 @@ class MicroservicesLibraryTest {
             statusCode(200)
         }
 
-        response2.extract().path<String>("title") shouldBe "Upadek Hyperiona"
-        response2.extract().path<String>("author") shouldBe "Dan Simmons"
-        response2.extract().path<String>("type") shouldBe "BOOK"
+        response3.extract().path<String>("title") shouldBe "Upadek Hyperiona"
+        response3.extract().path<String>("author") shouldBe "Dan Simmons"
+        response3.extract().path<String>("type") shouldBe "BOOK"
     }
 
 }

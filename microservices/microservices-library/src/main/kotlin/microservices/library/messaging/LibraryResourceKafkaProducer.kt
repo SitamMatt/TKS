@@ -13,5 +13,5 @@ import microservices.library.dto.LibraryResourceMessageDto
 interface LibraryResourceKafkaProducer {
 
     @Topic("products")
-    fun sendMessage(@KafkaKey key: String, msg: Single<Resource>, @Header("IsDeleted") isDeleted: Boolean)
+    fun sendMessage(@KafkaKey key: String, msg: Single<LibraryResourceMessageDto>)
 }
