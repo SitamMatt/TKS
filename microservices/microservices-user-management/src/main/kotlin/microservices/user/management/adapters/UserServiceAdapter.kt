@@ -41,6 +41,8 @@ open class UserServiceAdapter @Inject constructor(
     fun changeState(email: String, state: Boolean) {
         try {
             userService.changeState(Email(email), state)
+            val user = userService.getDetails(Email(email)) ?: throw Exception()
+            userEmitter.send(user)
         }catch (ex: Exception){
             throw ex
         }
@@ -50,6 +52,8 @@ open class UserServiceAdapter @Inject constructor(
     fun changeRole(email: String, role: String) {
         try {
             userService.changeRole(Email(email), UserRole.valueOf(role))
+            val user = userService.getDetails(Email(email)) ?: throw Exception()
+            userEmitter.send(user)
         }catch (ex: Exception){
             throw ex
         }

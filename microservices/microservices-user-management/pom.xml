@@ -148,6 +148,18 @@
       <version>1.15.3</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.microshed</groupId>
+      <artifactId>microshed-testing-testcontainers</artifactId>
+      <version>0.9.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.kotest</groupId>
+      <artifactId>kotest-assertions-core-jvm</artifactId>
+      <version>4.4.3</version>
+      <scope>test</scope>
+    </dependency>
 
   </dependencies>
   <build>
