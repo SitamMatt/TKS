@@ -145,12 +145,6 @@
         </dependency>
         <dependency>
             <groupId>edu.p.lodz.pl</groupId>
-            <artifactId>mapper-processor</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>edu.p.lodz.pl</groupId>
             <artifactId>ports-resource</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
