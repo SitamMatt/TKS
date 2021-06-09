@@ -200,6 +200,32 @@ class MicroservicesLibraryTest {
         response2.extract().path<String>("title") shouldBe "Endymion"
         response2.extract().path<String>("author") shouldBe "Dan Simmons"
         response2.extract().path<String>("type") shouldBe "BOOK"
+
+        val modelEdited = LibraryResourceDto(number, false, "Upadek Hyperiona", "Dan Simmons", "MAG", LibraryResourceType.BOOK)
+        val numberEdited: String = Given{
+            filter(ResponseLoggingFilter.logResponseTo(System.out))
+            contentType(ContentType.JSON)
+            body(model)
+        } When {
+            put("library/{id}")
+        } Then {
+            statusCode(201)
+        } Extract {
+            path("accessionNumber")
+        }
+
+        val response3 = Given {
+            filter(ResponseLoggingFilter.logResponseTo(System.out))
+            pathParam("id", numberEdited)
+        } When {
+            get("library/{id}")
+        } Then {
+            statusCode(200)
+        }
+
+        response2.extract().path<String>("title") shouldBe "Upadek Hyperiona"
+        response2.extract().path<String>("author") shouldBe "Dan Simmons"
+        response2.extract().path<String>("type") shouldBe "BOOK"
     }
 
 }
