@@ -98,4 +98,33 @@ internal class UserServiceImplTest{
         afterChange.isActive shouldBe !beforeChange.isActive
     }
 
+    @Test
+    fun changeUserRoleTest(){
+        val consumer: KafkaConsumer<String, String> = KafkaConsumer(
+                ImmutableMap.of(
+                        ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, KafkaResource.x,
+                        ConsumerConfig.GROUP_ID_CONFIG, "tc-" + UUID.randomUUID(),
+                        ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"
+                ) as Map<String, Any>?,
+                StringDeserializer(),
+                StringDeserializer()
+        )
+        consumer.subscribe(Collections.singletonList("clients"))
+        val service  = UserServiceService(URL("http://localhost:9090/soap/userservice?wsdl"))
+        val port = service.userServicePort
+        val dto = UserDto()
+        dto.email = "adamiakAdam@edu.pl"
+        dto.isActive = true
+        dto.password = "####"
+        dto.role = "ADMIN"
+        port.registerUser(dto)
+        Thread.sleep(5000)
+        val records = consumer.poll(Duration.ofMillis(2000))
+        records.count() shouldBeGreaterThan 0
+
+        val beforeChange = port.getUser("adamiakAdam@edu.pl")
+        port.changeUserRole(beforeChange.email, "CLIENT")
+        val afterChange = port.getUser(beforeChange.email)
+        afterChange.role shouldBe "CLIENT"
+    }
 }
