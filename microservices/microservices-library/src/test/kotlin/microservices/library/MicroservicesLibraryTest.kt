@@ -159,4 +159,47 @@ class MicroservicesLibraryTest {
         response2.extract().path<String>("message") shouldBe "Resource not found"
     }
 
+    @Test
+    fun putProperTest(){
+        val consumer: KafkaConsumer<String, String> = KafkaConsumer(
+                ImmutableMap.of(
+                        ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServerUrl!!,
+                        ConsumerConfig.GROUP_ID_CONFIG, "tc-" + UUID.randomUUID(),
+                        ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest"
+                ) as Map<String, Any>?,
+                StringDeserializer(),
+                StringDeserializer()
+        )
+        consumer.subscribe(Collections.singletonList("products"))
+        val model = LibraryResourceDto(null, false, "Endymion", "Dan Simmons", "MAG", LibraryResourceType.BOOK)
+        val number: String = Given{
+            filter(ResponseLoggingFilter.logResponseTo(System.out))
+            contentType(ContentType.JSON)
+            body(model)
+        } When {
+            post("library")
+        } Then {
+            statusCode(201)
+        } Extract {
+            path("accessionNumber")
+        }
+        Thread.sleep(5000)
+        val records = consumer.poll(Duration.ofMillis(2000))
+        records.count() shouldBeGreaterThan 0
+
+        val response2 = Given {
+            filter(ResponseLoggingFilter.logResponseTo(System.out))
+            pathParam("id", number)
+        } When {
+            get("library/{id}")
+        } Then {
+            statusCode(200)
+        }
+
+        println(response2)
+        response2.extract().path<String>("title") shouldBe "Endymion"
+        response2.extract().path<String>("author") shouldBe "Dan Simmons"
+        response2.extract().path<String>("type") shouldBe "BOOK"
+    }
+
 }
