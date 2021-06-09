@@ -1,7 +1,9 @@
 package microservices.user.management.webservices
 
 import com.google.common.collect.ImmutableMap
+import io.kotest.matchers.be
 import io.kotest.matchers.ints.shouldBeGreaterThan
+import io.kotest.matchers.shouldBe
 import io.quarkus.test.common.QuarkusTestResource
 import io.quarkus.test.junit.QuarkusTest
 import org.apache.kafka.clients.consumer.ConsumerConfig
@@ -30,7 +32,9 @@ internal class UserServiceImplTest{
         val service  = UserServiceService(URL("http://localhost:9090/soap/userservice?wsdl"))
         val port = service.userServicePort
         val response = port.getUser("mszewc@edu.pl")
-        println(response)
+        response.email shouldBe "mszewc@edu.pl"
+        response.isActive shouldBe true
+        response.role shouldBe "ADMIN"
     }
 
     @Test
@@ -52,10 +56,16 @@ internal class UserServiceImplTest{
         dto.isActive = true
         dto.password = "####"
         dto.role = "ADMIN"
-        val response = port.registerUser(dto)
-        println(response)
+        port.registerUser(dto)
         Thread.sleep(5000)
         val records = consumer.poll(Duration.ofMillis(2000))
         records.count() shouldBeGreaterThan 0
+
+        val user = port.getUser("mzab@edu.pl")
+        user.isActive shouldBe true
+        user.email shouldBe "mzab@edu.pl"
+        user.role shouldBe "ADMIN"
+        println(user.password)
     }
+
 }
