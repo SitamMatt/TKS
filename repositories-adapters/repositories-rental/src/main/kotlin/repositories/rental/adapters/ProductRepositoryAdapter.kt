@@ -36,4 +36,15 @@ class ProductRepositoryAdapter(
             throw ex
         }
     }
+
+    fun delete(accessionNumber: AccessionNumber){
+        try{
+            val result = productRepository.findByAccessionNumber(accessionNumber.value)
+            if(result.isPresent){
+                productRepository.remove(result.get())
+            }
+        }catch (ex: Exception){
+            throw ex
+        }
+    }
 }
