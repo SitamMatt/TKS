@@ -23,7 +23,7 @@ open class UsersManagementService(
     }
 
     @Throws(UserNotFoundException::class)
-    open fun changeRole(email: Email, role: UserRole) {
+    override fun changeRole(email: Email, role: UserRole) {
         val user = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
         if (user.role != role) {
             user.role = role
@@ -32,7 +32,7 @@ open class UsersManagementService(
     }
 
     @Throws(UserNotFoundException::class)
-    open fun changeState(email: Email, state: Boolean) {
+    override fun changeState(email: Email, state: Boolean) {
         val user = userSearchPort.findByEmail(email) ?: throw UserNotFoundException()
         if (!user.active == state) {
             user.active = state

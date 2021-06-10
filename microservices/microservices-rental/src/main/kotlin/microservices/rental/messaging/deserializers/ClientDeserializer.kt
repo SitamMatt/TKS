@@ -1,6 +1,6 @@
 package microservices.rental.messaging.deserializers
 
-import Producer
+import microservices.rental.Producer
 import com.fasterxml.jackson.databind.ObjectMapper
 import core.domain.rent.Client
 import microservices.rental.dto.ClientDto

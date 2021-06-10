@@ -13,7 +13,7 @@ micronaut:
         mapping: /swagger-ui/**
 datasources:
   default:
-    url: jdbc:postgresql://db:5432/libraryDB
+    url: jdbc:postgresql://localhost:5435/libraryDB
     driverClassName: org.postgresql.Driver
     username: postgres
     password: postgres
@@ -24,5 +24,5 @@ jpa.default.properties.hibernate.hbm2ddl.auto: update
 
 kafka:
   bootstrap:
-#    servers: host.docker.internal:9093
-    servers: tkskafka.eastus.azurecontainer.io:9093
+    servers: host.docker.internal:9093
+#    servers: tkskafka.eastus.azurecontainer.io:9093

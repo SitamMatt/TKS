@@ -12,7 +12,7 @@ class KafkaResource : QuarkusTestResourceLifecycleManager{
     override fun start(): MutableMap<String, String> {
         kafka.start()
         val url = URI(kafka.bootstrapServers)
-        val x = "${url.host}:${url.port}"
+        x = "${url.host}:${url.port}"
         return Collections.singletonMap("kafka.bootstrap.servers", x)
     }
 
@@ -23,5 +23,6 @@ class KafkaResource : QuarkusTestResourceLifecycleManager{
 
     companion object{
         val kafka = KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:5.4.3"))
+        lateinit var x: String
     }
 }

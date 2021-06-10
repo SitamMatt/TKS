@@ -116,8 +116,9 @@ class UsersManagementServiceTest {
     }
 
     @Test
-    fun `Given invalid email then getDetails should fail`() {
+    fun `Given invalid email then getDetails should return null`() {
         every { userSearchPort.findByEmail(sampleEmail) } returns null
-        assertThrows(core.domain.common.exceptions.UserNotFoundException::class.java) { userService.getDetails(sampleEmail) }
+        val result = userService.getDetails(sampleEmail)
+        Assertions.assertNull(result)
     }
 }

@@ -14,7 +14,7 @@ import javax.inject.Inject
         propertyName = "clientId", propertyValue = "testClient"
     ),
         ActivationConfigProperty(propertyName = "groupIdConfig", propertyValue = "test-consumer-group"),
-        ActivationConfigProperty(propertyName = "topics", propertyValue = "clients,products"),
+        ActivationConfigProperty(propertyName = "topics", propertyValue = "clients"),
         ActivationConfigProperty(propertyName = "bootstrapServersConfig", propertyValue = "\${ENV=KAFKA_BROKER}"),
         ActivationConfigProperty(propertyName = "autoCommitInterval", propertyValue = "100"),
         ActivationConfigProperty(propertyName = "retryBackoff", propertyValue = "1000"),

@@ -12,9 +12,10 @@ services:
   web:
     image: tksregistry.azurecr.io/rental-service:dev
     build: .
-    environment: 
+    environment:
       - KAFKA_BROKER=host.docker.internal:9093
     ports:
       - "8090:8090"
+      - "9009:9009"
     depends_on:
       - db

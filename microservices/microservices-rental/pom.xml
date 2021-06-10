@@ -16,6 +16,7 @@
         <final.name>rent-service</final.name>
         <version.payara>5.2020.5</version.payara>
         <db.port>5432</db.port>
+<!--        <db.server>localhost</db.server>-->
         <db.server>db</db.server>
         <db.database>rentalDB</db.database>
         <db.username>postgres</db.username>
@@ -265,10 +266,10 @@
                     <deployWar>true</deployWar>
                     <contextRoot>/</contextRoot>
                     <commandLineOptions>
-<!--                        <option>-->
-<!--                            <key>&#45;&#45;deploy</key>-->
-<!--                            <value>${project.build.directory}/dependency/kafka-rar-0.5.0.rar</value>-->
-<!--                        </option>-->
+                        <option>
+                            <key>--deploy</key>
+                            <value>${project.build.directory}/dependency/kafka-rar-0.5.0.rar</value>
+                        </option>
                         <option>
                             <key>--deploy</key>
                             <value>${project.build.directory}/rent-service.war</value>
