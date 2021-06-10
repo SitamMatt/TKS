@@ -28,7 +28,7 @@ import javax.inject.Inject
             propertyName = "valueDeserializer",
             propertyValue = "microservices.rental.messaging.deserializers.ProductDeserializer"
         ),
-        ActivationConfigProperty(propertyName = "pollInterval", propertyValue = "1000")
+        ActivationConfigProperty(propertyName = "pollInterval", propertyValue = "30000")
     ]
 )
 open class ProductConsumer : KafkaListener {
